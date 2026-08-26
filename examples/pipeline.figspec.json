@@ -1,0 +1,37 @@
+{
+  "title": "GoAI Research — Survey Pipeline",
+  "canvas": {"width": 980, "height": 560},
+  "defaults": {"font_size": 13, "fill": "#FFFFFF", "stroke": "#33415C"},
+  "groups": [
+    {"id": "g_discover", "label": "Discovery", "x": 30, "y": 60, "w": 280, "h": 210, "fill": "#F2F7FB", "stroke": "#7A9CC6"},
+    {"id": "g_produce", "label": "Production (parallel)", "x": 350, "y": 60, "w": 300, "h": 420, "fill": "#F4F9F4", "stroke": "#86AF8F"},
+    {"id": "g_quality", "label": "Quality Loop", "x": 690, "y": 60, "w": 260, "h": 300, "fill": "#FBF6F0", "stroke": "#C6A27A"}
+  ],
+  "nodes": [
+    {"id": "lit", "label": "Lit-Search", "sublabel": "5 sources + snowball", "x": 60, "y": 100, "w": 220, "h": 56, "shape": "rounded", "group": "g_discover"},
+    {"id": "ref", "label": "Ref-Guard", "sublabel": "authors / order / venue", "x": 60, "y": 190, "w": 220, "h": 56, "shape": "rounded", "group": "g_discover"},
+    {"id": "tax", "label": "Taxonomy", "x": 390, "y": 100, "w": 220, "h": 48, "shape": "rect", "group": "g_produce"},
+    {"id": "fig", "label": "Figure-Studio", "sublabel": "SVG + drawio", "x": 390, "y": 180, "w": 220, "h": 56, "shape": "rect", "group": "g_produce"},
+    {"id": "wri", "label": "Survey-Writer", "sublabel": "claim-cite bound", "x": 390, "y": 268, "w": 220, "h": 56, "shape": "rect", "group": "g_produce"},
+    {"id": "ide", "label": "Idea-Forge", "sublabel": "retro predictor", "x": 390, "y": 356, "w": 220, "h": 56, "shape": "rect", "group": "g_produce"},
+    {"id": "rev", "label": "Reviewer", "sublabel": "cross-model, adversarial", "x": 710, "y": 100, "w": 220, "h": 56, "shape": "rounded", "group": "g_quality"},
+    {"id": "led", "label": "Loop Ledger", "sublabel": "gates + issues", "x": 710, "y": 260, "w": 220, "h": 56, "shape": "cylinder", "group": "g_quality"},
+    {"id": "out", "label": "Survey (tex + bib + figs)", "x": 690, "y": 470, "w": 260, "h": 50, "shape": "stadium"}
+  ],
+  "edges": [
+    {"from": "lit", "to": "ref", "label": "papers.jsonl"},
+    {"from": "ref", "to": "tax", "label": "verified bib"},
+    {"from": "tax", "to": "fig"},
+    {"from": "tax", "to": "wri", "waypoints": [[372, 124], [372, 296]]},
+    {"from": "tax", "to": "ide", "waypoints": [[364, 124], [364, 384]]},
+    {"from": "fig", "to": "rev", "label": "figures", "waypoints": [[672, 208], [672, 120]]},
+    {"from": "wri", "to": "rev", "label": "draft", "waypoints": [[660, 296], [660, 136]]},
+    {"from": "ide", "to": "rev", "label": "proposals", "waypoints": [[648, 384], [648, 152]]},
+    {"from": "rev", "to": "led", "label": "issues"},
+    {"from": "led", "to": "wri", "label": "rework", "dashed": true, "waypoints": [[664, 430]]},
+    {"from": "led", "to": "out", "label": "all gates PASS"}
+  ],
+  "texts": [
+    {"text": "route back until 0 blockers, max N rounds", "x": 395, "y": 448, "font_size": 11, "color": "#8A6D3B"}
+  ]
+}

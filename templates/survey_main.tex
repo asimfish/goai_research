@@ -1,0 +1,41 @@
+% goai_research 综述主模板（单栏 article 版；投稿时换会议/期刊官方模板，
+% 各 section 文件可原样迁移）。
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}        % 对比表
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{svg}             % figures/svg 直接引入；无 inkscape 时改用 drawio_export 出 pdf
+
+\title{TODO: Survey Title}
+\author{TODO: Authors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% writer 阶段五填充：贡献声明浓缩版（来自 workspace/notes/contribution.md）
+TODO
+\end{abstract}
+
+% ---- 章节由 workspace/drafts/sections/ 逐个 \input ----
+% \input{sections/01_introduction}
+% \input{sections/02_background}
+% \input{sections/03_taxonomy}      % 配主图：\includesvg{figures/svg/taxonomy}
+% \input{sections/04_branch_a}
+% \input{sections/05_branch_b}
+% \input{sections/06_discussion}
+% \input{sections/07_open_problems} % 含 idea-forge 通过双关的提案
+% \input{sections/08_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}    % 指向 workspace/library/references.bib
+\end{document}

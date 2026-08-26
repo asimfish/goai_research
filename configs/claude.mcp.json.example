@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "goai-litsearch": {
+      "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/goai_research/server/litsearch_server.py"],
+      "env": { "GOAI_EMAIL": "you@example.com" }
+    },
+    "goai-refcheck": {
+      "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/goai_research/server/refcheck_server.py"],
+      "env": { "GOAI_EMAIL": "you@example.com" }
+    },
+    "goai-figure": {
+      "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/goai_research/server/figure_server.py"],
+      "env": { "DYLD_FALLBACK_LIBRARY_PATH": "/opt/homebrew/lib" }
+    },
+    "goai-retro": {
+      "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
+    }
+  }
+}

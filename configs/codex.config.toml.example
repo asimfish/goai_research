@@ -1,0 +1,30 @@
+# Codex CLI 配置片段 —— 拷进 ~/.codex/config.toml
+# 四个 MCP server 都是 stdio 传输，command 用绝对路径最稳。
+# 把 /ABSOLUTE/PATH/TO/goai_research 换成你的仓库路径（install.sh 会自动生成一份填好的）。
+
+[mcp_servers.goai-litsearch]
+command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
+args = ["/ABSOLUTE/PATH/TO/goai_research/server/litsearch_server.py"]
+env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
+
+[mcp_servers.goai-refcheck]
+command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
+args = ["/ABSOLUTE/PATH/TO/goai_research/server/refcheck_server.py"]
+env = { GOAI_EMAIL = "you@example.com" }
+
+[mcp_servers.goai-figure]
+command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
+args = ["/ABSOLUTE/PATH/TO/goai_research/server/figure_server.py"]
+# macOS + brew cairo：让 cairosvg 找到 libcairo（png 自检输出用，可选）
+env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
+
+[mcp_servers.goai-retro]
+command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
+args = ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
+# 接真实逆合成后端时打开：
+# env = { GOAI_RETRO_PROVIDER = "http", GOAI_RETRO_URL = "https://your-askcos/api/retro", GOAI_RETRO_TOKEN = "..." }
+
+# 可选：draw.io 官方 MCP（浏览器实时打开/编辑图，需 Node.js）
+# [mcp_servers.drawio]
+# command = "npx"
+# args = ["-y", "@drawio/mcp"]

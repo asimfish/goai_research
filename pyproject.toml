@@ -1,0 +1,23 @@
+[project]
+name = "goai-research"
+version = "0.1.0"
+description = "GoAI Research — 文献调研与综述论文多智能体系统（检索/引用核查/画图+drawio/idea+逆合成/写作/审稿回环）"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.2.0",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+preview = ["cairosvg>=2.7"]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["server", "server.core"]
