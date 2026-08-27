@@ -1,0 +1,57 @@
+% Survey main — competition run (adapted from templates/survey_main.tex;
+% svg package replaced by graphicx+pdf figures per template note, no inkscape needed)
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\emergencystretch=1.5em
+
+\title{Covalent Organic Frameworks for Photocatalytic Hydrogen Evolution:\\
+A Factor-Chain Survey and a Synthesis-Design Bridge to TpPa-1}
+\author{GoAI Research Multi-Agent Survey System\\
+\small (competition run, 2026-08-27; all citations machine-audited)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Covalent organic frameworks (COFs) have progressed from the first photocatalytic
+hydrogen-evolution demonstration in 2014 to apparent quantum efficiencies above 80\% at 450~nm,
+yet the literature remains organized by material family rather than by the design levers that
+actually move performance. We survey 37 machine-audited primary studies and reviews through a
+factor-chain taxonomy: linkage chemistry (L1) sets the stability--conjugation envelope;
+building-block electronics (L2) set light harvesting; exciton management and crystallinity
+(L3) determine carrier delivery; the catalytic interface (L4) converts electrons to H$_2$; and
+synthesis methodology (L5) determines which materials exist at what quality. On this evidence
+base we register six research gaps with per-claim citation chains and database provenance, and
+we convert the most actionable gap --- the missing link between green, scalable synthesis
+routes and photocatalytic performance --- into a decision-recorded synthesis plan for the
+$\beta$-ketoenamine COF TpPa-1: a solvothermal baseline with two quantified process
+optimizations (microwave: 72~h$\rightarrow$1~h with a $\sim$4.8$\times$ surface-area gain;
+green-solvent flow: 30$\times$ space-time yield at 89\% lower specific energy), a
+thermodynamic feasibility audit with an explicit to-be-computed list, and a mandatory safety
+annex. The survey demonstrates a reusable template for turning literature evidence into
+auditable synthesis decisions.
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_design_levers}
+\input{sections/03_charge_interface}
+\input{sections/04_synthesis_methodology}
+\input{sections/05_route_c_design}
+\input{sections/06_open_challenges}
+\input{sections/07_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

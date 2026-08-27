@@ -1,0 +1,109 @@
+\section{Design levers I: linkage chemistry and band-structure engineering}
+\label{sec:levers}
+
+\subsection{L1 --- Linkage chemistry sets the stability--crystallinity envelope}
+\label{sec:linkage}
+
+The linkage is the first and most consequential design decision, because it fixes both the
+chemical stability envelope and the degree of $\pi$-conjugation available to every downstream
+lever. COF linkage design is governed by a now well-articulated trade-off: reversible bond
+formation enables the error correction that produces crystallinity, but the same reversibility
+makes the framework hydrolytically fragile~\cite{haase2020solving}. The field's linkage history
+is a sequence of answers to this trilemma.
+
+\textbf{Reversible foundations (L1a).} Boronate-ester frameworks demonstrated that purely
+organic building blocks can crystallize into predictable lattices~\cite{cote2005porous}, but
+their boron--oxygen bonds hydrolyze readily, which confines them to anhydrous
+applications~\cite{cote2005porous,haase2020solving}. Hydrazone linkages brought the first
+photocatalytic milestone: TFPT-COF evolved hydrogen from water with a sacrificial donor and Pt
+cocatalyst~\cite{stegbauer2014a}. Azine linkages then delivered an early systematic
+structure--activity series: in the N$_x$-COF platform, HER activity rises monotonically with
+the number of ring nitrogens (N3 $>$ N2 $>$ N1 $>$ N0), demonstrating that atomically
+precise framework chemistry translates into tunable photocatalysis~\cite{vyas2015a}.
+
+\textbf{$\beta$-Ketoenamine lock (L1b).} The TpPa family resolved the stability half of the
+trilemma with a two-stage thermodynamic design: reversible Schiff-base condensation of
+1,3,5-triformylphloroglucinol (Tp) with \emph{p}-phenylenediamine (Pa-1) in 1:1
+mesitylene/dioxane first builds a crystalline enol-imine network, which then undergoes an
+\emph{irreversible} enol$\rightarrow$keto tautomerization; only the keto form is observed, and
+the resulting TpPa-1 survives 9~N HCl and boiling water~\cite{kandambeth2012construction}.
+Because the lock is chemical rather than processual, it survives radically different syntheses:
+room-temperature solvent-free grinding gives the same stable frameworks, albeit with moderate
+crystallinity and an exfoliated, graphene-like morphology~\cite{biswal2013mechanochemical}.
+The scaffold is also a productive photocatalysis platform: acetylene- and diacetylene-walled
+$\beta$-ketoenamine COFs show that extending wall conjugation markedly raises HER (the
+diacetylene analogue outperforms the acetylene one)~\cite{pachfule2017diacetylene}, and a
+fixed-backbone substituent series (TpPa-COF-X, X = --H, --(CH$_3$)$_2$, --NO$_2$) maps how
+peripheral electronics shift morphology, light absorption, and activity~\cite{sheng2019effect}.
+This chemistry is the home leaf of the Route~C target (Sec.~\ref{sec:routec}).
+
+\textbf{Fully conjugated linkages (L1c).} Vinylene (sp$^2$-carbon) linkages remove the
+conjugation bottleneck of C--N single bonds. sp$^2$-carbon-conjugated frameworks have been
+applied to photocatalytic hydrogen production~\cite{jin20192d}; mild Knoevenagel
+polycondensation now affords vinylene-linked benzobisthiazole frameworks
+(BTH-1/2/3)~\cite{wang2022facile}, and benzothiazole-mediated aldol-type polycondensation
+yields unsubstituted-vinylene 2D COFs whose two-dimensional frameworks outperform their 1D
+counterparts in photocatalysis~\cite{li2023two}. The cost is narrower monomer scope and
+condition-sensitive synthesis~\cite{wang2022facile,li2023two}.
+
+Read as a series, L1 shows the trilemma being solved twice over: the $\beta$-ketoenamine
+route buys hydrolytic stability by spending linkage reversibility \emph{after} crystallization
+has already happened~\cite{kandambeth2012construction}, whereas the vinylene route accepts a
+harder crystallization problem up front in exchange for uninterrupted
+conjugation~\cite{li2023two,haase2020solving}. Which trade is better is not decidable at the
+linkage level alone --- it depends on whether the downstream bottleneck is carrier transport or
+framework survival, which is precisely why this survey tracks the full factor chain rather
+than ranking linkages in isolation~\cite{haase2020solving,zhang2022reconstructed}.
+
+\begin{table}[t]
+\centering
+\caption{Linkage classes for COF HER photocatalysts (taxonomy level L1). Stability and
+activity statements are those reported in the cited studies.}
+\label{tab:linkage}
+\footnotesize
+\begin{tabular}{p{2.3cm}p{2.4cm}p{3.3cm}p{4.9cm}}
+\toprule
+Linkage class & Exemplar & Formation chemistry & Reported stability / HER relevance \\
+\midrule
+Boronate ester (L1a) & COF-1, COF-5~\cite{cote2005porous} & Boronic acid + catechol
+condensation & Thermally robust; hydrolytically labile~\cite{cote2005porous,haase2020solving} \\
+Hydrazone (L1a) & TFPT-COF~\cite{stegbauer2014a} & Aldehyde + hydrazide & First COF HER
+demonstration~\cite{stegbauer2014a} \\
+Azine (L1a) & N$_x$-COF~\cite{vyas2015a} & Aldehyde + hydrazine & Water/photo-stable; HER
+scales with N count~\cite{vyas2015a} \\
+$\beta$-Ketoenamine (L1b) & TpPa-1/-2~\cite{kandambeth2012construction} & Reversible imine +
+irreversible tautomerization & 9~N HCl, boiling water (9~N NaOH for
+TpPa-2)~\cite{kandambeth2012construction}; HER platform~\cite{pachfule2017diacetylene,sheng2019effect} \\
+Vinylene / sp$^2$-C (L1c) & BTH-1/2/3~\cite{wang2022facile};
+v-2D-COF-NS~\cite{li2023two} & Knoevenagel / aldol-type polycondensation & Full in-plane
+conjugation; 2D $>$ 1D photocatalysis~\cite{li2023two} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{L2 --- Band-structure and light-harvesting engineering}
+\label{sec:band}
+
+With the linkage fixed, the second lever tunes what the framework absorbs and how strongly
+photogenerated excitons are pulled apart. Two motifs dominate the library evidence.
+
+\textbf{Electron-poor heteroaromatics (L2a).} Sulfone chemistry produced one of the field's
+benchmark materials: the dibenzothiophene-sulfone framework FS-COF for hydrogen evolution from
+water~\cite{wang2018sulfone}. Its significance was consolidated by a factor-deconvolution study
+on the same family, which varied band gap, crystallinity, surface area, exciton migration, and
+charge extraction quasi-independently and identified crystallinity and charge extraction as the
+prime factors --- a rare causal, rather than correlational, result in this
+literature~\cite{ghosh2020identification}. Thiazolo[5,4-d]thiazole acceptors paired with pyrene
+donors (PyTz-COF) show that a bicontinuous donor/acceptor channel architecture underlies the
+exceptional optoelectronic response~\cite{li2020thiazolo}.
+
+\textbf{Donor--acceptor construction and post-synthetic protonation (L2b).} Multicomponent
+synthesis extends the D--A idea to three components: triazine acceptors and benzotrithiophene
+donors bridged by sp$^2$-carbon links boost HER beyond two-component
+controls~\cite{li2023three}. Post-synthetic linkage protonation of imine D--A COFs red-shifts
+absorption and improves charge separation, reaching 20.7~mmol\,g$^{-1}$\,h$^{-1}$
+~\cite{yang2021protonated}. In exfoliated form, a $\beta$-ketene--cyano D--A pair in COF
+nanosheets couples dramatically prolonged carrier lifetimes (femtosecond transient absorption
+evidence) with an AQE of 82.6\% at 450~nm --- currently the clearest demonstration that L2
+engineering, executed on an L1-stable scaffold and read out through L3 photophysics, produces
+step-change activity~\cite{li2022covalent}.
