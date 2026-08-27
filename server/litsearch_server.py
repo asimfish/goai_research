@@ -22,6 +22,13 @@ from server.core import sources as src
 mcp = FastMCP("goai-litsearch")
 
 ALL_SOURCES = ("arxiv", "openalex", "semanticscholar", "crossref", "dblp")
+SOURCE_ALIASES = {"s2": "semanticscholar"}
+_ARXIV_DOI = re.compile(r"^10\.48550/arxiv\.(.+)$", re.I)
+
+
+def _ws(*parts: str) -> str:
+    """默认产物路径落到 GOAI_WORKSPACE（README 约定）下；显式传参不受影响。"""
+    return os.path.join(os.environ.get("GOAI_WORKSPACE", "workspace"), *parts)
 
 
 def _dumps(obj) -> str:
@@ -37,13 +44,18 @@ def search_papers(query: str, sources: str = "arxiv,openalex,semanticscholar",
 
     Args:
         query: 检索式（英文关键词效果最好；一次一个主题面）
-        sources: 逗号分隔，可选 arxiv/openalex/semanticscholar/crossref/dblp
+        sources: 逗号分隔，可选 arxiv/openalex/semanticscholar(别名 s2)/crossref/dblp
         limit_per_source: 每源条数上限
         year_from / year_to: 年份过滤（arxiv/crossref/dblp 不支持时忽略）
     Returns:
         JSON {query, total, papers: [统一 record，含 sources 命中列表]}
     """
-    wanted = [s.strip() for s in sources.split(",") if s.strip()]
+    query = (query or "").strip()
+    if not query:
+        return _dumps({"query": query, "total": 0,
+                       "errors": {"query": "空查询：请提供非空检索式"}, "papers": []})
+    wanted = [SOURCE_ALIASES.get(n, n)
+              for n in (s.strip().lower() for s in sources.split(",")) if n]
     records, errors = [], {}
     dispatch = {
         "arxiv": lambda: src.search_arxiv(query, limit_per_source),
@@ -83,17 +95,25 @@ def snowball(seed: str, direction: str = "both", limit: int = 30) -> str:
     Returns:
         JSON {seed, references: [...], citations: [...]}
     """
+    seed = seed.strip()
     out = {"seed": seed, "references": [], "citations": [], "errors": {}}
+
+    def _via_openalex(wid: str) -> None:
+        if direction in ("references", "both"):
+            out["references"] = src.openalex_references(wid, limit)
+        if direction in ("citations", "both"):
+            out["citations"] = src.openalex_citers(wid, limit)
+
     if re.match(r"^W\d+$", seed):  # OpenAlex
         try:
-            if direction in ("references", "both"):
-                out["references"] = src.openalex_references(seed, limit)
-            if direction in ("citations", "both"):
-                out["citations"] = src.openalex_citers(seed, limit)
+            _via_openalex(seed)
         except Exception as exc:
             out["errors"]["openalex"] = str(exc)
         return _dumps(out)
-    if re.match(r"^10\.", seed):
+    m = _ARXIV_DOI.match(seed)
+    if m:  # arXiv 代发 DOI：S2 只认 ARXIV:id，DOI:10.48550/... 会 404
+        ref = f"ARXIV:{src.norm_arxiv_id(m.group(1))}"
+    elif re.match(r"^10\.", seed):
         ref = f"DOI:{seed}"
     elif re.match(r"^\d{4}\.\d{4,5}", seed):
         ref = f"ARXIV:{src.norm_arxiv_id(seed)}"
@@ -106,6 +126,18 @@ def snowball(seed: str, direction: str = "both", limit: int = 30) -> str:
             out["citations"] = src.s2_neighbors(ref, "citations", limit)
     except Exception as exc:
         out["errors"]["semanticscholar"] = str(exc)
+        # S2 无 key 时限流常态化：能定位 DOI 的种子改走 OpenAlex 兜底
+        doi = (f"10.48550/arxiv.{src.norm_arxiv_id(seed)}"
+               if ref.startswith("ARXIV:") else seed if ref.startswith("DOI:") else None)
+        if doi:
+            try:
+                w = src.openalex_by_doi(doi)
+                wid = (w or {}).get("id") or ""
+                if str(wid).startswith("W"):
+                    _via_openalex(str(wid))
+                    out["fallback"] = f"semanticscholar 不可用，已用 openalex:{wid} 兜底"
+            except Exception as exc2:
+                out["errors"]["openalex"] = str(exc2)
     return _dumps(out)
 
 
@@ -114,6 +146,14 @@ def lookup(identifier: str) -> str:
     """按权威标识精确查元数据。identifier 支持 DOI 或 arXiv id。"""
     ident = identifier.strip()
     hits = []
+    arxiv_doi = _ARXIV_DOI.match(ident)
+    if arxiv_doi:  # arXiv 代发 DOI：权威源是 arXiv 本身（Crossref 不收录 DataCite DOI）
+        try:
+            r = src.arxiv_by_id(arxiv_doi.group(1))
+            if r:
+                hits.append(r)
+        except Exception:
+            pass
     if re.match(r"^10\.", ident):
         for fn in (src.crossref_by_doi, src.openalex_by_doi):
             try:
@@ -122,7 +162,7 @@ def lookup(identifier: str) -> str:
                     hits.append(r)
             except Exception:
                 pass
-    else:
+    elif not arxiv_doi:
         try:
             r = src.arxiv_by_id(ident)
             if r:
@@ -135,14 +175,15 @@ def lookup(identifier: str) -> str:
 
 @mcp.tool()
 def download_pdf(url: str, filename: str,
-                 out_dir: str = "workspace/library/pdfs") -> str:
+                 out_dir: Optional[str] = None) -> str:
     """下载开放获取 PDF 到文献库。
 
     Args:
         url: pdf_url（来自 search/snowball 结果；arXiv id 也可直接给）
         filename: 保存名（建议 citation key，如 vaswani2017attention.pdf）
-        out_dir: 保存目录
+        out_dir: 保存目录（默认 $GOAI_WORKSPACE/library/pdfs）
     """
+    out_dir = out_dir or _ws("library", "pdfs")
     if re.match(r"^\d{4}\.\d{4,5}", url):
         url = f"https://arxiv.org/pdf/{src.norm_arxiv_id(url)}"
     if not filename.endswith(".pdf"):
@@ -151,6 +192,8 @@ def download_pdf(url: str, filename: str,
     try:
         info = ghttp.download(url, dest)
     except Exception as exc:
+        if os.path.exists(dest):
+            os.remove(dest)  # 半截文件不留在文献库
         return _dumps({"ok": False, "url": url,
                        "error": f"{type(exc).__name__}: {exc}",
                        "hint": "付费墙/反爬按 fail-closed 处理：如实报告，勿绕过；"
@@ -168,23 +211,22 @@ def download_pdf(url: str, filename: str,
 
 @mcp.tool()
 def save_to_library(papers_json: str,
-                    library_path: str = "workspace/library/papers.jsonl") -> str:
+                    library_path: Optional[str] = None) -> str:
     """把检索结果并入文献库 papers.jsonl（按 doi/arxiv/标题去重）。
 
     Args:
         papers_json: JSON 数组或 {papers: [...]} 
-        library_path: 文献库 jsonl 路径
+        library_path: 文献库 jsonl 路径（默认 $GOAI_WORKSPACE/library/papers.jsonl）
     """
+    library_path = library_path or _ws("library", "papers.jsonl")
     data = json.loads(papers_json)
     incoming = data["papers"] if isinstance(data, dict) else data
     existing = []
     if os.path.exists(library_path):
         with open(library_path, encoding="utf-8") as f:
             existing = [json.loads(line) for line in f if line.strip()]
-    merged = src.dedup_merge(
-        [{**r, "source": (r.get("sources") or ["?"])[0]} for r in existing]
-        + [{**r, "source": (r.get("sources") or [r.get("source", "?")])[0]}
-           for r in incoming])
+    # dedup_merge 直接吃 sources 列表，多源出处不再丢失
+    merged = src.dedup_merge(existing + incoming)
     os.makedirs(os.path.dirname(library_path) or ".", exist_ok=True)
     with open(library_path, "w", encoding="utf-8") as f:
         for r in merged:
@@ -195,9 +237,14 @@ def save_to_library(papers_json: str,
 
 
 @mcp.tool()
-def export_bibtex(library_path: str = "workspace/library/papers.jsonl",
-                  out_path: str = "workspace/library/references.bib") -> str:
-    """把文献库导出为 references.bib（key = 一作姓+年份+标题首词）。"""
+def export_bibtex(library_path: Optional[str] = None,
+                  out_path: Optional[str] = None) -> str:
+    """把文献库导出为 references.bib（key = 一作姓+年份+标题首词）。
+
+    路径默认取 $GOAI_WORKSPACE/library/ 下的 papers.jsonl / references.bib。
+    """
+    library_path = library_path or _ws("library", "papers.jsonl")
+    out_path = out_path or _ws("library", "references.bib")
     if not os.path.exists(library_path):
         return _dumps({"ok": False, "error": f"文献库不存在: {library_path}"})
     with open(library_path, encoding="utf-8") as f:
@@ -220,16 +267,17 @@ def export_bibtex(library_path: str = "workspace/library/papers.jsonl",
 
 @mcp.tool()
 def coverage_report(subtopics: str,
-                    library_path: str = "workspace/library/papers.jsonl") -> str:
+                    library_path: Optional[str] = None) -> str:
     """查全率体检：逐子主题统计文献库命中量，暴露覆盖缺口。
 
     Args:
         subtopics: JSON 数组，每项 {name, keywords: [...]}（keywords 用于标题/摘要匹配）
-        library_path: 文献库 jsonl
+        library_path: 文献库 jsonl（默认 $GOAI_WORKSPACE/library/papers.jsonl）
     Returns:
-        JSON 每个子主题的命中数 / 年份分布 / 缺口告警（<min_hits 视为缺口）
+        JSON 每个子主题的命中数 / 年份分布 / 缺口告警（<5 视为缺口）
     """
     topics = json.loads(subtopics)
+    library_path = library_path or _ws("library", "papers.jsonl")
     papers = []
     if os.path.exists(library_path):
         with open(library_path, encoding="utf-8") as f:

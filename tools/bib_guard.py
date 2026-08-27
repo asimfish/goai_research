@@ -61,6 +61,8 @@ def main() -> None:
                                 recursive=True)))
     if not files:
         sys.exit(f"未找到稿件文件: {args.draft}")
+    if not os.path.isfile(args.bib):
+        sys.exit(f"未找到 bib 文件: {args.bib}")
 
     with open(args.bib, encoding="utf-8") as f:
         bib_keys = {e["key"] for e in parse_bibtex(f.read())}

@@ -39,6 +39,11 @@ def main() -> None:
                     help="近三年条目最低占比")
     args = ap.parse_args()
 
+    if not os.path.isfile(args.bank):
+        sys.exit(f"未找到 citation bank: {args.bank}")
+    if not os.path.isfile(args.bib):
+        sys.exit(f"未找到 bib 文件: {args.bib}")
+
     with open(args.bib, encoding="utf-8") as f:
         bib = {e["key"]: e for e in parse_bibtex(f.read())}
 

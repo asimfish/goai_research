@@ -51,6 +51,11 @@ python3 tools/bank_check.py workspace/notes/citation_bank.md \
     workspace/library/references.bib --target-cites <目标引用数>
 ```
 
+阈值适配：默认线（候选量 ×1.5、近三年 ≥50%）按满配综述设计；lite/mini 或
+库规模受限的运行撞线时，先跑默认参数留下 FAIL 证据，再在账本记
+`log --event decision` 说明理由（库上限/奠基文献偏旧等）后按比例调
+`--min-recent`/`--min-ratio` 重跑——禁止不留痕直接降线；能补库时优先补库。
+
 ## 阶段三：章节蓝图
 
 产出 `workspace/drafts/blueprint.md`，逐节写清：本节回答什么问题、

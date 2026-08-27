@@ -44,6 +44,13 @@ description: Use when the task is comprehensive literature retrieval for a surve
   **禁止**伪造 PDF 或用二手站点绕过。
 - 全部子主题过闸后 `export_bibtex` 产出 `workspace/library/references.bib`，
   这是下游唯一允许引用的池子。
+- **返工轮警示**：ref_gate 会直接修 references.bib（修复不回流 papers.jsonl），
+  一旦 bib 经过引用核查修复，**禁止再全量 `export_bibtex` 重导**（会覆盖全部
+  修复）。增量补检的新条目用 `server.core.bibtex.record_to_bibtex`（与
+  export 同一代码路径）生成后追加进现有 bib，追加后按 key 查重，并把新条目
+  交 ref-guard 逐条 `verify_entry`。
+- 检索结果元数据可疑（标题与 id 对不上、作者异常）时，用 `lookup` 按
+  DOI/arXiv id 走权威路由核实后再入库，不入库带病记录。
 
 ## 硬性规则
 

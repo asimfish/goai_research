@@ -20,6 +20,9 @@ workspace/state/*.json
 workspace/state/round_*/
 !workspace/**/.gitkeep
 
+# 实测（live tests）运行产物：报告入库在 docs/live-tests/，产物本身不入库
+workspace_live/
+
 # install.sh 生成的本机路径版配置（example 版入库）
 configs/codex.config.toml
 configs/claude.mcp.json

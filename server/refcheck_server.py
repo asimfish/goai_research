@@ -34,44 +34,101 @@ def _dumps(obj) -> str:
     return json.dumps(obj, ensure_ascii=False, indent=2)
 
 
-def _authoritative_lookup(fields: dict[str, str]) -> tuple[Optional[dict], list[dict]]:
-    """按权威路由取规范记录：DOI > arXiv > 标题检索(crossref+dblp+openalex)。"""
-    candidates: list[dict[str, Any]] = []
+def _author_overlap(claimed: list[str], candidate: dict[str, Any]) -> float:
+    """声称作者与候选记录作者的重合率（0-1），用于同分候选决胜。"""
+    cand = candidate.get("authors") or []
+    if not claimed or not cand:
+        return 0.0
+    used: set[int] = set()
+    hit = 0
+    for cl in claimed:
+        for j, ca in enumerate(cand):
+            if j not in used and bib.same_person(cl, ca):
+                used.add(j)
+                hit += 1
+                break
+    return hit / len(claimed)
+
+
+def _year_distance(fields: dict[str, str], candidate: dict[str, Any]) -> int:
+    try:
+        return abs(int(fields.get("year", "")) - int(candidate.get("year")))
+    except (TypeError, ValueError):
+        return 99  # 任一侧无年份 → 劣后于年份贴近的候选
+
+
+def _authoritative_lookup(
+        fields: dict[str, str]) -> tuple[Optional[dict], list[dict], Optional[dict]]:
+    """按权威路由取规范记录：DOI > arXiv > 标题检索(crossref+dblp+openalex)。
+
+    Returns:
+        (canonical, near_misses, id_conflict)
+        id_conflict: DOI/arXiv 可解析、但解析结果与声称标题不符时的权威记录
+        （典型场景：条目挂了另一篇真实论文的 DOI）。
+    """
+    id_hits: list[dict[str, Any]] = []
     doi = fields.get("doi")
     if doi:
         for fn in (src.crossref_by_doi, src.openalex_by_doi):
             try:
                 r = fn(doi)
                 if r:
-                    candidates.append(r)
+                    id_hits.append(r)
             except Exception:
                 pass
     aid = fields.get("eprint") or fields.get("arxiv")
-    if not candidates and aid:
+    if not id_hits and aid:
         try:
             r = src.arxiv_by_id(aid)
             if r:
-                candidates.append(r)
+                id_hits.append(r)
         except Exception:
             pass
+    candidates = list(id_hits)
     title = fields.get("title", "")
     if not candidates and title:
-        for fn in (lambda: src.search_crossref(title, 5),
+        # 核查是「核对已知标题」而非发现式检索：crossref/openalex/arxiv 用
+        # 引号短语查询，防止高频词标题被同名蹭热点文淹没（实测「Attention Is
+        # All You Need」裸查询三源 top5 均无 2017 正版，OpenAlex 反而返回
+        # sim=1.0 的 2025 盗版重印记录）。DBLP 语法不吃引号，保持裸标题。
+        # arXiv 必须在列：NeurIPS/ICLR/ICML 等会议不注册 Crossref。
+        phrase = '"' + title.replace('"', " ").strip() + '"'
+        for fn in (lambda: src.search_crossref(phrase, 5),
                    lambda: src.search_dblp(title, 5),
-                   lambda: src.search_openalex(title, 5)):
+                   lambda: src.search_openalex(phrase, 5),
+                   lambda: src.search_arxiv(phrase, 5)):
             try:
                 candidates.extend(fn())
             except Exception:
                 pass
     if not candidates:
-        return None, []
+        return None, [], None
+    # 标题相似度为主；同名多记录（重印/盗版/编辑评论）按作者重合度、
+    # 年份贴近度决胜，避免盲选检索顺序靠前的野记录。
+    claimed_authors = bib.split_authors(fields.get("author", ""))
     scored = sorted(
-        ((bib.title_similarity(title, c.get("title") or ""), c)
+        ((bib.title_similarity(title, c.get("title") or ""),
+          _author_overlap(claimed_authors, c),
+          -_year_distance(fields, c),
+          c)
          for c in candidates if c.get("title")),
-        key=lambda x: -x[0])
-    best = scored[0] if scored else (0.0, None)
-    return ({"score": round(best[0], 3), **best[1]} if best[1]
-            and best[0] >= TITLE_SUSPECT else None), [c for _, c in scored[:5]]
+        key=lambda x: (-x[0], -x[1], -x[2]))
+    near = [c for *_, c in scored[:5]]
+    # 接受为 canonical 的门槛：标题基本一致（≥MATCH，视为同一篇）；或标题
+    # 疑似（≥SUSPECT）且作者有重合（同篇的版本漂移）。疑似区间内作者零重合
+    # 的记录不是「作者不符的同一篇」而是「另一篇」，不配当权威基准 ——
+    # 否则一条正确引用会被陌生记录数落成 MISMATCH（fail-closed 归 UNVERIFIED）。
+    if scored:
+        sim, overlap = scored[0][0], scored[0][1]
+        if sim >= TITLE_MATCH or (sim >= TITLE_SUSPECT
+                                  and (overlap > 0 or not claimed_authors)):
+            return {"score": round(sim, 3), **scored[0][3]}, near, None
+    # 走到这里：或一无所获，或 id 路由解析成功但指向别的论文
+    id_conflict = None
+    if id_hits:
+        id_conflict = max(
+            id_hits, key=lambda c: bib.title_similarity(title, c.get("title") or ""))
+    return None, near, id_conflict
 
 
 def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
@@ -79,8 +136,25 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
     claimed_authors = bib.split_authors(fields.get("author", ""))
     claimed_year = fields.get("year", "")
 
-    canonical, near = _authoritative_lookup(fields)
+    canonical, near, id_conflict = _authoritative_lookup(fields)
     if canonical is None:
+        if id_conflict is not None:
+            # DOI/arXiv 能解析，但指向另一篇论文 —— 高危：标识符与标题张冠李戴
+            return {
+                "verdict": "MISMATCH",
+                "reason": "doi/arxiv 标识符可解析，但指向另一篇论文，与声称标题不符；"
+                          "不给自动修正（无法判断该留标题还是留标识符），须人工裁决",
+                "issues": [{
+                    "axis": "ID", "type": "id_conflict",
+                    "detail": f"声称标题「{claimed_title}」 vs 标识符解析出"
+                              f"「{id_conflict.get('title')}」"
+                              f"(doi={id_conflict.get('doi')}, "
+                              f"year={id_conflict.get('year')})"}],
+                "id_resolved": {k: id_conflict.get(k) for k in
+                                ("title", "authors", "year", "venue", "doi",
+                                 "arxiv_id", "url")},
+                "action": "核对 DOI/arXiv 号属于哪篇论文；改标识符或改条目元数据后重试",
+            }
         return {
             "verdict": "UNVERIFIED",
             "reason": "在 Crossref/arXiv/OpenAlex/DBLP 均未找到可信匹配；"
@@ -117,15 +191,32 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
         except ValueError:
             pass
 
+    # 单源记录只有 source（str），dedup_merge 后才有 sources（list）——两者都认
+    canon_sources = (canonical.get("sources")
+                     or ([canonical["source"]] if canonical.get("source") else []))
     claimed_venue = (fields.get("booktitle") or fields.get("journal") or "").lower()
     canon_venue = (canonical.get("venue") or "").lower()
-    if claimed_venue and canon_venue and canonical.get("sources") != ["arxiv"]:
+    if claimed_venue and canon_venue and canon_sources != ["arxiv"]:
         if (src.norm_title(claimed_venue) != src.norm_title(canon_venue)
                 and src.norm_title(canon_venue) not in src.norm_title(claimed_venue)
                 and src.norm_title(claimed_venue) not in src.norm_title(canon_venue)):
             issues.append({"axis": "VENUE", "type": "drift",
                            "detail": f"声称「{claimed_venue}」vs 权威「{canon_venue}」；"
                                      "注意 arXiv 路由通常不能证实 venue，会议口径以出版方为准"})
+
+    # 标识符一致性：声称的 doi/arxiv 与权威记录不符 = 幻觉标识符（可自动修正）
+    claimed_doi = (fields.get("doi") or "").lower().replace(
+        "https://doi.org/", "").strip()
+    canon_doi = (canonical.get("doi") or "").lower()
+    if claimed_doi and canon_doi and claimed_doi != canon_doi:
+        issues.append({"axis": "ID", "type": "doi_mismatch",
+                       "detail": f"声称 doi {claimed_doi} vs 权威 {canon_doi}"
+                                 "（声称 DOI 解析不出或不属于该文）"})
+    claimed_aid = src.norm_arxiv_id(fields.get("eprint") or fields.get("arxiv"))
+    canon_aid = canonical.get("arxiv_id")
+    if claimed_aid and canon_aid and claimed_aid != canon_aid:
+        issues.append({"axis": "ID", "type": "arxiv_mismatch",
+                       "detail": f"声称 arXiv {claimed_aid} vs 权威 {canon_aid}"})
 
     if any(i["type"] in ("missing", "extra") for i in hard_author):
         verdict = "MISMATCH"
@@ -138,9 +229,10 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
     if verdict in ("FIX", "MISMATCH"):
         fixed = bib.record_to_bibtex(canonical)
     return {"verdict": verdict, "title_similarity": title_sim,
-            "canonical": {k: canonical.get(k) for k in
-                          ("title", "authors", "year", "venue", "doi",
-                           "arxiv_id", "url", "sources")},
+            "canonical": {**{k: canonical.get(k) for k in
+                             ("title", "authors", "year", "venue", "doi",
+                              "arxiv_id", "url")},
+                          "sources": canon_sources},
             "issues": issues, "suggested_bibtex": fixed}
 
 
@@ -168,14 +260,21 @@ def verify_bib_file(bib_path: str, out_dir: str = "workspace/state") -> str:
 
     Args:
         bib_path: references.bib 路径
-        out_dir: 审计产物目录
+        out_dir: 审计产物目录（默认值在设置了 GOAI_WORKSPACE 时锚定为
+            $GOAI_WORKSPACE/state，避免依赖 MCP server 进程的 CWD）
     Returns:
         JSON 汇总 {total, counts, gate: PASS|FAIL, report_md, report_json}
     """
+    if out_dir == "workspace/state" and os.environ.get("GOAI_WORKSPACE"):
+        out_dir = os.path.join(os.environ["GOAI_WORKSPACE"], "state")
     if not os.path.exists(bib_path):
         return _dumps({"ok": False, "error": f"文件不存在: {bib_path}"})
     with open(bib_path, encoding="utf-8") as f:
         entries = bib.parse_bibtex(f.read())
+    if not entries:
+        return _dumps({"ok": False, "total": 0,
+                       "error": "bib 文件为空或未解析出任何条目；"
+                                "fail-closed：空引用库不发 PASS 闸门"})
     per_entry = []
     counts = {"PASS": 0, "FIX": 0, "MISMATCH": 0, "UNVERIFIED": 0, "ERROR": 0}
     for e in entries:

@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-25%20passing-brightgreen.svg)](tests/test_offline.py)
+[![Tests](https://img.shields.io/badge/tests-25%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
 
@@ -290,8 +290,14 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q    # 25 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 25 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest -m live tests/live/  # 95 个实测 —— 真实 API、真实 draw.io CLI
 ```
+
+每个环节都做过**端到端实测**（真实五源检索、损坏 bib 的真实判定矩阵、
+draw.io 真机导出 PNG/PDF、mock 后端的逆合成 HTTP 路径、账本 50 进程压测、
+以及一次完整 mini 综述全回环且 `check-done` 退出码 0）。
+逐环节实测报告见 [docs/live-tests/](docs/live-tests/)。
 
 覆盖：BibTeX 解析/生成往返、作者比对（缩写、顺序、遗漏/伪造）、多源去重、
 figspec 校验（节点重叠与同义平行线检测）、SVG 与 mxGraph 渲染、**SVG →

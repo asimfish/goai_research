@@ -41,7 +41,9 @@ intake → scoping → lit_search → ref_gate → taxonomy
      引用核查与审稿独立性；
    - `auto-proceed=false`：每轮 review 结束后暂停，等人类读完审稿报告、
      给出修改指示或提前收工的决定再继续（true 则汇报后同轮继续）。
-2. **scoping**：把主题分解为 6–12 个子主题（MECE），连同 2020 起的时间窗、
+2. **scoping**：把主题分解为若干 MECE 子主题——数量按 effort 分档：
+   lite 3–6、balanced 6–12、max 8–12（mini/实测运行按任务书上限为准，
+   偏离档位要在账本记 decision）；连同 2020 起的时间窗、
    排除项写入 `workspace/inputs/scope.md`；`loopctl gate --name scope_confirmed --status PASS`。
    有歧义就停下来问用户。
    等人的点共三处，不受 auto-proceed 影响：scope 定稿、taxonomy 阶段的
@@ -64,6 +66,10 @@ intake → scoping → lit_search → ref_gate → taxonomy
    trace 存档路径），无回执的 PASS 回退为 FAIL 并要求重审。
    关键 gate 建议带 `--inputs` 记录产物指纹：上游产物变更后 check-done
    会自动把旧 gate 置回 PENDING（旧审计不得当新审计用）。
+   指纹范围规则：盖「该闸门结论真正依赖的全部文件」，不止本阶段产物——
+   如 taxonomy_ready 须盖 papers.jsonl（库变则分类法失效）、lit_coverage 盖
+   papers.jsonl（bib 归 ref_integrity 盖）；--inputs 路径按字面存储且依赖
+   调用时 CWD，全程固定从仓库根目录运行 loopctl。
 5. **review 回路**：goai-reviewer 产出的 issue 已带 `target` 阶段。路由表：
    - 覆盖缺口/漏关键文献 → lit_search
    - 引用可疑/元数据错 → ref_gate

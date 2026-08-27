@@ -77,8 +77,22 @@ def _locked():
 
 
 def load() -> dict:
-    with open(_path(), encoding="utf-8") as f:
-        return json.load(f)
+    """读账本；缺失/损坏时给可执行的提示，而不是 12 行 Python traceback。
+
+    多 agent 通过本工具交接，调用方（含 LLM agent）只看 stderr 尾行，
+    裸 FileNotFoundError 无法区分「忘了 init」与「GOAI_WORKSPACE 指错」。
+    """
+    try:
+        with open(_path(), encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        sys.exit(f"账本不存在: {_path()}\n"
+                 '请先初始化: loopctl.py init --topic "<研究主题>"；'
+                 f"若已初始化过，检查 GOAI_WORKSPACE 是否指向正确工作区"
+                 f"（当前 = {_ws()}）")
+    except json.JSONDecodeError as e:
+        sys.exit(f"账本 JSON 已损坏: {_path()}（{e}）\n"
+                 "请人工修复该文件，或用 init --force 重建（会丢失回环历史）")
 
 
 def save(ledger: dict) -> None:

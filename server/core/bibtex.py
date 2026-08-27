@@ -30,7 +30,8 @@ def parse_bibtex(text: str) -> list[dict[str, Any]]:
             elif text[i] == "}":
                 depth -= 1
             i += 1
-        body = text[start:i - 1]
+        # depth>0 = 缺右括号扫到 EOF：此时 i 未消费闭括号，不能再减 1（否则丢尾字符）
+        body = text[start:i - 1] if depth == 0 else text[start:i]
         key_m = re.match(r"\s*([^,\s]+)\s*,", body)
         if not key_m:
             continue
@@ -62,7 +63,7 @@ def _parse_fields(body: str) -> dict[str, str]:
                 elif body[j] == "}":
                     depth -= 1
                 j += 1
-            value = body[i + 1:j - 1]
+            value = body[i + 1:j - 1] if depth == 0 else body[i + 1:j]
             i = j
         elif c == '"':
             j = i + 1
@@ -148,9 +149,22 @@ def record_to_bibtex(rec: dict[str, Any], key: Optional[str] = None) -> str:
 
 # ---------- 作者比对 ----------
 
+# NFKD 分解对带笔画/合字的拉丁字母无效（Ł→Ł 而非 L），strip_accents 去不掉，
+# 会把「Lukasz Kaiser」与「Łukasz Kaiser」误判为两个人。此处补一层折叠。
+_LATIN_FOLD = str.maketrans({
+    "ł": "l", "Ł": "L", "ø": "o", "Ø": "O", "đ": "d", "Đ": "D",
+    "ð": "d", "Ð": "D", "þ": "th", "Þ": "Th", "ß": "ss", "ı": "i",
+    "æ": "ae", "Æ": "Ae", "œ": "oe", "Œ": "Oe", "ħ": "h", "Ħ": "H",
+})
+
+
+def _fold_name(s: str) -> str:
+    return strip_accents(s).translate(_LATIN_FOLD)
+
+
 def _name_parts(name: str) -> tuple[str, list[str]]:
     """→ (family_lower, given_tokens_lower)。启发式：最后一个 token 为姓。"""
-    toks = strip_accents(name).replace(".", ". ").split()
+    toks = _fold_name(name).replace(".", ". ").split()
     toks = [t for t in toks if t]
     if not toks:
         return "", []

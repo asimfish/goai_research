@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-25%20passing-brightgreen.svg)](tests/test_offline.py)
+[![Tests](https://img.shields.io/badge/tests-25%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
 
@@ -302,8 +302,14 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q    # 25 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 25 offline tests — no network, no LLM
+.venv/bin/python -m pytest -m live tests/live/  # 95 live tests — real APIs, real draw.io CLI
 ```
+
+Every pipeline stage has also been **live-tested end to end** (real 5-source
+search, real citation verdicts on corrupted bibs, real draw.io PNG/PDF export,
+mock-backend retro HTTP, 50-process ledger stress, and a full mini-survey run
+whose `check-done` exits 0). Stage-by-stage reports: [docs/live-tests/](docs/live-tests/).
 
 Covered: BibTeX parse/format round-trip, author comparison (abbreviations, order,
 missing/fabricated), multi-source dedup, figspec validation (node-overlap and

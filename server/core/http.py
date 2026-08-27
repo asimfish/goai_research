@@ -26,12 +26,15 @@ _lock = threading.Lock()
 
 
 def _throttle(host: str) -> None:
-    with _lock:
-        prev = _last_hit.get(host, 0.0)
-        wait = prev + MIN_INTERVAL - time.monotonic()
-        if wait > 0:
-            time.sleep(wait)
-        _last_hit[host] = time.monotonic()
+    # 睡眠放在锁外：持锁睡眠会让 A 主机的冷却把 B 主机的请求也串行化
+    while True:
+        with _lock:
+            now = time.monotonic()
+            wait = _last_hit.get(host, 0.0) + MIN_INTERVAL - now
+            if wait <= 0:
+                _last_hit[host] = now
+                return
+        time.sleep(wait)
 
 
 def get(url: str, params: Optional[dict[str, Any]] = None,

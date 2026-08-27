@@ -7,6 +7,7 @@
 """
 from __future__ import annotations
 
+import html
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -30,6 +31,9 @@ def norm_arxiv_id(s: Optional[str]) -> Optional[str]:
     return re.sub(r"v\d+$", "", s).strip("/") or None
 
 
+_ARXIV_DOI = re.compile(r"^10\.48550/arxiv\.(.+)$", re.I)
+
+
 def record(source: str, **kw: Any) -> dict[str, Any]:
     base: dict[str, Any] = {
         "source": source, "id": None, "title": None, "authors": [],
@@ -37,9 +41,14 @@ def record(source: str, **kw: Any) -> dict[str, Any]:
         "url": None, "pdf_url": None, "abstract": None, "citation_count": None,
     }
     base.update({k: v for k, v in kw.items() if v is not None})
+    base["authors"] = [a.strip() for a in (base.get("authors") or []) if a and a.strip()]
     if base.get("doi"):
         base["doi"] = str(base["doi"]).lower().replace("https://doi.org/", "").strip()
     base["arxiv_id"] = norm_arxiv_id(base.get("arxiv_id"))
+    if base.get("doi") and not base["arxiv_id"]:
+        m = _ARXIV_DOI.match(base["doi"])  # arXiv 代发 DOI ↔ arxiv_id 同一对象
+        if m:
+            base["arxiv_id"] = norm_arxiv_id(m.group(1))
     return base
 
 
@@ -236,10 +245,14 @@ def _parse_crossref(it: dict[str, Any]) -> dict[str, Any]:
 
 
 def search_crossref(query: str, limit: int = 20) -> list[dict[str, Any]]:
+    # component = 附属材料（SI/图表），无作者不可引用；实测有查询前 5 全是 component，
+    # 故超量取回再过滤，避免有效结果被挤空
     data = http.get_json("https://api.crossref.org/works", params={
-        "query.bibliographic": query, "rows": min(limit, 50),
+        "query.bibliographic": query, "rows": min(max(limit * 2, limit + 5), 50),
         "mailto": http.CONTACT})
-    return [_parse_crossref(it) for it in data.get("message", {}).get("items", [])]
+    hits = [_parse_crossref(it) for it in data.get("message", {}).get("items", [])
+            if it.get("type") != "component"]
+    return hits[:limit]
 
 
 def crossref_by_doi(doi: str) -> Optional[dict[str, Any]]:
@@ -264,35 +277,64 @@ def search_dblp(query: str, limit: int = 20) -> list[dict[str, Any]]:
         raw_authors = ((info.get("authors") or {}).get("author") or [])
         if isinstance(raw_authors, dict):
             raw_authors = [raw_authors]
-        authors = [re.sub(r"\s+\d{4}$", "", a.get("text", "")) for a in raw_authors]
+        authors = [html.unescape(re.sub(r"\s+\d{4}$", "", a.get("text", "")))
+                   for a in raw_authors]
+        url = info.get("ee") or info.get("url")
+        venue = info.get("venue")
         out.append(record(
-            "dblp", id=info.get("key"), title=(info.get("title") or "").rstrip("."),
+            "dblp", id=info.get("key"),
+            title=html.unescape((info.get("title") or "").rstrip(".")),
             authors=[a for a in authors if a],
             year=int(info["year"]) if str(info.get("year", "")).isdigit() else None,
-            venue=info.get("venue"), doi=info.get("doi"),
-            url=info.get("ee") or info.get("url")))
+            venue=html.unescape(venue) if isinstance(venue, str) else venue,
+            doi=info.get("doi"), url=url,
+            # corr 条目 ee 常是 arxiv 链接，提取 id 供跨源去重
+            arxiv_id=norm_arxiv_id(url) if url and "arxiv.org/" in url else None))
     return out
 
 
 # ---------- 合并去重 ----------
 
+def _record_sources(r: dict[str, Any]) -> list[str]:
+    """兼容 source(str) 与 sources(list) 两种携带方式，取并集保序。"""
+    out = [s for s in (r.get("sources") or []) if s]
+    s = r.get("source")
+    if s and s not in out:
+        out.append(s)
+    return out or ["?"]
+
+
 def dedup_merge(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """按 doi > arxiv_id > 归一化标题 去重；后见记录只补空字段，来源累加。"""
+    """按 doi > arxiv_id > 归一化标题 去重；后见记录只补空字段，来源累加。
+
+    arXiv 代发 DOI（10.48550/arxiv.X）与 arxiv_id X 视为同一标识，
+    否则同一篇预印本会因来源写法不同而重复。
+    """
     merged: dict[str, dict[str, Any]] = {}
     order: list[str] = []
     for r in records:
-        key = (r.get("doi") or r.get("arxiv_id")
+        doi = str(r.get("doi") or "").lower() or None
+        aid = r.get("arxiv_id")
+        if doi:
+            m = _ARXIV_DOI.match(doi)
+            if m:  # 入库记录可能是外部 JSON，不经 record()，在这里就地推导
+                doi = None
+                aid = aid or norm_arxiv_id(m.group(1))
+        key = (doi or aid
                or norm_title(r.get("title") or "") or f"anon:{id(r)}")
         if key not in merged:
-            r = dict(r)
-            r["sources"] = [r.pop("source")]
+            srcs = _record_sources(r)
+            r = {k: v for k, v in r.items() if k not in ("source", "sources")}
+            if aid and not r.get("arxiv_id"):
+                r["arxiv_id"] = aid
+            r["sources"] = srcs
             merged[key] = r
             order.append(key)
         else:
             base = merged[key]
-            src = r.get("source")
-            if src and src not in base["sources"]:
-                base["sources"].append(src)
+            for s in _record_sources(r):
+                if s != "?" and s not in base["sources"]:
+                    base["sources"].append(s)
             for f, v in r.items():
                 if f in ("source", "sources"):
                     continue

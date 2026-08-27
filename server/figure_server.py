@@ -7,9 +7,11 @@ figspec 是单一事实源：同一份 JSON 同时产出论文用 SVG 和 drawio
 """
 from __future__ import annotations
 
+import contextlib
 import glob
 import json
 import os
+import signal
 import subprocess
 import sys
 
@@ -32,6 +34,12 @@ DRAWIO_CLI_CANDIDATES = [
 
 def _dumps(obj) -> str:
     return json.dumps(obj, ensure_ascii=False, indent=2)
+
+
+def _default_out_dir() -> str:
+    # README 承诺 GOAI_WORKSPACE 是所有产物的落盘位置；stdio 启动的 server
+    # CWD 不可控，缺省 out_dir 必须跟随该环境变量而非硬编码相对路径。
+    return os.path.join(os.environ.get("GOAI_WORKSPACE", "workspace"), "figures")
 
 
 def _find_drawio_cli() -> str | None:
@@ -99,18 +107,24 @@ def validate_figspec(figspec_json: str) -> str:
 
 
 @mcp.tool()
-def render_figure(figspec_json: str, name: str,
-                  out_dir: str = "workspace/figures") -> str:
+def render_figure(figspec_json: str, name: str, out_dir: str = "") -> str:
     """把 figspec 渲染为 SVG + .drawio 双输出（同一事实源，保证一致）。
 
     Args:
         figspec_json: figspec JSON 文本
         name: 图名（文件名前缀，如 fig1_overview）
-        out_dir: 输出根目录（自动写入 svg/ drawio/ figspec/ 子目录）
+        out_dir: 输出根目录（自动写入 svg/ drawio/ figspec/ 子目录）；
+            缺省为 $GOAI_WORKSPACE/figures（未设 GOAI_WORKSPACE 时 workspace/figures）
     Returns:
         JSON {svg, drawio, figspec, png?}；png 仅在安装 cairosvg 时生成
     """
-    spec = fs.loads(figspec_json)
+    out_dir = out_dir or _default_out_dir()
+    try:
+        spec = fs.loads(figspec_json)
+    except (ValueError, json.JSONDecodeError) as exc:
+        # 结构化返回校验详情：MCP SDK 会把裸异常吞成
+        # 「Error executing tool render_figure」，调用方看不到原因
+        return _dumps({"ok": False, "error": str(exc)})
     paths = {}
     for sub in ("figspec", "svg", "drawio", "png"):
         os.makedirs(os.path.join(out_dir, sub), exist_ok=True)
@@ -190,21 +204,42 @@ def drawio_export(drawio_path: str, fmt: str = "png") -> str:
                        "fallback": "render_figure 的 SVG 输出可直接用于论文，不依赖 drawio"})
     if fmt not in ("png", "svg", "pdf", "jpg"):
         return _dumps({"ok": False, "error": f"不支持的格式 {fmt}"})
+    if not os.path.exists(drawio_path):
+        return _dumps({"ok": False, "error": f"文件不存在: {drawio_path}"})
     out_path = drawio_path.rsplit(".", 1)[0] + f".{fmt}"
+    # 真机行为（macOS drawio 31.3.2 实测）：成功 rc=0、失败 rc=1，但 rc 语义随
+    # 版本漂移（旧版曾失败也回 0），「产物文件存在」才是跨版本可靠的成功信号；
+    # 先清掉旧产物防止误判成功。
+    if os.path.exists(out_path):
+        os.remove(out_path)
     scale = ["-s", "2"] if fmt == "png" else []
     cmd = [cli, "-x", "-f", fmt, *scale, "-o", out_path, drawio_path]
+    timeout = float(os.environ.get("GOAI_DRAWIO_TIMEOUT", "120"))
+    # start_new_session：实测该 Electron CLI 在 TTY 前台进程组内跑到失败路径时，
+    # 退出会连带挂掉整个前台进程组（终端手动起的 server 会被杀）；独立会话彻底
+    # 隔离该怪癖，且超时可 killpg 连 GPU/utility 子进程一起清掉。
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, start_new_session=True)
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        _, stderr = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired:
-        return _dumps({"ok": False, "error": "drawio CLI 导出超时（120s）"})
-    ok = proc.returncode == 0 and os.path.exists(out_path)
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGKILL)
+        proc.wait()
+        return _dumps({"ok": False, "error": f"drawio CLI 导出超时（{timeout:g}s）"})
+    ok = os.path.exists(out_path)
     return _dumps({"ok": ok, "out": out_path if ok else None,
-                   "stderr": proc.stderr[-500:] if not ok else ""})
+                   "returncode": proc.returncode,
+                   "stderr": stderr[-500:] if not ok else ""})
 
 
 @mcp.tool()
-def list_figures(out_dir: str = "workspace/figures") -> str:
-    """列出工作区已有图纸（figspec/svg/drawio 三套产物的对齐情况）。"""
+def list_figures(out_dir: str = "") -> str:
+    """列出工作区已有图纸（figspec/svg/drawio 三套产物的对齐情况）。
+
+    out_dir 缺省为 $GOAI_WORKSPACE/figures（与 render_figure 一致）。
+    """
+    out_dir = out_dir or _default_out_dir()
     inventory = {}
     for sub, ext in (("figspec", "json"), ("svg", "svg"),
                      ("drawio", "drawio"), ("png", "png")):

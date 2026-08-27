@@ -33,6 +33,12 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
      文献支撑该 claim。**绝不允许**为了让稿子好看而保留查无此文的引用。
 3. 修完后**复跑** `verify_bib_file` 直到 gate=PASS，然后
    `loopctl gate --name ref_integrity --status PASS --detail "<N条全过>"`。
+   - **不收敛 fallback**：应用 suggested_bibtex 后复跑仍是同一条 MISMATCH，
+     多为权威侧数据格式噪声（如 OpenAlex 存 "Last, First"、重音/弯引号变体）
+     ——工具只规范化 bib 侧不规范化权威侧，替换自身建议会死循环。此时逐条
+     `verify_entry` 换**另一权威路由**交叉验证（典型：去掉 DataCite 形态的
+     arXiv DOI、保留 eprint 走 arXiv 路由），证实名单为真后按该路由重写条目
+     并在账本 log 留痕；两条路由都过不了才算真 MISMATCH。
 4. 稿件阶段追加一致性闸门：
    `python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`
    （未定义 \cite key = 阻塞；孤儿条目酌情清理）。
