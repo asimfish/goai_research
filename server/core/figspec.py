@@ -7,15 +7,21 @@
 schema（JSON）：
 {
   "title": str,
+  "title_style": {"font_size": 16, "y": 24, "color": "#1a1a1a", "bold": true},
   "canvas": {"width": int, "height": int},
-  "defaults": {"font_size": 13, "fill": "#FFFFFF", "stroke": "#333333"},
+  "defaults": {"font_size": 13, "fill": "#FFFFFF", "stroke": "#333333",
+               "edge_color": "#333333", "edge_width": 1.5},
   "groups": [{"id","label","x","y","w","h","fill","stroke","dashed"}],
   "nodes":  [{"id","label","sublabel","x","y","w","h","shape","fill","stroke",
-              "font_size","dashed","group"}],
+              "font_size","dashed","group",
+              "label_color","label_bold","sublabel_color"}],
   "edges":  [{"id","from","to","label","dashed","color","width","arrow",
               "waypoints": [[x,y],...]}],
   "texts":  [{"id","text","x","y","font_size","color","bold"}]
 }
+edge 的 color/width 在 defaults 中对应键为 edge_color/edge_width
+（写 color/width 也兼容）；node 的 label_color/label_bold 用于
+深色头带白字等样式（drawio 渲染同步生效）。
 shape ∈ {rect, rounded, stadium, ellipse, diamond, hexagon, parallelogram,
          cylinder, document, cloud}
 坐标系：x/y 为左上角，画布左上为原点。
@@ -124,6 +130,16 @@ def loads(text: str) -> dict[str, Any]:
 
 def style_of(item: dict[str, Any], spec: dict[str, Any], key: str, fallback: Any) -> Any:
     return item.get(key, (spec.get("defaults") or {}).get(key, fallback))
+
+
+def edge_style_of(e: dict[str, Any], spec: dict[str, Any], key: str,
+                  fallback: Any) -> Any:
+    """edge 样式解析：item 键为 color/width，defaults 键为 edge_color/edge_width
+    （兼容 defaults 直接写 color/width 的旧拼法）。"""
+    if key in e:
+        return e[key]
+    d = spec.get("defaults") or {}
+    return d.get(f"edge_{key}", d.get(key, fallback))
 
 
 def border_point(nd: dict[str, Any], toward: tuple[float, float]) -> tuple[float, float]:

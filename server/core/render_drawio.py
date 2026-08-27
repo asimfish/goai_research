@@ -12,7 +12,7 @@ from __future__ import annotations
 from typing import Any
 from xml.sax.saxutils import quoteattr
 
-from .figspec import DEFAULTS, style_of
+from .figspec import DEFAULTS, edge_style_of, style_of
 
 _SHAPE_STYLE = {
     "rect": "rounded=0;whiteSpace=wrap;html=1;",
@@ -47,11 +47,16 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
     cells: list[str] = []
 
     if spec.get("title"):
-        cells.append(_cell(
-            "goai-title", spec["title"],
-            "text;html=1;align=center;verticalAlign=middle;fontSize=16;"
-            "fontStyle=1;strokeColor=none;fillColor=none;",
-            W / 2 - 240, 4, 480, 32))
+        ts = spec.get("title_style") or {}
+        t_fs = ts.get("font_size", 16)
+        t_y = ts.get("y", 24)
+        t_style = (f"text;html=1;align=center;verticalAlign=middle;fontSize={t_fs};"
+                   f"fontColor={ts.get('color', '#1a1a1a')};"
+                   "strokeColor=none;fillColor=none;")
+        if ts.get("bold", True):
+            t_style += "fontStyle=1;"
+        cells.append(_cell("goai-title", spec["title"], t_style,
+                           W / 2 - 240, t_y - 16, 480, 32))
 
     for g in spec.get("groups", []):
         style = (
@@ -72,12 +77,17 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
         style += (f"fillColor={style_of(nd, spec, 'fill', DEFAULTS['fill'])};"
                   f"strokeColor={style_of(nd, spec, 'stroke', DEFAULTS['stroke'])};"
                   f"fontSize={style_of(nd, spec, 'font_size', DEFAULTS['font_size'])};")
+        if nd.get("label_color"):
+            style += f"fontColor={nd['label_color']};"
+        if nd.get("label_bold"):
+            style += "fontStyle=1;"
         if nd.get("dashed"):
             style += "dashed=1;"
         value = nd.get("label", "")
         if nd.get("sublabel"):
             value = (f"<b>{nd.get('label', '')}</b><br/>"
-                     f"<font style='font-size:0.85em' color='#555555'>"
+                     f"<font style='font-size:0.85em' "
+                     f"color='{nd.get('sublabel_color', '#555555')}'>"
                      f"{nd['sublabel']}</font>")
         parent = "1"
         x, y = nd["x"], nd["y"]
@@ -95,8 +105,8 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
         style = ("edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"
                  "jettySize=auto;orthogonalLoop=1;"
                  + arrow_map.get(e.get("arrow", "block"), arrow_map["block"])
-                 + f"strokeColor={style_of(e, spec, 'color', DEFAULTS['edge_color'])};"
-                 + f"strokeWidth={style_of(e, spec, 'width', DEFAULTS['edge_width'])};"
+                 + f"strokeColor={edge_style_of(e, spec, 'color', DEFAULTS['edge_color'])};"
+                 + f"strokeWidth={edge_style_of(e, spec, 'width', DEFAULTS['edge_width'])};"
                  + f"fontSize={style_of(e, spec, 'font_size', 11)};")
         if e.get("dashed"):
             style += "dashed=1;"
