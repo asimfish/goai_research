@@ -3,7 +3,7 @@
 适用范围：结构化 SVG（矢量框图 —— rect/ellipse/circle/polygon/line/
 polyline/path(简单 M..L)/text/tspan）。对复杂路径与位图内容无能为力，
 该场景请走 goai-figure-editable skill 的「视觉重建 figspec」路线
-（参考 image-to-editable-ppt 的重建→自检→修正回环）。
+（重建→自检→修正回环）。
 """
 from __future__ import annotations
 

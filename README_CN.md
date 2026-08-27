@@ -45,7 +45,7 @@
 11. [测试](#11--测试)
 12. [设计笔记](#12--设计笔记) · 为什么 MCP+skill、为什么跨模型审稿
 13. [引用本项目](#13--引用本项目)
-14. [致谢](#14--致谢)
+14. [License 与贡献](#14--license-与贡献)
 
 ---
 
@@ -326,16 +326,8 @@ figspec 校验（含节点重叠检测）、SVG 与 mxGraph 渲染、**SVG → f
 }
 ```
 
-## 14. 🙏 致谢
+## 14. 🤝 License 与贡献
 
-方法论取自这些优秀项目：
-
-- [super_ref](https://github.com/asimfish/super_ref) —— 证据先行的引用审计
-- [ARIS / auto-claude-code-research-in-sleep](https://github.com/wanshuiyin/auto-claude-code-research-in-sleep) —— 跨模型对抗回环、纯 Markdown skill 哲学
-- [PaperOrchestra](https://github.com/Ar9av/PaperOrchestra) —— 五代理写作流水线、宿主可执行 skill
-- [PaperSpine](https://github.com/WUBING2023/PaperSpine) —— 贡献先行、面向审稿人的写作分期
-- [super_skill_team](https://github.com/asimfish/super_skill_team) `paper-framework-figure-studio-pro` —— 图纸方法论（源忠实、edge-label-first、克制配色）
-- [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill) —— 面向可编辑性的「重建 → 自检 → 修正」回环
-- [draw.io MCP](https://github.com/jgraph/drawio-mcp) —— 官方 MCP server，图表实时编辑
-
-MIT License。欢迎 issue 和 PR —— 加一个 `skills/goai-*/SKILL.md` 并接进回环协议即可。
+MIT License。欢迎 issue 和 PR —— 加一个 `skills/goai-*/SKILL.md`，接进回环协议
+（[docs/LOOP_PROTOCOL.md](docs/LOOP_PROTOCOL.md)），并守住两条铁律：每个 claim
+挂可核验的引用 key，每张图交付时带 figspec 源文件。

@@ -5,7 +5,7 @@ description: Use when generating research ideas or experiment plans from a surve
 
 # GoAI Idea-Forge —— 提案与实验方案生成 agent
 
-流程取自 ARIS 的对抗回环：**执行者提案 → 独立审稿人批判 → 迭代 → 二次查验**。
+流程是一条对抗回环：**执行者提案 → 独立审稿人批判 → 迭代 → 二次查验**。
 你是执行者；审核必须交给 goai-reviewer（跨模型优先），你不能自审自批。
 
 ## 输入 / 输出

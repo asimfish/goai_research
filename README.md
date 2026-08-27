@@ -44,7 +44,7 @@
 11. [Testing](#11--testing)
 12. [Design Notes](#12--design-notes) · why MCP + skills, why cross-model review
 13. [Citation](#13--citation)
-14. [Acknowledgements](#14--acknowledgements)
+14. [License & Contributing](#14--license--contributing)
 
 ---
 
@@ -342,17 +342,9 @@ between agents, which makes every run resumable and every claim auditable.
 }
 ```
 
-## 14. 🙏 Acknowledgements
+## 14. 🤝 License & Contributing
 
-Methodology adapted from these excellent projects:
-
-- [super_ref](https://github.com/asimfish/super_ref) — evidence-first citation auditing
-- [ARIS / auto-claude-code-research-in-sleep](https://github.com/wanshuiyin/auto-claude-code-research-in-sleep) — cross-model adversarial loops, Markdown-only skills philosophy
-- [PaperOrchestra](https://github.com/Ar9av/PaperOrchestra) — five-agent writing pipeline, host-executable skills
-- [PaperSpine](https://github.com/WUBING2023/PaperSpine) — contribution-first, reviewer-aware writing stages
-- [super_skill_team](https://github.com/asimfish/super_skill_team) `paper-framework-figure-studio-pro` — figure methodology (source fidelity, edge-label-first, restrained palettes)
-- [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill) — reconstruction → self-check → fix loops for editability
-- [draw.io MCP](https://github.com/jgraph/drawio-mcp) — official MCP server for live diagram editing
-
-MIT License. Issues and PRs welcome — add a `skills/goai-*/SKILL.md` and wire it
-into the loop protocol.
+MIT License. Issues and PRs welcome — add a `skills/goai-*/SKILL.md`, wire it
+into the loop protocol ([docs/LOOP_PROTOCOL.md](docs/LOOP_PROTOCOL.md)), and keep
+the two iron rules: every claim carries a verifiable citation key, every figure
+ships with its figspec source.

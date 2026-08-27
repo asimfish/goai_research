@@ -1,6 +1,6 @@
 """带同主机限流与有界重试的 HTTP 客户端（学术注册库友好）。
 
-设计取自 super_ref 的实战经验：
+设计要点：
 - 同主机最小间隔节流（export.arxiv.org 等对突发请求返回 429）
 - 429/503 按 Retry-After 有界重试，预算耗尽即失败（fail-closed，不无限等）
 - 统一 UA 带联系邮箱（Crossref/OpenAlex polite pool 要求）

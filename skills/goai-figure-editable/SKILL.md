@@ -5,10 +5,9 @@ description: Use when an existing figure image/SVG must become an editable drawi
 
 # GoAI Figure-Editable —— 图 → drawio 可编辑重建 agent
 
-把「一张定死的图」变成「可继续编辑的图」。方法论参考
-image-to-editable-ppt 的重建循环（重建 → 自我检查 → 页内修正），
-分层策略同源：**可读文字恢复为原生文本、简单几何恢复为原生形状、
-复杂视觉元素保留为独立资产并记录来源**。
+把「一张定死的图」变成「可继续编辑的图」。核心是重建循环
+（重建 → 自我检查 → 页内修正）加分层策略：**可读文字恢复为原生文本、
+简单几何恢复为原生形状、复杂视觉元素保留为独立资产并记录来源**。
 
 ## 路由：先判输入类型
 

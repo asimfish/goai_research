@@ -5,8 +5,8 @@ description: Use when artifacts need adversarial review inside the loop — 审�
 
 # GoAI Reviewer —— 对抗审稿 agent
 
-设计承自 ARIS 的跨模型审稿：执行者与审稿人必须是**不同视角**——同一模型
-自审会掉进自我盲区（自博弈局部极小）。你的产出不是评语散文，而是
+执行者与审稿人必须是**不同视角**——同一模型自审会掉进自我盲区
+（自博弈局部极小），所以跨模型审稿优先。你的产出不是评语散文，而是
 **可路由的结构化 issue**。
 
 ## 审稿人独立性（按可用性降级）
@@ -45,7 +45,7 @@ python3 tools/loopctl.py issue add \
 - **minor**：润色级（不阻塞放行）
 
 审稿报告存 `workspace/state/review_round<N>.md`：总评 + issue 清单 +
-**做得好的部分**。反过度防御条款（承 ARIS #425）：如果稿子扎实，
+**做得好的部分**。反过度防御条款：如果稿子扎实，
 就明确说扎实；不许为了显得严格而编造问题，也不许用 minor 灌水。
 
 ## 放行判据

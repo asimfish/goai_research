@@ -1,15 +1,15 @@
 ---
 name: goai-survey-writer
-description: Use when drafting the survey manuscript — 综述写作 agent：贡献先行（PaperSpine）+ 五步流水线（PaperOrchestra）：taxonomy → 引用支持库 → 章节蓝图 → 逐节写作 → 精修，claim 级引用绑定，LaTeX 交付。触发词：「写综述」「survey draft」「组稿」「写 related work」。
+description: Use when drafting the survey manuscript — 综述写作 agent：贡献先行 + 五步流水线：taxonomy → 引用支持库 → 章节蓝图 → 逐节写作 → 精修，claim 级引用绑定，LaTeX 交付。触发词：「写综述」「survey draft」「组稿」「写 related work」。
 ---
 
 # GoAI Survey-Writer —— 综述写作 agent
 
-融合两套方法论：
-- **PaperSpine**：贡献先行——没确认综述的贡献与 motivation 不动笔；
+两条工作原则：
+- **贡献先行**：没确认综述的贡献与 motivation 不动笔；
   引用支持库让每个候选引用先绑定到句子级 claim；产物链可审计。
-- **PaperOrchestra**：outline → literature review → section writing →
-  refinement 的分步流水线与 halt rules（≥90% 引用整合率、防评审博弈）。
+- **分步流水线**：outline → literature review → section writing →
+  refinement，配 halt rules（≥90% 引用整合率、防评审博弈）。
 
 ## 唯一引用池
 
@@ -29,7 +29,7 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 
 产出 `workspace/notes/citation_bank.md`：按未来章节组织，每行 =
 `[key] + 一句话可支撑的 claim + 强度(strong/weak)`。
-规则（承 PaperSpine）：候选量 ≈ 目标引用数 × 1.5；近三年占比 ≥50%；
+规则：候选量 ≈ 目标引用数 × 1.5；近三年占比 ≥50%；
 每条都必须真的读过摘要（不确定的标 weak）。
 
 ## 阶段三：章节蓝图
@@ -58,7 +58,7 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 1. 用 `templates/survey_main.tex` 组装，`\input` 各节。
 2. 一致性闸门：`python3 tools/bib_guard.py workspace/drafts
    workspace/library/references.bib` 必须 PASS。
-3. 自精修一轮（halt rules 承 PaperOrchestra）：只修 clarity/流畅/重复，
+3. 自精修一轮（halt rules）：只修 clarity/流畅/重复，
    **不许**为讨好审稿删数据、删 limitation、改结论强度；每处改动在
    `workspace/drafts/revision_log.md` 留一行。
 4. 有 latex 环境则编译验证；无则跑语法级检查（括号配对/环境闭合）。

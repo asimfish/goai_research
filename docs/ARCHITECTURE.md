@@ -25,7 +25,7 @@
 
 | 层 | 内容 | 原则 |
 |---|---|---|
-| **技能层** `skills/` | 8 个 SKILL.md，宿主 agent（Codex/Claude/Cursor）读入后按规程行动 | 方法论放这层：LLM 推理、判断、写作全由宿主模型完成，skill 不带 API key、不内嵌 LLM SDK（承 PaperOrchestra 的设计） |
+| **技能层** `skills/` | 8 个 SKILL.md，宿主 agent（Codex/Claude/Cursor）读入后按规程行动 | 方法论放这层：LLM 推理、判断、写作全由宿主模型完成，skill 不带 API key、不内嵌 LLM SDK |
 | **服务层** `server/` | 4 个 FastMCP stdio server | 确定性能力放这层：检索聚合、元数据比对、figspec 渲染、逆合成适配。全部可独立测试 |
 | **工具层** `tools/` | loopctl / bib_guard / parallel_run.sh | 回环控制与硬闸门：纯本地、零 LLM、可离线跑 |
 | **运行层** `workspace/` | library / notes / drafts / figures / ideas / state | 一切产物落盘、可审计；gitignore 不入库 |

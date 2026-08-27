@@ -5,9 +5,9 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 
 # GoAI Figure-Studio —— 论文图纸 agent
 
-方法论承自 paper-framework-figure-studio-pro（源忠实、edge-label-first、
-模块化不碎片化、克制配色），但做成**自动化回环版**：不等人逐步确认，
-用「渲染 → 自检 → 修正」循环收敛，人只看最终候选。
+方法论四支柱：**源忠实、edge-label-first、模块化不碎片化、克制配色**。
+执行形态是**自动化回环**：不等人逐步确认，用「渲染 → 自检 → 修正」
+循环收敛，人只看最终候选。
 工具来自 MCP server `goai-figure`；产物天然接 draw.io（原生 .drawio）。
 
 ## 综述常用图型
@@ -32,7 +32,7 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 ### 2. figspec 编写
 
 先 `figspec_schema()` 拿 schema 与示例，再写 spec。强制约束
-（源自 figure-studio-pro 的 prompt contract，违反即返工）：
+（prompt contract，违反即返工）：
 - 每条边能指出证据锚点；不画装饰性箭头、不画假中继
   （A 产 x、C 用 x、B 不消费 x，则禁止 A→B 标 x）；
 - 变量/指标/权重放**边 label**，不做同级盒子；
