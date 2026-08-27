@@ -1,0 +1,95 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="fig2_tppa1_route">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1224" pageHeight="595" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="TpPa-1 synthesis route and process options" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#1a1a1a;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="372" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="gc" value="Schiff-base polycondensation" style="rounded=1;absoluteArcSize=1;arcSize=12;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=12.5;fontStyle=1;container=1;collapsible=0;fillColor=#F0F7F6;strokeColor=#9CC4C0;strokeWidth=1.4;fontColor=#256560;" vertex="1" parent="1">
+          <mxGeometry x="314.5" y="68" width="289" height="425" as="geometry" />
+        </mxCell>
+        <mxCell id="tp" value="&lt;b&gt;Tp: 1,3,5-triformylphloroglucinol&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#555555'&gt;Duff formylation of phloroglucinol (lit. prep) or commercial&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#4A9089;strokeWidth=1.6;fontSize=12;absoluteArcSize=1;arcSize=9;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="25.5" y="110.5" width="229.5" height="71.4" as="geometry" />
+        </mxCell>
+        <mxCell id="pa" value="&lt;b&gt;Pa-1: p-phenylenediamine&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#555555'&gt;commercial, purify by sublimation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#4A9089;strokeWidth=1.6;fontSize=12;absoluteArcSize=1;arcSize=9;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="25.5" y="272" width="229.5" height="71.4" as="geometry" />
+        </mxCell>
+        <mxCell id="cond" value="&lt;b&gt;2 Tp : 3 Pa&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#CFE5E2'&gt;1:1 mesitylene/dioxane, aq. AcOH catalyst&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#1F5F5B;strokeColor=#1F5F5B;strokeWidth=1.5;fontSize=12;absoluteArcSize=1;arcSize=10;fontColor=#FFFFFF;fontStyle=1;shadow=1;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="42.5" width="246.5" height="59.5" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="Solvothermal 120 °C, 72 h" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#9CC4C0;strokeWidth=1.3;fontSize=11.5;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="153" width="246.5" height="35.7" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="Mechanochemical RT grinding" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#9CC4C0;strokeWidth=1.3;fontSize=11.5;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="202.3" width="246.5" height="35.7" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="PTSA salt-mediated, seconds-minutes" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#9CC4C0;strokeWidth=1.3;fontSize=11.5;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="251.6" width="246.5" height="35.7" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="Microwave, minutes-scale" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#9CC4C0;strokeWidth=1.3;fontSize=11.5;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="300.9" width="246.5" height="35.7" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="RT batch / continuous flow" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#FFFFFF;strokeColor=#9CC4C0;strokeWidth=1.3;fontSize=11.5;" vertex="1" parent="gc">
+          <mxGeometry x="21.3" y="350.2" width="246.5" height="35.7" as="geometry" />
+        </mxCell>
+        <mxCell id="taut" value="&lt;b&gt;enol-imine → keto-enamine&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#555555'&gt;irreversible tautomerization&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#4A9089;strokeWidth=1.6;fontSize=12;absoluteArcSize=1;arcSize=9;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="671.5" y="110.5" width="221" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="workup" value="&lt;b&gt;Work-up &amp; activation&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#555555'&gt;wash, solvent exchange, vacuum&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#4A9089;strokeWidth=1.6;fontSize=12;absoluteArcSize=1;arcSize=9;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="671.5" y="280.5" width="221" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="prod" value="&lt;b&gt;TpPa-1&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#555555'&gt;beta-ketoenamine 2D COF; stable: 9 N HCl, boiling water&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FBF3E4;strokeColor=#C89142;strokeWidth=2;fontSize=12;absoluteArcSize=1;arcSize=10;fontStyle=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="960.5" y="110.5" width="238" height="76.5" as="geometry" />
+        </mxCell>
+        <mxCell id="her" value="&lt;b&gt;HER deployment&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:0.85em' color='#CFE5E2'&gt;Pt cocatalyst + sacrificial donor&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#1F5F5B;strokeColor=#1F5F5B;strokeWidth=1.5;fontSize=12;absoluteArcSize=1;arcSize=10;fontColor=#FFFFFF;fontStyle=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="960.5" y="280.5" width="238" height="64.6" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="3x CHO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#2E6E6A;strokeWidth=2.5;fontSize=12;" edge="1" parent="1" source="tp" target="cond">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" value="2x NH2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#2E6E6A;strokeWidth=2.5;fontSize=12;" edge="1" parent="1" source="pa" target="cond">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="302" y="307" />
+              <mxPoint x="302" y="148" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" value="reversible imine" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#2E6E6A;strokeWidth=3;fontSize=12;" edge="1" parent="1" source="cond" target="taut">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="keto lock" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#2E6E6A;strokeWidth=3;fontSize=12;" edge="1" parent="1" source="taut" target="workup">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#2E6E6A;strokeWidth=3;fontSize=12;" edge="1" parent="1" source="workup" target="prod">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="926" y="314" />
+              <mxPoint x="926" y="232" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=open;endFill=0;strokeColor=#B07D2B;strokeWidth=2.5;fontSize=12;dashed=1;" edge="1" parent="1" source="prod" target="her">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t1" value="Route variants" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#555555;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="400.2" y="183.5" width="117.6" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" value="dashed = downstream use" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#555555;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="871.95" y="362" width="177.1" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e5t" value="activated powder" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#256560;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="864.4" y="250" width="123.2" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
