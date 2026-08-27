@@ -213,7 +213,11 @@ def drawio_export(drawio_path: str, fmt: str = "png") -> str:
     if os.path.exists(out_path):
         os.remove(out_path)
     scale = ["-s", "2"] if fmt == "png" else []
-    cmd = [cli, "-x", "-f", fmt, *scale, "-o", out_path, drawio_path]
+    # pdf 必须 --crop：裁到内容 bounding box 且强制单页。否则元素坐标越出
+    # 页格（如居中文字左缘为负）时 CLI 会按页格分出空白页，
+    # \includegraphics 默认取第 1 页就会嵌进空白。
+    crop = ["--crop"] if fmt == "pdf" else []
+    cmd = [cli, "-x", "-f", fmt, *scale, *crop, "-o", out_path, drawio_path]
     timeout = float(os.environ.get("GOAI_DRAWIO_TIMEOUT", "120"))
     # start_new_session：实测该 Electron CLI 在 TTY 前台进程组内跑到失败路径时，
     # 退出会连带挂掉整个前台进程组（终端手动起的 server 会被杀）；独立会话彻底
