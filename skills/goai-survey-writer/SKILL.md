@@ -119,12 +119,16 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 ## 阶段五：组装与精修
 
 1. 用 `templates/survey_main.tex` 组装，`\input` 各节。模板内置排版
-   规范不许降级：引用/交叉引用/URL 统一学术蓝（`colorlinks` +
-   `citecolor=blue`）、caption 小号加粗标签、`\arraystretch 1.18`、
+   规范不许降级：Times 字体系（newtx，加载顺序 amsmath→newtxtext→
+   newtxmath，禁 amssymb）、引用/交叉引用/URL 统一学术蓝
+   （`colorlinks` + `citecolor=blue`）、caption 小号加粗标签、
+   `\arraystretch 1.18`、titlesec 紧凑节标题、fancyhdr 运行页眉、
    参考文献前 `\clearpage`。表格定宽列一律用模板的 `P{宽}`
    （raggedright）列型，禁用裸 `p{宽}`——窄列两端对齐会产生
    justify 空洞，是"表格乱"的头号来源；正文含 Unicode 组合符/希腊
-   字母时用 xelatex 编译。
+   字母时用 xelatex 编译。组装时必须完成两处替换：页眉短题
+   （`TODO: Short Running Title`→论文短题，斜体）；主标题超一行时
+   **手工断行成 2–3 行且行长均衡**，禁止让 LaTeX 自动折出孤词行。
 2. 一致性闸门（未定义 key＝阻塞；库内条目整合率 <90%＝阻塞——孤儿条目
    要么在正文找到落点，要么开 issue 交 lit_search 评估后移出库，
    不许留着充数）：
