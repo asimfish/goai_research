@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen.svg)](tests/test_offline.py)
+[![Tests](https://img.shields.io/badge/tests-25%20passing-brightgreen.svg)](tests/test_offline.py)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
 
@@ -87,7 +87,7 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # smoke check
-.venv/bin/python -m pytest tests/ -q     # 17 offline tests, no network needed
+.venv/bin/python -m pytest tests/ -q     # 25 offline tests, no network needed
 ```
 
 Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh/uv) if
@@ -117,7 +117,7 @@ Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live b
 |---|---|---|
 | `skills/` — 8 SKILL.md | Methodology the host LLM executes: taxonomy building, claim-bound writing, review judgment | Cognitive work stays with the strongest available model; skills carry no API keys and no LLM SDKs |
 | `server/` — 4 MCP servers, 19 tools | Search aggregation & dedup, BibTeX parsing & author comparison, figspec validation & dual rendering, retrosynthesis adapter | Deterministic heavy lifting: testable offline, reusable across hosts |
-| `tools/` | `loopctl.py` ledger CLI · `bib_guard.py` citation gate · `parallel_run.sh` | Loop control and hard gates: pure local, zero LLM |
+| `tools/` | `loopctl.py` ledger CLI · `bib_guard.py` citation gate · `tex_guard.py` assembly gate · `bank_check.py` bank validator · `parallel_run.sh` | Loop control and hard gates: pure local, zero LLM |
 
 | MCP server | Tools |
 |---|---|
@@ -161,7 +161,7 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](doc
 | Stage | Agent | Exit gate |
 |---|---|---|
 | scoping | orchestrator + you | `scope_confirmed` |
-| lit_search | goai-lit-search | `lit_coverage` — all subtopics covered, marginal gain < 5% |
+| lit_search | goai-lit-search | `lit_coverage` — all subtopics covered, <5 new deduped papers in the last round |
 | ref_gate | goai-ref-guard | `ref_integrity` — zero UNVERIFIED / MISMATCH entries |
 | taxonomy | goai-survey-writer | `taxonomy_ready` — every leaf backed by ≥ 3 papers |
 | figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure |
@@ -206,8 +206,11 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
 3. **Deep tier** (optional): local [super_ref](https://github.com/asimfish/super_ref)
    evidence-first audit — downloads PDFs and registry metadata, four isolated
    agents cross-check, author approval required for corrections.
-4. **Draft-side gate** (`bib_guard.py`): undefined `\cite` keys block the build;
-   orphan bib entries and low citation density (< 8 / 1000 words) warn.
+4. **Draft-side gates**: `bib_guard.py` — undefined `\cite` keys block the build,
+   bib integration rate < 90% blocks (orphan entries must earn a place in the text
+   or leave the library), citation density < 8 / 1000 words warns.
+   `tex_guard.py` — leftover TODO placeholders, missing `\input`/figure files,
+   dangling `\ref`, and unclosed environments all block assembly.
 5. **Context check** (reviewer): samples claim–citation pairs and verifies the cited
    paper actually supports the claim — the most diagnostic and most-missed check.
 
@@ -299,14 +302,18 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q    # 17 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q    # 25 offline tests — no network, no LLM
 ```
 
 Covered: BibTeX parse/format round-trip, author comparison (abbreviations, order,
-missing/fabricated), multi-source dedup, figspec validation (including node-overlap
-detection), SVG and mxGraph rendering, **SVG → figspec → drawio round-trip**
-(groups recovered as containers, edge labels reattached), retro stub + plan
-skeleton, full loopctl ledger cycle, and bib_guard blocking behavior.
+missing/fabricated), multi-source dedup, figspec validation (node-overlap and
+synonymous parallel-edge detection), SVG and mxGraph rendering, **SVG → figspec →
+drawio round-trip** (groups recovered as containers, edge labels reattached),
+retro stub + plan skeleton, full loopctl ledger cycle plus concurrency (12
+parallel writers, zero lost updates), check-done semantics (WARN pass-through,
+minor deferral, stale-input fingerprint reset, review receipts), bib_guard
+blocking (undefined keys + integration rate), tex_guard assembly gate, and
+bank_check validation.
 
 ## 12. 📐 Design Notes
 
@@ -324,6 +331,15 @@ here is a separate agent (cross-model via Codex MCP when available), runs with a
 fresh context per round, must verify before criticizing (run `verify_entry` before
 calling a citation fake), and files structured issues instead of prose. Review and
 execution never share a seat: the reviewer cannot edit, executors cannot acquit.
+Every `review_pass` carries a receipt (reviewer model + trace archive) — a PASS
+nobody can audit is treated as no PASS at all.
+
+**Why two models and not more?**
+Two is the smallest configuration that breaks self-review blind spots, and a
+two-player game converges to a stable attack–defense equilibrium faster than a
+committee. Adding reviewers grows token cost and coordination overhead linearly
+while the marginal benefit decays — the big win is going from 1 to 2, not from
+2 to 4.
 
 **Why a ledger instead of agent-to-agent chat?**
 Oral hand-offs don't survive parallel lanes, retries, or session restarts. The

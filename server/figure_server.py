@@ -191,10 +191,12 @@ def drawio_export(drawio_path: str, fmt: str = "png") -> str:
     if fmt not in ("png", "svg", "pdf", "jpg"):
         return _dumps({"ok": False, "error": f"不支持的格式 {fmt}"})
     out_path = drawio_path.rsplit(".", 1)[0] + f".{fmt}"
-    cmd = [cli, "-x", "-f", fmt, "-o", out_path, drawio_path]
-    if fmt == "png":
-        cmd[3:3] = ["-s", "2"]
-    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    scale = ["-s", "2"] if fmt == "png" else []
+    cmd = [cli, "-x", "-f", fmt, *scale, "-o", out_path, drawio_path]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        return _dumps({"ok": False, "error": "drawio CLI 导出超时（120s）"})
     ok = proc.returncode == 0 and os.path.exists(out_path)
     return _dumps({"ok": ok, "out": out_path if ok else None,
                    "stderr": proc.stderr[-500:] if not ok else ""})

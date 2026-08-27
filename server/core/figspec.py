@@ -100,6 +100,17 @@ def validate(spec: dict[str, Any]) -> list[str]:
             if (a["x"] < b["x"] + b["w"] and b["x"] < a["x"] + a["w"]
                     and a["y"] < b["y"] + b["h"] and b["y"] < a["y"] + a["h"]):
                 errs.append(f"节点重叠: {a['id']} 与 {b['id']}")
+
+    # 同义平行线检查：两模块间默认一条捆绑连线，
+    # 多条平行边仅当各自携带不同 label（不同的量）时才合法
+    seen_pairs: dict[tuple, list[str]] = {}
+    for e in spec.get("edges", []):
+        pair = (e.get("from"), e.get("to"))
+        seen_pairs.setdefault(pair, []).append((e.get("label") or "").strip())
+    for (src, dst), labels in seen_pairs.items():
+        if len(labels) > 1 and len(set(labels)) < len(labels):
+            errs.append(f"同义平行线: {src} → {dst} 有 {len(labels)} 条边"
+                        "携带相同 label（应捆绑成一条，或分别标注不同的量）")
     return errs
 
 

@@ -19,10 +19,16 @@ description: Use when generating research ideas or experiment plans from a surve
 
 ### 1. 缺口挖掘（证据先行）
 
+生成前**必须**先读 `workspace/memory/idea_graveyard.md`（历次被毙提案的
+长期记忆，跨 run 追加不清空）作为禁区清单：与已毙提案同质的想法直接
+跳过并注明；连续多条 idea 被毙时换方向，而不是换措辞重试。
+
 从三类信号找 idea，每条 idea 必须挂真实证据：
 - **覆盖缺口**：coverage_report 的 gap 子主题 = 没人做或做得少的方向；
 - **矛盾信号**：不同论文对同一问题的结论冲突（阅读卡片里找）；
 - **组合空位**：taxonomy 两个分支的方法从未被组合过。
+生成阶段鼓励两路独立头脑风暴后合并去重——目标是正面攻坚的多样提案，
+而非角落缝合。
 
 提案模板（每份 proposal_<slug>.md）：
 ```
@@ -51,6 +57,10 @@ description: Use when generating research ideas or experiment plans from a surve
 证据真实性、新颖性（与库内最近邻的差异是否成立）、可行性、安全性。
 - blocker/major → 修改后重审，**最多 3 轮**；3 轮不过就放弃该 idea 并在
   账本记 `event=idea_rejected`，不许硬保。
+- 防误杀对冲：审稿人以「不新颖」否决时必须点名具体已发表论文；
+  仅有相近邻居不构成否决，可要求其给出可验证出处后再裁决。
+- 被毙的 idea **完整写回** `workspace/memory/idea_graveyard.md`
+  （题目、被毙原因、关键证据、轮次）——失败记录是最有价值的记忆。
 
 ### 4. 二次查验（第二关）
 
@@ -67,6 +77,10 @@ Directions 节（交给 goai-survey-writer 合稿），并在段落里标注支�
 
 - 每条 idea 的动机段至少 2 个真实引用；无证据的 idea 直接丢弃。
 - stub 逆合成结果出现在任何 md/tex 里时必须带「演示数据，非化学结论」标注。
+- 防跳步：置 `ideas_reviewed` gate 前自查证据三件套——账本内本阶段的
+  过程 log、提案/方案文件实际存在、审核与二次查验记录齐全。缺任何一件，
+  在报告开头写 `BLOCKED: ideas 证据缺失（缺什么）` 并置 gate FAIL，
+  禁止让报告「看起来完成」。
 - 审核记录（几轮、每轮 blocker 列表）保存到 `workspace/ideas/review_log.md`；
   收工 `loopctl log --stage ideas --agent goai-idea-forge --event done
   --detail "<提案数/通过数/放弃数>"`。

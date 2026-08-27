@@ -9,26 +9,17 @@ from __future__ import annotations
 
 import os
 import re
-import unicodedata
 import xml.etree.ElementTree as ET
 from typing import Any, Optional
 
 from . import http
+from .textnorm import norm_title, strip_accents  # noqa: F401  下游继续从本模块导入
 
 S2_BASE = "https://api.semanticscholar.org/graph/v1"
 S2_FIELDS = "title,authors,year,venue,externalIds,openAccessPdf,abstract,citationCount,url"
 
 
 # ---------- 归一化 ----------
-
-def strip_accents(s: str) -> str:
-    return "".join(c for c in unicodedata.normalize("NFKD", s)
-                   if not unicodedata.combining(c))
-
-
-def norm_title(s: str) -> str:
-    s = strip_accents(s or "").lower()
-    return re.sub(r"[^a-z0-9]+", " ", s).strip()
 
 
 def norm_arxiv_id(s: Optional[str]) -> Optional[str]:

@@ -52,9 +52,14 @@ def test_author_compare_order_missing_extra():
     canonical = ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar"]
 
     ok = bibtex.compare_authors(
-        ["Vaswani, Ashish", "Shazeer, Noam", "Parmar, Niki"]
-        and ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar"], canonical)
+        ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar"], canonical)
     assert ok["ok"] and not ok["issues"]
+
+    # 真实调用链：bib 字段先经 split_authors 归一化（"Last, First"→"First Last"）
+    ok_lf = bibtex.compare_authors(
+        bibtex.split_authors("Vaswani, Ashish and Shazeer, Noam and Parmar, Niki"),
+        canonical)
+    assert ok_lf["ok"], ok_lf["issues"]
 
     # 缩写等价：A. Vaswani == Ashish Vaswani
     abbrev = bibtex.compare_authors(
@@ -160,6 +165,18 @@ def test_figspec_validate_catches_overlap():
     bad["nodes"][1]["y"] = bad["nodes"][0]["y"]
     errs = figspec.validate(bad)
     assert any("重叠" in e for e in errs)
+
+
+def test_figspec_validate_catches_parallel_edges():
+    bad = json.loads(json.dumps(SPEC))
+    # 同起终点 + 相同 label（都空）→ 同义平行线
+    bad["edges"].append({"from": "b", "to": "c", "dashed": False})
+    errs = figspec.validate(bad)
+    assert any("平行线" in e for e in errs)
+    # 各自携带不同的量 → 合法
+    ok = json.loads(json.dumps(SPEC))
+    ok["edges"].append({"from": "a", "to": "b", "label": "gradients"})
+    assert figspec.validate(ok) == []
 
 
 def test_render_svg_contains_elements():
@@ -269,6 +286,61 @@ def test_loopctl_full_cycle(tmp_path):
     assert run_loopctl(tmp_path, "next-round").returncode != 0  # 达 max_rounds=2
 
 
+def test_loopctl_check_done_semantics(tmp_path):
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    # WARN = 合规跳过，不阻塞
+    run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed",
+                "--status", "WARN", "--detail", "skipped")
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    # PENDING 阻塞
+    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PENDING")
+    assert run_loopctl(tmp_path, "check-done").returncode != 0
+    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
+    # open minor 不阻塞（移交 final 清理），blocker/major 阻塞
+    run_loopctl(tmp_path, "issue", "add", "--severity", "minor", "--text", "typo")
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode == 0 and "minor" in r.stdout
+    run_loopctl(tmp_path, "issue", "add", "--severity", "major", "--text", "gap")
+    assert run_loopctl(tmp_path, "check-done").returncode != 0
+
+
+def test_loopctl_stale_inputs_reset_gate(tmp_path):
+    artifact = tmp_path / "refs.bib"
+    artifact.write_text("v1")
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    run_loopctl(tmp_path, "gate", "--name", "ref_integrity", "--status", "PASS",
+                "--inputs", str(artifact))
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    artifact.write_text("v2 upstream changed")   # 上游产物变更
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "stale" in r.stdout
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    assert ledger["gates"]["ref_integrity"]["status"] == "PENDING"
+
+
+def test_loopctl_gate_receipt_recorded(tmp_path):
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                "--receipt", "model=x;trace=state/review_traces/r1.md")
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    assert "trace" in ledger["gates"]["review_pass"]["receipt"]
+
+
+def test_loopctl_concurrent_writes_no_loss(tmp_path):
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    env = dict(os.environ, GOAI_WORKSPACE=str(tmp_path))
+    procs = [subprocess.Popen(
+        [sys.executable, os.path.join(ROOT, "tools", "loopctl.py"),
+         "log", "--stage", "writing", "--agent", f"w{i}", "--event", "done"],
+        env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        for i in range(12)]
+    assert all(p.wait() == 0 for p in procs)
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    done_events = [e for e in ledger["log"] if e.get("event") == "done"]
+    assert len(done_events) == 12   # 文件锁保证读-改-写互斥，不丢更新
+
+
 # ---------- bib_guard ----------
 
 def run_bib_guard(drafts, bib):
@@ -295,6 +367,117 @@ def test_bib_guard(tmp_path):
         r"Transformers \cite{vaswani2017attention} and \cite{he2016deep}.")
     r2 = run_bib_guard(drafts, bib)
     assert r2.returncode == 0, r2.stdout
+
+
+def test_bib_guard_integration_rate_blocks(tmp_path):
+    drafts = tmp_path / "drafts"
+    drafts.mkdir()
+    # 只引用 2 条中的 1 条 → 整合率 50% < 默认 90% → 阻塞
+    (drafts / "s1.tex").write_text(r"Only \cite{vaswani2017attention} here.")
+    bib = tmp_path / "refs.bib"
+    bib.write_text(SAMPLE_BIB)
+    r = run_bib_guard(drafts, bib)
+    assert r.returncode != 0
+    assert "整合率" in r.stdout
+
+
+# ---------- tex_guard ----------
+
+def run_tex_guard(target):
+    return subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(target)],
+        capture_output=True, text=True)
+
+
+def test_tex_guard_blocks_and_passes(tmp_path):
+    d = tmp_path / "drafts"
+    (d / "sections").mkdir(parents=True)
+    (d / "figures").mkdir()
+    (d / "main.tex").write_text("\n".join([
+        r"\title{TODO: Survey Title}",                 # 占位残留
+        r"\begin{document}",
+        r"\input{sections/01_intro}",                  # 存在
+        r"\input{sections/99_missing}",                # 缺失
+        r"\includegraphics{figures/ghost}",            # 缺失
+        r"See \ref{sec:nowhere}.",                     # 悬空 ref
+        r"\begin{itemize}",                            # 不闭合
+        r"\end{document}",
+    ]))
+    (d / "sections" / "01_intro.tex").write_text(
+        "\\section{Intro}\\label{sec:intro}\nOK \\ref{sec:intro}.")
+    r = run_tex_guard(d)
+    assert r.returncode != 0
+    for frag in ("占位残留", "99_missing", "ghost", "sec:nowhere", "未闭合"):
+        assert frag in r.stdout, f"missing {frag}\n{r.stdout}"
+
+    good = tmp_path / "good"
+    (good / "sections").mkdir(parents=True)
+    (good / "main.tex").write_text("\n".join([
+        r"\title{Real Title}",
+        r"\begin{document}",
+        r"\input{sections/01_intro}",
+        r"\end{document}",
+    ]))
+    (good / "sections" / "01_intro.tex").write_text(
+        "\\section{Intro}\\label{sec:intro}\nSee \\ref{sec:intro}.")
+    r2 = run_tex_guard(good)
+    assert r2.returncode == 0, r2.stdout
+
+
+# ---------- bank_check ----------
+
+RECENT_BIB = SAMPLE_BIB + r"""
+@article{fresh2025loop,
+  title  = {Loop Agents Survey},
+  author = {Carol Three},
+  year   = {2025},
+  journal = {TestJournal}
+}
+@article{fresh2026gate,
+  title  = {Gated Pipelines},
+  author = {Dan Four},
+  year   = {2026},
+  journal = {TestJournal}
+}
+"""
+
+
+def run_bank_check(bank, bib, *extra):
+    return subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "bank_check.py"),
+         str(bank), str(bib), *extra],
+        capture_output=True, text=True)
+
+
+def test_bank_check_passes_and_blocks(tmp_path):
+    bib = tmp_path / "refs.bib"
+    bib.write_text(RECENT_BIB)
+
+    good = tmp_path / "bank.md"
+    good.write_text("\n".join([
+        "# Section 1",
+        "- [fresh2025loop] 回环式 agent 是近年综述的主流组织方式 (strong)",
+        "- [fresh2026gate] 闸门机制能显著降低幻觉引用率 (strong)",
+        "- [vaswani2017attention] 自注意力是这些系统的共同底座 (weak)",
+    ]))
+    r = run_bank_check(good, bib)
+    assert r.returncode == 0, r.stdout
+
+    bad = tmp_path / "bad.md"
+    bad.write_text("\n".join([
+        "- [ghost2030] 不存在的 key (strong)",       # 库外 key
+        "- [fresh2025loop] 缺强度标注的行",           # 缺 (strong|weak)
+        "- [he2016deep] 旧文献 (weak)",              # 拉低近三年占比
+        "- [vaswani2017attention] 旧文献 (weak)",
+    ]))
+    r2 = run_bank_check(bad, bib)
+    assert r2.returncode != 0
+    for frag in ("ghost2030", "强度", "近三年"):
+        assert frag in r2.stdout, f"missing {frag}\n{r2.stdout}"
+
+    # 候选量闸门：3 条 < 目标 10 × 1.5
+    r3 = run_bank_check(good, bib, "--target-cites", "10")
+    assert r3.returncode != 0 and "候选量" in r3.stdout
 
 
 if __name__ == "__main__":

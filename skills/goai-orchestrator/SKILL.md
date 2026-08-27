@@ -31,11 +31,22 @@ intake → scoping → lit_search → ref_gate → taxonomy
 
 ## 执行规程
 
-1. **init**：`python3 tools/loopctl.py init --topic "<主题>" --max-rounds 5`；
+1. **init**：`python3 tools/loopctl.py init --topic "<主题>" --max-rounds 5
+   [--effort lite|balanced|max] [--strictness normal|strict]
+   [--auto-proceed true|false]`；
    把用户需求整理进 `workspace/inputs/topic.md`（目标读者/venue/页数/语言/截稿）。
+   - `effort` 控制检索广度、每叶支撑篇数、图纸数量、审稿轮数的倍率；
+   - `strictness=strict`：审稿人跨轮携带疑点清单、claim-cite 全量复核而非
+     抽查 10 条、终稿前双模型复核。任何档位都不得降低两条底线：
+     引用核查与审稿独立性；
+   - `auto-proceed=false`：每轮 review 结束后暂停，等人类读完审稿报告、
+     给出修改指示或提前收工的决定再继续（true 则汇报后同轮继续）。
 2. **scoping**：把主题分解为 6–12 个子主题（MECE），连同 2020 起的时间窗、
    排除项写入 `workspace/inputs/scope.md`；`loopctl gate --name scope_confirmed --status PASS`。
-   有歧义就停下来问用户，这是唯一允许阻塞等人的阶段。
+   有歧义就停下来问用户。
+   等人的点共三处，不受 auto-proceed 影响：scope 定稿、taxonomy 阶段的
+   贡献声明确认（该 gate 的 PASS 以用户对贡献声明的确认为前提，用户不可达
+   时按 writer skill 的降级规则记录）、化学安全方案。
 3. **逐阶段分派**：`loopctl advance --to <stage>` 后分派对应 skill。
    - 在 Cursor/Claude 环境：用 Task 工具并行拉起子 agent，每个子 agent 的
      提示词必须写明「使用 <skill 名>」+ 子任务切片 + 账本约定。
@@ -45,6 +56,14 @@ intake → scoping → lit_search → ref_gate → taxonomy
      同一文件绝不允许两个 agent 同时写。
 4. **验收**：阶段完成后检查对应 gate 是否已 PASS（`loopctl status`）。
    gate 没过不允许 advance；agent 自报完成不算数，以账本 gate 为准。
+   验收时抽查证据三件套：账本内该阶段的过程 log、产物文件实际存在
+   （抽查路径，不只看 gate 状态）、审核/查验记录齐全。缺任何一件，
+   要求该 agent 在报告开头写 `BLOCKED: <阶段> 证据缺失（缺什么）`
+   并把 gate 置回 FAIL——禁止让报告「看起来完成」。
+   `review_pass` 额外校验：PASS 必须带审稿回执（`--receipt`，含模型名与
+   trace 存档路径），无回执的 PASS 回退为 FAIL 并要求重审。
+   关键 gate 建议带 `--inputs` 记录产物指纹：上游产物变更后 check-done
+   会自动把旧 gate 置回 PENDING（旧审计不得当新审计用）。
 5. **review 回路**：goai-reviewer 产出的 issue 已带 `target` 阶段。路由表：
    - 覆盖缺口/漏关键文献 → lit_search
    - 引用可疑/元数据错 → ref_gate
@@ -54,10 +73,13 @@ intake → scoping → lit_search → ref_gate → taxonomy
    每轮返工前 `loopctl next-round`；只重跑被点名的阶段，不推倒重来。
 6. **终止条件**（满足其一）：
    - `loopctl check-done` 退出码 0 → 进入 final，组装交付物
+     （WARN=合规跳过、open minor 均不阻塞 check-done；
+     open minor 由 final 阶段清理完后逐条 close，不许静默留尾）
    - 达到 max_rounds → 停止，如实汇报未收敛项，绝不谎报完成
 7. **final 交付物**：`workspace/drafts/`（tex+pdf）、`workspace/library/references.bib`、
    `workspace/figures/{svg,drawio}/`、`workspace/state/CITATION_AUDIT.md`、
-   回环账本全文。汇报时逐项给路径。
+   回环账本全文。汇报时逐项给路径；若终审为降级审稿（provisional），
+   汇报中必须写明「终审未经独立模型复核」。
 
 ## 硬性规则
 

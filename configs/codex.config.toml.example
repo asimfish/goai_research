@@ -22,7 +22,7 @@ env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
 # 接真实逆合成后端时打开：
-# env = { GOAI_RETRO_PROVIDER = "http", GOAI_RETRO_URL = "https://your-askcos/api/retro", GOAI_RETRO_TOKEN = "..." }
+# env = { GOAI_RETRO_PROVIDER = "http", GOAI_RETRO_API_URL = "https://your-askcos/api/retro", GOAI_RETRO_API_KEY = "..." }
 
 # 可选：draw.io 官方 MCP（浏览器实时打开/编辑图，需 Node.js）
 # [mcp_servers.drawio]

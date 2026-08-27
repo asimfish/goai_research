@@ -9,14 +9,14 @@
 | # | 阶段 | 执行者 | 出口闸门 | 闸门判据 |
 |---|------|--------|---------|---------|
 | 0 | scoping | orchestrator+人 | `scope_confirmed` | scope.md 有主题/边界/子主题清单/目标篇幅 |
-| 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；末轮新增去重后 <5% |
+| 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；一轮新增去重后 <5 篇 |
 | 2 | ref_gate | goai-ref-guard | `ref_integrity` | references.bib 零 UNVERIFIED/MISMATCH |
-| 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置 |
+| 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置；贡献声明经用户确认 |
 | 4a | figures | goai-figure-studio/-editable | `figures_ready` | 每图 svg+drawio 齐全且过自检 |
-| 4b | writing | goai-survey-writer | `draft_complete` | bib_guard PASS；全节成文 |
-| 4c | ideas | goai-idea-forge | `ideas_reviewed` | 每条 idea 过对抗审 + 引用二审 |
-| 5 | review | goai-reviewer | `review_pass` | 0 blocker 且 0 major；或连续两轮仅 minor |
-| 6 | final | orchestrator | （无独立 gate） | `check-done` 通过：全 gate PASS 且 0 open issue |
+| 4b | writing | goai-survey-writer | `draft_complete` | bib_guard + tex_guard PASS；全节成文 |
+| 4c | ideas | goai-idea-forge | `ideas_reviewed` | 每条 idea 过对抗审 + 引用二审（跳过时记 WARN） |
+| 5 | review | goai-reviewer | `review_pass` | 0 blocker 且 0 major（PASS 须带审稿回执）；或连续两轮仅 minor |
+| 6 | final | orchestrator | （无独立 gate） | `check-done` 通过：gate 全 PASS/WARN 且 0 open blocker/major（open minor 由 final 清理后 close） |
 
 4a/4b/4c 无写冲突，**可并行**（见 parallel_run.sh）。
 
@@ -35,33 +35,44 @@ review 产出的 issue 按 target 字段路由回源头阶段：
 
 **级联规则**：上游返工后，其下游闸门自动失效需复核——
 lit_search 变 → ref_gate、taxonomy 需复核；taxonomy 变 → figures、writing 需复核。
-orchestrator 负责按此把受影响闸门重置为 PENDING。
+orchestrator 负责按此把受影响闸门重置为 PENDING（`gate --status PENDING`）。
+机器兜底：gate 记录时带 `--inputs <产物文件列表>` 存 sha256 指纹，
+`check-done` 会重算指纹，发现上游产物已变更就自动把该 gate 置回 PENDING
+并提示复审——级联失效不依赖编排者记性。
 
 ## 轮次与终止
 
 - 一轮 = 阶段 1→5 走完一遍（返工只重跑受影响链路）。
 - `next_round` 时机：review 未过且 issue 已路由完毕。
 - **终止条件**（满足其一）：
-  1. `check-done` 退出码 0（全 gate PASS 且无 open issue）→ 交付；
-  2. 达 `--max-rounds`（默认 3）→ 强制收敛：带着未清 minor 交付 + 遗留清单；
+  1. `check-done` 退出码 0（gate 全 PASS/WARN 且无 open blocker/major）
+     → 交付；open minor 由 final 阶段清理完后逐条 close；
+  2. 达 `--max-rounds`（默认 5）→ 强制收敛：带着未清 minor 交付 + 遗留清单；
   3. 同一 issue 三轮未收敛 → 升级人类决策，暂停该链路。
-- **反空转**：任何 agent 连续两次运行账本无新增 log → orchestrator 判定
-  卡死，记 `event=stall` 并换策略（缩小任务/换 agent/升级人类）。
+- **反空转**（阶梯执行，不允许原地换个说法重试）：任何 agent 连续两次
+  运行账本无新增 log → orchestrator 判定卡死，记 `event=stall`。
+  第一次 stall 换策略（缩小任务/换 agent）并记录所换策略；同一阶段
+  第二次 stall 必须升级人类，不得再自选换策略。空转检测只负责报警与
+  记录，不得代替审稿闸门改判任何结论。
 
 ## 账本操作速查
 
 ```bash
 T=tools/loopctl.py
-python3 $T init --topic "LLM agents for chemistry" --max-rounds 3
+python3 $T init --topic "LLM agents for chemistry" --max-rounds 5 \
+        --effort balanced --strictness normal --auto-proceed true
 python3 $T status                          # 全景：阶段/闸门/开放 issue
 python3 $T advance --to lit_search         # 进入阶段
-python3 $T gate --name lit_coverage --status PASS --detail "48 篇, 增益 3%"
+python3 $T gate --name lit_coverage --status PASS --detail "48 篇, 新增 3" \
+        --inputs workspace/library/papers.jsonl        # 产物指纹，防 stale
+python3 $T gate --name review_pass --status PASS \
+        --receipt "model=<审稿模型>;trace=workspace/state/review_traces/round2_1.md"
 python3 $T issue add --from-agent goai-reviewer --target writing \
         --severity major --text "S4.2 无证据断言"
 python3 $T issue close --id I1 --note "已补 \cite{...}"
 python3 $T log --stage writing --agent goai-survey-writer --event done
 python3 $T next-round                      # round+1
-python3 $T check-done                      # 退出码 0=可交付
+python3 $T check-done                      # 退出码 0=可交付（重算指纹）
 ```
 
 ## 并行执行协议
@@ -79,7 +90,11 @@ bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv
 
 ## 人类介入点
 
-默认全自动，但三处建议人工过目（orchestrator 会停下来问）：
+默认全自动，但四处建议人工过目（orchestrator 会停下来问）：
 - scope.md 定稿（方向错了后面全白干）；
+- taxonomy 阶段的贡献声明与 motivation（全文的宪法，确认前不动笔）；
 - max-rounds 用尽仍有 blocker（质量与截稿的取舍）;
 - idea-forge 的化学实验方案（安全责任必须人担）。
+
+另有全局开关 `init --auto-proceed false`：每轮 review 结束后暂停，
+等人类读完审稿报告再继续。上面四处永远等人，不受此开关影响。

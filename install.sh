@@ -37,7 +37,7 @@ sed -e "s|/ABSOLUTE/PATH/TO/goai_research|$ROOT|g" \
 echo "==> 已生成 configs/codex.config.toml 与 configs/claude.mcp.json"
 
 # ---- 3. workspace 骨架 ----
-mkdir -p workspace/{library/pdfs,notes,figures/{svg,drawio,figspec,assets},drafts/sections,ideas,state/parallel}
+mkdir -p workspace/{library/pdfs,notes,memory,figures/{svg,drawio,figspec,assets},drafts/sections,ideas,state/{parallel,review_traces}}
 
 # ---- 4. 冒烟：四个 server 能 import ----
 for s in litsearch refcheck figure retro; do

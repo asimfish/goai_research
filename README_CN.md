@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen.svg)](tests/test_offline.py)
+[![Tests](https://img.shields.io/badge/tests-25%20passing-brightgreen.svg)](tests/test_offline.py)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
 
@@ -87,7 +87,7 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # 冒烟检查
-.venv/bin/python -m pytest tests/ -q     # 17 个离线测试，不需要网络
+.venv/bin/python -m pytest tests/ -q     # 25 个离线测试，不需要网络
 ```
 
 要求：Python ≥ 3.10（install.sh 有 [uv](https://github.com/astral-sh/uv) 就用 uv）。
@@ -117,7 +117,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 |---|---|---|
 | `skills/` —— 8 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
 | `server/` —— 4 个 MCP server、19 个工具 | 检索聚合去重、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
-| `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
+| `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `tex_guard.py` 组稿闸门 · `bank_check.py` 支持库校验 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
 
 | MCP server | 工具 |
 |---|---|
@@ -160,7 +160,7 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 | 阶段 | Agent | 出口闸门 |
 |---|---|---|
 | scoping | orchestrator + 你 | `scope_confirmed` |
-| lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖，边际增益 < 5% |
+| lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖，末轮新增去重后 < 5 篇 |
 | ref_gate | goai-ref-guard | `ref_integrity` —— 零 UNVERIFIED / MISMATCH |
 | taxonomy | goai-survey-writer | `taxonomy_ready` —— 每叶 ≥ 3 篇支撑 |
 | figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全 |
@@ -200,8 +200,10 @@ LLM 写综述最致命的失败就是编造或张冠李戴的引用。GoAI 把�
    判定：`PASS` / `FIX`（可自动修正）/ `MISMATCH` / `UNVERIFIED` —— 后两者堵闸门。
 3. **深度档**（可选）：本地 [super_ref](https://github.com/asimfish/super_ref)
    证据先行审计——下载 PDF 与注册库元数据，四个隔离 agent 交叉核查，修正需作者批准。
-4. **稿侧闸门**（`bib_guard.py`）：未定义的 `\cite` key 阻塞构建；孤儿 bib 条目
-   与低引用密度（< 8 条/千词）警告。
+4. **稿侧闸门**：`bib_guard.py` —— 未定义的 `\cite` key 阻塞构建；库内条目
+   整合率 < 90% 阻塞（孤儿条目要么在正文找到落点，要么移出库）；引用密度
+   < 8 条/千词警告。`tex_guard.py` —— TODO 占位残留、`\input`/图文件缺失、
+   悬空 `\ref`、环境不闭合，全部阻塞组稿。
 5. **语境核查**（reviewer）：抽查 claim–引用对，验证被引论文真的支撑该 claim ——
    最诊断性也最容易被漏掉的检查。
 
@@ -288,13 +290,15 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q    # 17 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q    # 25 个离线测试 —— 无网络、无 LLM
 ```
 
 覆盖：BibTeX 解析/生成往返、作者比对（缩写、顺序、遗漏/伪造）、多源去重、
-figspec 校验（含节点重叠检测）、SVG 与 mxGraph 渲染、**SVG → figspec → drawio
-往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案骨架、loopctl 账本
-全周期、bib_guard 阻塞行为。
+figspec 校验（节点重叠与同义平行线检测）、SVG 与 mxGraph 渲染、**SVG →
+figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
+骨架、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
+语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard
+阻塞行为（未定义 key 与整合率）、tex_guard 组稿闸门、bank_check 支持库校验。
 
 ## 12. 📐 设计笔记
 
@@ -308,7 +312,13 @@ figspec 校验（含节点重叠检测）、SVG 与 mxGraph 渲染、**SVG → f
 模型审自己的产出会掉进自博弈盲区。这里的审稿人是独立 agent（有 Codex MCP 时
 走跨模型），每轮全新上下文，先验证后批评（说引用是假的之前必须先跑
 `verify_entry`），产出结构化 issue 而非评语散文。审与做永远分离：
-审稿人不改稿，执行者不自判。
+审稿人不改稿，执行者不自判。每个 `review_pass` 都带回执（审稿模型 +
+trace 存档）——没人能审计的 PASS 等于没有 PASS。
+
+**为什么是两个模型而不是更多？**
+两个是打破自审盲区的最小配置，双方博弈也比多方更容易收敛出稳定的攻防
+均衡；再加审稿人，token 成本与协调开销线性涨，边际收益却递减——
+最大的收益发生在从 1 到 2，而不是从 2 到 4。
 
 **为什么用账本而不是 agent 之间对话交接？**
 口头交接活不过并行支线、重试和会话重启。账本是唯一状态源：闸门、issue、日志

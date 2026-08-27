@@ -34,7 +34,7 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
 3. 修完后**复跑** `verify_bib_file` 直到 gate=PASS，然后
    `loopctl gate --name ref_integrity --status PASS --detail "<N条全过>"`。
 4. 稿件阶段追加一致性闸门：
-   `python3 tools/bib_guard.py workspace/drafts workspace/library/references.bib`
+   `python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`
    （未定义 \cite key = 阻塞；孤儿条目酌情清理）。
 
 ## 深度档规程（super_ref）

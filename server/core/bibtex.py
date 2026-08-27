@@ -9,7 +9,7 @@ import re
 from difflib import SequenceMatcher
 from typing import Any, Optional
 
-from .sources import strip_accents, norm_title
+from .textnorm import strip_accents, norm_title
 
 
 # ---------- 解析 ----------

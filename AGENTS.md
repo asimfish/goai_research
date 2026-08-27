@@ -36,6 +36,7 @@
 
 - venv：`.venv/bin/python`（install.sh 建）；MCP server 配置见 `configs/`。
 - 离线测试：`.venv/bin/python -m pytest tests/ -q`。
-- 引用一致性闸门：`python3 tools/bib_guard.py workspace/drafts workspace/library/references.bib`。
+- 引用一致性闸门：`python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`；
+  组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts`。
 - 并行派活：`bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`。
 - 回环协议细节（阶段/闸门/路由表/终止条件）：`docs/LOOP_PROTOCOL.md`。
