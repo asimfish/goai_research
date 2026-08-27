@@ -1,0 +1,303 @@
+{
+  "title": "TpPa-1 synthesis route and process options",
+  "canvas": {
+    "width": 1224,
+    "height": 595
+  },
+  "defaults": {
+    "font_size": 12,
+    "stroke": "#2E6E6A",
+    "edge_color": "#2E6E6A"
+  },
+  "groups": [
+    {
+      "id": "gc",
+      "label": "Schiff-base polycondensation",
+      "x": 314.5,
+      "y": 68.0,
+      "w": 289.0,
+      "h": 425.0,
+      "fill": "#F0F7F6",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.4,
+      "arc": 12,
+      "label_color": "#256560",
+      "font_size": 12.5
+    }
+  ],
+  "nodes": [
+    {
+      "id": "tp",
+      "label": "Tp: 1,3,5-triformylphloroglucinol",
+      "sublabel": "Duff formylation of phloroglucinol (lit. prep) or commercial",
+      "x": 25.5,
+      "y": 110.5,
+      "w": 229.5,
+      "h": 71.4,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#4A9089",
+      "stroke_width": 1.6,
+      "arc": 9,
+      "shadow": true
+    },
+    {
+      "id": "pa",
+      "label": "Pa-1: p-phenylenediamine",
+      "sublabel": "commercial, purify by sublimation",
+      "x": 25.5,
+      "y": 272.0,
+      "w": 229.5,
+      "h": 71.4,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#4A9089",
+      "stroke_width": 1.6,
+      "arc": 9,
+      "shadow": true
+    },
+    {
+      "id": "cond",
+      "label": "2 Tp : 3 Pa",
+      "sublabel": "1:1 mesitylene/dioxane, aq. AcOH catalyst",
+      "group": "gc",
+      "x": 335.8,
+      "y": 110.5,
+      "w": 246.5,
+      "h": 59.5,
+      "shape": "rounded",
+      "fill": "#1F5F5B",
+      "stroke": "#1F5F5B",
+      "label_color": "#FFFFFF",
+      "label_bold": true,
+      "arc": 10,
+      "shadow": true,
+      "sublabel_color": "#CFE5E2"
+    },
+    {
+      "id": "c1",
+      "label": "Solvothermal 120 °C, 72 h",
+      "group": "gc",
+      "x": 335.8,
+      "y": 221.0,
+      "w": 246.5,
+      "h": 35.7,
+      "shape": "stadium",
+      "fill": "#FFFFFF",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.3,
+      "font_size": 11.5
+    },
+    {
+      "id": "c2",
+      "label": "Mechanochemical RT grinding",
+      "group": "gc",
+      "x": 335.8,
+      "y": 270.3,
+      "w": 246.5,
+      "h": 35.7,
+      "shape": "stadium",
+      "fill": "#FFFFFF",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.3,
+      "font_size": 11.5
+    },
+    {
+      "id": "c3",
+      "label": "PTSA salt-mediated, seconds-minutes",
+      "group": "gc",
+      "x": 335.8,
+      "y": 319.6,
+      "w": 246.5,
+      "h": 35.7,
+      "shape": "stadium",
+      "fill": "#FFFFFF",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.3,
+      "font_size": 11.5
+    },
+    {
+      "id": "c4",
+      "label": "Microwave, minutes-scale",
+      "group": "gc",
+      "x": 335.8,
+      "y": 368.9,
+      "w": 246.5,
+      "h": 35.7,
+      "shape": "stadium",
+      "fill": "#FFFFFF",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.3,
+      "font_size": 11.5
+    },
+    {
+      "id": "c5",
+      "label": "RT batch / continuous flow",
+      "group": "gc",
+      "x": 335.8,
+      "y": 418.2,
+      "w": 246.5,
+      "h": 35.7,
+      "shape": "stadium",
+      "fill": "#FFFFFF",
+      "stroke": "#9CC4C0",
+      "stroke_width": 1.3,
+      "font_size": 11.5
+    },
+    {
+      "id": "taut",
+      "label": "enol-imine → keto-enamine",
+      "sublabel": "irreversible tautomerization",
+      "x": 671.5,
+      "y": 110.5,
+      "w": 221.0,
+      "h": 68.0,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#4A9089",
+      "stroke_width": 1.6,
+      "arc": 9,
+      "shadow": true
+    },
+    {
+      "id": "workup",
+      "label": "Work-up & activation",
+      "sublabel": "wash, solvent exchange, vacuum",
+      "x": 671.5,
+      "y": 280.5,
+      "w": 221.0,
+      "h": 68.0,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#4A9089",
+      "stroke_width": 1.6,
+      "arc": 9,
+      "shadow": true
+    },
+    {
+      "id": "prod",
+      "label": "TpPa-1",
+      "sublabel": "beta-ketoenamine 2D COF; stable: 9 N HCl, boiling water",
+      "x": 960.5,
+      "y": 110.5,
+      "w": 238.0,
+      "h": 76.5,
+      "shape": "rounded",
+      "fill": "#FBF3E4",
+      "stroke": "#C89142",
+      "stroke_width": 2,
+      "arc": 10,
+      "shadow": true,
+      "label_bold": true
+    },
+    {
+      "id": "her",
+      "label": "HER deployment",
+      "sublabel": "Pt cocatalyst + sacrificial donor",
+      "x": 960.5,
+      "y": 280.5,
+      "w": 238.0,
+      "h": 64.6,
+      "shape": "rounded",
+      "fill": "#1F5F5B",
+      "stroke": "#1F5F5B",
+      "label_color": "#FFFFFF",
+      "label_bold": true,
+      "arc": 10,
+      "shadow": true,
+      "sublabel_color": "#CFE5E2"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "tp",
+      "to": "cond",
+      "label": "3x CHO",
+      "width": 2.5
+    },
+    {
+      "id": "e2",
+      "from": "pa",
+      "to": "cond",
+      "label": "2x NH2",
+      "width": 2.5,
+      "waypoints": [
+        [
+          302,
+          307
+        ],
+        [
+          302,
+          148
+        ]
+      ]
+    },
+    {
+      "id": "e3",
+      "from": "cond",
+      "to": "taut",
+      "label": "reversible imine",
+      "width": 3
+    },
+    {
+      "id": "e4",
+      "from": "taut",
+      "to": "workup",
+      "label": "keto lock",
+      "width": 3
+    },
+    {
+      "id": "e5",
+      "from": "workup",
+      "to": "prod",
+      "label": "",
+      "width": 3,
+      "waypoints": [
+        [
+          926,
+          314
+        ],
+        [
+          926,
+          232
+        ]
+      ]
+    },
+    {
+      "id": "e6",
+      "from": "prod",
+      "to": "her",
+      "dashed": true,
+      "arrow": "open",
+      "color": "#B07D2B",
+      "width": 2.5
+    }
+  ],
+  "texts": [
+    {
+      "id": "t1",
+      "text": "Route variants",
+      "x": 459.0,
+      "y": 195.5,
+      "font_size": 12,
+      "color": "#555555"
+    },
+    {
+      "id": "t2",
+      "text": "dashed = downstream use",
+      "x": 960.5,
+      "y": 374.0,
+      "font_size": 11,
+      "color": "#555555"
+    },
+    {
+      "id": "e5t",
+      "text": "activated powder",
+      "x": 926,
+      "y": 262,
+      "font_size": 11,
+      "color": "#256560"
+    }
+  ]
+}

@@ -7,11 +7,18 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{booktabs}        % 对比表
+\usepackage{array}
 \usepackage{multirow}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor}
-\usepackage[hidelinks]{hyperref}
+% 排版规范（paper-orchestra 风格）：引用/交叉引用/URL 统一学术蓝
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
 \usepackage[numbers,sort&compress]{natbib}
+% caption 统一：小号字体 + 加粗标签；表格行距放松
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+% 定宽左对齐列：窄列禁用两端对齐，避免 justify 空洞（表格必须用 P 而非 p）
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{svg}             % figures/svg 直接引入；无 inkscape 时改用 drawio_export 出 pdf
 
 \title{TODO: Survey Title}
@@ -35,6 +42,9 @@ TODO
 % \input{sections/06_discussion}
 % \input{sections/07_open_problems} % 含 idea-forge 通过双关的提案
 % \input{sections/08_conclusion}
+
+% paper-orchestra 硬规则：参考文献前 flush 所有浮动体，防止图表漂进 References
+\clearpage
 
 \bibliographystyle{plainnat}
 \bibliography{references}    % 指向 workspace/library/references.bib

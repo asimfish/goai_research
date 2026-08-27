@@ -7,12 +7,19 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{multirow}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor}
-\usepackage[hidelinks]{hyperref}
+% paper-orchestra style: unified blue hyperlinks (citations, refs, URLs)
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{microtype}
+% paper-orchestra style: small captions with bold labels; breathing room in tables
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+% ragged-right fixed-width column: avoids justification holes in narrow cells
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \emergencystretch=1.5em
 
 \title{Covalent Organic Frameworks for Photocatalytic Hydrogen Evolution:\\
@@ -51,6 +58,9 @@ auditable synthesis decisions.
 \input{sections/05_route_c_design}
 \input{sections/06_open_challenges}
 \input{sections/07_conclusion}
+
+% paper-orchestra rule: flush all pending floats before the bibliography
+\clearpage
 
 \bibliographystyle{plainnat}
 \bibliography{references}
