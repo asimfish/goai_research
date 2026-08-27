@@ -202,6 +202,30 @@ def test_render_drawio_valid_mxgraph():
     assert node_a.get("parent") == "g1"
 
 
+def test_render_label_style_and_edge_defaults():
+    spec = json.loads(json.dumps(SPEC))
+    # 深头带白字 + title_style + defaults.edge_color 键名（实测回归：三项此前均不生效）
+    spec["title"] = "Styled Title"
+    spec["title_style"] = {"font_size": 20, "y": 30, "bold": True}
+    spec["nodes"][0].update(
+        {"fill": "#1F5F5B", "label_color": "#FFFFFF", "label_bold": True})
+    spec["defaults"] = {"edge_color": "#AA6600", "edge_width": 3}
+    svg = render_svg.render(spec)
+    assert 'fill="#FFFFFF" font-weight="bold">Input</text>' in svg
+    assert 'font-size="20"' in svg
+    assert 'stroke="#AA6600"' in svg and 'stroke-width="3"' in svg
+    xml = render_drawio.render(spec)
+    root = ET.fromstring(xml)
+    node_a = next(c for c in root.findall(".//mxCell") if c.get("id") == "a")
+    assert "fontColor=#FFFFFF" in node_a.get("style")
+    assert "fontStyle=1" in node_a.get("style")
+    edge = next(c for c in root.findall(".//mxCell") if c.get("edge") == "1")
+    assert "strokeColor=#AA6600" in edge.get("style")
+    title = next(c for c in root.findall(".//mxCell")
+                 if c.get("id") == "goai-title")
+    assert "fontSize=20" in title.get("style")
+
+
 def test_svg_roundtrip_to_figspec():
     svg = render_svg.render(SPEC)
     rec = svg2drawio.svg_to_figspec(svg)

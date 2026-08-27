@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Any
 from xml.sax.saxutils import escape
 
-from .figspec import DEFAULTS, border_point, center, style_of
+from .figspec import DEFAULTS, border_point, center, edge_style_of, style_of
 
 FONT = "Helvetica, Arial, sans-serif"
 
@@ -107,7 +107,11 @@ def render(spec: dict[str, Any]) -> str:
         f'<rect x="0" y="0" width="{W}" height="{H}" fill="#FFFFFF"/>',
     ]
     if spec.get("title"):
-        parts.append(_text_block(W / 2, 24, spec["title"], W, 16, bold=True))
+        ts = spec.get("title_style") or {}
+        parts.append(_text_block(
+            W / 2, ts.get("y", 24), spec["title"], W,
+            ts.get("font_size", 16), ts.get("color", "#1a1a1a"),
+            bool(ts.get("bold", True))))
 
     for g in spec.get("groups", []):
         fill = g.get("fill", "#F7F9FC")
@@ -128,8 +132,8 @@ def render(spec: dict[str, Any]) -> str:
         p_start = border_point(src, wps[0] if wps else center(dst))
         p_end = border_point(dst, wps[-1] if wps else center(src))
         pts = [p_start, *wps, p_end]
-        color = style_of(e, spec, "color", DEFAULTS["edge_color"])
-        width = style_of(e, spec, "width", DEFAULTS["edge_width"])
+        color = edge_style_of(e, spec, "color", DEFAULTS["edge_color"])
+        width = edge_style_of(e, spec, "width", DEFAULTS["edge_width"])
         dash = ' stroke-dasharray="7,5"' if e.get("dashed") else ""
         arrow = e.get("arrow", "block")
         marker = "" if arrow == "none" else f' marker-end="url(#arrow-{arrow})"'
@@ -141,10 +145,13 @@ def render(spec: dict[str, Any]) -> str:
                 (pts[len(pts) // 2 - 1][0] + pts[len(pts) // 2][0]) / 2,
                 (pts[len(pts) // 2 - 1][1] + pts[len(pts) // 2][1]) / 2)
             fs = style_of(e, spec, "font_size", 11)
-            est_w = sum(1.0 if ord(c) > 0x2E7F else 0.55 for c in e["label"]) * fs + 8
+            lab_lines = e["label"].split("\n")
+            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.55 for c in ln) * fs
+                        for ln in lab_lines) + 8
+            est_h = fs * 1.25 * (len(lab_lines) - 1) + fs * 1.5
             parts.append(
-                f'<rect x="{mid[0] - est_w / 2}" y="{mid[1] - fs * 0.8}" '
-                f'width="{est_w}" height="{fs * 1.5}" fill="#FFFFFF" opacity="0.85"/>')
+                f'<rect x="{mid[0] - est_w / 2}" y="{mid[1] - est_h / 2}" '
+                f'width="{est_w}" height="{est_h}" fill="#FFFFFF" opacity="0.85"/>')
             parts.append(_text_block(mid[0], mid[1], e["label"], 10 ** 6, fs, color))
 
     for nd in spec.get("nodes", []):
@@ -154,12 +161,17 @@ def render(spec: dict[str, Any]) -> str:
         parts.append(_shape_svg(nd, fill, stroke, bool(nd.get("dashed"))))
         cx, cy = center(nd)
         label = nd.get("label", "")
+        lab_color = nd.get("label_color", "#1a1a1a")
+        lab_bold = bool(nd.get("label_bold"))
         if nd.get("sublabel"):
-            parts.append(_text_block(cx, cy - fs * 0.55, label, nd["w"], fs, bold=True))
+            parts.append(_text_block(cx, cy - fs * 0.55, label, nd["w"], fs,
+                                     color=lab_color, bold=True))
             parts.append(_text_block(cx, cy + fs * 0.75, nd["sublabel"], nd["w"],
-                                     fs * 0.82, color="#555555"))
+                                     fs * 0.82,
+                                     color=nd.get("sublabel_color", "#555555")))
         else:
-            parts.append(_text_block(cx, cy, label, nd["w"], fs))
+            parts.append(_text_block(cx, cy, label, nd["w"], fs,
+                                     color=lab_color, bold=lab_bold))
 
     for t in spec.get("texts", []):
         parts.append(_text_block(

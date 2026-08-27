@@ -82,7 +82,10 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 
 - 以胜出方向为主线重写 2 份 prompt（携带其视觉精华 + 逐条修复 B2 issue
   + 支持通道时附胜出草图为 reference image），生成
-  `f01.png / f02.png`。
+  `f01.png / f02.png`。生图模型对**箭头方向类指令不可靠**（实测明示
+  方向仍被反转）：方向敏感边在两份 prompt 里用不同 routing 表述对冲，
+  审计时把方向核对列为必查项。生图工具落盘在会话资产目录时，
+  须 cp 归档进 `candidates/` 再审计。
 - 再审一轮：两张都过合同审计 → 选综合最优 1 张为**参照定稿**；
   都有硬伤 → 取伤少者，硬伤记入 ledger 交 Phase C 重建时修正
   （重建是矢量级控制，能修生图模型改不动的毛病）。两轮共 6 次生图为
@@ -99,10 +102,21 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
 2. **重建**：`figspec_schema()` 拿 schema → 按测量表写 figspec（文字用
    白名单矫正生图拼写错误；结构以 A2 合同为准，参照图与合同冲突时
    **合同赢**）→ `validate_figspec` → `render_figure`。
-3. **对照自检（≤3 轮）**：Read 渲染 png 与参照图并排对照——
+   figspec 实战要点：深色头带白字用 node 的 `label_color`/`label_bold`；
+   标题样式用顶层 `title_style`；边默认色在 defaults 里键名是
+   `edge_color`/`edge_width`；自动折行按宽度硬切会切词——多词 label
+   一律手工 `\n` 控行；边只能连 node 不能连 group——「连到分组带」的
+   合同边用组边缘的隐形锚点小节点（`label:"", fill/stroke 同组底色`）
+   落点；超长 edge label 改用 texts 独立摆放。
+3. **对照自检（≤3 轮）**：对照 png 以 `drawio_export` 导出为准
+   （render_figure 的 cairosvg 光栅无字体 fallback，`→/ν/≥` 等字符
+   可能画成豆腐块，勿据此误判；SVG/drawio 源码文字以逐字符核对为准）。
+   Read 导出 png 与参照图并排对照——
    布局拓扑一致？模块/边无缺漏？文字 ⊆ 白名单（逐字）？配色贴合？
    渲染级检查：文字溢出？连线穿节点？分组框住成员？
    语义级：B2/B3 遗留 issue 是否已在重建中修复？
+   注意 drawio 导出按内容裁边、坐标系与画布不同：waypoint/几何对账
+   以 .drawio XML 为准，不做导出图的像素级坐标对账。
    有问题改 figspec 重渲染；3 轮后仍有硬伤记 issue 交人决策。
 4. 辅助图跳过 1-2，直接按 A2 合同写 figspec 走 3 的检查单。
 
@@ -116,7 +130,9 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
   --detail "<N 图 svg+drawio 齐；主图 M 张走两轮候选制（6 生图/图上限），
-  审计 ledger 在 figure_plan.md>"`。
+  审计 ledger 在 figure_plan.md>"`。独立图纸任务（无 loop 会话、
+  `state/ledger.json` 未 init）不必强行 gate——交付登记写进
+  figure_plan.md 即可。
 
 ## 硬性规则
 
