@@ -226,6 +226,28 @@ def test_render_label_style_and_edge_defaults():
     assert "fontSize=20" in title.get("style")
 
 
+def test_render_publication_style_fields():
+    spec = json.loads(json.dumps(SPEC))
+    # 出版级样式字段：shadow / arc / stroke_width / texts.align 双渲染器生效
+    spec["nodes"][0].update({"shadow": True, "arc": 12, "stroke_width": 2.5})
+    spec["groups"][0].update({"shadow": True, "stroke_width": 1.8})
+    spec["texts"] = [{"id": "t1", "text": "note", "x": 40, "y": 300,
+                      "align": "left", "font_size": 12}]
+    svg = render_svg.render(spec)
+    assert "goai-shadow" in svg and 'filter="url(#goai-shadow)"' in svg
+    assert 'rx="12"' in svg
+    assert 'stroke-width="2.5"' in svg
+    assert 'text-anchor="start"' in svg
+    xml = render_drawio.render(spec)
+    root = ET.fromstring(xml)
+    node_a = next(c for c in root.findall(".//mxCell") if c.get("id") == "a")
+    assert "shadow=1" in node_a.get("style")
+    assert "arcSize=12" in node_a.get("style")
+    assert "strokeWidth=2.5" in node_a.get("style")
+    t1 = next(c for c in root.findall(".//mxCell") if c.get("id") == "t1")
+    assert "align=left" in t1.get("style")
+
+
 def test_svg_roundtrip_to_figspec():
     svg = render_svg.render(SPEC)
     rec = svg2drawio.svg_to_figspec(svg)

@@ -11,17 +11,21 @@ schema（JSON）：
   "canvas": {"width": int, "height": int},
   "defaults": {"font_size": 13, "fill": "#FFFFFF", "stroke": "#333333",
                "edge_color": "#333333", "edge_width": 1.5},
-  "groups": [{"id","label","x","y","w","h","fill","stroke","dashed"}],
+  "groups": [{"id","label","x","y","w","h","fill","stroke","dashed",
+              "stroke_width","arc","shadow","font_size","label_color"}],
   "nodes":  [{"id","label","sublabel","x","y","w","h","shape","fill","stroke",
-              "font_size","dashed","group",
+              "font_size","dashed","group","stroke_width","arc","shadow",
               "label_color","label_bold","sublabel_color"}],
   "edges":  [{"id","from","to","label","dashed","color","width","arrow",
               "waypoints": [[x,y],...]}],
-  "texts":  [{"id","text","x","y","font_size","color","bold"}]
+  "texts":  [{"id","text","x","y","font_size","color","bold",
+              "align": "left|center|right"}]
 }
 edge 的 color/width 在 defaults 中对应键为 edge_color/edge_width
 （写 color/width 也兼容）；node 的 label_color/label_bold 用于
-深色头带白字等样式（drawio 渲染同步生效）。
+深色头带白字等样式；shadow 加投影、arc 定 rounded 圆角像素、
+stroke_width 定边框粗细；texts.align 的 x 语义随对齐方式变
+（left 时 x=左缘）。以上均 SVG 与 drawio 双渲染器同步生效。
 shape ∈ {rect, rounded, stadium, ellipse, diamond, hexagon, parallelogram,
          cylinder, document, cloud}
 坐标系：x/y 为左上角，画布左上为原点。

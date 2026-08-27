@@ -6,16 +6,20 @@ from xml.sax.saxutils import escape
 
 from .figspec import DEFAULTS, border_point, center, edge_style_of, style_of
 
-FONT = "Helvetica, Arial, sans-serif"
+FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif"
 
 
-def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool) -> str:
+def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool,
+               stroke_width: float = 1.5) -> str:
     x, y, w, h = nd["x"], nd["y"], nd["w"], nd["h"]
     shape = nd.get("shape", "rect")
     dash = ' stroke-dasharray="6,4"' if dashed else ""
-    common = f'fill="{fill}" stroke="{stroke}" stroke-width="1.5"{dash}'
+    shadow = ' filter="url(#goai-shadow)"' if nd.get("shadow") else ""
+    common = (f'fill="{fill}" stroke="{stroke}" '
+              f'stroke-width="{stroke_width}"{dash}{shadow}')
     if shape in ("rect", "rounded", "stadium"):
-        rx = 0 if shape == "rect" else (h / 2 if shape == "stadium" else 8)
+        rx = 0 if shape == "rect" else (
+            h / 2 if shape == "stadium" else nd.get("arc", 8))
         return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" {common}/>'
     if shape == "ellipse":
         return (f'<ellipse cx="{x + w / 2}" cy="{y + h / 2}" rx="{w / 2}" '
@@ -75,13 +79,14 @@ def _wrap_label(label: str, w: float, font_size: float) -> list[str]:
 
 
 def _text_block(cx: float, cy: float, label: str, w: float, font_size: float,
-                color: str = "#1a1a1a", bold: bool = False) -> str:
+                color: str = "#1a1a1a", bold: bool = False,
+                anchor: str = "middle") -> str:
     lines = _wrap_label(label, w, font_size)
     lh = font_size * 1.25
     y0 = cy - lh * (len(lines) - 1) / 2
     weight = ' font-weight="bold"' if bold else ""
     spans = "".join(
-        f'<text x="{cx}" y="{y0 + i * lh}" text-anchor="middle" '
+        f'<text x="{cx}" y="{y0 + i * lh}" text-anchor="{anchor}" '
         f'dominant-baseline="middle" font-family="{FONT}" '
         f'font-size="{font_size}" fill="{color}"{weight}>{escape(line)}</text>'
         for i, line in enumerate(lines))
@@ -103,6 +108,9 @@ def render(spec: dict[str, Any]) -> str:
         'markerWidth="8" markerHeight="8" orient="auto-start-reverse">'
         '<path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="context-stroke" '
         'stroke-width="1.5"/></marker>'
+        '<filter id="goai-shadow" x="-20%" y="-20%" width="140%" height="140%">'
+        '<feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#2A3B47" '
+        'flood-opacity="0.28"/></filter>'
         '</defs>',
         f'<rect x="0" y="0" width="{W}" height="{H}" fill="#FFFFFF"/>',
     ]
@@ -116,14 +124,20 @@ def render(spec: dict[str, Any]) -> str:
     for g in spec.get("groups", []):
         fill = g.get("fill", "#F7F9FC")
         stroke = g.get("stroke", "#B9C4D0")
+        gsw = g.get("stroke_width", 1.2)
         dash = ' stroke-dasharray="6,4"' if g.get("dashed") else ""
+        shadow = ' filter="url(#goai-shadow)"' if g.get("shadow") else ""
         parts.append(
             f'<rect x="{g["x"]}" y="{g["y"]}" width="{g["w"]}" height="{g["h"]}" '
-            f'rx="10" fill="{fill}" stroke="{stroke}" stroke-width="1.2"{dash}/>')
+            f'rx="{g.get("arc", 10)}" fill="{fill}" stroke="{stroke}" '
+            f'stroke-width="{gsw}"{dash}{shadow}/>')
         if g.get("label"):
+            g_fs = g.get("font_size", 12.5)
             parts.append(
-                f'<text x="{g["x"] + 12}" y="{g["y"] + 20}" font-family="{FONT}" '
-                f'font-size="12.5" font-weight="bold" fill="{stroke}">'
+                f'<text x="{g["x"] + 12}" y="{g["y"] + g_fs * 1.55}" '
+                f'font-family="{FONT}" '
+                f'font-size="{g_fs}" font-weight="bold" '
+                f'fill="{g.get("label_color", stroke)}">'
                 f'{escape(g["label"])}</text>')
 
     for e in spec.get("edges", []):
@@ -158,7 +172,8 @@ def render(spec: dict[str, Any]) -> str:
         fill = style_of(nd, spec, "fill", DEFAULTS["fill"])
         stroke = style_of(nd, spec, "stroke", DEFAULTS["stroke"])
         fs = style_of(nd, spec, "font_size", DEFAULTS["font_size"])
-        parts.append(_shape_svg(nd, fill, stroke, bool(nd.get("dashed"))))
+        nsw = style_of(nd, spec, "stroke_width", 1.5)
+        parts.append(_shape_svg(nd, fill, stroke, bool(nd.get("dashed")), nsw))
         cx, cy = center(nd)
         label = nd.get("label", "")
         lab_color = nd.get("label_color", "#1a1a1a")
@@ -173,11 +188,13 @@ def render(spec: dict[str, Any]) -> str:
             parts.append(_text_block(cx, cy, label, nd["w"], fs,
                                      color=lab_color, bold=lab_bold))
 
+    anchor_map = {"left": "start", "center": "middle", "right": "end"}
     for t in spec.get("texts", []):
         parts.append(_text_block(
             t["x"], t["y"], t.get("text", ""), 10 ** 6,
             t.get("font_size", 12), t.get("color", "#1a1a1a"),
-            bool(t.get("bold"))))
+            bool(t.get("bold")),
+            anchor_map.get(t.get("align", "center"), "middle")))
 
     parts.append("</svg>")
     return "\n".join(parts)
