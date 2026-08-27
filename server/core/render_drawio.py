@@ -60,14 +60,19 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
 
     for g in spec.get("groups", []):
         style = (
-            "rounded=1;arcSize=6;whiteSpace=wrap;html=1;verticalAlign=top;"
-            "align=left;spacingLeft=10;spacingTop=4;fontSize=12;fontStyle=1;"
+            f"rounded=1;absoluteArcSize=1;arcSize={g.get('arc', 10)};"
+            "whiteSpace=wrap;html=1;verticalAlign=top;"
+            f"align=left;spacingLeft=10;spacingTop=4;"
+            f"fontSize={g.get('font_size', 12)};fontStyle=1;"
             "container=1;collapsible=0;"
             f"fillColor={g.get('fill', '#F7F9FC')};"
             f"strokeColor={g.get('stroke', '#B9C4D0')};"
-            f"fontColor={g.get('stroke', '#6B7A89')};")
+            f"strokeWidth={g.get('stroke_width', 1.2)};"
+            f"fontColor={g.get('label_color', g.get('stroke', '#6B7A89'))};")
         if g.get("dashed"):
             style += "dashed=1;"
+        if g.get("shadow"):
+            style += "shadow=1;"
         cells.append(_cell(g["id"], g.get("label", ""), style,
                            g["x"], g["y"], g["w"], g["h"]))
 
@@ -76,13 +81,18 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
         style = _SHAPE_STYLE.get(shape, _SHAPE_STYLE["rect"])
         style += (f"fillColor={style_of(nd, spec, 'fill', DEFAULTS['fill'])};"
                   f"strokeColor={style_of(nd, spec, 'stroke', DEFAULTS['stroke'])};"
+                  f"strokeWidth={style_of(nd, spec, 'stroke_width', 1.5)};"
                   f"fontSize={style_of(nd, spec, 'font_size', DEFAULTS['font_size'])};")
+        if shape == "rounded" and nd.get("arc") is not None:
+            style += f"absoluteArcSize=1;arcSize={nd['arc']};"
         if nd.get("label_color"):
             style += f"fontColor={nd['label_color']};"
         if nd.get("label_bold"):
             style += "fontStyle=1;"
         if nd.get("dashed"):
             style += "dashed=1;"
+        if nd.get("shadow"):
+            style += "shadow=1;"
         value = nd.get("label", "")
         if nd.get("sublabel"):
             value = (f"<b>{nd.get('label', '')}</b><br/>"
@@ -126,15 +136,21 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             f'        </mxCell>')
 
     for i, t in enumerate(spec.get("texts", [])):
-        style = ("text;html=1;align=center;verticalAlign=middle;"
+        align = t.get("align", "center")
+        style = (f"text;html=1;align={align};verticalAlign=middle;"
                  f"fontSize={t.get('font_size', 12)};"
                  f"fontColor={t.get('color', '#1a1a1a')};"
                  "strokeColor=none;fillColor=none;")
         if t.get("bold"):
             style += "fontStyle=1;"
-        est_w = max(len(t.get("text", "")) * t.get("font_size", 12) * 0.7, 60)
+        n_lines = t.get("text", "").count("\n") + 1
+        est_w = max(max(len(ln) for ln in t.get("text", "").split("\n"))
+                    * t.get("font_size", 12) * 0.7, 60)
+        est_h = max(24, n_lines * t.get("font_size", 12) * 1.3)
+        tx = t["x"] if align == "left" else (
+            t["x"] - est_w if align == "right" else t["x"] - est_w / 2)
         cells.append(_cell(t.get("id") or f"text-{i}", t.get("text", ""), style,
-                           t["x"] - est_w / 2, t["y"] - 12, est_w, 24))
+                           tx, t["y"] - est_h / 2, est_w, est_h))
 
     body = "\n".join(cells)
     return f'''<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
