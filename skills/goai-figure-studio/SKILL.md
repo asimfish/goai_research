@@ -1,99 +1,126 @@
 ---
 name: goai-figure-studio
-description: Use when the survey needs publication-quality figures — 画图 agent：为综述设计并生成框架图/分类法树/时间线/对比图，figspec 单一事实源，一次渲染同时产出论文用 SVG 与 drawio 原生可编辑文件，带自检-修正回环。触发词：「画图」「框架图」「taxonomy 图」「figure」。
+description: Use when the survey needs publication-quality figures — 画图 agent：顶会级主图走「策略合同 → AI 生图两轮候选 → 可编辑化重建」三段管线，辅助图走 figspec 直渲；产物恒为 svg+drawio 可编辑双格式。触发词：「画图」「框架图」「taxonomy 图」「figure」。
 ---
 
 # GoAI Figure-Studio —— 论文图纸 agent
 
 方法论四支柱：**源忠实、edge-label-first、模块化不碎片化、克制配色**。
-执行形态是**自动化回环**：不等人逐步确认，用「渲染 → 自检 → 修正」
-循环收敛，人只看最终候选。
-工具来自 MCP server `goai-figure`；产物天然接 draw.io（原生 .drawio）。
+执行形态是**自动化回环**：不等人逐步确认，候选生成与审计全自动收敛，
+人只看最终产物。工具来自 MCP server `goai-figure`。
 
-## 综述常用图型
+## 图纸分级（先分级再动手）
 
-| 图型 | 用途 | figspec 要点 |
+| 级别 | 适用 | 管线 |
 |---|---|---|
-| 分类法树 | 综述主图 | groups 做层级底板，nodes 分层排布，每叶标代表文献 |
-| 时间线 | 领域演进 | 横轴年份 texts + 里程碑 nodes，edges 用 arrow=none |
-| 框架/流水线图 | 方法族抽象 | 主线居中，变量走边 label |
-| 对比矩阵示意 | 方法族 × 能力 | 表格更合适时直接建议用表，不硬画 |
+| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选 → C 可编辑化重建 |
+| **辅助图** | 时间线、简单流程、统计示意 | A 策略合同 → figspec 直渲（跳过 B/C） |
 
-## 规程（每张图一个回环）
+对比矩阵优先建议用表格，不硬画。宿主无生图通道时主图降级走辅助图管线，
+`loopctl log --event decision` 记录降级原因。
 
-### 1. 图纸计划（写进 workspace/notes/figure_plan.md）
+## Phase A：策略与合同（每图必做，写进 workspace/notes/figure_plan.md）
 
-每图先回答三问，答不出就不画：
+### A1 三问定生死
+
 - **reader question**：读者看这张图要回答什么问题？
-- **visual mainline**：视觉主线是什么（方法流/分类层级/时间演进）？
-  数据流当主线仅当综述对象本身是数据/检索/管线。
+- **visual mainline**：视觉主线（方法流/分类层级/时间演进）？数据流当主线
+  仅当综述对象本身是数据/检索/管线。
 - **来源锚点**：图上每个模块/箭头对应库内哪些文献或 taxonomy 哪个节点？
 
-三问之外，figure_plan.md 里为每图再做三件事：
+### A2 图纸合同（prompt contract，违反即返工）
 
-- **源忠实表**：逐行列出图上可见的模块/边/符号/关键标签，每行标
-  `direct`（库内文献或 taxonomy 直接支撑）、`inferred`（由证据严格推得，
-  须写明前提与推理链）、`remove` 或 `revise`；存在 remove/revise 未处理时
-  **不得进入渲染交付**。「画起来顺」「常见画法」不算证据。
-- **模糊指令规范化**：上游（taxonomy/writer/用户）给的模糊视觉指令
-  （如「体现方法差异」「展示演进关系」）必须先翻译成三件事再动手：
-  具体含义是什么、用什么安全画法（标记/仅分叉处分支/对比列/图注说明）、
-  禁止哪种误实现（典型如为每个变体复制一条完整流水线）；
-  翻译不出来就退回提问，不默认脑补。
-- **可见文字白名单**：列出本图允许出现的全部可见文字
-  （模块名/边 label/图例词），用词与 taxonomy/正文一致。
+- **源忠实表**：逐行列出可见模块/边/符号/关键标签，每行标 `direct`（库内
+  文献或 taxonomy 直接支撑）、`inferred`（严格推得，写明前提与推理链）、
+  `remove`/`revise`；有未处理的 remove/revise 不得进入 B/C。
+  「画起来顺」「常见画法」不算证据。
+- **边证据账**：每条边能指出上下游端点含义的证据；不画装饰性箭头、
+  不画假中继（A 产 x、C 用 x、B 不消费 x，则禁止 A→B 标 x）。
+- **edge-label-first**：变量/指标/权重放边 label，不做同级盒子。
+- **捆绑连线**：两模块间默认一条线；只有各自携带不同标注量时才许平行
+  多线；每种线型在同图内只允许一个含义。
+- **核心模块非空盒**：核心方法族模块要画出可见内部机制（步骤 token/
+  判定门/fork-merge/轻量反馈环），保持「输入→操作→输出」最小链，
+  不省掉操作、也不膨胀成第二张算法图。
+- **符号一一对应**：同一符号/颜色不表示两个概念，反之亦然。
+- **重复实体压缩**：重复家族默认压缩成标记（chips/branch），
+  不复制整条流水线。
+- **模糊指令规范化**：上游给的模糊视觉指令（「体现方法差异」）先翻译成
+  具体含义/安全画法/禁止的误实现，翻译不出来退回提问。
+- **可见文字白名单**：本图允许出现的全部文字，用词与 taxonomy/正文一致。
+- **配色合同**：优先采用 `workspace/style_bank/figure_style_cards.md` 的
+  领域配色基准；无风格库时一主一辅 + 灰阶可读。**禁**：AI 蓝紫渐变、
+  霓虹饱和、玻璃球高光、bokeh、营销海报打光、装饰性色带。
+- **密度预算**：主内容占画面中心，模块数落在风格卡舒适区间；
+  大片空白、微块散射、头重脚轻的背景横幅都是阻塞项。
 
-### 2. figspec 编写
+## Phase B：AI 生图两轮候选（仅主图）
 
-先 `figspec_schema()` 拿 schema 与示例，再写 spec。强制约束
-（prompt contract，违反即返工）：
-- 每条边能指出证据锚点；不画装饰性箭头、不画假中继
-  （A 产 x、C 用 x、B 不消费 x，则禁止 A→B 标 x）；
-- 两个模块之间默认只画一条（捆绑）连线；只有当多条线各自携带不同的、
-  有标注的量时才允许平行多线，同义平行线视为错误（validate 会拦）；
-  每种线型（实/虚/点）在同一张图内只允许一个含义，并在图例或 caption
-  声明；不画无锚定的悬空辅助线和纯装饰长导轨；
-- 变量/指标/权重放**边 label**，不做同级盒子；
-- 模块化不碎片化：主内容占画面中心，避免大片空白与微块散射；
-- 核心方法模块不得是空标题盒或 bullet 列表：代表核心贡献/核心方法族的
-  模块要画出可见内部机制，用简单常规画法（步骤 token、判定门、
-  fork/merge、轻量反馈环；figspec 里用子节点 + group 表达）；
-  内部机制保持「输入 → 操作 → 输出」最小链，不得只画输出或状态而
-  省掉产生它的操作，也不得膨胀成第二张完整算法图；
-- 同一符号/颜色不表示两个概念；不同概念也不得共用同一符号/颜色/线型，
-  除非明确声明为不改变含义、有源支撑的分组聚合；
-- 配色 human palette：一主一辅 + 灰阶可读，禁霓虹渐变、禁玻璃球高光；
-- 重复实体家族默认压缩成标记（chips/branch），不复制整条流水线。
+生图路由：Codex 宿主用 `image_gen`；Cursor 宿主用 GenerateImage 工具；
+均无 → 降级辅助图管线并记账。风格参照：prompt 附
+`workspace/style_bank/exemplar_figures/` 的范图路径（支持 reference image
+的通道传入；不支持则在 prompt 里文字化描述风格卡要点）。
 
-### 3. 渲染与自检回环（≤3 轮）
+### B1 第一轮：4 候选草图探索
 
-0. 前置检查：figure_plan.md 的源忠实表没有未处理的 remove/revise 才许渲染。
-1. `validate_figspec` → 有错先修。
-2. `render_figure(figspec_json, name, out_dir="workspace/figures")`
-   → 同时得到 svg / drawio / figspec（+png 若装了 cairosvg）。
-3. **自检**：用 Read 工具看渲染产物（png 优先，无 png 读 svg 源码核对坐标），
-   对照检查单——
-   渲染级：文字溢出盒子？连线穿过节点？主线居中？分组框住了成员？
-   label 与 taxonomy 用词一致？图上文字 ⊆ 白名单（逐字比对）？
-   语义级：变量/指标有没有被画成同级盒子？有没有装饰性箭头或假中继残留？
-   同两模块间有没有含义相同的平行线？核心模块是不是空盒子？
-   每条边还能对上源忠实表吗？
-4. 有问题改 figspec 重渲染。3 轮后仍有硬伤 → 记 issue 交人决策，不死磕。
+- 基于 A2 合同写 4 份 prompt（同一语义骨架 × 不同叙事/布局组合：
+  如横向流水线/纵向层级/中心辐射/分区地图），每份 prompt 内嵌
+  合同硬约束块（源忠实清单、edge-label-first、配色合同、密度预算、
+  文字白名单——生图模型渲染文字不可靠，白名单文字要求「位置留槽、
+  拼写尽力」，最终以 Phase C 重建版为准）。
+- 逐一生图得 `workspace/figures/candidates/<fig>/c01-c04.png`。
 
-### 4. 交付与登记
+### B2 自动审计与方向选择（issue-ledger 式，不跳过）
 
-- 论文侧用 `workspace/figures/svg/<name>.svg`（LaTeX 走 includesvg 或
-  `drawio_export` 转 pdf/png）。
-- 可编辑侧交 `workspace/figures/drawio/<name>.drawio`——draw.io Desktop /
-  app.diagrams.net 直接打开；装了官方 `@drawio/mcp` 的宿主可用其
-  `open_drawio_xml` 在浏览器即时打开微调。
-- 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md，供 writer 引用。
+- 用 Read 逐张审图，对照 A2 合同记 issue ledger（写入 figure_plan.md）：
+  变量画成盒子？装饰箭头/假中继？同义平行线？核心模块空盒？主线偏心？
+  密度失衡？AI 味配色？与源忠实表冲突的结构？
+- 按「合同违反数 + 主线清晰度 + 风格卡贴合度」选出方向候选 1 张，
+  并列出它要修的 issue 与要保留的视觉精华。
+
+### B3 第二轮：2 正式候选
+
+- 以胜出方向为主线重写 2 份 prompt（携带其视觉精华 + 逐条修复 B2 issue
+  + 支持通道时附胜出草图为 reference image），生成
+  `f01.png / f02.png`。
+- 再审一轮：两张都过合同审计 → 选综合最优 1 张为**参照定稿**；
+  都有硬伤 → 取伤少者，硬伤记入 ledger 交 Phase C 重建时修正
+  （重建是矢量级控制，能修生图模型改不动的毛病）。两轮共 6 次生图为
+  预算上限，不许无限重试。
+
+## Phase C：可编辑化重建（测量驱动，仅主图）
+
+把参照定稿重建为 figspec，产出可编辑矢量——这是交付物的唯一来源，
+AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重建、后对照**。
+
+1. **测量**：Read 参照图，逐区域记录版式测量表（模块相对位置/尺寸、
+   连线拓扑、颜色采样 hex、文字内容与层级）——写进 figure_plan.md
+   的重建测量节。
+2. **重建**：`figspec_schema()` 拿 schema → 按测量表写 figspec（文字用
+   白名单矫正生图拼写错误；结构以 A2 合同为准，参照图与合同冲突时
+   **合同赢**）→ `validate_figspec` → `render_figure`。
+3. **对照自检（≤3 轮）**：Read 渲染 png 与参照图并排对照——
+   布局拓扑一致？模块/边无缺漏？文字 ⊆ 白名单（逐字）？配色贴合？
+   渲染级检查：文字溢出？连线穿节点？分组框住成员？
+   语义级：B2/B3 遗留 issue 是否已在重建中修复？
+   有问题改 figspec 重渲染；3 轮后仍有硬伤记 issue 交人决策。
+4. 辅助图跳过 1-2，直接按 A2 合同写 figspec 走 3 的检查单。
+
+## 交付与登记
+
+- 每图四件套：`workspace/figures/svg/<name>.svg`（论文侧，LaTeX 用
+  `drawio_export` 转 pdf/png 嵌入）、`drawio/<name>.drawio`（draw.io
+  Desktop / app.diagrams.net 直接可编辑）、`figspec/<name>.json`
+  （单一事实源）、主图另附 `candidates/<fig>/`（两轮候选与参照定稿，
+  审计可溯源）。
+- 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
-  --detail "<N 张图 svg+drawio 齐全>"`。
+  --detail "<N 图 svg+drawio 齐；主图 M 张走两轮候选制（6 生图/图上限），
+  审计 ledger 在 figure_plan.md>"`。
 
-## 与生图模型的关系
+## 硬性规则
 
-本 skill 默认走**确定性 figspec 渲染**（可复现、可编辑、可进 drawio）。
-如果宿主有 image-gen 且用户想要手绘感概念图：可先生成概念草图找方向，
-但**最终交付物必须重建为 figspec**——位图不可编辑、不进论文图池；
-重建流程走 goai-figure-editable。
+- 交付物必须可编辑（svg+drawio）；位图永不直接进论文图池。
+- 两轮候选的每张生图、每条 ledger issue、每次重建对照都要在
+  figure_plan.md 留痕——审计链完整才许过闸。
+- 风格库缺失不阻塞：按合同默认配色执行并记账。

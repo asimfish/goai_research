@@ -25,7 +25,7 @@
 
 | 层 | 内容 | 原则 |
 |---|---|---|
-| **技能层** `skills/` | 8 个 SKILL.md，宿主 agent（Codex/Claude/Cursor）读入后按规程行动 | 方法论放这层：LLM 推理、判断、写作全由宿主模型完成，skill 不带 API key、不内嵌 LLM SDK |
+| **技能层** `skills/` | 9 个 SKILL.md，宿主 agent（Codex/Claude/Cursor）读入后按规程行动 | 方法论放这层：LLM 推理、判断、写作全由宿主模型完成，skill 不带 API key、不内嵌 LLM SDK |
 | **服务层** `server/` | 4 个 FastMCP stdio server | 确定性能力放这层：检索聚合、元数据比对、figspec 渲染、逆合成适配。全部可独立测试 |
 | **工具层** `tools/` | loopctl / bib_guard / tex_guard / bank_check / parallel_run.sh | 回环控制与硬闸门：纯本地、零 LLM、可离线跑 |
 | **运行层** `workspace/` | library / notes / drafts / figures / ideas / state | 一切产物落盘、可审计；gitignore 不入库 |
@@ -67,7 +67,7 @@ PENDING——旧审计不得当新审计用。
 
 ## 回环机制（详见 LOOP_PROTOCOL.md）
 
-主回环：`scope → lit_search → ref_gate → taxonomy → (figures ∥ writing ∥ ideas) → review → 返工/放行 → final`。
+主回环：`scope → (lit_search ∥ style_bank) → ref_gate → taxonomy → (figures ∥ writing ∥ ideas) → review → 返工/放行 → final`。
 三处内嵌子回环：
 - 检索子回环：搜索→滚雪球→coverage_report，一轮新增去重后 <5 篇才过闸；
 - 图纸子回环：渲染→自检→修 figspec，≤3 轮；

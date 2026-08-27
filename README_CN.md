@@ -19,7 +19,7 @@
 > 论文 SVG 和 draw.io 原生可编辑文件；idea 生成可接逆合成预测器——全部接进一个
 > 账本驱动的回环，由对抗审稿人把返工路由到对应阶段，直到所有闸门通过。
 
-> 🪶 **轻量设计，零锁定。** 智能层是 8 个纯 Markdown skill，任何 LLM agent
+> 🪶 **轻量设计，零锁定。** 智能层是 9 个纯 Markdown skill，任何 LLM agent
 > 都能读——Codex CLI、Claude Code、Cursor 或你自己的 harness；确定性层是 4 个
 > 可离线测试的小 MCP server。没有框架、没有数据库、没有守护进程。随便 fork、改写、适配你的技术栈。
 
@@ -103,6 +103,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 |---|---|
 | 主题 → 完整综述，端到端 | [goai-orchestrator](skills/goai-orchestrator/SKILL.md) |
 | 检索全量相关文献 + PDF + BibTeX | [goai-lit-search](skills/goai-lit-search/SKILL.md) |
+| 学 30 篇经典综述的写作/画图风格 | [goai-style-bank](skills/goai-style-bank/SKILL.md) |
 | 核查引用的作者/顺序/年份/venue | [goai-ref-guard](skills/goai-ref-guard/SKILL.md) |
 | 画分类法 / 框架 / 时间线图 | [goai-figure-studio](skills/goai-figure-studio/SKILL.md) |
 | 把现成图片变成 draw.io 可编辑 | [goai-figure-editable](skills/goai-figure-editable/SKILL.md) |
@@ -115,7 +116,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 
 | 层 | 内容 | 为什么 |
 |---|---|---|
-| `skills/` —— 8 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
+| `skills/` —— 9 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
 | `server/` —— 4 个 MCP server、19 个工具 | 检索聚合去重、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
 | `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `tex_guard.py` 组稿闸门 · `bank_check.py` 支持库校验 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
 
@@ -134,8 +135,9 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 ```
 workspace/
 ├── library/     papers.jsonl + references.bib + pdfs/
+├── style_bank/  30 篇经典综述风格卡 + 范图库（写作/画图风格基准）
 ├── notes/       scope / taxonomy / citation_bank / figure_plan
-├── figures/     svg/ + drawio/ + figspec/ + png/   ← 同一份源，永不漂移
+├── figures/     svg/ + drawio/ + figspec/ + candidates/   ← 同一份源，永不漂移
 ├── drafts/      blueprint + sections/*.tex + revision_log
 ├── ideas/       proposal_*.md + experiment_*.json + review_log
 └── state/       ledger.json（回环账本）+ 审计报告
@@ -146,7 +148,8 @@ workspace/
 ## 4. 🔄 回环机制
 
 ```
-intake → scoping → lit_search → ref_gate → taxonomy
+intake → scoping → [lit_search ∥ style_bank]    ← 检索与风格学习并行
+      → ref_gate → taxonomy
       → [figures ∥ writing ∥ ideas]      ← 三路并行
       → review → 全部闸门 PASS → final
                → 有 issue → 路由回属主阶段 → 再审 …
@@ -160,7 +163,8 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 | 阶段 | Agent | 出口闸门 |
 |---|---|---|
 | scoping | orchestrator + 你 | `scope_confirmed` |
-| lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖，末轮新增去重后 < 5 篇 |
+| lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖 + 规模档位配额（正式综述 ≥100 篇） |
+| style_bank | goai-style-bank | `style_bank_ready` —— 30 篇经典综述风格卡 + 范图库 |
 | ref_gate | goai-ref-guard | `ref_integrity` —— 零 UNVERIFIED / MISMATCH |
 | taxonomy | goai-survey-writer | `taxonomy_ready` —— 每叶 ≥ 3 篇支撑 |
 | figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全 |
@@ -169,6 +173,12 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 | review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major |
 
 ## 5. 🎨 永远可编辑的图纸
+
+**主图走三段管线**：策略合同（源忠实表 + edge-label-first + 配色/密度预算）
+→ AI 生图两轮候选（4 草图探索 → issue-ledger 审计选方向 → 2 正式候选，
+prompt 注入 style_bank 领域风格卡与范图参照）→ 测量驱动重建为可编辑矢量。
+生图只产参照定稿，**交付物永远来自重建**——这保证顶会级视觉水准与
+可编辑性兼得。辅助图（时间线/简单流程）直接 figspec 渲染。
 
 这里的图从来不是一张死位图。单一事实源是 **figspec** —— 一个描述节点/分组/
 边/文本的小 JSON。一次渲染同时产出：

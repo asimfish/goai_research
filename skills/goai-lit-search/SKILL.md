@@ -8,6 +8,19 @@ description: Use when the task is comprehensive literature retrieval for a surve
 目标不是「找到一些相关论文」，而是**尽可能全**：对给定子主题，检索到边际新增
 趋近于零，并通过 coverage 闸门。工具来自 MCP server `goai-litsearch`。
 
+## 规模档位（开工前先定档，记入账本）
+
+| 档位 | 库规模 | 适用 | 分层配额 |
+|---|---|---|---|
+| standard | 30–50 | mini survey / 快速调研 | 每子主题 ≥6 |
+| **comprehensive**（正式综述默认） | **100–150** | 投稿级综述 / 比赛 | 每子主题 ≥15；综述类 ≥8；近三年 ≥30%；奠基文献不限年份窗 |
+| exhaustive | 200+ | 领域全景 / 系统性综述 | comprehensive 基础上滚雪球做满两跳 |
+
+档位由 topic.md/任务书指定，缺省时正式综述取 comprehensive。定档后
+`loopctl log --event decision --detail "scale=<档位>"`。**规模是硬指标**：
+comprehensive 档不足 100 篇时 coverage gate 不得记 PASS（确属新兴小领域
+文献总量不足时如实记 WARN + 检索式证据，不许凑弱相关充数）。
+
 ## 工具面
 
 | 工具 | 用途 |
@@ -29,13 +42,17 @@ description: Use when the task is comprehensive literature retrieval for a surve
 2. **滚雪球**：从库里挑该子主题 (a) 被引最高的 2 篇 (b) 最新的 2 篇
    (c) 已有综述 1 篇，对每篇 `snowball direction=both`；新命中入库。
    综述类种子的 references 是查全金矿，必须做。
-3. **边际收敛判据**：重复 1–2 直到「一轮新增去重后 < 5 篇」或「连续两轮
-   新增全是弱相关」。把每轮的检索式与新增数记入
+3. **边际收敛判据**：重复 1–2 直到边际新增低于档位线（standard：一轮
+   新增去重后 <5 篇；comprehensive/exhaustive：<10 篇且各分层配额已达标）
+   或「连续两轮新增全是弱相关」。把每轮的检索式与新增数记入
    `workspace/notes/search_log.md`（可复现性要求）。
-4. **闸门**：构造 subtopics JSON（name + keywords）跑 `coverage_report`。
-   - `GAPS_FOUND`：对 gap 子主题换关键词重搜 + 换种子滚雪球，最多 3 轮；
-     仍有 gap → 如实上报「该子主题文献确实稀少」，附证据（检索式清单）。
-   - `PASS`：`loopctl gate --name lit_coverage --status PASS --detail "<N篇/M子主题>"`。
+4. **闸门**：构造 subtopics JSON（name + keywords）跑 `coverage_report`，
+   并核对档位配额（库规模、每子主题篇数、综述类篇数、近三年占比）。
+   - `GAPS_FOUND` 或配额缺口：对 gap 子主题换关键词重搜 + 换种子滚雪球，
+     最多 3 轮；仍有 gap → 如实上报「该子主题文献确实稀少」，附证据
+     （检索式清单）。
+   - `PASS`：`loopctl gate --name lit_coverage --status PASS
+     --detail "<档位/N篇/M子主题/配额逐项达标情况>"`。
 
 ## 下载与导出
 

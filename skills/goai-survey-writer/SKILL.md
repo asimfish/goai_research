@@ -16,13 +16,42 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 只允许引用 `workspace/library/references.bib`（已过 ref_gate）里的 key。
 写作中发现需要库外文献 → 开 issue 请 lit_search 补检，**不许手写 bib 条目**。
 
-## 阶段零：范文学习（可与文献检索并行）
+## 阶段零：风格与语料装载（可与文献检索并行）
 
-从目标 venue（topic.md 指定）或同领域挑 2-3 篇公认高质量的已发表综述，
-产出 `workspace/notes/style_notes.md`：章节骨架怎么排、主图如何呈现
-分类法、对比表的列设计习惯、引用密度基准、Open Problems 的写法。
-只学结构与写法，不抄内容。阶段三的蓝图必须引用 style_notes 的结论；
-与默认骨架冲突时，以范文归纳的骨架为准并在蓝图里说明理由。
+### 0a 领域风格卡（来自 goai-style-bank）
+
+优先消费 `workspace/style_bank/writing_style_cards.md`（30 篇经典综述
+归纳的结构骨架/句式模式/引用密度基准/对比表习惯）。风格库缺失或为
+浅层（WARN）时降级：自行挑 2-3 篇公认高质量综述精读，产出
+`workspace/notes/style_notes.md` 补位。阶段三的蓝图必须引用风格卡
+（或 style_notes）的结论；与默认骨架冲突时，以领域归纳骨架为准并在
+蓝图里说明理由。量化基准（篇均引用数/密度）直接决定 bank_check 与
+bib_guard 的参数取值，在账本记 decision。
+
+### 0b 专业语料库（super_library）
+
+探测顺序：`$GOAI_SUPERLIB` 环境变量 → `~/Code/super_library` →
+不存在则记账降级（跳过本节，不阻塞）。存在时**必须**使用：
+
+- 每节动笔前拉一次有界语料包（从 super_library 仓库根执行）：
+
+  ```
+  python3 scripts/superlib.py bundle \
+      --rhetoric-query "<本节的表达需求>" \
+      --technical-query "<本节核心概念>" \
+      --domain <domain> --section <section> --intent <intent> \
+      --limit 4 --max-chars 24000 [--guide <guide-id>]
+  ```
+
+- section 协议与修辞句式卡是**领域无关**的，任何主题都用；术语卡只在
+  主题落在其覆盖域（world models / RL / embodied AI / VLA）时用，
+  域外主题（如材料化学）跳过术语卡并记账。
+- 实验/对比表用其 `template --list` 的表格模板起手（替换全部 `SL_*`）。
+- 语料是**语言与修辞的护栏**，不是证据来源：不得把语料库定义当引文，
+  不得复制原句成文。
+- 阶段五精修后跑其 wording lint：
+  `python3 scripts/superlib.py lint --text-file <draft> --bib <refs.bib>`，
+  lint 结果记入 revision_log。
 
 ## 阶段一：taxonomy（orchestrator 单独调用）
 
@@ -44,6 +73,9 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 `- [key] 一句话可支撑的 claim (strong|weak)`。
 规则：候选量 ≈ 目标引用数 × 1.5；近三年占比 ≥50%；
 每条都必须真的读过摘要（不确定的标 weak）。
+目标引用数与库规模联动：comprehensive 档（库 ≥100）的综述正文
+目标引用数 ≥80（顶刊综述常态是引用数≈库规模），且库内条目最终
+整合率仍须 ≥90%——不许「检索一大库、正文只用零头」。
 产完跑确定性校验（不过线先补库或补读，再进阶段三）：
 
 ```

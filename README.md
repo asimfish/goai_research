@@ -20,7 +20,7 @@
 > idea generation with a pluggable retrosynthesis backend — all wired into a
 > ledger-driven loop where an adversarial reviewer routes rework until every gate passes.
 
-> 🪶 **Lightweight by design, zero lock-in.** The intelligence layer is 8 plain-Markdown
+> 🪶 **Lightweight by design, zero lock-in.** The intelligence layer is 9 plain-Markdown
 > skills readable by any LLM agent — Codex CLI, Claude Code, Cursor, or your own harness.
 > The deterministic layer is 4 small MCP servers you can test offline. No framework,
 > no database, no daemon. Fork it, rewrite it, adapt it to your stack.
@@ -103,6 +103,7 @@ Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live b
 |---|---|
 | Topic → full survey, end to end | [goai-orchestrator](skills/goai-orchestrator/SKILL.md) |
 | Find every relevant paper + PDFs + BibTeX | [goai-lit-search](skills/goai-lit-search/SKILL.md) |
+| Learn writing & figure style from 30 classic surveys | [goai-style-bank](skills/goai-style-bank/SKILL.md) |
 | Verify authors / order / year / venue of citations | [goai-ref-guard](skills/goai-ref-guard/SKILL.md) |
 | Draw taxonomy / framework / timeline figures | [goai-figure-studio](skills/goai-figure-studio/SKILL.md) |
 | Make an existing image editable in draw.io | [goai-figure-editable](skills/goai-figure-editable/SKILL.md) |
@@ -115,7 +116,7 @@ Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live b
 
 | Layer | What | Why |
 |---|---|---|
-| `skills/` — 8 SKILL.md | Methodology the host LLM executes: taxonomy building, claim-bound writing, review judgment | Cognitive work stays with the strongest available model; skills carry no API keys and no LLM SDKs |
+| `skills/` — 9 SKILL.md | Methodology the host LLM executes: taxonomy building, claim-bound writing, review judgment | Cognitive work stays with the strongest available model; skills carry no API keys and no LLM SDKs |
 | `server/` — 4 MCP servers, 19 tools | Search aggregation & dedup, BibTeX parsing & author comparison, figspec validation & dual rendering, retrosynthesis adapter | Deterministic heavy lifting: testable offline, reusable across hosts |
 | `tools/` | `loopctl.py` ledger CLI · `bib_guard.py` citation gate · `tex_guard.py` assembly gate · `bank_check.py` bank validator · `parallel_run.sh` | Loop control and hard gates: pure local, zero LLM |
 
@@ -134,8 +135,9 @@ Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live b
 ```
 workspace/
 ├── library/     papers.jsonl + references.bib + pdfs/
+├── style_bank/  style cards + exemplar figures from 30 classic surveys
 ├── notes/       scope / taxonomy / citation_bank / figure_plan
-├── figures/     svg/ + drawio/ + figspec/ + png/   ← same source, never drift
+├── figures/     svg/ + drawio/ + figspec/ + candidates/   ← same source, never drift
 ├── drafts/      blueprint + sections/*.tex + revision_log
 ├── ideas/       proposal_*.md + experiment_*.json + review_log
 └── state/       ledger.json (the loop ledger) + audit reports
@@ -146,7 +148,8 @@ workspace/
 ## 4. 🔄 The Loop
 
 ```
-intake → scoping → lit_search → ref_gate → taxonomy
+intake → scoping → [lit_search ∥ style_bank]    ← retrieval and style learning in parallel
+      → ref_gate → taxonomy
       → [figures ∥ writing ∥ ideas]      ← three lanes in parallel
       → review → all gates PASS → final
                → issues → routed back to the owning stage → review again …
@@ -161,7 +164,8 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](doc
 | Stage | Agent | Exit gate |
 |---|---|---|
 | scoping | orchestrator + you | `scope_confirmed` |
-| lit_search | goai-lit-search | `lit_coverage` — all subtopics covered, <5 new deduped papers in the last round |
+| lit_search | goai-lit-search | `lit_coverage` — all subtopics covered + scale quota (≥100 papers for a full survey) |
+| style_bank | goai-style-bank | `style_bank_ready` — style cards + exemplar figures from 30 classic surveys |
 | ref_gate | goai-ref-guard | `ref_integrity` — zero UNVERIFIED / MISMATCH entries |
 | taxonomy | goai-survey-writer | `taxonomy_ready` — every leaf backed by ≥ 3 papers |
 | figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure |
@@ -170,6 +174,15 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](doc
 | review | goai-reviewer | `review_pass` — 0 blockers and 0 majors |
 
 ## 5. 🎨 Figures That Stay Editable
+
+**Main figures run a three-phase pipeline**: strategy contract (source-fidelity
+table + edge-label-first + palette/density budgets) → AI image generation with
+two candidate rounds (4 exploratory sketches → issue-ledger audit picks a
+direction → 2 formal candidates, prompts injected with style_bank domain cards
+and exemplar references) → measurement-driven reconstruction into editable
+vectors. Generated rasters are reference finals only — **deliverables always
+come from reconstruction**, so venue-grade visuals and editability coexist.
+Auxiliary figures (timelines, simple flows) render directly from figspec.
 
 A figure here is never a dead bitmap. The single source of truth is a **figspec** —
 a small JSON describing nodes, groups, edges, and texts. One render call emits:

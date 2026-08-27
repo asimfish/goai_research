@@ -22,12 +22,16 @@ orchestrator 身份按账本状态机推进，轮到哪个阶段就按对应 SKI
 
 ### 第一部分：基本任务 —— 文献调研报告（占比 50%）
 
-按主回环完整执行 scoping → lit_search → ref_gate → taxonomy →
-(figures ∥ writing) → review → final，硬性要求：
+按主回环完整执行 scoping → (lit_search ∥ style_bank) → ref_gate →
+taxonomy → (figures ∥ writing) → review → final，硬性要求：
 
-1. **文献覆盖针对性**：把主题分解为 5±1 个 MECE 子主题；每个子主题经
+1. **文献覆盖针对性与规模**：把主题分解为 5±1 个 MECE 子主题；每个子主题经
    多源真实检索（arXiv + OpenAlex 必查，Crossref/S2/DBLP 择需），
-   `coverage_report` 全子主题无缺口才过 `lit_coverage` 闸门。
+   `coverage_report` 全子主题无缺口 + comprehensive 档配额（**库 ≥100 篇**、
+   每子主题 ≥15、综述类 ≥8、近三年 ≥30%）才过 `lit_coverage` 闸门。
+0. **领域风格库前置**：与 lit_search 并行跑 goai-style-bank——检索 30 篇
+   本领域经典综述，产出写作/画图风格卡与范图库（`style_bank_ready` 闸门），
+   写作与图纸阶段必须消费风格卡。
 2. **知识抽取结构化**：每篇入库文献生成结构化阅读卡片（方法/材料体系/
    关键数值/局限），taxonomy 每叶 ≥3 篇支撑。
 3. **Research Gap 识别质量**：产出 **≥5 条 Research Gap 清单**
@@ -42,7 +46,11 @@ orchestrator 身份按账本状态机推进，轮到哪个阶段就按对应 SKI
    落 `CITATION_AUDIT.md` 作为可自证材料。
 5. **交付格式**：报告以 LaTeX 撰写并**真实编译出 PDF**（本机有
    pdflatex/latexmk/bibtex），`.tex`、`.bib`、图与编译所需文件全部保留。
-   图纸走 figspec → SVG（论文用）+ .drawio（可编辑）双格式。
+   主图走 goai-figure-studio 三段管线（策略合同 → AI 生图两轮候选 →
+   可编辑化重建），辅助图走 figspec 直渲；一律交付 SVG（论文用）+
+   .drawio（可编辑）双格式，主图另附两轮候选与审计 ledger。
+   写作消费 super_library 语料（section 协议 + 句式卡 + 表格模板 +
+   wording lint）与 style_bank 写作风格卡。
 
 ### 第二部分：进阶路线 C —— 合成路线与工艺设计（占比 50%）
 
@@ -87,7 +95,9 @@ orchestrator 身份按账本状态机推进，轮到哪个阶段就按对应 SKI
 - `loopctl init --topic "{{TOPIC}}" --max-rounds 4 --effort balanced --strictness normal --auto-proceed true`
 - 人类确认点（scope 定稿、贡献声明、化学安全）在无人值守运行时由你代行
   并在账本 log 注明「代行」；正式参赛时这三处必须停下来等人。
-- 检索预算：每子主题 ≤10 篇、总库 25–40 篇；核查预算 ≥20 条；
+- 检索预算：comprehensive 档——总库 100–150 篇、每子主题 ≥15 篇；
+  核查预算：正文实际引用条目 100% 核查 + 其余库内条目全量核查
+  （时间受限时正文引用优先，剩余抽样 ≥30% 并记账）；
   429 限流重试 ≤2 次后如实记录。
 - 审稿至少 2 轮（第 1 轮必须产出真实 issue，禁止一轮全绿）；无跨模型
   通道时按降级规程记 provisional 并附回执。

@@ -11,6 +11,7 @@
 | 检索文献、下载 PDF、导 BibTeX | `skills/goai-lit-search/SKILL.md` |
 | 核查引用真伪/作者/顺序 | `skills/goai-ref-guard/SKILL.md` |
 | 画论文图 / taxonomy 图 | `skills/goai-figure-studio/SKILL.md` |
+| 学经典综述风格建风格库 | `skills/goai-style-bank/SKILL.md` |
 | 把现成图转 drawio 可编辑 | `skills/goai-figure-editable/SKILL.md` |
 | 写综述 / 建 taxonomy / 组稿 | `skills/goai-survey-writer/SKILL.md` |
 | 生成 idea / 实验方案 / 逆合成 | `skills/goai-idea-forge/SKILL.md` |
