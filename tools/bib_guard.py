@@ -31,16 +31,29 @@ CITE_MD_EACH = re.compile(r"@([A-Za-z0-9_:\-]+)")
 
 
 def collect_cites(path: str) -> list[tuple[str, str, int]]:
-    """→ [(key, file, line_no)]"""
+    """→ [(key, file, line_no)]。全文扫描：\cite{...} 参数允许跨行。"""
     out = []
     with open(path, encoding="utf-8", errors="replace") as f:
-        for ln, line in enumerate(f, 1):
-            for m in CITE_TEX.finditer(line):
-                for key in m.group(1).split(","):
-                    out.append((key.strip(), path, ln))
-            for m in CITE_MD.finditer(line):
-                for km in CITE_MD_EACH.finditer(m.group(0)):
-                    out.append((km.group(1), path, ln))
+        text = f.read()
+    line_starts = [0]
+    for i, ch in enumerate(text):
+        if ch == "\n":
+            line_starts.append(i + 1)
+
+    def line_of(pos: int) -> int:
+        import bisect
+        return bisect.bisect_right(line_starts, pos)
+
+    for m in CITE_TEX.finditer(text):
+        ln = line_of(m.start())
+        for key in m.group(1).split(","):
+            key = key.strip()
+            if key:
+                out.append((key, path, ln))
+    for m in CITE_MD.finditer(text):
+        ln = line_of(m.start())
+        for km in CITE_MD_EACH.finditer(m.group(0)):
+            out.append((km.group(1), path, ln))
     return out
 
 
