@@ -76,13 +76,13 @@ def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool,
 
 
 def _wrap_label(label: str, w: float, font_size: float) -> list[str]:
-    """按宽度粗略折行（CJK 记 1 字宽，拉丁按 0.58 字宽估算）。"""
+    """按宽度粗略折行（CJK 记 1 字宽，拉丁按 0.61 字宽估算（加粗体偏保守））。"""
     max_units = max(int(w / (font_size * 0.62)), 4)
     lines: list[str] = []
     for hard in (label or "").split("\n"):
         cur, units = "", 0.0
         for ch in hard:
-            u = 1.0 if ord(ch) > 0x2E7F else 0.58
+            u = 1.0 if ord(ch) > 0x2E7F else 0.61
             if units + u > max_units and cur:
                 lines.append(cur)
                 cur, units = ch, u
@@ -133,7 +133,7 @@ def render(spec: dict[str, Any]) -> str:
         ts = spec.get("title_style") or {}
         parts.append(_text_block(
             W / 2, ts.get("y", 24), spec["title"], W,
-            ts.get("font_size", 16), ts.get("color", "#1a1a1a"),
+            ts.get("font_size", 22), ts.get("color", "#1a1a1a"),
             bool(ts.get("bold", True))))
 
     for g in spec.get("groups", []):
@@ -147,7 +147,7 @@ def render(spec: dict[str, Any]) -> str:
             f'rx="{g.get("arc", 10)}" fill="{fill}" stroke="{stroke}" '
             f'stroke-width="{gsw}"{dash}{shadow}/>')
         if g.get("label"):
-            g_fs = g.get("font_size", 12.5)
+            g_fs = g.get("font_size", 15)
             parts.append(
                 f'<text x="{g["x"] + 12}" y="{g["y"] + g_fs * 1.55}" '
                 f'font-family="{FONT}" '
@@ -173,9 +173,9 @@ def render(spec: dict[str, Any]) -> str:
             mid = pts[len(pts) // 2] if len(pts) % 2 == 1 else (
                 (pts[len(pts) // 2 - 1][0] + pts[len(pts) // 2][0]) / 2,
                 (pts[len(pts) // 2 - 1][1] + pts[len(pts) // 2][1]) / 2)
-            fs = style_of(e, spec, "font_size", 11)
+            fs = style_of(e, spec, "font_size", 12.5)
             lab_lines = e["label"].split("\n")
-            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.58 for c in ln) * fs
+            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.61 for c in ln) * fs
                         for ln in lab_lines) + 8
             est_h = fs * 1.25 * (len(lab_lines) - 1) + fs * 1.5
             parts.append(
@@ -192,7 +192,7 @@ def render(spec: dict[str, Any]) -> str:
         cx, cy = center(nd)
         label = nd.get("label", "")
         lab_color = nd.get("label_color", "#1a1a1a")
-        lab_bold = bool(nd.get("label_bold"))
+        lab_bold = bool(nd.get("label_bold", True))
         tw = text_width(nd)
         if nd.get("sublabel"):
             sub_fs = max(fs * SUBLABEL_RATIO, SUBLABEL_MIN)
@@ -216,7 +216,7 @@ def render(spec: dict[str, Any]) -> str:
     for t in spec.get("texts", []):
         parts.append(_text_block(
             t["x"], t["y"], t.get("text", ""), 10 ** 6,
-            t.get("font_size", 12), t.get("color", "#1a1a1a"),
+            t.get("font_size", 13), t.get("color", "#1a1a1a"),
             bool(t.get("bold")),
             anchor_map.get(t.get("align", "center"), "middle")))
 

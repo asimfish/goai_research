@@ -53,7 +53,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
 
     if spec.get("title"):
         ts = spec.get("title_style") or {}
-        t_fs = ts.get("font_size", 16)
+        t_fs = ts.get("font_size", 22)
         t_y = ts.get("y", 24)
         t_style = (f"text;html=1;align=center;verticalAlign=middle;fontSize={t_fs};"
                    f"fontColor={ts.get('color', '#1a1a1a')};"
@@ -68,7 +68,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             f"rounded=1;absoluteArcSize=1;arcSize={g.get('arc', 10)};"
             "whiteSpace=wrap;html=1;verticalAlign=top;"
             f"align=left;spacingLeft=10;spacingTop=4;"
-            f"fontSize={g.get('font_size', 12)};fontStyle=1;"
+            f"fontSize={g.get('font_size', 15)};fontStyle=1;"
             "container=1;collapsible=0;"
             f"fillColor={g.get('fill', '#F7F9FC')};"
             f"strokeColor={g.get('stroke', '#B9C4D0')};"
@@ -92,7 +92,8 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             style += f"absoluteArcSize=1;arcSize={nd['arc']};"
         if nd.get("label_color"):
             style += f"fontColor={nd['label_color']};"
-        if nd.get("label_bold"):
+        # 主标默认加粗；有 sublabel 时由 <b> 只包主标，避免副文一起变粗
+        if nd.get("label_bold", True) and not nd.get("sublabel"):
             style += "fontStyle=1;"
         if nd.get("dashed"):
             style += "dashed=1;"
@@ -124,7 +125,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
                  + arrow_map.get(e.get("arrow", "block"), arrow_map["block"])
                  + f"strokeColor={edge_style_of(e, spec, 'color', DEFAULTS['edge_color'])};"
                  + f"strokeWidth={edge_style_of(e, spec, 'width', DEFAULTS['edge_width'])};"
-                 + f"fontSize={style_of(e, spec, 'font_size', 11)};")
+                 + f"fontSize={style_of(e, spec, 'font_size', 12.5)};")
         if e.get("dashed"):
             style += "dashed=1;"
         wps = e.get("waypoints") or []
@@ -145,7 +146,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
     for i, t in enumerate(spec.get("texts", [])):
         align = t.get("align", "center")
         style = (f"text;html=1;align={align};verticalAlign=middle;"
-                 f"fontSize={t.get('font_size', 12)};"
+                 f"fontSize={t.get('font_size', 13)};"
                  f"fontColor={t.get('color', '#1a1a1a')};"
                  "strokeColor=none;fillColor=none;")
         if t.get("bold"):
