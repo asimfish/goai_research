@@ -179,6 +179,43 @@ def test_figspec_validate_catches_parallel_edges():
     assert figspec.validate(ok) == []
 
 
+def test_figspec_lint_font_floor():
+    # 1500px 画布上 10px ≈ 3.1pt 印刷 → error;15.5px ≈ 4.8pt → 通过
+    spec = {"canvas": {"width": 1500, "height": 400},
+            "nodes": [{"id": "a", "label": "Small text", "x": 10, "y": 10,
+                       "w": 200, "h": 60, "font_size": 10}]}
+    r = figspec.lint(spec)
+    assert any("印刷不可读" in e for e in r["errors"])
+    spec["nodes"][0]["font_size"] = 15.5
+    assert figspec.lint(spec)["errors"] == []
+
+
+def test_figspec_lint_text_overflow():
+    # 六边形有效文本区小,长文本 + 大字号 → 溢出 error
+    spec = {"canvas": {"width": 800, "height": 400},
+            "nodes": [{"id": "g", "shape": "hexagon", "font_size": 16,
+                       "label": "a very long decision question that cannot fit",
+                       "x": 10, "y": 10, "w": 150, "h": 50}]}
+    r = figspec.lint(spec)
+    assert any("溢出" in e for e in r["errors"])
+    # 纯装饰节点(无文字)不检查
+    deco = {"canvas": {"width": 800, "height": 400},
+            "nodes": [{"id": "d", "label": "", "x": 0, "y": 0, "w": 4, "h": 8}]}
+    assert figspec.lint(deco)["errors"] == []
+
+
+def test_figspec_lint_group_label_occlusion():
+    spec = {"canvas": {"width": 800, "height": 400},
+            "groups": [{"id": "g1", "label": "Lane C - pre-registered gates",
+                        "x": 0, "y": 0, "w": 700, "h": 200, "font_size": 15}],
+            "nodes": [{"id": "n1", "label": "Node", "group": "g1",
+                       "x": 20, "y": 8, "w": 150, "h": 50, "font_size": 15}]}
+    r = figspec.lint(spec)
+    assert any("遮挡" in e for e in r["errors"])
+    spec["nodes"][0]["y"] = 40  # 移出标签带
+    assert figspec.lint(spec)["errors"] == []
+
+
 def test_render_svg_contains_elements():
     svg = render_svg.render(SPEC)
     for frag in ("Input", "Model", "tokens", "marker"):

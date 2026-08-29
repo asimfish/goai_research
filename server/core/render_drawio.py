@@ -17,17 +17,22 @@ from .figspec import DEFAULTS, edge_style_of, style_of
 _SHAPE_STYLE = {
     "rect": "rounded=0;whiteSpace=wrap;html=1;",
     "rounded": "rounded=1;whiteSpace=wrap;html=1;arcSize=12;",
-    "stadium": "rounded=1;whiteSpace=wrap;html=1;arcSize=50;",
-    "ellipse": "ellipse;whiteSpace=wrap;html=1;",
-    "diamond": "rhombus;whiteSpace=wrap;html=1;",
-    "hexagon": "shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;",
+    "stadium": "rounded=1;whiteSpace=wrap;html=1;arcSize=50;spacing=6;",
+    # 斜边/弧边形状加 spacing，文字不贴边（与 SVG 渲染器的有效文本区一致）
+    "ellipse": "ellipse;whiteSpace=wrap;html=1;spacing=8;",
+    "diamond": "rhombus;whiteSpace=wrap;html=1;spacing=12;",
+    "hexagon": ("shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;"
+                "html=1;spacing=10;"),
     "parallelogram": ("shape=parallelogram;perimeter=parallelogramPerimeter;"
-                      "whiteSpace=wrap;html=1;"),
+                      "whiteSpace=wrap;html=1;spacing=8;"),
     "cylinder": ("shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;"
                  "backgroundOutline=1;size=9;"),
     "document": "shape=document;whiteSpace=wrap;html=1;boundedLbl=1;",
-    "cloud": "ellipse;shape=cloud;whiteSpace=wrap;html=1;",
+    "cloud": "ellipse;shape=cloud;whiteSpace=wrap;html=1;spacing=10;",
 }
+
+SUBLABEL_RATIO = 0.85   # 与 render_svg 同步
+SUBLABEL_MIN = 10.5
 
 
 def _cell(cell_id: str, value: str, style: str, x: float, y: float,
@@ -95,8 +100,10 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             style += "shadow=1;"
         value = nd.get("label", "")
         if nd.get("sublabel"):
+            nd_fs = style_of(nd, spec, "font_size", DEFAULTS["font_size"])
+            sub_px = max(nd_fs * SUBLABEL_RATIO, SUBLABEL_MIN)
             value = (f"<b>{nd.get('label', '')}</b><br/>"
-                     f"<font style='font-size:0.85em' "
+                     f"<font style='font-size:{sub_px:g}px' "
                      f"color='{nd.get('sublabel_color', '#555555')}'>"
                      f"{nd['sublabel']}</font>")
         parent = "1"

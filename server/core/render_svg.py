@@ -8,6 +8,21 @@ from .figspec import DEFAULTS, border_point, center, edge_style_of, style_of
 
 FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif"
 
+# 各形状的有效文本宽度比例（文字折行按 w*ratio 计算，避免顶到斜边/弧边）
+TEXT_WIDTH_RATIO = {
+    "diamond": 0.55, "hexagon": 0.70, "ellipse": 0.72, "cloud": 0.62,
+    "parallelogram": 0.78, "document": 0.85, "cylinder": 0.85,
+    "rect": 0.90, "rounded": 0.90, "stadium": 0.86,
+}
+
+SUBLABEL_RATIO = 0.85   # sublabel 相对主标字号
+SUBLABEL_MIN = 10.5     # sublabel 字号下限（px）
+
+
+def text_width(nd: dict[str, Any]) -> float:
+    """节点的有效文本宽度（shape 感知）。"""
+    return nd["w"] * TEXT_WIDTH_RATIO.get(nd.get("shape", "rect"), 0.90)
+
 
 def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool,
                stroke_width: float = 1.5) -> str:
@@ -61,13 +76,13 @@ def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool,
 
 
 def _wrap_label(label: str, w: float, font_size: float) -> list[str]:
-    """按宽度粗略折行（CJK 记 1 字宽，拉丁按 0.55 字宽估算）。"""
+    """按宽度粗略折行（CJK 记 1 字宽，拉丁按 0.58 字宽估算）。"""
     max_units = max(int(w / (font_size * 0.62)), 4)
     lines: list[str] = []
     for hard in (label or "").split("\n"):
         cur, units = "", 0.0
         for ch in hard:
-            u = 1.0 if ord(ch) > 0x2E7F else 0.55
+            u = 1.0 if ord(ch) > 0x2E7F else 0.58
             if units + u > max_units and cur:
                 lines.append(cur)
                 cur, units = ch, u
@@ -160,12 +175,12 @@ def render(spec: dict[str, Any]) -> str:
                 (pts[len(pts) // 2 - 1][1] + pts[len(pts) // 2][1]) / 2)
             fs = style_of(e, spec, "font_size", 11)
             lab_lines = e["label"].split("\n")
-            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.55 for c in ln) * fs
+            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.58 for c in ln) * fs
                         for ln in lab_lines) + 8
             est_h = fs * 1.25 * (len(lab_lines) - 1) + fs * 1.5
             parts.append(
                 f'<rect x="{mid[0] - est_w / 2}" y="{mid[1] - est_h / 2}" '
-                f'width="{est_w}" height="{est_h}" fill="#FFFFFF" opacity="0.85"/>')
+                f'width="{est_w}" height="{est_h}" fill="#FFFFFF" opacity="0.9"/>')
             parts.append(_text_block(mid[0], mid[1], e["label"], 10 ** 6, fs, color))
 
     for nd in spec.get("nodes", []):
@@ -178,14 +193,23 @@ def render(spec: dict[str, Any]) -> str:
         label = nd.get("label", "")
         lab_color = nd.get("label_color", "#1a1a1a")
         lab_bold = bool(nd.get("label_bold"))
+        tw = text_width(nd)
         if nd.get("sublabel"):
-            parts.append(_text_block(cx, cy - fs * 0.55, label, nd["w"], fs,
+            sub_fs = max(fs * SUBLABEL_RATIO, SUBLABEL_MIN)
+            n_lab = len(_wrap_label(label, tw, fs))
+            n_sub = len(_wrap_label(nd["sublabel"], tw, sub_fs))
+            lab_h = fs * 1.25 * n_lab
+            sub_h = sub_fs * 1.25 * n_sub
+            gap = fs * 0.30
+            total = lab_h + gap + sub_h
+            lab_cy = cy - total / 2 + lab_h / 2
+            sub_cy = cy + total / 2 - sub_h / 2
+            parts.append(_text_block(cx, lab_cy, label, tw, fs,
                                      color=lab_color, bold=True))
-            parts.append(_text_block(cx, cy + fs * 0.75, nd["sublabel"], nd["w"],
-                                     fs * 0.82,
+            parts.append(_text_block(cx, sub_cy, nd["sublabel"], tw, sub_fs,
                                      color=nd.get("sublabel_color", "#555555")))
         else:
-            parts.append(_text_block(cx, cy, label, nd["w"], fs,
+            parts.append(_text_block(cx, cy, label, tw, fs,
                                      color=lab_color, bold=lab_bold))
 
     anchor_map = {"left": "start", "center": "middle", "right": "end"}
