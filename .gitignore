@@ -5,6 +5,17 @@ __pycache__/
 *.egg-info/
 .DS_Store
 
+# LaTeX 编译中间产物（pdf 保留，可直接看成品）
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.xdv
+*.toc
+examples/**/paper/main.log
+examples/**/paper/main.out
+
 # 运行时工作区产物（保留目录结构，不提交内容）
 workspace/library/pdfs/*.pdf
 workspace/library/*.jsonl
