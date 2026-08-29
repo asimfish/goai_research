@@ -1,0 +1,165 @@
+\section{Performance Comparison Under Explicit Protocols}
+\label{sec:performance}
+
+\subsection{Why raw rates do not rank materials}
+
+Reported HER rates for COF systems span from below
+1~mmol\,g$^{-1}$\,h$^{-1}$ to nearly 400~mmol\,g$^{-1}$\,h$^{-1}$, but the
+protocol variables -- irradiation spectrum and intensity, sacrificial donor,
+cocatalyst identity and loading, catalyst mass, and dispersion state -- move
+rates by larger factors than most design levers~\cite{zhong2023oligo,
+zhao2024nanoscale,ghosh2020identification}. Mass-normalized rates fall as
+loading rises; apparent quantum yield (AQY) at a stated wavelength and
+solar-to-hydrogen (STH) efficiency are the only cross-laboratory portable
+metrics~\cite{luo2024asymmetric,cheng2023fully}. Pt-size studies underline
+the danger of single-variable narratives: across three Tp-series COFs the
+photodeposited Pt particle size varied with band gap, yet HER rates showed
+no correlation with that size~\cite{wang2026bandgap}. Tables~\ref{tab:single}
+and \ref{tab:hetero} therefore list protocol columns explicitly and mark
+unreported fields as n.r.; entries are exemplars, not a leaderboard.
+
+\begin{table}[t]
+  \centering
+  \caption{Representative single-phase COF photocatalysts. Rates in
+  mmol\,g$^{-1}$\,h$^{-1}$ unless noted; n.r. = not reported in the audited
+  record.}
+  \label{tab:single}
+  \small
+  \begin{tabular}{P{3.1cm} P{2.5cm} P{2.2cm} P{1.6cm} P{1.7cm} P{2.4cm}}
+    \toprule
+    System (linkage) & Design lever & Light / donor & Cocat. & Rate & AQY / note \\
+    \midrule
+    Protonated D--A imine COF~\cite{yang2021protonated}
+      & linkage protonation & visible / n.r. & Pt & 20.7 & landmark lever demo \\
+    COF-920 (protonated)~\cite{dong2025synergistic}
+      & isoreticular + protonation & UV--vis / n.r. & n.r. & 364
+      & gas-collection verified \\
+    $\beta$-Ketene--cyano D--A nanosheets~\cite{li2022covalent}
+      & D--A pair, exfoliation & 450~nm / n.r. & Pt & n.r. & AQE 82.6\% \\
+    Nano-COF colloids~\cite{zhao2024nanoscale}
+      & nanoscale downsizing & visible / n.r. & Pt & 392 & 33.3~$\mu$mol\,h$^{-1}$ absolute \\
+    DBC-sp$^2$c-COF~\cite{yu2025topology}
+      & sp$^2$c Kagome lattice & visible / n.r. & Pt & 105.3
+      & 80.0 in natural seawater \\
+    COF-954~\cite{zhong2023oligo}
+      & oligo side chains & visible / n.r. & 5~wt\% Pt & 137.2
+      & 191.7 (seawater, UV--vis) \\
+    TAPPy-DBTDP-COF~\cite{liu2024dual}
+      & dual acceptors & visible / n.r. & Pt & 12.7 & top D--A tier \\
+    TpPaCl~\cite{ma2025engineering}
+      & halogen active sites & visible / n.r. & none & 16.3
+      & 11.5 in real seawater \\
+    TP-COF-F-3~\cite{zhu2025fluorination}
+      & F positional isomer & 500~nm / n.r. & n.r. & n.r. & AQY 4.09\% \\
+    COF--alkene~\cite{mo2020alkene}
+      & linkage isolation & 420~nm / n.r. & Pt & n.r. & AQE 6.7\% \\
+    d-CTF(CONH$_2$)~\cite{gu2026single}
+      & designed defects & visible / n.r. & n.r. & 17.6 & 6.3$\times$ vs.\ CTF-1 \\
+    Pt@TpBpy-NS~\cite{yang2023engineering}
+      & nanosheet + pore-confined Pt & visible / none & sub-nm Pt
+      & n.r. & OWS, STH 0.23\% \\
+    sp$^2$c-COF (OWS)~\cite{cheng2023fully}
+      & full conjugation & 420~nm / none & n.r. & n.r. & AQE 2.53\%, OWS \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \caption{Representative COF heterojunction and composite systems.
+  Abbreviations: ZIS = ZnIn$_2$S$_4$; BP = black phosphorus.}
+  \label{tab:hetero}
+  \small
+  \begin{tabular}{P{3.3cm} P{2.4cm} P{2.2cm} P{1.6cm} P{1.7cm} P{2.2cm}}
+    \toprule
+    System & Junction type & Light / donor & Cocat. & Rate & Note \\
+    \midrule
+    Pt/S@TpPa-1~\cite{qiu2026atomically}
+      & Schottky, low work function & 420~nm / n.r. & Pt & n.r.
+      & AQE 80.7\% \\
+    Py-HOF/COF~\cite{gao20242d}
+      & organic--organic & visible / n.r. & n.r. & 390.7
+      & 9.2$\times$ vs.\ COF \\
+    NiCo-NC@TP-BD~\cite{pan2025reducing}
+      & pore nanoreactor & visible / n.r. & none & 79.0
+      & 395$\times$ vs.\ bare COF \\
+    TiO$_2$ NFs@COF~\cite{gao2025microwavex}
+      & S-scheme & visible / n.r. & n.r. & 58.3 & microwave growth \\
+    Ru(II)PS@Py-COF~\cite{zhang2023stable}
+      & molecular complex & visible / n.r. & n.r. & 51.3
+      & 2.5$\times$ vs.\ COF \\
+    Diquat-ETM COF~\cite{mi2021covalent}
+      & integrated e$^-$ mediator & visible / n.r. & n.r. & 34.6
+      & beats physical mix \\
+    CdS/TFPT-DHTH-COF~\cite{zhang2024a}
+      & direct Z-scheme & visible / n.r. & none & 15.8
+      & 75$\times$ vs.\ COF \\
+    CdS/TpPa-COF (1D)~\cite{fan2026one}
+      & S-scheme, directional & visible / n.r. & n.r. & n.r.
+      & TpPa platform \\
+    P-COF-1/CTF~\cite{xu20202d}
+      & 2D--2D $\pi$--$\pi$ & visible / n.r. & n.r. & 14.1
+      & 2.5$\times$ vs.\ CTF \\
+    JUC-704@ZIS~\cite{zhang2025dual}
+      & cocatalyst-free junction & visible / n.r. & none & 9.46
+      & seawater operation \\
+    HKUST-1/TpPa-1~\cite{ma2024ii}
+      & MOF-on-COF, II-scheme & visible / n.r. & n.r. & n.r.
+      & coordination-bonded interface \\
+    BP/COF (2D--2D)~\cite{yan2023metal}
+      & metal-free p--n & visible / n.r. & none & n.r.
+      & cocatalyst-free \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{The cocatalyst-dependence spectrum}
+
+Because Pt cost and scarcity bound any deployment scenario
+~\cite{qu2024covalent}, the field is best read as a progression along a
+cocatalyst-dependence axis. At the noble-metal end, engineering focuses on
+atom economy: single-atom Pt anchored through defined
+C$_3$N--Pt--Cl$_2$ coordination on TpPa-1~\cite{dong2021platinum},
+heteroatom-tuned Pt single-atom frameworks~\cite{tang2025engineering},
+sulfur-chelated high-loading single atoms that remain atom-efficient
+(11.4~mmol\,g$^{-1}$\,h$^{-1}$ at 12.1~wt\%)~\cite{chen2024low}, and
+low-work-function Pt junctions whose $\Delta G_{\mathrm{H}^*}=-0.13$~eV
+optimality yields AQE 80.7\% at 420~nm~\cite{qiu2026atomically}.
+Earth-abundant single atoms follow: Co on COFs~\cite{wang2024single},
+Fe--Co dual atoms on COF/C$_3$N$_4$~\cite{osemba2026synergistic},
+zinc single atoms bridged by copper clusters~\cite{wang2026trinuclear},
+spinel cocatalysts with engineered orbital interactions
+~\cite{zhang2026electronic}, and DFT screens that rationalize
+single-atom--support pairing~\cite{younas2024a,niu2023review}. Molecular
+and cluster catalysts occupy the middle ground: cyclometalated Pt in
+vinylene frameworks~\cite{jiao2026cyclometalated}, azide-anchored
+cobaloximes on COF-42 that outlast their physisorbed analogues
+~\cite{gottschling2020rational}, enantioselectively immobilized chiral Co
+complexes (5.70~mmol\,g$^{-1}$\,h$^{-1}$ noble-metal-free)
+~\cite{huang2025enantioselective}, Cu(II) mediators on chiral
+$\beta$-ketoenamine hosts~\cite{weng2022the}, and Ru sites on triazine
+sp$^2$c platforms extending to electrocatalytic HER~\cite{zhao2022ruthenium,
+yu2024vinyl,zhao2025covalent}. The cocatalyst-free end is growing fastest:
+halogen-site TpPaCl~\cite{ma2025engineering}, protonated CdS/COF
+architectures~\cite{duan2024protonated}, benzothiazole metal-COFs
+~\cite{zhao2025cocatalyst}, JUC-70x@ZIS junctions in seawater
+~\cite{zhang2025dual,zhang2025dualx}, black-phosphorus p--n junctions
+~\cite{yan2023metal}, and C$_{60}$@TpPa charge-transfer dyads
+~\cite{yupeng2026c}.
+
+\subsection{Stability reporting}
+
+Durability claims currently mix hour-scale runs, cycle counts, and
+post-mortem characterization. The stronger reports pair retention
+percentages with structural verification: 12-hour photocurrent stability
+with retained crystallinity~\cite{lu2024copper}, sustained performance of
+integrated-interface frameworks~\cite{he2023integrated}, S-scheme junctions
+surviving repeated cycling~\cite{dong20222d,zhang2022s,shang20212d,
+dong2023fabrication,zhou2025functional,liu2025in}, and functional-group-
+resolved junction dynamics~\cite{guo2025engineering,xu2025localized}.
+Chirality-induced spin selectivity~\cite{wu2026chiral}, piezo-assisted
+charge steering~\cite{gao2025piezoceramics}, and interfacial covalent
+bonding~\cite{yi2024constructing,li2025modifying,qi2026construction}
+each claim durability side benefits that still await standardized,
+long-duration verification -- the protocol gap Section~\ref{sec:challenges}
+addresses~\cite{sun2025design,hao2025covalent,doremus2024photocatalytic}.

@@ -1,0 +1,640 @@
+{
+ "title": "Pre-Registered TpPa-1 Improvement Route",
+ "title_style": {
+  "font_size": 24,
+  "y": 28,
+  "color": "#1F2933",
+  "bold": true
+ },
+ "canvas": {
+  "width": 1500,
+  "height": 680
+ },
+ "defaults": {
+  "font_size": 15.5,
+  "fill": "#FFFFFF",
+  "stroke": "#333333",
+  "edge_color": "#234E70",
+  "edge_width": 3
+ },
+ "groups": [
+  {
+   "id": "gA",
+   "label": "Lane A — synthesis & controls",
+   "x": 20,
+   "y": 70,
+   "w": 250,
+   "h": 560,
+   "fill": "#EEF4F7",
+   "stroke": "#9DB4C6",
+   "stroke_width": 1.3,
+   "font_size": 15.5,
+   "label_color": "#234E70"
+  },
+  {
+   "id": "gB",
+   "label": "Lane B — measurements & quantitative endpoints",
+   "x": 310,
+   "y": 70,
+   "w": 1170,
+   "h": 180,
+   "fill": "#EDF7F5",
+   "stroke": "#93C0BC",
+   "stroke_width": 1.3,
+   "font_size": 15.5,
+   "label_color": "#2A7F8E"
+  },
+  {
+   "id": "gC",
+   "label": "Lane C — pre-registered gates",
+   "x": 310,
+   "y": 280,
+   "w": 1170,
+   "h": 130,
+   "fill": "#FBF4E8",
+   "stroke": "#D3B98A",
+   "stroke_width": 1.3,
+   "font_size": 15.5,
+   "label_color": "#8A5A14"
+  },
+  {
+   "id": "gF",
+   "label": "Fallbacks & outcome",
+   "x": 310,
+   "y": 440,
+   "w": 1170,
+   "h": 190,
+   "fill": "#FFFFFF",
+   "stroke": "#C9A9A4",
+   "stroke_width": 1.2,
+   "dashed": true,
+   "font_size": 15.5,
+   "label_color": "#A64B45"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "A1",
+   "label": "Baseline TpPa-1",
+   "sublabel": "Tp + Pa-1 · solvothermal\n120 °C, 3 d · dioxane/mesitylene",
+   "x": 40,
+   "y": 104,
+   "w": 210,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gA",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 15.5
+  },
+  {
+   "id": "A2",
+   "label": "Mixed-linker D–A series",
+   "sublabel": "(1−x) Pa-1 + x BT(NH₂)₂\nx = 0.05 / 0.10 / 0.25 / 0.50",
+   "x": 40,
+   "y": 224,
+   "w": 210,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gA",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 15.5
+  },
+  {
+   "id": "A3",
+   "label": "Matched controls",
+   "sublabel": "x = 0 · physical blend · amorphous\nanalog · same activation",
+   "x": 40,
+   "y": 344,
+   "w": 210,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gA",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 15.5
+  },
+  {
+   "id": "A4",
+   "label": "Safety plan",
+   "sublabel": "sealed-tube pressure · solvent &\nPt-salt handling · H₂ venting",
+   "x": 40,
+   "y": 520,
+   "w": 210,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gA",
+   "stroke": "#A64B45",
+   "stroke_width": 1.7,
+   "font_size": 15.5
+  },
+  {
+   "id": "B1",
+   "label": "Structure & porosity QC",
+   "sublabel": "PXRD FWHM · BET SSA · FTIR\nketo-form · same-batch splits",
+   "x": 330,
+   "y": 104,
+   "w": 200,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gB",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 15.5
+  },
+  {
+   "id": "B2",
+   "label": "Band & carrier mapping",
+   "sublabel": "Tauc E_g · Mott–Schottky · UPS\nfs-TAS τ_CS · TRPL quenching",
+   "x": 620,
+   "y": 104,
+   "w": 200,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gB",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 15.5
+  },
+  {
+   "id": "B3",
+   "label": "HER assay (matched)",
+   "sublabel": "3 wt% Pt · 10 vol% TEOA · ≥420 nm\nvs x = 0 + blend controls",
+   "x": 910,
+   "y": 104,
+   "w": 200,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gB",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 15.5
+  },
+  {
+   "id": "B4",
+   "label": "Stability protocol",
+   "sublabel": "best x · 5 × 4 h cycles + 20 h\npost PXRD/FTIR/XPS · ICP-MS",
+   "x": 1200,
+   "y": 104,
+   "w": 200,
+   "h": 78,
+   "shape": "rounded",
+   "group": "gB",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 15.5
+  },
+  {
+   "id": "bd1",
+   "label": "FWHM ≤ 1.3× · SSA ≥ 0.7× ref",
+   "x": 330,
+   "y": 188,
+   "w": 200,
+   "h": 44,
+   "shape": "stadium",
+   "group": "gB",
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 1.4,
+   "font_size": 13.5
+  },
+  {
+   "id": "bd2",
+   "label": "τ_CS ≥ 2× · E_CB ≤ −0.3 V NHE",
+   "x": 620,
+   "y": 188,
+   "w": 200,
+   "h": 44,
+   "shape": "stadium",
+   "group": "gB",
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 1.4,
+   "font_size": 13.5
+  },
+  {
+   "id": "bd3",
+   "label": "rate ≥ 2× · AQY(420) ≥ 5%",
+   "x": 910,
+   "y": 188,
+   "w": 200,
+   "h": 44,
+   "shape": "stadium",
+   "group": "gB",
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 1.4,
+   "font_size": 13.5
+  },
+  {
+   "id": "bd4",
+   "label": "≥ 80% retention over 20 h",
+   "x": 1200,
+   "y": 188,
+   "w": 200,
+   "h": 44,
+   "shape": "stadium",
+   "group": "gB",
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 1.4,
+   "font_size": 13.5
+  },
+  {
+   "id": "G1",
+   "label": "G1 · structure\nretained?",
+   "x": 335,
+   "y": 318,
+   "w": 190,
+   "h": 64,
+   "shape": "hexagon",
+   "group": "gC",
+   "label_bold": true,
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 2,
+   "font_size": 15.5
+  },
+  {
+   "id": "G2",
+   "label": "G2 · mechanism\ngain?",
+   "x": 625,
+   "y": 318,
+   "w": 190,
+   "h": 64,
+   "shape": "hexagon",
+   "group": "gC",
+   "label_bold": true,
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 2,
+   "font_size": 15.5
+  },
+  {
+   "id": "G3",
+   "label": "G3 · activity\ngain?",
+   "x": 915,
+   "y": 318,
+   "w": 190,
+   "h": 64,
+   "shape": "hexagon",
+   "group": "gC",
+   "label_bold": true,
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 2,
+   "font_size": 15.5
+  },
+  {
+   "id": "G4",
+   "label": "G4 · durable?",
+   "x": 1205,
+   "y": 318,
+   "w": 190,
+   "h": 64,
+   "shape": "hexagon",
+   "group": "gC",
+   "label_bold": true,
+   "fill": "#FFFFFF",
+   "stroke": "#B7791F",
+   "stroke_width": 2,
+   "font_size": 15.5
+  },
+  {
+   "id": "F1",
+   "label": "reduce x (≤ 0.10);\nre-optimize solvent / AcOH",
+   "x": 330,
+   "y": 478,
+   "w": 200,
+   "h": 58,
+   "shape": "stadium",
+   "group": "gF",
+   "fill": "#FFFFFF",
+   "stroke": "#A64B45",
+   "stroke_width": 1.8,
+   "font_size": 13.5
+  },
+  {
+   "id": "F2",
+   "label": "pivot lever: post-\nsynthetic protonation",
+   "x": 620,
+   "y": 478,
+   "w": 200,
+   "h": 58,
+   "shape": "stadium",
+   "group": "gF",
+   "fill": "#FFFFFF",
+   "stroke": "#A64B45",
+   "stroke_width": 1.8,
+   "font_size": 13.5
+  },
+  {
+   "id": "F3",
+   "label": "fallback: Pt₁ single-atom\ncocatalyst, matched wt%",
+   "x": 910,
+   "y": 478,
+   "w": 200,
+   "h": 58,
+   "shape": "stadium",
+   "group": "gF",
+   "fill": "#FFFFFF",
+   "stroke": "#A64B45",
+   "stroke_width": 1.8,
+   "font_size": 13.5
+  },
+  {
+   "id": "F4",
+   "label": "swap acceptor: milder\npyridinediamine",
+   "x": 1200,
+   "y": 468,
+   "w": 200,
+   "h": 52,
+   "shape": "stadium",
+   "group": "gF",
+   "fill": "#FFFFFF",
+   "stroke": "#A64B45",
+   "stroke_width": 1.8,
+   "font_size": 13.5
+  },
+  {
+   "id": "OUT",
+   "label": "Pre-registered outcome",
+   "sublabel": "pass → adopt x*; exhausted →\nbounded negative result",
+   "x": 1200,
+   "y": 540,
+   "w": 260,
+   "h": 76,
+   "shape": "rounded",
+   "group": "gF",
+   "fill": "#234E70",
+   "stroke": "#16334A",
+   "stroke_width": 1.8,
+   "shadow": true,
+   "label_color": "#FFFFFF",
+   "sublabel_color": "#DCE6EE",
+   "font_size": 16
+  }
+ ],
+ "edges": [
+  {
+   "id": "eA12",
+   "from": "A1",
+   "to": "A2",
+   "width": 3,
+   "color": "#234E70",
+   "label": "same Tp batch;\nco-condense, vary x",
+   "font_size": 13.5
+  },
+  {
+   "id": "eA23",
+   "from": "A2",
+   "to": "A3",
+   "width": 3,
+   "color": "#234E70",
+   "label": "matched\nreferences",
+   "font_size": 13.5
+  },
+  {
+   "id": "eA2B1",
+   "from": "A2",
+   "to": "B1",
+   "width": 3,
+   "color": "#234E70",
+   "waypoints": [
+    [
+     290,
+     263
+    ],
+    [
+     290,
+     143
+    ]
+   ]
+  },
+  {
+   "id": "eB1G1",
+   "from": "B1",
+   "to": "G1",
+   "width": 2.5,
+   "color": "#2A7F8E",
+   "label": "PXRD, BET",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     560,
+     143
+    ],
+    [
+     560,
+     288
+    ],
+    [
+     430,
+     288
+    ]
+   ]
+  },
+  {
+   "id": "eB2G2",
+   "from": "B2",
+   "to": "G2",
+   "width": 2.5,
+   "color": "#2A7F8E",
+   "label": "E_g, edges, τ_CS",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     850,
+     143
+    ],
+    [
+     850,
+     288
+    ],
+    [
+     720,
+     288
+    ]
+   ]
+  },
+  {
+   "id": "eB3G3",
+   "from": "B3",
+   "to": "G3",
+   "width": 2.5,
+   "color": "#2A7F8E",
+   "label": "rate, AQY",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1140,
+     143
+    ],
+    [
+     1140,
+     288
+    ],
+    [
+     1010,
+     288
+    ]
+   ]
+  },
+  {
+   "id": "eB4G4",
+   "from": "B4",
+   "to": "G4",
+   "width": 2.5,
+   "color": "#2A7F8E",
+   "label": "retention",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1430,
+     143
+    ],
+    [
+     1430,
+     288
+    ],
+    [
+     1300,
+     288
+    ]
+   ]
+  },
+  {
+   "id": "eG1B2",
+   "from": "G1",
+   "to": "B2",
+   "width": 3,
+   "color": "#234E70",
+   "waypoints": [
+    [
+     595,
+     342
+    ],
+    [
+     595,
+     143
+    ]
+   ]
+  },
+  {
+   "id": "eG2B3",
+   "from": "G2",
+   "to": "B3",
+   "width": 3,
+   "color": "#234E70",
+   "waypoints": [
+    [
+     885,
+     342
+    ],
+    [
+     885,
+     143
+    ]
+   ]
+  },
+  {
+   "id": "eG3B4",
+   "from": "G3",
+   "to": "B4",
+   "width": 3,
+   "color": "#234E70",
+   "waypoints": [
+    [
+     1175,
+     342
+    ],
+    [
+     1175,
+     143
+    ]
+   ]
+  },
+  {
+   "id": "eG4OUT",
+   "from": "G4",
+   "to": "OUT",
+   "width": 3,
+   "color": "#234E70",
+   "label": "pass:\nlock x*",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1435,
+     342
+    ],
+    [
+     1435,
+     520
+    ],
+    [
+     1330,
+     520
+    ]
+   ]
+  },
+  {
+   "id": "eG1F1",
+   "from": "G1",
+   "to": "F1",
+   "width": 2,
+   "color": "#A64B45",
+   "dashed": true,
+   "label": "fail",
+   "font_size": 13.5
+  },
+  {
+   "id": "eG2F2",
+   "from": "G2",
+   "to": "F2",
+   "width": 2,
+   "color": "#A64B45",
+   "dashed": true,
+   "label": "fail",
+   "font_size": 13.5
+  },
+  {
+   "id": "eG3F3",
+   "from": "G3",
+   "to": "F3",
+   "width": 2,
+   "color": "#A64B45",
+   "dashed": true,
+   "label": "fail",
+   "font_size": 13.5
+  },
+  {
+   "id": "eG4F4",
+   "from": "G4",
+   "to": "F4",
+   "width": 2,
+   "color": "#A64B45",
+   "dashed": true,
+   "label": "fail",
+   "font_size": 13.5
+  },
+  {
+   "id": "eF4OUT",
+   "from": "F4",
+   "to": "OUT",
+   "width": 2,
+   "color": "#A64B45",
+   "dashed": true
+  }
+ ],
+ "texts": [
+  {
+   "id": "tLeg",
+   "x": 750,
+   "y": 652,
+   "font_size": 13,
+   "color": "#52616B",
+   "text": "solid — pre-registered flow (arrows leaving gates = pass) · red dashed — fail branch · chips under cards — quantitative endpoints"
+  }
+ ]
+}

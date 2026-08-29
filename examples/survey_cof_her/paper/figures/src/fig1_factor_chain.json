@@ -1,0 +1,376 @@
+{
+ "title": "From Linkage Chemistry to Hydrogen Evolution",
+ "title_style": {
+  "font_size": 24,
+  "y": 28,
+  "color": "#1F2933",
+  "bold": true
+ },
+ "canvas": {
+  "width": 1570,
+  "height": 630
+ },
+ "defaults": {
+  "font_size": 15.5,
+  "fill": "#FFFFFF",
+  "stroke": "#333333",
+  "edge_color": "#234E70",
+  "edge_width": 3.5
+ },
+ "groups": [
+  {
+   "id": "gL",
+   "label": "Linkage families",
+   "x": 20,
+   "y": 70,
+   "w": 230,
+   "h": 470,
+   "fill": "#EEF4F7",
+   "stroke": "#9DB4C6",
+   "stroke_width": 1.3,
+   "font_size": 16,
+   "label_color": "#234E70"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "L1",
+   "label": "β-ketoenamine",
+   "sublabel": "Tp-derived; tautomer-locked;\nH₂O / acid stable",
+   "x": 38,
+   "y": 104,
+   "w": 194,
+   "h": 86,
+   "shape": "rounded",
+   "group": "gL",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 16
+  },
+  {
+   "id": "L1b",
+   "label": "workhorse: TpPa-1",
+   "x": 38,
+   "y": 196,
+   "w": 194,
+   "h": 26,
+   "shape": "stadium",
+   "group": "gL",
+   "fill": "#234E70",
+   "stroke": "#234E70",
+   "label_color": "#FFFFFF",
+   "font_size": 14
+  },
+  {
+   "id": "L2",
+   "label": "Imine (C=N)",
+   "sublabel": "reversible, crystalline;\nprotonation-responsive",
+   "x": 38,
+   "y": 236,
+   "w": 194,
+   "h": 86,
+   "shape": "rounded",
+   "group": "gL",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 16
+  },
+  {
+   "id": "L3",
+   "label": "Vinylene / sp²-carbon",
+   "sublabel": "full π-conjugation;\nrigid, chemically robust",
+   "x": 38,
+   "y": 338,
+   "w": 194,
+   "h": 86,
+   "shape": "rounded",
+   "group": "gL",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 16
+  },
+  {
+   "id": "L4",
+   "label": "Triazine (CTF)",
+   "sublabel": "N-rich acceptor cores;\nrobust, moderate order",
+   "x": 38,
+   "y": 440,
+   "w": 194,
+   "h": 86,
+   "shape": "rounded",
+   "group": "gL",
+   "stroke": "#234E70",
+   "stroke_width": 1.7,
+   "font_size": 16
+  },
+  {
+   "id": "aL",
+   "label": "",
+   "x": 246,
+   "y": 301,
+   "w": 4,
+   "h": 8,
+   "fill": "#EEF4F7",
+   "stroke": "#EEF4F7",
+   "group": "gL"
+  },
+  {
+   "id": "S2",
+   "label": "Band structure",
+   "sublabel": "optical gap E_g;\nCBM / VBM vs H⁺/H₂",
+   "x": 385,
+   "y": 250,
+   "w": 185,
+   "h": 110,
+   "shape": "rounded",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 16
+  },
+  {
+   "id": "S3",
+   "label": "Exciton & charge separation",
+   "sublabel": "E_b, diffusion, dissociation;\ne⁻/h⁺ spatial separation",
+   "x": 705,
+   "y": 250,
+   "w": 185,
+   "h": 110,
+   "shape": "rounded",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.8,
+   "font_size": 16
+  },
+  {
+   "id": "S4",
+   "label": "Cocatalyst interface",
+   "sublabel": "Pt / SAC / molecular;\ne⁻ extraction, H* sites",
+   "x": 1025,
+   "y": 250,
+   "w": 185,
+   "h": 110,
+   "shape": "rounded",
+   "stroke": "#B7791F",
+   "stroke_width": 1.8,
+   "font_size": 16
+  },
+  {
+   "id": "S5",
+   "label": "HER performance",
+   "sublabel": "rate · AQY(λ) · STH\nstability (h, cycles)",
+   "x": 1345,
+   "y": 235,
+   "w": 205,
+   "h": 140,
+   "shape": "rounded",
+   "shadow": true,
+   "fill": "#234E70",
+   "stroke": "#16334A",
+   "stroke_width": 1.8,
+   "label_color": "#FFFFFF",
+   "sublabel_color": "#DCE6EE",
+   "font_size": 16
+  },
+  {
+   "id": "D1",
+   "label": "Mechanistic probes: fs-TAS · TRPL · EPR · operando XPS/IR",
+   "x": 705,
+   "y": 118,
+   "w": 390,
+   "h": 52,
+   "shape": "rounded",
+   "dashed": true,
+   "fill": "#EDF7F5",
+   "stroke": "#2A7F8E",
+   "stroke_width": 1.6,
+   "font_size": 14.5
+  },
+  {
+   "id": "V1",
+   "label": "Donor–acceptor\nbackbone design",
+   "x": 385,
+   "y": 480,
+   "w": 185,
+   "h": 60,
+   "shape": "stadium",
+   "fill": "#FBF4E8",
+   "stroke": "#B7791F",
+   "stroke_width": 1.8,
+   "font_size": 14.5
+  },
+  {
+   "id": "V2",
+   "label": "Protonation /\nacid engineering",
+   "x": 705,
+   "y": 480,
+   "w": 185,
+   "h": 60,
+   "shape": "stadium",
+   "fill": "#FBF4E8",
+   "stroke": "#B7791F",
+   "stroke_width": 1.8,
+   "font_size": 14.5
+  },
+  {
+   "id": "V3",
+   "label": "Single-atom\ncocatalysts (Pt₁)",
+   "x": 985,
+   "y": 480,
+   "w": 170,
+   "h": 60,
+   "shape": "stadium",
+   "fill": "#FBF4E8",
+   "stroke": "#B7791F",
+   "stroke_width": 1.8,
+   "font_size": 14.5
+  },
+  {
+   "id": "V4",
+   "label": "Z-/S-scheme\nheterojunctions",
+   "x": 1180,
+   "y": 480,
+   "w": 170,
+   "h": 60,
+   "shape": "stadium",
+   "fill": "#FBF4E8",
+   "stroke": "#B7791F",
+   "stroke_width": 1.8,
+   "font_size": 14.5
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "aL",
+   "to": "S2",
+   "width": 3.5,
+   "color": "#234E70",
+   "label": "conjugation &\nplanarity; stacking;\nchem. stability",
+   "font_size": 13.5
+  },
+  {
+   "id": "e2",
+   "from": "S2",
+   "to": "S3",
+   "width": 3.5,
+   "color": "#2A7F8E",
+   "label": "E_g window;\nband-edge driving\nforce",
+   "font_size": 13.5
+  },
+  {
+   "id": "e3",
+   "from": "S3",
+   "to": "S4",
+   "width": 3.5,
+   "color": "#2A7F8E",
+   "label": "carrier lifetime τ;\ndiffusion length;\nmobility",
+   "font_size": 13.5
+  },
+  {
+   "id": "e4",
+   "from": "S4",
+   "to": "S5",
+   "width": 3.5,
+   "color": "#B7791F",
+   "label": "interfacial e⁻\ntransfer; H*\nadsorption",
+   "font_size": 13.5
+  },
+  {
+   "id": "ed1",
+   "from": "D1",
+   "to": "S3",
+   "dashed": true,
+   "width": 2,
+   "color": "#2A7F8E",
+   "label": "τ, E_b, Φ_CS",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     800,
+     209
+    ]
+   ]
+  },
+  {
+   "id": "ed2",
+   "from": "D1",
+   "to": "S4",
+   "dashed": true,
+   "width": 2,
+   "color": "#2A7F8E",
+   "label": "interface\nstates",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1050,
+     209
+    ],
+    [
+     1117,
+     209
+    ]
+   ]
+  },
+  {
+   "id": "ev1",
+   "from": "V1",
+   "to": "S2",
+   "width": 2.2,
+   "color": "#B7791F",
+   "label": "dipole field →\nE_g narrowing",
+   "font_size": 13.5
+  },
+  {
+   "id": "ev2",
+   "from": "V2",
+   "to": "S3",
+   "width": 2.2,
+   "color": "#B7791F",
+   "label": "red-shift; exciton\ndissociation ↑",
+   "font_size": 13.5
+  },
+  {
+   "id": "ev3",
+   "from": "V3",
+   "to": "S4",
+   "width": 2.2,
+   "color": "#B7791F",
+   "label": "atom-economic\nsites",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1070,
+     420
+    ]
+   ]
+  },
+  {
+   "id": "ev4",
+   "from": "V4",
+   "to": "S4",
+   "width": 2.2,
+   "color": "#B7791F",
+   "label": "spatial charge\nseparation",
+   "font_size": 13.5,
+   "waypoints": [
+    [
+     1265,
+     420
+    ],
+    [
+     1160,
+     420
+    ]
+   ]
+  }
+ ],
+ "texts": [
+  {
+   "id": "tLeg",
+   "x": 785,
+   "y": 600,
+   "font_size": 14.5,
+   "color": "#52616B",
+   "text": "solid — causal design chain · dashed — diagnostic access · stadium chips — design levers (Sec. 4)"
+  }
+ ]
+}

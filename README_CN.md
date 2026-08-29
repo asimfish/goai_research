@@ -30,6 +30,11 @@
 [`pipeline.drawio`](examples/pipeline.drawio)（draw.io 打开直接继续编辑）
 和上面的 PNG（自检用）。*
 
+> 📄 **看一份真实交付物** —— [`examples/survey_cof_her`](examples/survey_cof_her)：
+> 本流水线端到端实跑产出的 [26 页综述 PDF](examples/survey_cof_her/paper/main.pdf)
+> （COF 光催化产氢主题）。143 篇验证文献（整合率 100%、密度 51.2 次/千词）、
+> 两张通过排版 lint 的可编辑图、一条预注册改进 idea、全闸门账本。
+
 ## 目录
 
 1. [不只是一段提示词](#1--不只是一段提示词)

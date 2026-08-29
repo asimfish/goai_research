@@ -29,6 +29,12 @@
 
 *This figure was drawn by the system itself: one [`figspec`](examples/pipeline.figspec.json) source file rendered into [`pipeline.svg`](examples/pipeline.svg) (for papers), [`pipeline.drawio`](examples/pipeline.drawio) (open it in draw.io and keep editing), and the PNG above (for self-check).*
 
+> 📄 **See a real deliverable** — [`examples/survey_cof_her`](examples/survey_cof_her):
+> a [26-page survey PDF](examples/survey_cof_her/paper/main.pdf) on COF photocatalytic
+> hydrogen evolution, produced end-to-end by this pipeline. 143 verified references
+> (100% integrated, 51.2 cites/1k words), two lint-clean editable figures,
+> a pre-registered improvement idea, and the full gate ledger.
+
 ## Contents
 
 1. [More Than Just a Prompt](#1--more-than-just-a-prompt)
