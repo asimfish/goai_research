@@ -97,13 +97,19 @@ def figspec_schema() -> str:
 
 @mcp.tool()
 def validate_figspec(figspec_json: str) -> str:
-    """校验 figspec JSON，返回问题列表（渲染前必须先过校验）。"""
+    """校验 figspec JSON：结构 + 排版（字号印刷等效地板、文字溢出、标签遮挡）。
+
+    返回 {ok, errors, typo_errors, typo_warnings}。errors/typo_errors 均阻塞渲染；
+    typo_warnings 建议修复（副文级文字略小等）。
+    """
     try:
         spec = json.loads(figspec_json)
     except json.JSONDecodeError as exc:
         return _dumps({"ok": False, "errors": [f"JSON 解析失败: {exc}"]})
     errs = fs.validate(spec)
-    return _dumps({"ok": not errs, "errors": errs})
+    typo = fs.lint(spec) if not errs else {"errors": [], "warnings": []}
+    return _dumps({"ok": not errs and not typo["errors"], "errors": errs,
+                   "typo_errors": typo["errors"], "typo_warnings": typo["warnings"]})
 
 
 @mcp.tool()
@@ -125,7 +131,15 @@ def render_figure(figspec_json: str, name: str, out_dir: str = "") -> str:
         # 结构化返回校验详情：MCP SDK 会把裸异常吞成
         # 「Error executing tool render_figure」，调用方看不到原因
         return _dumps({"ok": False, "error": str(exc)})
+    typo = fs.lint(spec)
+    if typo["errors"]:
+        return _dumps({"ok": False, "error": "排版 lint 未通过（字号/溢出/遮挡）",
+                       "typo_errors": typo["errors"],
+                       "hint": "字号印刷等效 = px × 468 / canvas.width，正文需 ≥4.0pt；"
+                               "溢出改文本或加大节点；遮挡调坐标。修完重新 render。"})
     paths = {}
+    if typo["warnings"]:
+        paths["typo_warnings"] = typo["warnings"]
     for sub in ("figspec", "svg", "drawio", "png"):
         os.makedirs(os.path.join(out_dir, sub), exist_ok=True)
 
