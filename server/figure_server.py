@@ -135,7 +135,7 @@ def render_figure(figspec_json: str, name: str, out_dir: str = "") -> str:
     if typo["errors"]:
         return _dumps({"ok": False, "error": "排版 lint 未通过（字号/溢出/遮挡）",
                        "typo_errors": typo["errors"],
-                       "hint": "字号印刷等效 = px × 468 / canvas.width，正文需 ≥4.0pt；"
+                       "hint": "字号印刷等效 = px × 468 / canvas.width，正文需 ≥4.5pt；"
                                "溢出改文本或加大节点；遮挡调坐标。修完重新 render。"})
     paths = {}
     if typo["warnings"]:

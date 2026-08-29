@@ -101,6 +101,20 @@ Intro → Background/Preliminaries → Taxonomy 总览（配主图） →
 per-branch 深入（每支一节，含对比表） → 讨论（趋势/矛盾/局限） →
 Open Problems（含 idea-forge 产出） → Conclusion。
 
+**节标题词法**（顶刊综述口径，蓝图定标题时执行、final 复查）：
+- 2–6 词名词短语，用领域标准术语点名对象；方法论细节留给正文。
+- 禁三连并列标题（"A, B, and C" 式）；禁机关词堆叠——method /
+  rules / aspects / considerations 这类只听着学术、不带信息的词
+  不入标题。
+- 层级分工：`\section` 定主题域，`\subsection` 定分支或机制，
+  枚举性细项用 `\paragraph` 或正文 run-in，不提升为编号标题。
+- 对照：✗ "Scope, evidence method, and comparison rules" →
+  ✓ "Scope and Evidence Criteria"；✗ "Establish composition and
+  provenance"（小节标题） → ✓ "Composition and Provenance"。
+- super_library 装载成功时，标题词面过一遍它的 lint
+  （`python3 scripts/superlib.py lint --text-file <标题清单>`），
+  装饰性同义词与直译腔按报告修。
+
 ## 阶段四：逐节写作（可并行）
 
 每节独立成文件 `workspace/drafts/sections/NN_<slug>.tex`。硬约束：
@@ -114,6 +128,12 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 - 图文一致：引用图必须解释图中主线，与 caption 不重复；
 - 语言风格：结论按证据强度陈述，不写忏悔式套话（"further research is
   needed" 只许出现在 Limitations）；
+- **列表排版**（顶刊口径，TeX 与 HTML 交付一体适用）：≤4 个短项
+  （每项 <15 词）一律段内 run-in 列举——"(i) …; (ii) …; (iii) …"，
+  不开显示列表；显示列表（enumitem `nosep`）只给每项 ≥1 完整句的
+  内容；禁止每项以同一动词开头的平行复读（"Establish… Establish…
+  Establish…"），改名词短语引导或并成一句；真正的步骤/协议才用
+  编号列表，平行要素用 run-in 或 itemize；
 - 并行写作时只碰自己的节文件，公共文件（main.tex/bib）只由汇合者动。
 
 ## 阶段五：组装与精修

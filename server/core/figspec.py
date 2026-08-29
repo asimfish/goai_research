@@ -39,7 +39,7 @@ SHAPES = {"rect", "rounded", "stadium", "ellipse", "diamond", "hexagon",
           "parallelogram", "cylinder", "document", "cloud"}
 ARROWS = {"block", "open", "none"}
 
-DEFAULTS = {"font_size": 13, "fill": "#FFFFFF", "stroke": "#333333",
+DEFAULTS = {"font_size": 15, "fill": "#FFFFFF", "stroke": "#333333",
             "edge_color": "#333333", "edge_width": 1.5}
 
 
@@ -137,9 +137,9 @@ def loads(text: str) -> dict[str, Any]:
 # 字号 = px * target_width_pt / canvas_width）。地板对应顶会图最低可读性。
 TYPO = {
     "target_width_pt": 468,      # \textwidth（1in margin US letter）
-    "body_min_pt": 4.0,          # 正文/边标/脚注：低于此值 = error
-    "body_good_pt": 4.6,         # 低于此值 = warning（建议加大）
-    "title_min_pt": 5.5,         # 标题 warning 线
+    "body_min_pt": 4.5,          # 正文/边标/脚注：低于此值 = error
+    "body_good_pt": 5.2,         # 低于此值 = warning（建议加大）
+    "title_min_pt": 7.0,         # 标题 warning 线
     # 各形状的有效文本区（宽比例 × 高比例），与 render_svg.TEXT_WIDTH_RATIO 对齐
     "text_area": {
         "diamond": (0.55, 0.52), "hexagon": (0.70, 0.76), "ellipse": (0.72, 0.70),
@@ -157,7 +157,7 @@ def _wrap_units(label: str, w: float, font_size: float) -> int:
     for hard in (label or "").split("\n"):
         units, cur = 0.0, False
         for ch in hard:
-            u = 1.0 if ord(ch) > 0x2E7F else 0.58
+            u = 1.0 if ord(ch) > 0x2E7F else 0.61
             if units + u > max_units and cur:
                 n += 1
                 units, cur = u, True
@@ -169,7 +169,7 @@ def _wrap_units(label: str, w: float, font_size: float) -> int:
 
 
 def _est_text_w(s: str, fs: float) -> float:
-    return max((sum(1.0 if ord(c) > 0x2E7F else 0.58 for c in ln) for ln in
+    return max((sum(1.0 if ord(c) > 0x2E7F else 0.61 for c in ln) for ln in
                 (s or "").split("\n")), default=0) * fs
 
 
@@ -204,7 +204,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
 
     ts = spec.get("title_style") or {}
     if spec.get("title"):
-        check_pt(ts.get("font_size", 16), "title", is_title=True)
+        check_pt(ts.get("font_size", 22), "title", is_title=True)
 
     sub_ratio, sub_min = 0.85, 10.5
     for nd in spec.get("nodes", []):
@@ -232,8 +232,17 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
     for g in spec.get("groups", []):
         gid = g.get("id", "?")
         if g.get("label"):
-            g_fs = g.get("font_size", 12.5)
+            g_fs = g.get("font_size", 15)
             check_pt(g_fs, f"group {gid} 标签")
+            member_fs = [nd.get("font_size", d.get("font_size",
+                                                   DEFAULTS["font_size"]))
+                         for nd in spec.get("nodes", [])
+                         if nd.get("group") == gid
+                         and (nd.get("label") or nd.get("sublabel"))]
+            if member_fs and g_fs < max(member_fs):
+                warnings.append(
+                    f"group {gid} 标签 {g_fs}px 小于组内节点主标 "
+                    f"{max(member_fs)}px（小标题字号应 ≥ 正文，建议加大）")
             lab_box = (g["x"] + 12, g["y"] + 4,
                        _est_text_w(g["label"], g_fs), g_fs * 1.7)
             for nd in spec.get("nodes", []):
@@ -253,7 +262,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
         if not e.get("label"):
             continue
         eid = e.get("id") or f"{e.get('from')}->{e.get('to')}"
-        e_fs = e.get("font_size", 11)
+        e_fs = e.get("font_size", 12.5)
         check_pt(e_fs, f"edge {eid} 标签")
         wps = e.get("waypoints") or []
         if wps:
@@ -277,7 +286,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
                                 f"（移动 waypoint 或缩短标签）")
 
     for t in spec.get("texts", []):
-        check_pt(t.get("font_size", 12), f"text {t.get('id', '?')}")
+        check_pt(t.get("font_size", 13), f"text {t.get('id', '?')}")
 
     return {"errors": errors, "warnings": warnings}
 

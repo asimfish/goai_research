@@ -216,6 +216,31 @@ def test_figspec_lint_group_label_occlusion():
     assert figspec.lint(spec)["errors"] == []
 
 
+def test_figspec_lint_group_label_hierarchy():
+    spec = {"canvas": {"width": 800, "height": 400},
+            "groups": [{"id": "g1", "label": "Lane",
+                        "x": 0, "y": 0, "w": 700, "h": 300, "font_size": 14}],
+            "nodes": [{"id": "n1", "label": "Node", "group": "g1",
+                       "x": 20, "y": 60, "w": 150, "h": 50, "font_size": 18}]}
+    r = figspec.lint(spec)
+    assert any("小于组内节点主标" in w for w in r["warnings"])
+    spec["groups"][0]["font_size"] = 19  # 组标签 ≥ 主标 → 不再告警
+    r2 = figspec.lint(spec)
+    assert not any("小于组内节点主标" in w for w in r2["warnings"])
+
+
+def test_render_svg_node_label_bold_default():
+    spec = {"canvas": {"width": 800, "height": 300},
+            "nodes": [{"id": "a", "label": "Bold by default",
+                       "x": 40, "y": 60, "w": 220, "h": 60, "font_size": 18},
+                      {"id": "b", "label": "Opt out",
+                       "x": 320, "y": 60, "w": 180, "h": 60, "font_size": 18,
+                       "label_bold": False}],
+            "edges": []}
+    svg = render_svg.render(spec)
+    assert svg.count('font-weight="bold"') == 1
+
+
 def test_render_svg_contains_elements():
     svg = render_svg.render(SPEC)
     for frag in ("Input", "Model", "tokens", "marker"):

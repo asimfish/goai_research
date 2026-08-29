@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-30%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-32%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -93,7 +93,7 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # smoke check
-.venv/bin/python -m pytest tests/ -q     # 30 offline tests, no network needed
+.venv/bin/python -m pytest tests/ -q     # 32 offline tests, no network needed
 ```
 
 Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh/uv) if
@@ -201,12 +201,15 @@ a small JSON describing nodes, groups, edges, and texts. One render call emits:
 
 **Typography is enforced, not hoped for.** A built-in lint guards every render:
 print-equivalent font floors (`pt = px × 468 / canvas_width`, body text below
-4.0 pt is rejected — tiny labels never survive to the PDF), shape-aware text
+4.5 pt is rejected — tiny labels never survive to the PDF), shape-aware text
 overflow (a diamond only holds ~55 % of its bounding width, a hexagon ~70 %),
-and occlusion checks (group labels vs. member nodes, edge labels vs. nodes).
-`render_figure` refuses to render while lint errors remain, and the skill ships
-a font-size hierarchy table (title > lane label > node title > sublabel) so
-generated figures come out with proportionate, readable type by construction.
+occlusion checks (group labels vs. member nodes, edge labels vs. nodes), and a
+hierarchy check that flags any group label smaller than its member nodes.
+Node titles render **bold by default** (opt out per node with
+`label_bold: false`). `render_figure` refuses to render while lint errors
+remain, and the skill ships a font-size hierarchy table (title > lane label >
+node title > sublabel) so generated figures come out with proportionate,
+readable type by construction.
 
 Already have a figure that isn't a figspec?
 
@@ -330,7 +333,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 30 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 32 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # 95 live tests — real APIs, real draw.io CLI
 ```
 
