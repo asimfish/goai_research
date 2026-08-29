@@ -193,6 +193,15 @@ a small JSON describing nodes, groups, edges, and texts. One render call emits:
   (source/target are bound, not painted)
 - `figures/png/<name>.png` — for the agent's own render → self-check → fix loop (≤ 3 rounds)
 
+**Typography is enforced, not hoped for.** A built-in lint guards every render:
+print-equivalent font floors (`pt = px × 468 / canvas_width`, body text below
+4.0 pt is rejected — tiny labels never survive to the PDF), shape-aware text
+overflow (a diamond only holds ~55 % of its bounding width, a hexagon ~70 %),
+and occlusion checks (group labels vs. member nodes, edge labels vs. nodes).
+`render_figure` refuses to render while lint errors remain, and the skill ships
+a font-size hierarchy table (title > lane label > node title > sublabel) so
+generated figures come out with proportionate, readable type by construction.
+
 Already have a figure that isn't a figspec?
 
 - **Structured SVG** → `svg_file_to_drawio` reverses it deterministically
