@@ -6,9 +6,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-25%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-30%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
-[![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
+[![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
 中文版 README | [English](README.md)
 
@@ -87,7 +87,7 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # 冒烟检查
-.venv/bin/python -m pytest tests/ -q     # 25 个离线测试，不需要网络
+.venv/bin/python -m pytest tests/ -q     # 30 个离线测试，不需要网络
 ```
 
 要求：Python ≥ 3.10（install.sh 有 [uv](https://github.com/astral-sh/uv) 就用 uv）。
@@ -188,6 +188,13 @@ prompt 注入 style_bank 领域风格卡与范图参照）→ 测量驱动重建
   [draw.io](https://app.diagrams.net) / draw.io Desktop 直接打开，拖动节点连线跟随
   （source/target 是绑定的，不是画上去的）
 - `figures/png/<name>.png` —— 供 agent 自己走「渲染 → 自检 → 修正」回环（≤ 3 轮）
+
+**排版是强制的，不是靠运气。** 每次渲染都有内置 lint 把关：印刷等效字号
+地板（`pt = px × 468 / 画布宽`，正文低于 4.0pt 直接拒绝——小字永远到不了
+PDF）、形状感知的文字溢出检查（菱形只有外框 ~55% 的有效宽度、六边形
+~70%）、遮挡检查（组标签 vs 成员节点、边标签 vs 节点）。lint 报 error 时
+`render_figure` 拒绝出图；skill 里固化了字号层级表（标题 > lane 标签 >
+节点主标 > 副文），生成的图从源头就是比例得当、印刷可读的。
 
 已有的图不是 figspec 怎么办？
 
@@ -300,7 +307,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 25 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 30 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 95 个实测 —— 真实 API、真实 draw.io CLI
 ```
 
@@ -310,7 +317,8 @@ draw.io 真机导出 PNG/PDF、mock 后端的逆合成 HTTP 路径、账本 50 �
 逐环节实测报告见 [docs/live-tests/](docs/live-tests/)。
 
 覆盖：BibTeX 解析/生成往返、作者比对（缩写、顺序、遗漏/伪造）、多源去重、
-figspec 校验（节点重叠与同义平行线检测）、SVG 与 mxGraph 渲染、**SVG →
+figspec 校验（节点重叠与同义平行线检测）+ 排版 lint（印刷等效字号地板、
+形状感知文字溢出、标签遮挡）、SVG 与 mxGraph 渲染、**SVG →
 figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
 骨架、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
 语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard

@@ -6,9 +6,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-25%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-30%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
-[![Skills](https://img.shields.io/badge/skills-8%20agents-orange.svg)](skills/)
+[![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
 [中文版 README](README_CN.md) | English
 
@@ -87,7 +87,7 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # smoke check
-.venv/bin/python -m pytest tests/ -q     # 25 offline tests, no network needed
+.venv/bin/python -m pytest tests/ -q     # 30 offline tests, no network needed
 ```
 
 Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh/uv) if
@@ -324,7 +324,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 25 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 30 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # 95 live tests — real APIs, real draw.io CLI
 ```
 
@@ -335,8 +335,9 @@ whose `check-done` exits 0). Stage-by-stage reports: [docs/live-tests/](docs/liv
 
 Covered: BibTeX parse/format round-trip, author comparison (abbreviations, order,
 missing/fabricated), multi-source dedup, figspec validation (node-overlap and
-synonymous parallel-edge detection), SVG and mxGraph rendering, **SVG → figspec →
-drawio round-trip** (groups recovered as containers, edge labels reattached),
+synonymous parallel-edge detection) plus typography lint (print-equivalent font
+floors, shape-aware text overflow, label occlusion), SVG and mxGraph rendering,
+**SVG → figspec → drawio round-trip** (groups recovered as containers, edge labels reattached),
 retro stub + plan skeleton, full loopctl ledger cycle plus concurrency (12
 parallel writers, zero lost updates), check-done semantics (WARN pass-through,
 minor deferral, stale-input fingerprint reset, review receipts), bib_guard
