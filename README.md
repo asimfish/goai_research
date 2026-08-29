@@ -25,15 +25,52 @@
 > The deterministic layer is 4 small MCP servers you can test offline. No framework,
 > no database, no daemon. Fork it, rewrite it, adapt it to your stack.
 
+## 📰 News
+
+- **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
+  default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
+  lint flags group labels smaller than their member nodes. The writer skill
+  gains section-heading lexicon rules (noun phrases, no "A, B, and C rules"
+  titles) and top-venue run-in list conventions. 32 offline tests.
+- **2026-08-29 — First public sample deliverable.** A 26-page survey on COF
+  photocatalytic hydrogen evolution, produced end-to-end:
+  [`examples/survey_cof_her`](examples/survey_cof_her) — 143 verified references
+  (100 % integrated, 51.2 cites/1k words), lint-clean editable figures, a
+  pre-registered improvement idea, and the full gate ledger.
+- **2026-08-28 — Scale tiers + style bank.** Literature search gains
+  standard / comprehensive / exhaustive tiers with layered quotas (100+ refs for
+  a full survey); a style bank distilled from 30 classic surveys feeds writing
+  and figure style; [super_library](https://github.com/asimfish/super_library)
+  is wired in as the writing-language authority.
+
+<details>
+<summary>Earlier milestones</summary>
+
+- **2026-08-28 — Typography lint v1.** Print-equivalent font floors, shape-aware
+  text overflow, and occlusion checks; `render_figure` refuses to render while
+  lint errors remain.
+- **2026-08-27 — First full competition run.** 37-paper survey + synthesis-route
+  design, 9 gates PASS, two review rounds with issue close-out
+  ([`examples/competition_run`](examples/competition_run)).
+- **2026-08-26 — The loop goes live.** Ledger-driven state machine (`loopctl`),
+  adversarial reviewer with receipts, fingerprint-based stale-gate detection.
+
+</details>
+
+## 🖼 Gallery
+
 ![GoAI Research pipeline](examples/pipeline.png)
 
 *This figure was drawn by the system itself: one [`figspec`](examples/pipeline.figspec.json) source file rendered into [`pipeline.svg`](examples/pipeline.svg) (for papers), [`pipeline.drawio`](examples/pipeline.drawio) (open it in draw.io and keep editing), and the PNG above (for self-check).*
 
-> 📄 **See a real deliverable** — [`examples/survey_cof_her`](examples/survey_cof_her):
-> a [26-page survey PDF](examples/survey_cof_her/paper/main.pdf) on COF photocatalytic
-> hydrogen evolution, produced end-to-end by this pipeline. 143 verified references
-> (100% integrated, 51.2 cites/1k words), two lint-clean editable figures,
-> a pre-registered improvement idea, and the full gate ledger.
+**From a real run** — both figures below shipped inside the
+[26-page sample survey](examples/survey_cof_her/paper/main.pdf); every one is
+still editable (figspec → SVG → .drawio):
+
+| [Design-lever factor chain](examples/survey_cof_her/paper/figures/fig1_factor_chain.png) | [Pre-registered improvement route](examples/survey_cof_her/paper/figures/fig2_tppa1_idea.png) |
+| --- | --- |
+| ![fig1](examples/survey_cof_her/paper/figures/fig1_factor_chain.png) | ![fig2](examples/survey_cof_her/paper/figures/fig2_tppa1_idea.png) |
+| bold-by-default titles · lint-clean at 4.5 pt floors | gates, fallbacks and endpoints — one editable canvas |
 
 ## Contents
 
@@ -49,8 +86,10 @@
 10. [Configuration](#10--configuration)
 11. [Testing](#11--testing)
 12. [Design Notes](#12--design-notes) · why MCP + skills, why cross-model review
-13. [Citation](#13--citation)
-14. [License & Contributing](#14--license--contributing)
+13. [FAQ](#13--faq)
+14. [Ecosystem](#14--ecosystem) · sibling projects this pipeline builds on
+15. [Citation](#15--citation)
+16. [License & Contributing](#16--license--contributing)
 
 ---
 
@@ -384,7 +423,74 @@ Oral hand-offs don't survive parallel lanes, retries, or session restarts. The
 ledger is the single state source: gates, issues, and logs are the only protocol
 between agents, which makes every run resumable and every claim auditable.
 
-## 13. 📖 Citation
+## 13. ❓ FAQ
+
+<details>
+<summary><b>Do I need any LLM API keys?</b></summary>
+
+No. The host agent (Codex CLI / Claude Code / Cursor) *is* the LLM — this repo
+only adds skills and deterministic MCP tools on top of whatever subscription you
+already have. The literature APIs (arXiv, OpenAlex, Crossref, DBLP) are free
+without keys; a Semantic Scholar key is optional and only raises rate limits.
+</details>
+
+<details>
+<summary><b>Can I use just one piece — say, only citation checking?</b></summary>
+
+Yes. Each MCP server is independent: point your agent at `citation_server` and
+call `verify_entry` / `audit_bibliography` on any `.bib` file — no loop, no
+ledger required. Same for figures (`figure_server`) and search (`lit_server`).
+The loop only enters when you want the full gated pipeline.
+</details>
+
+<details>
+<summary><b>Why draw.io files instead of just SVG?</b></summary>
+
+SVG is a rendering; `.drawio` (mxGraph XML) is a *model* — nodes keep their
+identity, edges stay bound to endpoints, and your co-author can drag a box
+without breaking arrows. Both are rendered from the same figspec source, so
+they never drift apart.
+</details>
+
+<details>
+<summary><b>How is citation trust actually enforced?</b></summary>
+
+Zero-trust: every entry must be re-fetched from a primary source (DOI → Crossref,
+arXiv ID → arXiv API) and field-compared — title, authors, year, venue. The
+`citations_verified` gate blocks the writing stage until the audit passes, and
+the adversarial reviewer must run `verify_entry` itself before calling any
+citation fake.
+</details>
+
+<details>
+<summary><b>My host isn't Codex / Claude Code / Cursor — can I still use this?</b></summary>
+
+If your agent can read Markdown and speak MCP (stdio), yes. Skills are plain
+Markdown with no host-specific syntax; servers are standard FastMCP processes.
+Worst case, run the servers' Python APIs directly from your own harness.
+</details>
+
+<details>
+<summary><b>How long does a full survey run take?</b></summary>
+
+Depends on scale tier and host model speed: the 143-reference sample
+(`examples/survey_cof_her`) took roughly one working session end-to-end,
+including two adversarial review rounds and LaTeX compilation. Search and
+verification are throttled to be polite to public APIs — that, not the LLM,
+is usually the floor.
+</details>
+
+## 14. 🌐 Ecosystem
+
+Sibling projects that this pipeline integrates with or grew out of:
+
+| Project | What it is | How it plugs in |
+| --- | --- | --- |
+| [super_library](https://github.com/asimfish/super_library) | Academic writing corpus: phrase banks, section patterns, terminology lints | Writing-language authority for the survey-writer skill (style stage 0b) |
+| [super_ref](https://github.com/asimfish/super_ref) | Reference verification toolkit | Shares the zero-trust citation philosophy behind `citation_server` |
+| [super_skill_team](https://github.com/asimfish/super_skill_team) | A large team of agent skills for research workflows | The figure-studio lineage that informed our figspec pipeline |
+
+## 15. 📖 Citation
 
 ```bibtex
 @software{goai_research,
@@ -396,9 +502,20 @@ between agents, which makes every run resumable and every claim auditable.
 }
 ```
 
-## 14. 🤝 License & Contributing
+## 16. 🤝 License & Contributing
 
 MIT License. Issues and PRs welcome — add a `skills/goai-*/SKILL.md`, wire it
 into the loop protocol ([docs/LOOP_PROTOCOL.md](docs/LOOP_PROTOCOL.md)), and keep
 the two iron rules: every claim carries a verifiable citation key, every figure
 ships with its figspec source.
+
+**A bad case is worth more than a star.** If a run produced an ugly figure, a
+fake-looking citation, or a survey section that reads like a committee wrote it —
+open an issue with the artifact attached. Real failure cases are what move the
+lint rules and skill prompts forward.
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=asimfish/goai_research&type=Date)](https://star-history.com/#asimfish/goai_research&Date)
+
+</div>

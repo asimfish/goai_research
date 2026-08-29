@@ -23,6 +23,36 @@
 > 都能读——Codex CLI、Claude Code、Cursor 或你自己的 harness；确定性层是 4 个
 > 可离线测试的小 MCP server。没有框架、没有数据库、没有守护进程。随便 fork、改写、适配你的技术栈。
 
+## 📰 动态
+
+- **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
+  4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
+  新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
+  行内列表排版规则。离线测试 32 项。
+- **2026-08-29 —— 首个公开样例交付物。** COF 光催化产氢综述，端到端实跑
+  26 页：[`examples/survey_cof_her`](examples/survey_cof_her) —— 143 篇验证
+  文献（整合率 100%、密度 51.2 次/千词）、通过排版 lint 的可编辑图、
+  一条预注册改进 idea、全闸门账本。
+- **2026-08-28 —— 规模档 + 风格库。** 文献检索新增 standard / comprehensive /
+  exhaustive 三档分层配额（完整综述 100+ 文献）；从 30 篇经典综述蒸馏出
+  风格库；接入 [super_library](https://github.com/asimfish/super_library)
+  作为写作语言权威。
+
+<details>
+<summary>更早的里程碑</summary>
+
+- **2026-08-28 —— 排版 lint v1。** 打印等效字号地板、形状感知的文字溢出
+  检测、遮挡检查；lint 有错时 `render_figure` 拒绝渲染。
+- **2026-08-27 —— 首次完整竞赛实跑。** 37 篇文献综述 + 合成路线设计，
+  9 个闸门 PASS，两轮对抗审稿并逐项销号
+  （[`examples/competition_run`](examples/competition_run)）。
+- **2026-08-26 —— 回环上线。** 账本驱动状态机（`loopctl`）、带回执的对抗
+  审稿人、基于指纹的过期闸门检测。
+
+</details>
+
+## 🖼 效果预览
+
 ![GoAI Research pipeline](examples/pipeline.png)
 
 *这张图就是系统自己画的：一份 [`figspec`](examples/pipeline.figspec.json) 源文件，
@@ -30,10 +60,14 @@
 [`pipeline.drawio`](examples/pipeline.drawio)（draw.io 打开直接继续编辑）
 和上面的 PNG（自检用）。*
 
-> 📄 **看一份真实交付物** —— [`examples/survey_cof_her`](examples/survey_cof_her)：
-> 本流水线端到端实跑产出的 [26 页综述 PDF](examples/survey_cof_her/paper/main.pdf)
-> （COF 光催化产氢主题）。143 篇验证文献（整合率 100%、密度 51.2 次/千词）、
-> 两张通过排版 lint 的可编辑图、一条预注册改进 idea、全闸门账本。
+**来自真实实跑** —— 下面两张图都出自
+[26 页样例综述](examples/survey_cof_her/paper/main.pdf)，且全部保持可编辑
+（figspec → SVG → .drawio）：
+
+| [设计杠杆因果链](examples/survey_cof_her/paper/figures/fig1_factor_chain.png) | [预注册改进路线](examples/survey_cof_her/paper/figures/fig2_tppa1_idea.png) |
+| --- | --- |
+| ![fig1](examples/survey_cof_her/paper/figures/fig1_factor_chain.png) | ![fig2](examples/survey_cof_her/paper/figures/fig2_tppa1_idea.png) |
+| 主标默认加粗 · 4.5 pt 地板 lint 全绿 | 闸门、回退与终点——一张可编辑画布 |
 
 ## 目录
 
@@ -49,8 +83,10 @@
 10. [配置](#10--配置)
 11. [测试](#11--测试)
 12. [设计笔记](#12--设计笔记) · 为什么 MCP+skill、为什么跨模型审稿
-13. [引用本项目](#13--引用本项目)
-14. [License 与贡献](#14--license-与贡献)
+13. [常见问题](#13--常见问题)
+14. [生态项目](#14--生态项目) · 本流水线依托的同门项目
+15. [引用本项目](#15--引用本项目)
+16. [License 与贡献](#16--license-与贡献)
 
 ---
 
@@ -355,7 +391,69 @@ trace 存档）——没人能审计的 PASS 等于没有 PASS。
 口头交接活不过并行支线、重试和会话重启。账本是唯一状态源：闸门、issue、日志
 是 agent 之间唯一的协议——每次运行可续跑，每个结论可审计。
 
-## 13. 📖 引用本项目
+## 13. ❓ 常见问题
+
+<details>
+<summary><b>需要额外的 LLM API key 吗？</b></summary>
+
+不需要。宿主 agent（Codex CLI / Claude Code / Cursor）本身就是 LLM——本仓库
+只是在你已有的订阅之上叠加 skill 和确定性 MCP 工具。文献 API（arXiv、
+OpenAlex、Crossref、DBLP）免 key；Semantic Scholar key 可选，只用于提升限额。
+</details>
+
+<details>
+<summary><b>能只用其中一个环节吗，比如只做引用核查？</b></summary>
+
+能。每个 MCP server 都独立可用：让 agent 只接 `citation_server`，对任意
+`.bib` 文件跑 `verify_entry` / `audit_bibliography`——不需要回环，不需要账本。
+图纸（`figure_server`）、检索（`lit_server`）同理。只有想跑完整闸门流水线时
+才需要回环。
+</details>
+
+<details>
+<summary><b>为什么要 draw.io 文件，SVG 不够吗？</b></summary>
+
+SVG 是一次渲染结果；`.drawio`（mxGraph XML）是一个*模型*——节点有身份，
+边绑定在端点上，合作者拖动一个框不会断箭头。两者由同一份 figspec 源渲染，
+永不漂移。
+</details>
+
+<details>
+<summary><b>引用可信到底是怎么保证的？</b></summary>
+
+零信任：每条文献必须从一手源重新抓取（DOI → Crossref、arXiv ID → arXiv API）
+并逐字段比对——标题、作者、年份、期刊。`citations_verified` 闸门不通过就
+进不了写作阶段；对抗审稿人在指控任何引用造假之前，也必须自己先跑
+`verify_entry`。
+</details>
+
+<details>
+<summary><b>我的宿主不是 Codex / Claude Code / Cursor，能用吗？</b></summary>
+
+只要你的 agent 能读 Markdown、能讲 MCP（stdio）就能用。skill 是无宿主
+专有语法的纯 Markdown；server 是标准 FastMCP 进程。最坏情况下，直接从
+你自己的 harness 调 server 的 Python API。
+</details>
+
+<details>
+<summary><b>跑一篇完整综述要多久？</b></summary>
+
+取决于规模档和宿主模型速度：143 篇文献的样例
+（`examples/survey_cof_her`）端到端约一个工作时段，含两轮对抗审稿和
+LaTeX 编译。检索与核验对公共 API 做了限流——瓶颈通常在这里，不在 LLM。
+</details>
+
+## 14. 🌐 生态项目
+
+本流水线集成或脱胎于以下同门项目：
+
+| 项目 | 是什么 | 怎么接入 |
+| --- | --- | --- |
+| [super_library](https://github.com/asimfish/super_library) | 学术写作语料库：短语库、章节模式、术语 lint | 写作 skill 的语言权威（风格阶段 0b） |
+| [super_ref](https://github.com/asimfish/super_ref) | 文献引用核查工具集 | 与 `citation_server` 同源的零信任引用哲学 |
+| [super_skill_team](https://github.com/asimfish/super_skill_team) | 面向科研工作流的大型 agent skill 团队 | figspec 图纸流水线的 figure-studio 血统 |
+
+## 15. 📖 引用本项目
 
 ```bibtex
 @software{goai_research,
@@ -367,8 +465,18 @@ trace 存档）——没人能审计的 PASS 等于没有 PASS。
 }
 ```
 
-## 14. 🤝 License 与贡献
+## 16. 🤝 License 与贡献
 
 MIT License。欢迎 issue 和 PR —— 加一个 `skills/goai-*/SKILL.md`，接进回环协议
 （[docs/LOOP_PROTOCOL.md](docs/LOOP_PROTOCOL.md)），并守住两条铁律：每个 claim
 挂可核验的引用 key，每张图交付时带 figspec 源文件。
+
+**一个坏 case 比一颗 star 更有价值。** 如果某次运行画出了丑图、生成了
+看着像假的引用、或者写出了「委员会文风」的章节——请开 issue 并附上产物。
+真实的失败样本才是推动 lint 规则和 skill 提示词进化的燃料。
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=asimfish/goai_research&type=Date)](https://star-history.com/#asimfish/goai_research&Date)
+
+</div>
