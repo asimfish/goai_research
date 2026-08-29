@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="680" viewBox="0 0 1500 680">
+<defs><marker id="arrow-block" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker><marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker><filter id="goai-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#2A3B47" flood-opacity="0.28"/></filter></defs>
+<rect x="0" y="0" width="1500" height="680" fill="#FFFFFF"/>
+<text x="750.0" y="28.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" fill="#1F2933" font-weight="bold">Pre-Registered TpPa-1 Improvement Route</text>
+<rect x="20" y="70" width="250" height="560" rx="10" fill="#EEF4F7" stroke="#9DB4C6" stroke-width="1.3"/>
+<text x="32" y="94.025" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" font-weight="bold" fill="#234E70">Lane A — synthesis &amp; controls</text>
+<rect x="310" y="70" width="1170" height="180" rx="10" fill="#EDF7F5" stroke="#93C0BC" stroke-width="1.3"/>
+<text x="322" y="94.025" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" font-weight="bold" fill="#2A7F8E">Lane B — measurements &amp; quantitative endpoints</text>
+<rect x="310" y="280" width="1170" height="130" rx="10" fill="#FBF4E8" stroke="#D3B98A" stroke-width="1.3"/>
+<text x="322" y="304.025" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" font-weight="bold" fill="#8A5A14">Lane C — pre-registered gates</text>
+<rect x="310" y="440" width="1170" height="190" rx="10" fill="#FFFFFF" stroke="#C9A9A4" stroke-width="1.2" stroke-dasharray="6,4"/>
+<text x="322" y="464.025" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" font-weight="bold" fill="#A64B45">Fallbacks &amp; outcome</text>
+<path d="M 145.0 182.0 L 145.0 224.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<rect x="66.61500000000001" y="184.4375" width="156.76999999999998" height="37.125" fill="#FFFFFF" opacity="0.9"/>
+<text x="145.0" y="194.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">same Tp batch;</text><text x="145.0" y="211.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">co-condense, vary x</text>
+<path d="M 145.0 302.0 L 145.0 344.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<rect x="101.85" y="304.4375" width="86.3" height="37.125" fill="#FFFFFF" opacity="0.9"/>
+<text x="145.0" y="314.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">matched</text><text x="145.0" y="331.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">references</text>
+<path d="M 250.0 263.0 L 290.0 263.0 L 290.0 143.0 L 330.0 143.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<path d="M 530.0 143.0 L 560.0 143.0 L 560.0 288.0 L 430.0 288.0 L 430.0 318.0" fill="none" stroke="#2A7F8E" stroke-width="2.5" marker-end="url(#arrow-block)"/>
+<rect x="520.765" y="277.875" width="78.47" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="560" y="288.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#2A7F8E">PXRD, BET</text>
+<path d="M 820.0 143.0 L 850.0 143.0 L 850.0 288.0 L 720.0 288.0 L 720.0 318.0" fill="none" stroke="#2A7F8E" stroke-width="2.5" marker-end="url(#arrow-block)"/>
+<rect x="783.36" y="277.875" width="133.27999999999997" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="850" y="288.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#2A7F8E">E_g, edges, τ_CS</text>
+<path d="M 1110.0 143.0 L 1140.0 143.0 L 1140.0 288.0 L 1010.0 288.0 L 1010.0 318.0" fill="none" stroke="#2A7F8E" stroke-width="2.5" marker-end="url(#arrow-block)"/>
+<rect x="1100.765" y="277.875" width="78.47" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="1140" y="288.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#2A7F8E">rate, AQY</text>
+<path d="M 1400.0 143.0 L 1430.0 143.0 L 1430.0 288.0 L 1300.0 288.0 L 1300.0 318.0" fill="none" stroke="#2A7F8E" stroke-width="2.5" marker-end="url(#arrow-block)"/>
+<rect x="1390.765" y="277.875" width="78.47" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="1430" y="288.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#2A7F8E">retention</text>
+<path d="M 525.0 345.4 L 595.0 342.0 L 595.0 143.0 L 620.0 143.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<path d="M 815.0 345.4 L 885.0 342.0 L 885.0 143.0 L 910.0 143.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<path d="M 1105.0 345.4 L 1175.0 342.0 L 1175.0 143.0 L 1200.0 143.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<path d="M 1395.0 344.4 L 1435.0 342.0 L 1435.0 520.0 L 1330.0 520.0 L 1330.0 540.0" fill="none" stroke="#234E70" stroke-width="3" marker-end="url(#arrow-block)"/>
+<rect x="1403.595" y="501.4375" width="62.809999999999995" height="37.125" fill="#FFFFFF" opacity="0.9"/>
+<text x="1435" y="511.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">pass:</text><text x="1435" y="528.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#234E70">lock x*</text>
+<path d="M 430.0 382.0 L 430.0 478.0" fill="none" stroke="#A64B45" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="410.34000000000003" y="419.875" width="39.31999999999999" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="430.0" y="430.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#A64B45">fail</text>
+<path d="M 720.0 382.0 L 720.0 478.0" fill="none" stroke="#A64B45" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="700.34" y="419.875" width="39.31999999999999" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="720.0" y="430.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#A64B45">fail</text>
+<path d="M 1010.0 382.0 L 1010.0 478.0" fill="none" stroke="#A64B45" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="990.34" y="419.875" width="39.31999999999999" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="1010.0" y="430.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#A64B45">fail</text>
+<path d="M 1300.0 382.0 L 1300.0 468.0" fill="none" stroke="#A64B45" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="1280.34" y="414.875" width="39.31999999999999" height="20.25" fill="#FFFFFF" opacity="0.9"/>
+<text x="1300.0" y="425.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#A64B45">fail</text>
+<path d="M 1309.3 520.0 L 1316.4 540.0" fill="none" stroke="#A64B45" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="40" y="104" width="210" height="78" rx="8" fill="#FFFFFF" stroke="#234E70" stroke-width="1.7"/>
+<text x="145.0" y="124.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Baseline TpPa-1</text>
+<text x="145.0" y="146.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">Tp + Pa-1 · solvothermal</text><text x="145.0" y="163.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">120 °C, 3 d · dioxane/mesitylene</text>
+<rect x="40" y="224" width="210" height="78" rx="8" fill="#FFFFFF" stroke="#234E70" stroke-width="1.7"/>
+<text x="145.0" y="244.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Mixed-linker D–A series</text>
+<text x="145.0" y="266.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">(1−x) Pa-1 + x BT(NH₂)₂</text><text x="145.0" y="283.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">x = 0.05 / 0.10 / 0.25 / 0.50</text>
+<rect x="40" y="344" width="210" height="78" rx="8" fill="#FFFFFF" stroke="#234E70" stroke-width="1.7"/>
+<text x="145.0" y="364.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Matched controls</text>
+<text x="145.0" y="386.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">x = 0 · physical blend · amorphous</text><text x="145.0" y="403.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">analog · same activation</text>
+<rect x="40" y="520" width="210" height="78" rx="8" fill="#FFFFFF" stroke="#A64B45" stroke-width="1.7"/>
+<text x="145.0" y="540.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Safety plan</text>
+<text x="145.0" y="562.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">sealed-tube pressure · solvent &amp;</text><text x="145.0" y="579.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">Pt-salt handling · H₂ venting</text>
+<rect x="330" y="104" width="200" height="78" rx="8" fill="#FFFFFF" stroke="#2A7F8E" stroke-width="1.8"/>
+<text x="430.0" y="124.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Structure &amp; porosity QC</text>
+<text x="430.0" y="146.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">PXRD FWHM · BET SSA · FTIR</text><text x="430.0" y="163.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">keto-form · same-batch splits</text>
+<rect x="620" y="104" width="200" height="78" rx="8" fill="#FFFFFF" stroke="#2A7F8E" stroke-width="1.8"/>
+<text x="720.0" y="124.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Band &amp; carrier mapping</text>
+<text x="720.0" y="146.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">Tauc E_g · Mott–Schottky · UPS</text><text x="720.0" y="163.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">fs-TAS τ_CS · TRPL quenching</text>
+<rect x="910" y="104" width="200" height="78" rx="8" fill="#FFFFFF" stroke="#2A7F8E" stroke-width="1.8"/>
+<text x="1010.0" y="124.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">HER assay (matched)</text>
+<text x="1010.0" y="146.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">3 wt% Pt · 10 vol% TEOA · ≥420 nm</text><text x="1010.0" y="163.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">vs x = 0 + blend controls</text>
+<rect x="1200" y="104" width="200" height="78" rx="8" fill="#FFFFFF" stroke="#2A7F8E" stroke-width="1.8"/>
+<text x="1300.0" y="124.20625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">Stability protocol</text>
+<text x="1300.0" y="146.778125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">best x · 5 × 4 h cycles + 20 h</text><text x="1300.0" y="163.246875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.174999999999999" fill="#555555">post PXRD/FTIR/XPS · ICP-MS</text>
+<rect x="330" y="188" width="200" height="44" rx="22.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="1.4"/>
+<text x="430.0" y="210.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">FWHM ≤ 1.3× · SSA ≥ 0.7× ref</text>
+<rect x="620" y="188" width="200" height="44" rx="22.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="1.4"/>
+<text x="720.0" y="210.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">τ_CS ≥ 2× · E_CB ≤ −0.3 V NHE</text>
+<rect x="910" y="188" width="200" height="44" rx="22.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="1.4"/>
+<text x="1010.0" y="210.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">rate ≥ 2× · AQY(420) ≥ 5%</text>
+<rect x="1200" y="188" width="200" height="44" rx="22.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="1.4"/>
+<text x="1300.0" y="210.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">≥ 80% retention over 20 h</text>
+<polygon points="367.0,318 493.0,318 525,350.0 493.0,382 367.0,382 335,350.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="2"/>
+<text x="430.0" y="340.3125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">G1 · structure</text><text x="430.0" y="359.6875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">retained?</text>
+<polygon points="657.0,318 783.0,318 815,350.0 783.0,382 657.0,382 625,350.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="2"/>
+<text x="720.0" y="340.3125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">G2 · mechanism</text><text x="720.0" y="359.6875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">gain?</text>
+<polygon points="947.0,318 1073.0,318 1105,350.0 1073.0,382 947.0,382 915,350.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="2"/>
+<text x="1010.0" y="340.3125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">G3 · activity</text><text x="1010.0" y="359.6875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">gain?</text>
+<polygon points="1237.0,318 1363.0,318 1395,350.0 1363.0,382 1237.0,382 1205,350.0" fill="#FFFFFF" stroke="#B7791F" stroke-width="2"/>
+<text x="1300.0" y="350.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#1a1a1a" font-weight="bold">G4 · durable?</text>
+<rect x="330" y="478" width="200" height="58" rx="29.0" fill="#FFFFFF" stroke="#A64B45" stroke-width="1.8"/>
+<text x="430.0" y="498.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">reduce x (≤ 0.10);</text><text x="430.0" y="515.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">re-optimize solvent / AcOH</text>
+<rect x="620" y="478" width="200" height="58" rx="29.0" fill="#FFFFFF" stroke="#A64B45" stroke-width="1.8"/>
+<text x="720.0" y="498.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">pivot lever: post-</text><text x="720.0" y="515.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">synthetic protonation</text>
+<rect x="910" y="478" width="200" height="58" rx="29.0" fill="#FFFFFF" stroke="#A64B45" stroke-width="1.8"/>
+<text x="1010.0" y="498.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">fallback: Pt₁ single-atom</text><text x="1010.0" y="515.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">cocatalyst, matched wt%</text>
+<rect x="1200" y="468" width="200" height="52" rx="26.0" fill="#FFFFFF" stroke="#A64B45" stroke-width="1.8"/>
+<text x="1300.0" y="485.5625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">swap acceptor: milder</text><text x="1300.0" y="502.4375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#1a1a1a">pyridinediamine</text>
+<rect x="1200" y="540" width="260" height="76" rx="8" fill="#234E70" stroke="#16334A" stroke-width="1.8" filter="url(#goai-shadow)"/>
+<text x="1330.0" y="558.6" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#FFFFFF" font-weight="bold">Pre-registered outcome</text>
+<text x="1330.0" y="581.9" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.6" fill="#DCE6EE">pass → adopt x*; exhausted →</text><text x="1330.0" y="598.9" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.6" fill="#DCE6EE">bounded negative result</text>
+<text x="750" y="652.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" fill="#52616B">solid — pre-registered flow (arrows leaving gates = pass) · red dashed — fail branch · chips under cards — quantitative endpoints</text>
+</svg>
