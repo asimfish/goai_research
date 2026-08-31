@@ -1,6 +1,6 @@
 ---
 name: goai-orchestrator
-description: Use when the user wants to run the GoAI survey pipeline end-to-end — 文献综述多智能体总编排：初始化回环账本、按阶段路由 7 个专职 agent、并行分派、闸门验收、审稿意见回路由，直到全部 gate PASS 或达到回合上限。触发词：「跑综述流水线」「run survey pipeline」「开始文献调研」。
+description: Use when the user wants to run the GoAI survey pipeline end-to-end — 文献综述多智能体总编排：初始化回环账本、按阶段路由 7 个专职 agent、并行分派、闸门验收、审稿意见回路由，直到全部 gate PASS 或达到回合上限。触发词：「跑综述流水线」「run survey pipeline」「开始文献调研」；用户**只给一个研究主题**（未限定只要某个环节）时也默认进入本 skill 跑全流程。
 ---
 
 # GoAI Orchestrator —— 综述流水线总编排
@@ -8,6 +8,10 @@ description: Use when the user wants to run the GoAI survey pipeline end-to-end 
 你是总编排 agent。你不亲自写综述、不亲自检索、不亲自画图；你只做四件事：
 **建账本 → 分派 → 验闸门 → 路由返工**。所有状态只存在于回环账本
 `workspace/state/ledger.json`（用 `tools/loopctl.py` 读写），不允许口头交接。
+
+**进入条件（默认全流程）**：用户只给一个研究主题、没有明确限定只要某个
+环节时，就进入本 skill 跑完整个状态机。最终交付以 `workspace/drafts/` 的
+tex+pdf 为硬性要求——账本停在 lit_search、只交一份 Markdown 报告不算完成。
 
 ## 阶段状态机
 
@@ -47,10 +51,16 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    lite 3–6、balanced 6–12、max 8–12（mini/实测运行按任务书上限为准，
    偏离档位要在账本记 decision）；连同 2020 起的时间窗、
    排除项写入 `workspace/inputs/scope.md`；`loopctl gate --name scope_confirmed --status PASS`。
-   有歧义就停下来问用户。
-   等人的点共三处，不受 auto-proceed 影响：scope 定稿、taxonomy 阶段的
-   贡献声明确认（该 gate 的 PASS 以用户对贡献声明的确认为前提，用户不可达
-   时按 writer skill 的降级规则记录）、化学安全方案。
+   **scope 确认分级**（非交互客户端不能卡死在无条件停点上）：
+   - 裸主题且范围无实质歧义 → 按 scope.md 已写明的默认值**自动确认**，
+     `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后
+     直接继续，不等人；
+   - 歧义会改变研究对象（同名缩写跨学科、目标物指代不清等）→ 停下来问；
+   - 涉及生成可直接执行的危险实验协议 → 停下来问，安全停点永不自动确认。
+   等人的点共三处，均适用上述「用户不可达降级」逻辑：scope 定稿（按分级
+   自动确认）、taxonomy 阶段的贡献声明确认（用户不可达时按 writer skill
+   的降级规则记录后继续）、化学安全方案（不可自动确认；用户不可达时该
+   支线记 WARN skipped 并在终报如实说明，不得输出可执行危险协议）。
 3. **逐阶段分派——并发是默认，串行是降级**：`loopctl advance --to <stage>`
    后分派对应 skill。
    - 在 Cursor/Claude 环境：用 Task 工具**单条消息多路并行**拉起子 agent，
