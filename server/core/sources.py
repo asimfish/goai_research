@@ -17,7 +17,10 @@ from . import http
 from .textnorm import norm_title, strip_accents  # noqa: F401  下游继续从本模块导入
 
 S2_BASE = "https://api.semanticscholar.org/graph/v1"
-S2_FIELDS = "title,authors,year,venue,externalIds,openAccessPdf,abstract,citationCount,url"
+S2_FIELDS = (
+    "title,authors,year,venue,externalIds,openAccessPdf,abstract,"
+    "citationCount,url,publicationTypes"
+)
 
 
 # ---------- 归一化 ----------
@@ -39,6 +42,7 @@ def record(source: str, **kw: Any) -> dict[str, Any]:
         "source": source, "id": None, "title": None, "authors": [],
         "year": None, "venue": None, "doi": None, "arxiv_id": None,
         "url": None, "pdf_url": None, "abstract": None, "citation_count": None,
+        "publication_type": None,
     }
     base.update({k: v for k, v in kw.items() if v is not None})
     base["authors"] = [a.strip() for a in (base.get("authors") or []) if a and a.strip()]
@@ -74,7 +78,7 @@ def _parse_arxiv_feed(xml_text: str) -> list[dict[str, Any]]:
         out.append(record(
             "arxiv", id=aid, title=title, authors=[a for a in authors if a],
             year=year, venue="arXiv", doi=doi, arxiv_id=aid,
-            url=f"https://arxiv.org/abs/{aid}",
+            url=f"https://arxiv.org/abs/{aid}", publication_type="preprint",
             pdf_url=f"https://arxiv.org/pdf/{aid}", abstract=abstract))
     return out
 
@@ -124,7 +128,7 @@ def _parse_oa_work(w: dict[str, Any]) -> dict[str, Any]:
         url=ids.get("doi") or w.get("id"),
         pdf_url=loc.get("pdf_url"),
         abstract=_oa_abstract(w.get("abstract_inverted_index")),
-        citation_count=w.get("cited_by_count"))
+        citation_count=w.get("cited_by_count"), publication_type=w.get("type"))
 
 
 def search_openalex(query: str, limit: int = 20,
@@ -192,7 +196,8 @@ def _parse_s2(p: dict[str, Any]) -> dict[str, Any]:
         doi=ext.get("DOI"), arxiv_id=ext.get("ArXiv"),
         url=p.get("url"),
         pdf_url=(p.get("openAccessPdf") or {}).get("url"),
-        abstract=p.get("abstract"), citation_count=p.get("citationCount"))
+        abstract=p.get("abstract"), citation_count=p.get("citationCount"),
+        publication_type=((p.get("publicationTypes") or [None])[0]))
 
 
 def search_s2(query: str, limit: int = 20,
@@ -234,14 +239,24 @@ def _parse_crossref(it: dict[str, Any]) -> dict[str, Any]:
         name = " ".join(x for x in (a.get("given"), a.get("family")) if x)
         if name:
             authors.append(name)
+    def clean(value: Any) -> Any:
+        if not isinstance(value, str):
+            return value
+        return re.sub(r"\s+", " ", html.unescape(
+            re.sub(r"<[^>]+>", " ", value)
+        )).strip()
+
+    raw_venue = ((it.get("container-title") or [None])[0]
+                 or ((it.get("event") or {}).get("name")
+                     if isinstance(it.get("event"), dict) else None))
     return record(
         "crossref", id=it.get("DOI"),
-        title=(it.get("title") or [None])[0],
+        title=clean((it.get("title") or [None])[0]),
         authors=authors, year=year,
-        venue=(it.get("container-title") or [None])[0] or it.get("event", {}).get("name")
-        if isinstance(it.get("event"), dict) else (it.get("container-title") or [None])[0],
+        venue=clean(raw_venue),
         doi=it.get("DOI"), url=it.get("URL"),
-        citation_count=it.get("is-referenced-by-count"))
+        citation_count=it.get("is-referenced-by-count"),
+        publication_type=it.get("type"))
 
 
 def search_crossref(query: str, limit: int = 20) -> list[dict[str, Any]]:
@@ -288,6 +303,7 @@ def search_dblp(query: str, limit: int = 20) -> list[dict[str, Any]]:
             year=int(info["year"]) if str(info.get("year", "")).isdigit() else None,
             venue=html.unescape(venue) if isinstance(venue, str) else venue,
             doi=info.get("doi"), url=url,
+            publication_type=info.get("type"),
             # corr 条目 ee 常是 arxiv 链接，提取 id 供跨源去重
             arxiv_id=norm_arxiv_id(url) if url and "arxiv.org/" in url else None))
     return out

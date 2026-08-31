@@ -156,6 +156,18 @@ def experiment_plan_skeleton(route: dict[str, Any],
                              objective: str = "") -> dict[str, Any]:
     """由逆合成路线生成实验方案骨架（供 idea-forge 填充、reviewer 审核）。"""
     raw_steps, route_problems = _normalize_steps(route.get("steps"))
+    is_inorganic = bool(route.get("target_formula") and route.get("precursors"))
+    if not raw_steps and is_inorganic:
+        # 无机两阶段模型返回的是前驱体集合而非分子反应 steps。把它映射为
+        # 单步“候选前驱体→目标物”骨架；条件仍留空，绝不从模型排名臆造。
+        raw_steps = [{
+            "step": 1,
+            "reaction": "candidate inorganic synthesis (conditions not predicted)",
+            "precursors": [
+                p.get("formula") if isinstance(p, dict) else str(p)
+                for p in route.get("precursors", [])
+            ],
+        }]
     steps = []
     for s in raw_steps:
         steps.append({
@@ -170,15 +182,24 @@ def experiment_plan_skeleton(route: dict[str, Any],
     # 失败的预测（ok=false）绝不能被当成「已验证」路线带进实验方案；
     # 结构读不全的路线同样不算已验证 —— 解析时丢过步骤就不能声称完整；
     # 一步都没有的空路线也不算（否则 0 步方案会空过审核闸门）。
-    verified = bool(route.get("verified", route.get("provider") != "stub")) \
+    provider = route.get("provider") or (
+        "local_two_stage_inorganic" if is_inorganic else None
+    )
+    verified = bool(route.get(
+        "model_output_verified",
+        route.get("verified", provider not in (None, "stub")),
+    )) \
         and route.get("ok", True) is not False \
         and not route_problems \
         and bool(steps)
     plan = {
         "objective": objective,
         "route_id": route.get("route_id"),
-        "provider": route.get("provider"),
+        "provider": provider,
         "provider_verified": verified,
+        "model_output_verified": verified if is_inorganic else None,
+        "chemical_route_verified": bool(route.get("chemical_route_verified", False))
+        if is_inorganic else None,
         "steps": steps,
         "review_gates": [
             "文献支持：每步条件至少 1 条真实引用（经 goai-refcheck 核验）",
@@ -189,6 +210,11 @@ def experiment_plan_skeleton(route: dict[str, Any],
     }
     if route_problems:
         plan["route_problems"] = route_problems
+    if is_inorganic:
+        plan["warning"] = (
+            "Model-ranked precursor set only; conditions are unpredicted and the "
+            "chemical route requires literature evidence, safety review, and human approval."
+        )
     return plan
 
 

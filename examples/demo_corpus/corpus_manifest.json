@@ -1,0 +1,20 @@
+{
+  "citable": false,
+  "corpus_format": "goai-compact-parquet-v1",
+  "document_count": 3,
+  "notice": "Synthetic interface fixture only; do not cite as scientific evidence.",
+  "package_id": "goai-synthetic-demo-corpus",
+  "parquet_files": [
+    "corpus.parquet"
+  ],
+  "parquet_sha256": "cef22464c3fd9898db256c6d448c0727aaf16a3666545f06cb5214ecb865d853",
+  "required_columns": [
+    "doi_normalized",
+    "markdown",
+    "publisher_group",
+    "title",
+    "uuid"
+  ],
+  "schema_version": 1,
+  "synthetic": true
+}

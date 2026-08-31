@@ -6,8 +6,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-32%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
-[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
+[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
 [中文版 README](README_CN.md) | English
@@ -122,6 +122,7 @@ either way; it never claims an unfinished survey is done).
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
 bash install.sh     # creates .venv, installs deps, generates MCP configs with absolute paths
+# With the vendored two-stage inorganic model: bash install.sh --retro
 
 # Codex CLI
 cat configs/codex.config.toml >> ~/.codex/config.toml
@@ -132,7 +133,8 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # smoke check
-.venv/bin/python -m pytest tests/ -q     # 32 offline tests, no network needed
+tools/check.sh --servers
+.venv/bin/python -m pytest tests/ -q     # offline tests, no network needed
 ```
 
 Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh/uv) if
@@ -162,15 +164,15 @@ Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live b
 | Layer | What | Why |
 |---|---|---|
 | `skills/` — 9 SKILL.md | Methodology the host LLM executes: taxonomy building, claim-bound writing, review judgment | Cognitive work stays with the strongest available model; skills carry no API keys and no LLM SDKs |
-| `server/` — 4 MCP servers, 19 tools | Search aggregation & dedup, BibTeX parsing & author comparison, figspec validation & dual rendering, retrosynthesis adapter | Deterministic heavy lifting: testable offline, reusable across hosts |
+| `server/` — 4 MCP servers, 25 tools | Online search plus local full text, BibTeX parsing & author comparison, figspec validation & dual rendering, retrosynthesis adapters | Deterministic heavy lifting: testable offline, reusable across hosts |
 | `tools/` | `loopctl.py` ledger CLI · `bib_guard.py` citation gate · `tex_guard.py` assembly gate · `bank_check.py` bank validator · `parallel_run.sh` | Loop control and hard gates: pure local, zero LLM |
 
 | MCP server | Tools |
 |---|---|
-| `goai-litsearch` | `search_papers` `snowball` `lookup` `download_pdf` `save_to_library` `export_bibtex` `coverage_report` |
+| `goai-litsearch` | `local_corpus_status` `grep_local_corpus` `read_local_document` `lookup_local_doi` `search_papers` `snowball` `lookup` `download_pdf` `save_to_library` `export_bibtex` `coverage_report` |
 | `goai-refcheck` | `verify_entry` `verify_bib_file` `deep_audit_info` |
 | `goai-figure` | `figspec_schema` `validate_figspec` `render_figure` `svg_file_to_drawio` `drawio_export` `list_figures` |
-| `goai-retro` | `provider_status` `predict_retro` `make_experiment_plan` |
+| `goai-retro` | `provider_status` `inorganic_model_status` `predict_precursor_routes` `predict_retro` `make_experiment_plan` |
 
 </details>
 
@@ -260,6 +262,22 @@ Already have a figure that isn't a figspec?
 Editability acceptance is explicit: text must be native text, shapes draggable,
 edges bound to nodes — "looks similar" doesn't pass.
 
+Private deployments point `GOAI_LOCAL_CORPUS_ROOTS` at the complete Parquet
+archive (not the old 2015--2020 paragraph-extraction subset) and configure the
+SQLite DOI index plus shard root as a pair. A submission exports only explicitly
+redistributable text into a self-contained compact Parquet package; the same four
+tools—status, search, bounded read, and DOI lookup—work without any private index:
+
+```bash
+cp configs/corpus-selection.example.json selection.private.json
+.venv/bin/python tools/export_corpus_subset.py selection.private.json workspace/library/corpus-release --format compact-parquet
+GOAI_LOCAL_CORPUS_ROOTS=$PWD/workspace/library/corpus-release tools/check.sh --corpus
+```
+
+`examples/demo_corpus/` is a three-record CC0 synthetic fixture for GitHub and
+CI. Its manifest says `citable=false`; it tests the interface but is never
+scientific evidence.
+
 ## 6. 🛡 Citation Integrity
 
 The single most damaging failure of LLM-written surveys is fabricated or
@@ -291,7 +309,15 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
 combination holes (two taxonomy branches never crossed) — and every proposal must
 carry real citation keys as evidence.
 
-For chemistry / materials ideas it calls the `goai-retro` MCP server:
+For inorganic materials, call
+`predict_precursor_routes(target_formula="Li7La3Zr2O12")`. Stage 1 retrieves
+individual precursor Top-M candidates; after a chemistry filter, Stage 2 reranks
+enumerated 2--5-component sets and returns Top-5 by default. The vendored model
+and checkpoints live under `vendor/two_stage_retro/` and are hash-checked at
+load time. Predictions still require literature evidence, condition completion,
+and reviewer approval.
+
+Molecular retrosynthesis can still use an HTTP backend:
 
 ```bash
 export GOAI_RETRO_PROVIDER=http
@@ -311,11 +337,16 @@ citation verification of every reference they cite.
 Figures, sections, and ideas have no shared writes — the orchestrator fans them out:
 
 ```bash
-# tasks.tsv: <name>\t<prompt> per line
+# tasks.tsv: <name>\t<prompt>\t<artifacts>\t<earlier dependencies> per line
 bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv   # or --backend claude
 ```
 
-Rules that keep parallelism safe: each task writes only its own shard files
+Rules that keep parallelism safe: Codex runs with a workspace-write sandbox;
+stdout JSONL and stderr are stored separately; optional artifact declarations turn
+missing, empty, or stale outputs into exit 3 (`=path` checks existence only). Each
+fourth-column dependency is a real ready gate. A timed-out process whose declared
+artifacts pass validation keeps `.process_exit=124` but receives a WARN effective
+status instead of being mislabeled as failed content. Each task writes only its own shard files
 (`sections/NN_*.tex`, `figures/<name>.*`); shared files (main.tex, references.bib)
 are touched only by the merge step; ledger writes are serialized by loopctl's
 file lock. Logs and exit codes land in `workspace/state/parallel/<run_id>/`.
@@ -364,6 +395,12 @@ in-IDE subagents.
 | `GOAI_HTTP_MIN_INTERVAL` | `1.0` | Min seconds between requests to the same host |
 | `GOAI_HTTP_MAX_RETRIES` | `2` | Bounded retries on 429/503 (honors Retry-After) |
 | `GOAI_WORKSPACE` | `workspace` | Where all artifacts land |
+| `GOAI_LOCAL_CORPUS_ROOTS` | `workspace/library/corpus` | Local Markdown roots, or a compact Parquet package root (`:` separated on Linux/macOS) |
+| `GOAI_LOCAL_CORPUS_TIMEOUT` | `30` | Local full-text timeout in seconds |
+| `GOAI_LOCAL_CORPUS_EXPECTED_INDEX` | — | Private SQLite UUID→archive index; must be configured with the shard root |
+| `GOAI_LOCAL_CORPUS_SHARD_ROOT` | — | Private ingest-shard directory; compact public packages need neither variable |
+| `GOAI_RETRO_DEVICE` | `cpu` | Inorganic two-stage model device, e.g. `cuda:0` |
+| `GOAI_INORGANIC_RETRO_ROOT` | `vendor/two_stage_retro` | Vendored inorganic model root |
 | `GOAI_RETRO_PROVIDER` | `stub` | `stub` (demo) or `http` (real predictor) |
 | `GOAI_RETRO_API_URL` / `GOAI_RETRO_API_KEY` | — | Retrosynthesis backend endpoint / auth |
 | `GOAI_DRAWIO_CLI` | auto-detect | Path to draw.io Desktop CLI for exports |
@@ -372,8 +409,8 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 32 offline tests — no network, no LLM
-.venv/bin/python -m pytest -m live tests/live/  # 95 live tests — real APIs, real draw.io CLI
+.venv/bin/python -m pytest tests/ -q            # 40+ offline tests — no network, no LLM
+.venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 
 Every pipeline stage has also been **live-tested end to end** (real 5-source

@@ -25,6 +25,10 @@ comprehensive 档不足 100 篇时 coverage gate 不得记 PASS（确属新兴�
 
 | 工具 | 用途 |
 |---|---|
+| `local_corpus_status()` | 检查私有NAS全文库或公开精简Parquet包的模式与schema |
+| `grep_local_corpus(query, ...)` | 用DuckDB检索Parquet或用ripgrep检索Markdown，返回行号和上下文 |
+| `read_local_document(path, start_line, end_line)` | 读取命中文献片段；路径受语料根目录约束 |
+| `lookup_local_doi(doi, start_line, end_line)` | 私有库经SQLite/分片查正文；公开精简包直接查自身Parquet |
 | `search_papers(query, sources, limit_per_source, year_from, year_to)` | 跨源检索+去重合并 |
 | `snowball(seed, direction, limit)` | 引文滚雪球（references/citations/both） |
 | `lookup(identifier)` | DOI/arXiv 精确查元数据 |
@@ -34,6 +38,14 @@ comprehensive 档不足 100 篇时 coverage gate 不得记 PASS（确属新兴�
 | `export_bibtex(library_path, out_path)` | 导出 references.bib |
 
 ## 检索规程（每个子主题跑完整四步）
+
+0. **本地语料优先**：若`local_corpus_status`可用，先对每组关键词调用
+   `grep_local_corpus`，把命中文献路径、行号和查询式记入search_log；再用
+   DOI/API元数据源补全作者、年份和正式标识。私有运行由
+   `GOAI_LOCAL_CORPUS_ROOTS`指向NAS全库；公开运行指向经许可allow-list导出的
+   `goai-compact-parquet-v1`精简包。同一工具接口不得假装公开子集具有私有
+   全库的查全范围；manifest标记`synthetic=true`或`citable=false`的记录只能
+   做接口测试，禁止进入论文引用池。
 
 1. **关键词矩阵**：为子主题写 3–5 组检索式（同义词 × 方法词 × 任务词；
    英文；含缩写变体，如 "world model" / "dynamics model"）。逐组

@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "GoAI Research — 文献调研与综述论文多智能体系统（检索/引用核查/画图+drawio/idea+逆合成/写作/审稿回环）"
 requires-python = ">=3.10"
 dependencies = [
+    "duckdb>=1.1",
     "mcp>=1.2.0",
     "httpx>=0.27",
 ]
@@ -11,6 +12,7 @@ dependencies = [
 [project.optional-dependencies]
 preview = ["cairosvg>=2.7"]
 dev = ["pytest>=8.0"]
+retro = ["numpy>=1.24", "pandas>=2.0", "torch>=2.2,<2.8", "pymatgen>=2024.1"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -23,4 +25,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["server", "server.core"]
+packages = ["server", "server.core", "vendor", "vendor.two_stage_retro"]
+
+[tool.setuptools.package-data]
+"vendor.two_stage_retro" = ["PROVENANCE.md", "data/*.csv", "data/*.json", "checkpoints/*.pt", "checkpoints/*.json"]

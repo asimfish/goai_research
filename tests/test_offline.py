@@ -1,6 +1,8 @@
 """离线单测：核心确定性逻辑全覆盖，不打网络。"""
 import json
+import hashlib
 import os
+import sqlite3
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -10,7 +12,18 @@ import pytest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from server.core import bibtex, figspec, render_drawio, render_svg, retro, sources, svg2drawio
+from server.core import (
+    bibtex,
+    corpus_export,
+    figspec,
+    inorganic_retro,
+    local_corpus,
+    render_drawio,
+    render_svg,
+    retro,
+    sources,
+    svg2drawio,
+)
 
 
 # ---------- bibtex ----------
@@ -88,7 +101,8 @@ def test_title_similarity():
 def test_record_to_bibtex():
     rec = sources.record("arxiv", id="arxiv:2401.00001", title="Foo Bar Baz",
                          authors=["Alice One", "Bob Two"], year=2024,
-                         venue="TestConf", doi="10.1/XYZ", arxiv_id="2401.00001")
+                         venue="TestConf", doi="10.1/XYZ", arxiv_id="2401.00001",
+                         publication_type="conference")
     s = bibtex.record_to_bibtex(rec)
     e = bibtex.parse_bibtex(s)[0]
     assert e["entry_type"] == "inproceedings"
@@ -96,6 +110,17 @@ def test_record_to_bibtex():
     assert e["fields"]["booktitle"] == "TestConf"
     assert "One" in e["fields"]["author"]
     assert e["key"] == "one2024foo"
+
+
+def test_record_to_bibtex_defaults_nonconference_venue_to_article():
+    rec = sources.record(
+        "crossref", title="A Journal Paper", authors=["Alice One"], year=2024,
+        venue="ACS Applied Materials & Interfaces", doi="10.1/example",
+        publication_type="journal-article",
+    )
+    entry = bibtex.parse_bibtex(bibtex.record_to_bibtex(rec))[0]
+    assert entry["entry_type"] == "article"
+    assert entry["fields"]["journal"] == r"ACS Applied Materials \& Interfaces"
 
 
 # ---------- sources（离线部分） ----------
@@ -120,6 +145,20 @@ def test_norm_title_and_arxiv_id():
     assert sources.norm_title("  A Survey: of LLMs!  ") == sources.norm_title(
         "a survey of llms")
     assert sources.norm_arxiv_id("arXiv:2401.00001v2") == "2401.00001"
+
+
+def test_crossref_parser_cleans_html_and_keeps_publication_type():
+    record = sources._parse_crossref({
+        "DOI": "10.1/example",
+        "title": ["Li<sub>7</sub> LLZO"],
+        "container-title": ["ACS Applied Materials &amp; Interfaces"],
+        "author": [{"given": "Alice", "family": "One"}],
+        "issued": {"date-parts": [[2024]]},
+        "type": "journal-article",
+    })
+    assert record["title"] == "Li 7 LLZO"
+    assert record["venue"] == "ACS Applied Materials & Interfaces"
+    assert record["publication_type"] == "journal-article"
 
 
 # ---------- figspec / 渲染 ----------
@@ -351,6 +390,227 @@ def test_retro_http_requires_url(monkeypatch):
     monkeypatch.delenv("GOAI_RETRO_API_URL", raising=False)
     r = retro.predict("CCO")
     assert r["ok"] is False and "GOAI_RETRO_API_URL" in r["error"]
+
+
+def test_inorganic_route_maps_to_nonempty_plan_skeleton():
+    route = {
+        "provider": "local_two_stage_inorganic",
+        "model_output_verified": True,
+        "chemical_route_verified": False,
+        "route_id": "two-stage-example",
+        "target_formula": "Li7La3Zr2O12",
+        "precursors": [
+            {"formula": "ZrO2"}, {"formula": "La2O3"}, {"formula": "Li2CO3"},
+        ],
+    }
+    plan = retro.experiment_plan_skeleton(route, "LLZO diagnostic")
+    assert plan["provider"] == "local_two_stage_inorganic"
+    assert plan["provider_verified"] is True
+    assert plan["chemical_route_verified"] is False
+    assert plan["steps"][0]["inputs"] == ["ZrO2", "La2O3", "Li2CO3"]
+    assert "not predicted" in plan["steps"][0]["reaction"]
+
+
+# ---------- local corpus / inorganic retro assets ----------
+
+def test_local_corpus_search_read_and_audit(tmp_path, monkeypatch):
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    paper = corpus / "llzo-paper.md"
+    paper.write_text(
+        "# Example\nBefore context.\nLi7La3Zr2O12 was densified.\nAfter context.\n",
+        encoding="utf-8",
+    )
+    workspace = tmp_path / "workspace"
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_ROOTS", str(corpus))
+    monkeypatch.setenv("GOAI_WORKSPACE", str(workspace))
+
+    result = local_corpus.search_local_corpus(
+        "Li7La3Zr2O12", max_results=2, context_lines=1, timeout_seconds=5
+    )
+    assert result["ok"] is True, result
+    assert result["total_returned"] == 1
+    assert result["matches"][0]["line"] == 3
+    assert [row["line"] for row in result["matches"][0]["context"]] == [2, 3, 4]
+
+    excerpt = local_corpus.read_local_document(str(paper), start_line=2, end_line=3)
+    assert excerpt["ok"] is True
+    assert excerpt["lines"][-1]["text"].startswith("Li7La3Zr2O12")
+    outside = local_corpus.read_local_document(str(tmp_path / "outside.md"))
+    assert outside["ok"] is False and "outside" in outside["error"]
+
+    audit_path = workspace / "state" / "tool_calls.jsonl"
+    events = [json.loads(line) for line in audit_path.read_text().splitlines()]
+    assert [event["tool"] for event in events] == [
+        "grep_local_corpus", "read_local_document", "read_local_document"
+    ]
+
+
+def test_local_corpus_search_clips_very_long_lines(tmp_path, monkeypatch):
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    paper = corpus / "long.md"
+    paper.write_text("LLZO " + "x" * 5000 + "\n", encoding="utf-8")
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_ROOTS", str(corpus))
+    monkeypatch.setenv("GOAI_WORKSPACE", str(tmp_path / "workspace"))
+    monkeypatch.setenv("GOAI_LOCAL_MATCH_TEXT_CHARS", "300")
+
+    result = local_corpus.search_local_corpus(
+        "LLZO", max_results=1, context_lines=0, timeout_seconds=5
+    )
+    match = result["matches"][0]
+    assert match["text_truncated"] is True
+    assert len(match["text"]) < 330
+    assert match["context"][0]["text_truncated"] is True
+
+
+def test_parquet_corpus_search_read_and_doi_lookup(tmp_path, monkeypatch):
+    duckdb = pytest.importorskip("duckdb")
+    corpus = tmp_path / "parquet-corpus"
+    corpus.mkdir()
+    parquet = corpus / "part-00000.parquet"
+    uuid = hashlib.md5(b"10.0000/byzso-test").hexdigest()
+    connection = duckdb.connect(database=":memory:")
+    connection.execute(
+        "CREATE TABLE papers(uuid VARCHAR, doi_normalized VARCHAR, title VARCHAR, "
+        "publisher_group VARCHAR, markdown VARCHAR)"
+    )
+    connection.execute(
+        "INSERT INTO papers VALUES (?, ?, ?, ?, ?)",
+        [uuid, "10.0000/byzso-test", "BYZSO analogue", "test-publisher",
+         "# Example\nBefore.\nBa5Y12ZnSi8O40 candidate.\nAfter."],
+    )
+    connection.execute("COPY papers TO ? (FORMAT PARQUET)", [str(parquet)])
+    connection.close()
+
+    workspace = tmp_path / "workspace"
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_ROOTS", str(corpus))
+    monkeypatch.setenv("GOAI_WORKSPACE", str(workspace))
+    result = local_corpus.search_local_corpus(
+        "Ba5Y12ZnSi8O40", max_results=2, context_lines=1, timeout_seconds=5
+    )
+    assert result["ok"] is True, result
+    assert result["engine"] == "duckdb-parquet"
+    assert result["matches"][0]["doi"] == "10.0000/byzso-test"
+    reference = result["matches"][0]["path"]
+    excerpt = local_corpus.read_local_document(reference, start_line=2, end_line=4)
+    assert excerpt["ok"] is True
+    assert excerpt["lines"][1]["text"].startswith("Ba5Y12Zn")
+
+    index = tmp_path / "expected.sqlite"
+    sql = sqlite3.connect(index)
+    sql.execute("CREATE TABLE expected_members(uuid TEXT PRIMARY KEY, archive_name TEXT NOT NULL)")
+    sql.execute("INSERT INTO expected_members VALUES (?, ?)", (uuid, "archive-0001.7z"))
+    sql.commit()
+    sql.close()
+    shards = tmp_path / "shards"
+    shards.mkdir()
+    parquet.rename(shards / "archive-0001.7z.parquet")
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_EXPECTED_INDEX", str(index))
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_SHARD_ROOT", str(shards))
+    lookup = local_corpus.lookup_local_doi("https://doi.org/10.0000/BYZSO-TEST")
+    assert lookup["found"] is True
+    assert lookup["document_id"] == uuid
+
+
+def test_repo_synthetic_compact_corpus_is_self_contained(tmp_path, monkeypatch):
+    corpus = os.path.join(ROOT, "examples", "demo_corpus")
+    monkeypatch.setenv("GOAI_LOCAL_CORPUS_ROOTS", corpus)
+    monkeypatch.setenv("GOAI_WORKSPACE", str(tmp_path / "workspace"))
+    monkeypatch.delenv("GOAI_LOCAL_CORPUS_EXPECTED_INDEX", raising=False)
+    monkeypatch.delenv("GOAI_LOCAL_CORPUS_SHARD_ROOT", raising=False)
+
+    status = local_corpus.corpus_status()
+    assert status["ok"] is True, status
+    assert status["mode"] == "synthetic-demo-parquet"
+    assert status["package"]["citable"] is False
+    assert status["schema"]["missing_columns"] == []
+
+    result = local_corpus.search_local_corpus("Ba5Y12Zn[O(SiO4)]8")
+    assert result["ok"] is True and result["total_returned"] == 1, result
+    assert result["matches"][0]["synthetic"] is True
+    assert result["matches"][0]["citable"] is False
+    reference = result["matches"][0]["path"]
+    excerpt = local_corpus.read_local_document(reference, start_line=1, end_line=4)
+    assert excerpt["ok"] is True
+    assert excerpt["synthetic"] is True and excerpt["citable"] is False
+    assert any("fully synthetic" in row["text"] for row in excerpt["lines"])
+
+    lookup = local_corpus.lookup_local_doi("10.0000/GOAI.DEMO.BYZSO")
+    assert lookup["ok"] is True and lookup["found"] is True, lookup
+    assert lookup["lookup_engine"] == "compact-parquet"
+    assert lookup["synthetic"] is True and lookup["citable"] is False
+    assert lookup["title"] == "Synthetic barium yttrium zinc silicate note"
+
+
+def test_public_subset_export_is_allow_listed(tmp_path, monkeypatch):
+    corpus = tmp_path / "private-corpus"
+    corpus.mkdir()
+    allowed = corpus / "used-paper.md"
+    metadata_only = corpus / "copyrighted-paper.pdf"
+    allowed.write_text("LLZO evidence", encoding="utf-8")
+    metadata_only.write_bytes(b"not copied")
+    manifest = tmp_path / "selection.json"
+    manifest.write_text(json.dumps({"documents": [
+        {
+            "source_path": str(allowed),
+            "document_id": "llzo-evidence",
+            "doi": "10.0000/example",
+            "license": "CC-BY-4.0",
+            "redistributable": True,
+        },
+        {
+            "source_path": str(metadata_only),
+            "doi": "10.0000/copyrighted",
+            "url": "https://doi.org/10.0000/copyrighted",
+            "redistributable": False,
+        },
+    ]}), encoding="utf-8")
+
+    result = corpus_export.export_public_subset(
+        manifest, tmp_path / "public", roots=[corpus]
+    )
+    assert result["exported_count"] == 1
+    assert result["metadata_only_count"] == 1
+    copied = tmp_path / "public" / result["documents"][0]["path"]
+    assert copied.read_text(encoding="utf-8") == "LLZO evidence"
+    public_text = (tmp_path / "public" / "MANIFEST.json").read_text(encoding="utf-8")
+    assert str(corpus) not in public_text
+    assert metadata_only.name not in {path.name for path in (tmp_path / "public" / "documents").iterdir()}
+    with pytest.raises(FileExistsError):
+        corpus_export.export_public_subset(manifest, tmp_path / "public", roots=[corpus])
+
+    compact_dir = tmp_path / "public-parquet"
+    compact = corpus_export.export_public_subset(
+        manifest,
+        compact_dir,
+        roots=[corpus],
+        output_format="compact-parquet",
+    )
+    assert compact["corpus_format"] == "goai-compact-parquet-v1"
+    assert compact["document_count"] == 1
+    assert (compact_dir / "corpus.parquet").is_file()
+    compact_text = (compact_dir / "corpus_manifest.json").read_text(encoding="utf-8")
+    assert str(corpus) not in compact_text
+
+    monkeypatch.delenv("GOAI_LOCAL_CORPUS_EXPECTED_INDEX", raising=False)
+    monkeypatch.delenv("GOAI_LOCAL_CORPUS_SHARD_ROOT", raising=False)
+    compact_status = local_corpus.corpus_status(roots=[compact_dir])
+    assert compact_status["ok"] is True
+    assert compact_status["mode"] == "public-compact-parquet"
+    assert compact_status["package"]["citable"] is True
+    hit = local_corpus.search_local_corpus("LLZO evidence", roots=[compact_dir])
+    assert hit["total_returned"] == 1
+    doi_hit = local_corpus.lookup_local_doi("10.0000/example", roots=[compact_dir])
+    assert doi_hit["found"] is True
+    assert doi_hit["lookup_engine"] == "compact-parquet"
+
+
+def test_inorganic_retro_assets_and_checkpoint_hashes():
+    result = inorganic_retro.status()
+    assert all(result["assets"].values()), result
+    assert all(result["checkpoint_hash_ok"].values()), result
+    assert result["protocol"]["default_routes"] == 5
 
 
 # ---------- loopctl 账本 ----------

@@ -44,8 +44,12 @@ description: Use when generating research ideas or experiment plans from a surve
 1. `provider_status()` 先确认后端：`stub` 输出仅演示流程，**禁止**把 stub
    路线当化学结论写进任何交付物；真实预测需 `GOAI_RETRO_PROVIDER=http`
    接 ASKCOS/RXN/自建服务。
-2. `predict_retro(target_smiles, max_depth)` 拿路线。
-3. `make_experiment_plan(route_json, objective)` 拿骨架，然后**你**负责：
+2. 分子任务用`predict_retro(target_smiles, max_depth)`；无机材料任务必须先调
+   `inorganic_model_status()`，再调
+   `predict_precursor_routes(target_formula, top_k=5)`。后者执行Stage-1单前驱体
+   检索与Stage-2组合重排，返回Top-5前驱体集合。
+3. `make_experiment_plan(route_json, objective)`拿骨架；无机Top-5输出则逐条建立
+   路线方案，然后**你**负责：
    - 每步 `conditions`（温度/溶剂/催化剂/时长）依库内文献填写并附引用 key；
    - `safety` 字段完整填写（危险性/防护），这是强制项；
    - `characterization` 写明表征手段。

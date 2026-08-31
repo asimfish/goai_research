@@ -1,0 +1,476 @@
+{
+  "title": "LLZO synthesis-to-performance process map",
+  "title_style": {
+    "font_size": 24,
+    "color": "#263238",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1500,
+    "height": 820
+  },
+  "defaults": {
+    "font_size": 16,
+    "edge_color": "#59636E",
+    "edge_width": 3
+  },
+  "groups": [
+    {
+      "id": "g_syn",
+      "label": "1  Powder synthesis",
+      "font_size": 16,
+      "x": 40,
+      "y": 90,
+      "w": 310,
+      "h": 390,
+      "fill": "#F5F7E8",
+      "stroke": "#8A8F00"
+    },
+    {
+      "id": "g_phase",
+      "label": "2  Phase & composition",
+      "font_size": 16,
+      "x": 410,
+      "y": 90,
+      "w": 310,
+      "h": 390,
+      "fill": "#F5F7E8",
+      "stroke": "#8A8F00"
+    },
+    {
+      "id": "g_dense",
+      "label": "3  Thermal treatment & densification",
+      "font_size": 16,
+      "x": 780,
+      "y": 90,
+      "w": 330,
+      "h": 390,
+      "fill": "#FFF7E5",
+      "stroke": "#F4A300"
+    },
+    {
+      "id": "g_perf",
+      "label": "4  Structure & transport",
+      "font_size": 16,
+      "x": 1170,
+      "y": 90,
+      "w": 290,
+      "h": 390,
+      "fill": "#F5F7E8",
+      "stroke": "#8A8F00"
+    },
+    {
+      "id": "g_env",
+      "label": "Process environment & additives",
+      "font_size": 16,
+      "x": 410,
+      "y": 550,
+      "w": 700,
+      "h": 150,
+      "fill": "#FFF7E5",
+      "stroke": "#F4A300"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "syn1",
+      "label": "Solid-state /\nprecursor control",
+      "group": "g_syn",
+      "x": 75,
+      "y": 155,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "syn2",
+      "label": "Sol–gel /\nsolution routes",
+      "group": "g_syn",
+      "x": 75,
+      "y": 265,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "syn3",
+      "label": "Coprecipitation /\ncombustion",
+      "group": "g_syn",
+      "x": 75,
+      "y": 375,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "ph1",
+      "label": "Li-site doping",
+      "group": "g_phase",
+      "x": 445,
+      "y": 155,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "ph2",
+      "label": "Zr-site / multi-element\nsubstitution",
+      "group": "g_phase",
+      "x": 445,
+      "y": 265,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "ph3",
+      "label": "Stoichiometry–defect\ncoupling",
+      "group": "g_phase",
+      "x": 445,
+      "y": 375,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "den1",
+      "label": "Pressureless sintering",
+      "group": "g_dense",
+      "x": 825,
+      "y": 155,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "den2",
+      "label": "Pressure / field\nassisted",
+      "group": "g_dense",
+      "x": 825,
+      "y": 265,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "den3",
+      "label": "Low-temperature /\nalternative",
+      "group": "g_dense",
+      "x": 825,
+      "y": 375,
+      "w": 240,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "out1",
+      "label": "Phase /\nmicrostructure",
+      "group": "g_perf",
+      "x": 1205,
+      "y": 155,
+      "w": 220,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "out2",
+      "label": "Ionic transport",
+      "group": "g_perf",
+      "x": 1205,
+      "y": 265,
+      "w": 220,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "out3",
+      "label": "Reproducibility /\ncomparability",
+      "group": "g_perf",
+      "x": 1205,
+      "y": 375,
+      "w": 220,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#8A8F00",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "env1",
+      "label": "Sintering additives",
+      "group": "g_env",
+      "x": 445,
+      "y": 610,
+      "w": 190,
+      "h": 55,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "env2",
+      "label": "Li loss /\nreplenishment",
+      "group": "g_env",
+      "x": 665,
+      "y": 602,
+      "w": 190,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "env3",
+      "label": "Crucible / cover powder /\nexposure",
+      "group": "g_env",
+      "x": 885,
+      "y": 602,
+      "w": 190,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#F4A300",
+      "stroke_width": 1.8
+    },
+    {
+      "id": "syn_group_out",
+      "label": "",
+      "group": "g_syn",
+      "x": 342,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#F5F7E8",
+      "stroke": "#F5F7E8"
+    },
+    {
+      "id": "phase_group_in",
+      "label": "",
+      "group": "g_phase",
+      "x": 410,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#F5F7E8",
+      "stroke": "#F5F7E8"
+    },
+    {
+      "id": "phase_group_out",
+      "label": "",
+      "group": "g_phase",
+      "x": 712,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#F5F7E8",
+      "stroke": "#F5F7E8"
+    },
+    {
+      "id": "dense_group_in",
+      "label": "",
+      "group": "g_dense",
+      "x": 780,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#FFF7E5",
+      "stroke": "#FFF7E5"
+    },
+    {
+      "id": "dense_group_out",
+      "label": "",
+      "group": "g_dense",
+      "x": 1102,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#FFF7E5",
+      "stroke": "#FFF7E5"
+    },
+    {
+      "id": "perf_group_in",
+      "label": "",
+      "group": "g_perf",
+      "x": 1170,
+      "y": 296,
+      "w": 8,
+      "h": 8,
+      "fill": "#F5F7E8",
+      "stroke": "#F5F7E8"
+    },
+    {
+      "id": "phase_group_env",
+      "label": "",
+      "group": "g_phase",
+      "x": 676,
+      "y": 472,
+      "w": 8,
+      "h": 8,
+      "fill": "#F5F7E8",
+      "stroke": "#F5F7E8"
+    },
+    {
+      "id": "dense_group_additives",
+      "label": "",
+      "group": "g_dense",
+      "x": 846,
+      "y": 472,
+      "w": 8,
+      "h": 8,
+      "fill": "#FFF7E5",
+      "stroke": "#FFF7E5"
+    },
+    {
+      "id": "dense_group_environment",
+      "label": "",
+      "group": "g_dense",
+      "x": 1016,
+      "y": 472,
+      "w": 8,
+      "h": 8,
+      "fill": "#FFF7E5",
+      "stroke": "#FFF7E5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_syn_phase",
+      "from": "syn_group_out",
+      "to": "phase_group_in",
+      "label": "powder",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "e_phase_dense",
+      "from": "phase_group_out",
+      "to": "dense_group_in",
+      "label": "phase state",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "e_dense_perf",
+      "from": "dense_group_out",
+      "to": "perf_group_in",
+      "label": "ceramic",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "e_env_phase",
+      "from": "env2",
+      "to": "phase_group_env",
+      "label": "boundary conditions",
+      "font_size": 15,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2,
+      "waypoints": [
+        [
+          760,
+          530
+        ],
+        [
+          680,
+          530
+        ]
+      ]
+    },
+    {
+      "id": "e_env_dense",
+      "from": "env3",
+      "to": "dense_group_environment",
+      "label": "sintering boundary conditions",
+      "font_size": 15,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2
+    },
+    {
+      "id": "e_additives_dense",
+      "from": "env1",
+      "to": "dense_group_additives",
+      "label": "additive check",
+      "font_size": 15,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2,
+      "waypoints": [
+        [
+          540,
+          500
+        ],
+        [
+          850,
+          500
+        ]
+      ]
+    }
+  ],
+  "texts": [
+    {
+      "id": "diag",
+      "text": "Diagnostic check: association, not proven causality",
+      "x": 268,
+      "y": 745,
+      "font_size": 15,
+      "color": "#D7191C",
+      "bold": true
+    },
+    {
+      "id": "legend1",
+      "text": "solid = process sequence",
+      "x": 720,
+      "y": 745,
+      "font_size": 15,
+      "color": "#59636E"
+    },
+    {
+      "id": "legend2",
+      "text": "dashed = boundary-condition check",
+      "x": 1010,
+      "y": 745,
+      "font_size": 15,
+      "color": "#59636E"
+    }
+  ]
+}

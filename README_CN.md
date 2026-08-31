@@ -6,8 +6,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-32%20offline%20%2B%2095%20live-brightgreen.svg)](tests/)
-[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2019%20tools-8A2BE2.svg)](server/)
+[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
 中文版 README | [English](README.md)
@@ -118,6 +118,7 @@ orchestrator 读回环账本、按阶段分派对应 agent、验收出口闸门�
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
 bash install.sh     # 建 .venv、装依赖、生成填好绝对路径的 MCP 配置
+# 需要仓库内置的无机两步逆合成模型时：bash install.sh --retro
 
 # Codex CLI
 cat configs/codex.config.toml >> ~/.codex/config.toml
@@ -128,7 +129,8 @@ ln -s "$PWD/skills"/goai-* ~/.codex/skills/
 ln -s "$PWD/skills"/goai-* ~/.claude/skills/
 
 # 冒烟检查
-.venv/bin/python -m pytest tests/ -q     # 32 个离线测试，不需要网络
+tools/check.sh --servers
+.venv/bin/python -m pytest tests/ -q     # 离线测试，不需要网络
 ```
 
 要求：Python ≥ 3.10（install.sh 有 [uv](https://github.com/astral-sh/uv) 就用 uv）。
@@ -158,15 +160,15 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 | 层 | 内容 | 为什么 |
 |---|---|---|
 | `skills/` —— 9 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
-| `server/` —— 4 个 MCP server、19 个工具 | 检索聚合去重、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
+| `server/` —— 4 个 MCP server、24 个工具 | 在线检索与本地全文搜索、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
 | `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `tex_guard.py` 组稿闸门 · `bank_check.py` 支持库校验 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
 
 | MCP server | 工具 |
 |---|---|
-| `goai-litsearch` | `search_papers` `snowball` `lookup` `download_pdf` `save_to_library` `export_bibtex` `coverage_report` |
+| `goai-litsearch` | `local_corpus_status` `grep_local_corpus` `read_local_document` `search_papers` `snowball` `lookup` `download_pdf` `save_to_library` `export_bibtex` `coverage_report` |
 | `goai-refcheck` | `verify_entry` `verify_bib_file` `deep_audit_info` |
 | `goai-figure` | `figspec_schema` `validate_figspec` `render_figure` `svg_file_to_drawio` `drawio_export` `list_figures` |
-| `goai-retro` | `provider_status` `predict_retro` `make_experiment_plan` |
+| `goai-retro` | `provider_status` `inorganic_model_status` `predict_precursor_routes` `predict_retro` `make_experiment_plan` |
 
 </details>
 
@@ -175,7 +177,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 
 ```
 workspace/
-├── library/     papers.jsonl + references.bib + pdfs/
+├── library/     corpus/ + papers.jsonl + references.bib + pdfs/
 ├── style_bank/  30 篇经典综述风格卡 + 范图库（写作/画图风格基准）
 ├── notes/       scope / taxonomy / citation_bank / figure_plan
 ├── figures/     svg/ + drawio/ + figspec/ + candidates/   ← 同一份源，永不漂移
@@ -253,6 +255,21 @@ skill 里固化了字号层级表（标题 > lane 标签 > 节点主标 > 副文
 
 LLM 写综述最致命的失败就是编造或张冠李戴的引用。GoAI 把引用当**零信任输入**：
 
+私有部署应把`GOAI_LOCAL_CORPUS_ROOTS`指向完整的Parquet全文库（不是此前
+段落抽取用的2015--2020子集），并成对配置DOI索引与分片目录。公开提交时用同一套
+`local_corpus_status`、`grep_local_corpus`、`read_local_document`和
+`lookup_local_doi`接口读取精简Parquet；不需要私有SQLite。发布前用显式allow-list
+裁剪，未声明可再分发许可的文献只保留DOI/官方链接，不复制原文：
+
+```bash
+cp configs/corpus-selection.example.json selection.private.json  # 只在本地填写，不提交
+.venv/bin/python tools/export_corpus_subset.py selection.private.json workspace/library/corpus-release --format compact-parquet
+GOAI_LOCAL_CORPUS_ROOTS=$PWD/workspace/library/corpus-release tools/check.sh --corpus
+```
+
+仓库已附`examples/demo_corpus/`模拟包，三条记录全部是CC0合成测试文本并标记
+`citable=false`，可在没有私有语料时验证完整工具链，不能作为论文证据引用。
+
 1. **唯一引用池。** 写作者只能引用 `workspace/library/references.bib` 里的 key，
    这个文件由 `save_to_library` / `export_bibtex` 生成——禁止手写、禁止凭模型记忆。
 2. **快速档**（`goai-refcheck`）：每条引用重新查 Crossref / OpenAlex / arXiv /
@@ -273,7 +290,13 @@ LLM 写综述最致命的失败就是编造或张冠李戴的引用。GoAI 把�
 矛盾信号（论文结论互相打架）、组合空位（两个分类法分支从未交叉）——每条提案
 必须挂真实引用 key 作证据。
 
-化学 / 材料类 idea 调用 `goai-retro` MCP server：
+化学 / 材料类 idea 调用 `goai-retro` MCP server。对无机材料，直接调用
+`predict_precursor_routes(target_formula="Li7La3Zr2O12")`：Stage 1先检索单个
+前驱体Top-M，化学硬过滤后枚举2--5元组合，Stage 2重排并默认返回Top-5。
+模型和最小数据副本位于`vendor/two_stage_retro/`，服务启动时核验两个checkpoint
+的SHA256。模型预测仍须接文献证据、条件预测器和reviewer，不能当实验真值。
+
+分子类逆合成仍可接HTTP后端：
 
 ```bash
 export GOAI_RETRO_PROVIDER=http
@@ -291,11 +314,14 @@ export GOAI_RETRO_API_KEY=...                                      # 可选
 图、章节、idea 之间没有共享写文件——orchestrator 直接扇出：
 
 ```bash
-# tasks.tsv：每行 <任务名>\t<提示词>
+# tasks.tsv：每行 <任务名>\t<提示词>\t<本轮产物>\t<前序依赖>（后两列可选）
 bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv   # 或 --backend claude
 ```
 
-保证并行安全的规约：每个任务只写自己的分片文件（`sections/NN_*.tex`、
+Codex 默认使用 `workspace-write` 沙箱；stdout JSONL 与 stderr 分开保存；
+第三列产物若缺失、为空或本轮未更新，任务改记exit=3（`=path`仅检查
+既有非空文件）；第四列把消费者阻塞到前序任务成功。进程超时但产物已完整时，
+runner保留原始`process_exit=124`并以WARN放行。保证并行安全的规约：每个任务只写自己的分片文件（`sections/NN_*.tex`、
 `figures/<name>.*`）；公共文件（main.tex、references.bib）只由汇合步骤动；
 账本写入靠 loopctl 文件锁串行化。日志和退出码落在
 `workspace/state/parallel/<run_id>/`。
@@ -342,6 +368,12 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 | `GOAI_HTTP_MIN_INTERVAL` | `1.0` | 同主机请求最小间隔（秒） |
 | `GOAI_HTTP_MAX_RETRIES` | `2` | 429/503 有界重试（尊重 Retry-After） |
 | `GOAI_WORKSPACE` | `workspace` | 所有产物的落盘位置 |
+| `GOAI_LOCAL_CORPUS_ROOTS` | `workspace/library/corpus` | 私有全文库或公开精简Parquet包根目录（Linux/macOS以`:`分隔） |
+| `GOAI_LOCAL_CORPUS_TIMEOUT` | `30` | 本地全文检索超时（秒） |
+| `GOAI_LOCAL_CORPUS_EXPECTED_INDEX` | — | 私有大库的SQLite DOI索引；须与分片目录成对配置 |
+| `GOAI_LOCAL_CORPUS_SHARD_ROOT` | — | 私有大库的正文分片目录；公开精简包不需要 |
+| `GOAI_RETRO_DEVICE` | `cpu` | 无机两步模型设备，如`cuda:0` |
+| `GOAI_INORGANIC_RETRO_ROOT` | `vendor/two_stage_retro` | 无机两步模型副本目录 |
 | `GOAI_RETRO_PROVIDER` | `stub` | `stub`（演示）或 `http`（真实预测器） |
 | `GOAI_RETRO_API_URL` / `GOAI_RETRO_API_KEY` | — | 逆合成后端地址 / 鉴权 |
 | `GOAI_DRAWIO_CLI` | 自动探测 | draw.io Desktop CLI 路径（导出用） |
@@ -350,8 +382,8 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 32 个离线测试 —— 无网络、无 LLM
-.venv/bin/python -m pytest -m live tests/live/  # 95 个实测 —— 真实 API、真实 draw.io CLI
+.venv/bin/python -m pytest tests/ -q            # 40+ 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 
 每个环节都做过**端到端实测**（真实五源检索、损坏 bib 的真实判定矩阵、
@@ -363,7 +395,7 @@ draw.io 真机导出 PNG/PDF、mock 后端的逆合成 HTTP 路径、账本 50 �
 figspec 校验（节点重叠与同义平行线检测）+ 排版 lint（印刷等效字号地板、
 形状感知文字溢出、标签遮挡）、SVG 与 mxGraph 渲染、**SVG →
 figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
-骨架、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
+骨架、本地全文搜索/受限读取/公开子集导出、两步模型资产哈希、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
 语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard
 阻塞行为（未定义 key 与整合率）、tex_guard 组稿闸门、bank_check 支持库校验。
 

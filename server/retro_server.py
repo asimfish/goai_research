@@ -1,4 +1,4 @@
-"""goai-retro MCP server —— 逆合成预测器接入 + 实验方案骨架。
+"""goai-retro MCP server —— 分子后端 + 本地无机两步逆合成 + 方案骨架。
 
 预测器可插拔（GOAI_RETRO_PROVIDER=stub|http）：
 - stub：确定性模板，用于走通「idea → 逆合成 → 实验方案 → 审核 → 二次查验」回环
@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from server.core.mcp_compat import FastMCP
 
 from server.core import retro
+from server.core import inorganic_retro
 
 mcp = FastMCP("goai-retro")
 
@@ -26,13 +27,50 @@ mcp = FastMCP("goai-retro")
 def provider_status() -> str:
     """查询当前逆合成后端配置（provider / API 地址 / 是否可信）。"""
     provider = os.environ.get("GOAI_RETRO_PROVIDER", "stub")
+    local_status = inorganic_retro.status()
+    local_ready = bool(
+        local_status.get("available")
+        and all(local_status.get("checkpoint_hash_ok", {}).values())
+    )
     return retro.to_json({
         "provider": provider,
         "api_url": os.environ.get("GOAI_RETRO_API_URL") or None,
         "trusted": provider == "http" and bool(os.environ.get("GOAI_RETRO_API_URL")),
+        "molecular_provider_trusted": (
+            provider == "http" and bool(os.environ.get("GOAI_RETRO_API_URL"))
+        ),
+        "local_inorganic_ready": local_ready,
         "note": "stub 输出仅供流程演示，不可作为化学结论写入论文" if provider == "stub"
                 else "http 后端结果的可信度由后端决定，仍需 reviewer 审核",
+        "local_inorganic": local_status,
     })
+
+
+@mcp.tool()
+def inorganic_model_status() -> str:
+    """检查本地两步无机逆合成模型、checkpoint哈希和依赖。"""
+    return retro.to_json(inorganic_retro.status())
+
+
+@mcp.tool()
+def predict_precursor_routes(target_formula: str, top_k: int = 5,
+                             top_m: int = 30, pool_cap: int = 15,
+                             min_set_size: int = 2,
+                             max_set_size: int = 5) -> str:
+    """输入无机材料化学式，返回Top-K前驱体组合路线。
+
+    Stage 1先对单个前驱体做Top-M检索；化学硬过滤后，Stage 2枚举并重排
+    2--5元前驱体组合。默认返回Top-5。模型输出不是实验验证结论，仍须文献
+    证据、条件补全和reviewer审核。
+    """
+    return retro.to_json(inorganic_retro.predict_precursor_routes(
+        target_formula,
+        top_k=top_k,
+        top_m=top_m,
+        pool_cap=pool_cap,
+        min_set_size=min_set_size,
+        max_set_size=max_set_size,
+    ))
 
 
 @mcp.tool()

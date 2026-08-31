@@ -1,0 +1,23 @@
+{
+  "package_id": "goai-synthetic-demo-corpus",
+  "records": [
+    {
+      "doi_normalized": "10.0000/goai.demo.llzo",
+      "title": "Synthetic LLZO processing note",
+      "publisher_group": "goai-demo",
+      "markdown": "# Synthetic LLZO processing note\n\nThis record is invented solely to exercise the local-corpus tools. It is not a scientific source and must not be cited.\n\nThe demo text mentions Li7La3Zr2O12, calcination, densification, and lithium-loss control so search results have realistic material-science vocabulary.\n\nAll temperatures and conditions are intentionally omitted because this is interface-test data, not experimental evidence."
+    },
+    {
+      "doi_normalized": "10.0000/goai.demo.byzso",
+      "title": "Synthetic barium yttrium zinc silicate note",
+      "publisher_group": "goai-demo",
+      "markdown": "# Synthetic barium yttrium zinc silicate note\n\nThis fully synthetic record represents a formula-search example for Ba5Y12ZnSi8O40 and Ba5Y12Zn[O(SiO4)]8. It is not a report of a successful synthesis.\n\nCandidate precursor names such as BaCO3, Y2O3, ZnO, and SiO2 appear only to test retrieval and bounded document reading. No route in this record is experimentally verified."
+    },
+    {
+      "doi_normalized": "10.0000/goai.demo.negative",
+      "title": "Synthetic negative-control note",
+      "publisher_group": "goai-demo",
+      "markdown": "# Synthetic negative-control note\n\nThis invented document is a negative control about generic microscopy metadata. It contains no validated synthesis procedure and exists to test irrelevant search results and package iteration."
+    }
+  ]
+}

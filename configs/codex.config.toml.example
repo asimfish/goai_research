@@ -5,22 +5,33 @@
 [mcp_servers.goai-litsearch]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/litsearch_server.py"]
+default_tools_approval_mode = "approve" # 非交互codex exec批次自动执行本项目工具
 env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
+# 私有全文库运行时，把上面的 env 扩展为：
+# env = { GOAI_EMAIL = "you@example.com", GOAI_LOCAL_CORPUS_ROOTS = "/path/markdown-v1-final", GOAI_LOCAL_CORPUS_EXPECTED_INDEX = "/path/markdown_expected.sqlite", GOAI_LOCAL_CORPUS_SHARD_ROOT = "/path/markdown-v1/shards" }
+# 目录含 Parquet 时自动使用 DuckDB；Markdown 目录使用 ripgrep。
+# 公开提交推荐把该变量指向导出的 goai-compact-parquet-v1 精简包；也可不设，
+# 让工具读取 $GOAI_WORKSPACE/library/corpus。
 
 [mcp_servers.goai-refcheck]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/refcheck_server.py"]
+default_tools_approval_mode = "approve"
 env = { GOAI_EMAIL = "you@example.com" }
 
 [mcp_servers.goai-figure]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/figure_server.py"]
+default_tools_approval_mode = "approve"
 # macOS + brew cairo：让 cairosvg 找到 libcairo（png 自检输出用，可选）
 env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 
 [mcp_servers.goai-retro]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
+default_tools_approval_mode = "approve"
+# 无机两步模型默认读取仓库内vendor/two_stage_retro，输入化学式并返回Top-5前驱体组合。
+# env = { GOAI_RETRO_DEVICE = "cuda:0" }
 # 接真实逆合成后端时打开：
 # env = { GOAI_RETRO_PROVIDER = "http", GOAI_RETRO_API_URL = "https://your-askcos/api/retro", GOAI_RETRO_API_KEY = "..." }
 

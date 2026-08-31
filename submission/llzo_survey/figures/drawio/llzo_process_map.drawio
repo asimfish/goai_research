@@ -1,0 +1,143 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="llzo_process_map">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1500" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="LLZO synthesis-to-performance process map" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontColor=#263238;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="g_syn" value="1  Powder synthesis" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=16;fontStyle=1;container=1;collapsible=0;fillColor=#F5F7E8;strokeColor=#8A8F00;strokeWidth=1.2;fontColor=#8A8F00;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="310" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="g_phase" value="2  Phase &amp; composition" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=16;fontStyle=1;container=1;collapsible=0;fillColor=#F5F7E8;strokeColor=#8A8F00;strokeWidth=1.2;fontColor=#8A8F00;" vertex="1" parent="1">
+          <mxGeometry x="410" y="90" width="310" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="g_dense" value="3  Thermal treatment &amp; densification" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=16;fontStyle=1;container=1;collapsible=0;fillColor=#FFF7E5;strokeColor=#F4A300;strokeWidth=1.2;fontColor=#F4A300;" vertex="1" parent="1">
+          <mxGeometry x="780" y="90" width="330" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="g_perf" value="4  Structure &amp; transport" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=16;fontStyle=1;container=1;collapsible=0;fillColor=#F5F7E8;strokeColor=#8A8F00;strokeWidth=1.2;fontColor=#8A8F00;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="90" width="290" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="g_env" value="Process environment &amp; additives" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=16;fontStyle=1;container=1;collapsible=0;fillColor=#FFF7E5;strokeColor=#F4A300;strokeWidth=1.2;fontColor=#F4A300;" vertex="1" parent="1">
+          <mxGeometry x="410" y="550" width="700" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="syn1" value="Solid-state /&#10;precursor control" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_syn">
+          <mxGeometry x="35" y="65" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="syn2" value="Sol–gel /&#10;solution routes" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_syn">
+          <mxGeometry x="35" y="175" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="syn3" value="Coprecipitation /&#10;combustion" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_syn">
+          <mxGeometry x="35" y="285" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ph1" value="Li-site doping" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="35" y="65" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ph2" value="Zr-site / multi-element&#10;substitution" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="35" y="175" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ph3" value="Stoichiometry–defect&#10;coupling" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="35" y="285" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="den1" value="Pressureless sintering" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="45" y="65" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="den2" value="Pressure / field&#10;assisted" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="45" y="175" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="den3" value="Low-temperature /&#10;alternative" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="45" y="285" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="out1" value="Phase /&#10;microstructure" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_perf">
+          <mxGeometry x="35" y="65" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="out2" value="Ionic transport" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_perf">
+          <mxGeometry x="35" y="175" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="out3" value="Reproducibility /&#10;comparability" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#8A8F00;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_perf">
+          <mxGeometry x="35" y="285" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="env1" value="Sintering additives" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_env">
+          <mxGeometry x="35" y="60" width="190" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="env2" value="Li loss /&#10;replenishment" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_env">
+          <mxGeometry x="255" y="52" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="env3" value="Crucible / cover powder /&#10;exposure" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#F4A300;strokeWidth=1.8;fontSize=16;" vertex="1" parent="g_env">
+          <mxGeometry x="475" y="52" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="syn_group_out" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7E8;strokeColor=#F5F7E8;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_syn">
+          <mxGeometry x="302" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="phase_group_in" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7E8;strokeColor=#F5F7E8;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="0" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="phase_group_out" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7E8;strokeColor=#F5F7E8;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="302" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="dense_group_in" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7E5;strokeColor=#FFF7E5;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="0" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="dense_group_out" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7E5;strokeColor=#FFF7E5;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="322" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="perf_group_in" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7E8;strokeColor=#F5F7E8;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_perf">
+          <mxGeometry x="0" y="206" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="phase_group_env" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7E8;strokeColor=#F5F7E8;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_phase">
+          <mxGeometry x="266" y="382" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="dense_group_additives" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7E5;strokeColor=#FFF7E5;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="66" y="382" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="dense_group_environment" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7E5;strokeColor=#FFF7E5;strokeWidth=1.5;fontSize=16;" vertex="1" parent="g_dense">
+          <mxGeometry x="236" y="382" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="e_syn_phase" value="powder" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="syn_group_out" target="phase_group_in">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_phase_dense" value="phase state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="phase_group_out" target="dense_group_in">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_dense_perf" value="ceramic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=block;endFill=1;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="dense_group_out" target="perf_group_in">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_env_phase" value="boundary conditions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=open;endFill=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="env2" target="phase_group_env">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="530" />
+              <mxPoint x="680" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_env_dense" value="sintering boundary conditions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=open;endFill=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="env3" target="dense_group_environment">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_additives_dense" value="additive check" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;endArrow=open;endFill=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="env1" target="dense_group_additives">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="500" />
+              <mxPoint x="850" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="diag" value="Diagnostic check: association, not proven causality" style="text;html=1;align=center;verticalAlign=middle;fontSize=15;fontColor=#D7191C;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="0.25" y="733" width="535.5" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1" value="solid = process sequence" style="text;html=1;align=center;verticalAlign=middle;fontSize=15;fontColor=#59636E;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="594" y="733" width="252" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2" value="dashed = boundary-condition check" style="text;html=1;align=center;verticalAlign=middle;fontSize=15;fontColor=#59636E;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="836.75" y="733" width="346.5" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,190 @@
+{
+  "ok": true,
+  "provider": "local_two_stage_inorganic",
+  "target_formula_input": "Li7La3Zr2O12",
+  "target_formula_normalized": "Li7La3Zr2O12",
+  "top_k": 5,
+  "routes": [
+    {
+      "rank": 1,
+      "route_id": "two-stage-00fc573b05a3",
+      "provider": "local_two_stage_inorganic",
+      "model_output_verified": true,
+      "chemical_route_verified": false,
+      "target_formula": "Li7La3Zr2O12",
+      "precursors": [
+        {
+          "id": 286,
+          "formula": "ZrO2",
+          "stage1_probability": 0.998853325843811
+        },
+        {
+          "id": 339,
+          "formula": "La2O3",
+          "stage1_probability": 0.917380690574646
+        },
+        {
+          "id": 200,
+          "formula": "Li2CO3",
+          "stage1_probability": 0.8280589580535889
+        }
+      ],
+      "stage1_probability_product": 0.7587742209434509,
+      "stage2_score": 3.6003494262695312,
+      "route_probability_within_candidate_pool": 0.23012776672840118
+    },
+    {
+      "rank": 2,
+      "route_id": "two-stage-1d3057162109",
+      "provider": "local_two_stage_inorganic",
+      "model_output_verified": true,
+      "chemical_route_verified": false,
+      "target_formula": "Li7La3Zr2O12",
+      "precursors": [
+        {
+          "id": 286,
+          "formula": "ZrO2",
+          "stage1_probability": 0.998853325843811
+        },
+        {
+          "id": 339,
+          "formula": "La2O3",
+          "stage1_probability": 0.917380690574646
+        },
+        {
+          "id": 109,
+          "formula": "LiHO",
+          "stage1_probability": 0.5085805058479309
+        }
+      ],
+      "stage1_probability_product": 0.4660269320011139,
+      "stage2_score": 2.7907724380493164,
+      "route_probability_within_candidate_pool": 0.10241751372814178
+    },
+    {
+      "rank": 3,
+      "route_id": "two-stage-4eebbcd44374",
+      "provider": "local_two_stage_inorganic",
+      "model_output_verified": true,
+      "chemical_route_verified": false,
+      "target_formula": "Li7La3Zr2O12",
+      "precursors": [
+        {
+          "id": 286,
+          "formula": "ZrO2",
+          "stage1_probability": 0.998853325843811
+        },
+        {
+          "id": 200,
+          "formula": "Li2CO3",
+          "stage1_probability": 0.8280589580535889
+        },
+        {
+          "id": 76,
+          "formula": "La(HO)3",
+          "stage1_probability": 0.2514297366142273
+        }
+      ],
+      "stage1_probability_product": 0.20795990526676178,
+      "stage2_score": 2.3220574855804443,
+      "route_probability_within_candidate_pool": 0.06409347802400589
+    },
+    {
+      "rank": 4,
+      "route_id": "two-stage-04fcb3bdcdd5",
+      "provider": "local_two_stage_inorganic",
+      "model_output_verified": true,
+      "chemical_route_verified": false,
+      "target_formula": "Li7La3Zr2O12",
+      "precursors": [
+        {
+          "id": 286,
+          "formula": "ZrO2",
+          "stage1_probability": 0.998853325843811
+        },
+        {
+          "id": 339,
+          "formula": "La2O3",
+          "stage1_probability": 0.917380690574646
+        },
+        {
+          "id": 200,
+          "formula": "Li2CO3",
+          "stage1_probability": 0.8280589580535889
+        },
+        {
+          "id": 109,
+          "formula": "LiHO",
+          "stage1_probability": 0.5085805058479309
+        }
+      ],
+      "stage1_probability_product": 0.38589778542518616,
+      "stage2_score": 2.1529157161712646,
+      "route_probability_within_candidate_pool": 0.05411984771490097
+    },
+    {
+      "rank": 5,
+      "route_id": "two-stage-c32bc39232d2",
+      "provider": "local_two_stage_inorganic",
+      "model_output_verified": true,
+      "chemical_route_verified": false,
+      "target_formula": "Li7La3Zr2O12",
+      "precursors": [
+        {
+          "id": 286,
+          "formula": "ZrO2",
+          "stage1_probability": 0.998853325843811
+        },
+        {
+          "id": 109,
+          "formula": "LiHO",
+          "stage1_probability": 0.5085805058479309
+        },
+        {
+          "id": 76,
+          "formula": "La(HO)3",
+          "stage1_probability": 0.2514297366142273
+        }
+      ],
+      "stage1_probability_product": 0.12772563099861145,
+      "stage2_score": 2.0172712802886963,
+      "route_probability_within_candidate_pool": 0.047254908829927444
+    }
+  ],
+  "candidate_generation": {
+    "top_m": 30,
+    "pool_cap": 15,
+    "raw_pool_size": 30,
+    "filtered_pool_size": 15,
+    "enumerated_route_count": 4928,
+    "set_sizes": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "hard_metal_filter": true,
+    "filter_fallback_used": false
+  },
+  "model": {
+    "stage1": "formula-token precursor retriever, seed 20260504",
+    "stage2": "no-mixture-pool set reranker, seed 20260504",
+    "checkpoint_sha256": {
+      "stage1": "f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e",
+      "stage2": "373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de"
+    },
+    "reference_test_metrics": {
+      "stage1_top20": 95.78,
+      "stage2_combo1_full": 71.81,
+      "stage2_combo20_full": 89.21,
+      "stage2_mrr_full": 0.7748
+    }
+  },
+  "model_output_verified": true,
+  "chemical_route_verified": false,
+  "warning": "These are model-ranked precursor sets, not experimentally validated routes. Conditions and scientific claims require literature evidence and reviewer approval.",
+  "runtime": {
+    "device": "cpu",
+    "duration_ms": 2237.801
+  }
+}

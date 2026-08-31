@@ -78,15 +78,24 @@ python3 $T check-done                      # 退出码 0=可交付（重算指�
 ## 并行执行协议
 
 ```bash
-# tasks.tsv：每行 "任务名<TAB>提示词"
+# tasks.tsv：每行 "任务名<TAB>提示词<TAB>本轮产物<TAB>前序依赖（均可选、逗号分隔）"
 bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv
-# 产物：workspace/state/parallel/<run_id>/<任务名>.{log,exit}
+# 产物：workspace/state/parallel/<run_id>/<任务名>.{jsonl,stderr.log,final.md,process_exit,status,exit}
 ```
 规约：
 1. 并行任务**只写自己的分片文件**（sections/NN_*.tex、figures/<name>.*）；
 2. 账本写入靠 loopctl 的文件锁串行化，安全；
 3. 汇合者（orchestrator）等全部 exit 码，失败任务单独重跑，不阻塞成功者；
 4. 建议并行度 ≤4（受 API 限流与本机内存约束）。
+5. Codex 默认以 `workspace-write` 运行；stderr 与 JSONL 分流，保证轨迹可解析。
+6. 后端退出码为 0 但第三列产物缺失、为空或本轮未更新时，runner 改记
+   exit=3，防止沿用旧文件造成假绿；路径前加 `=` 可只检查既有非空文件。
+7. 第四列依赖必须引用本文件中已经出现的任务。依赖失败时消费者不启动并记
+   `BLOCKED_DEPENDENCY`，消除证据文件尚未生成就开始写作的竞态。
+8. 声明产物的任务会收到增量落盘与禁止自读当前活动日志的协议。若进程超时但
+   全部声明产物已在本轮写出且非空，`.process_exit`保留124，`.status`记
+   `WARN_ARTIFACT_PASS_AFTER_TIMEOUT`，有效`.exit`为0；设
+   `RUNNER_TIMEOUT_ARTIFACT_POLICY=fail`可恢复严格失败策略。
 
 ## 人类介入点
 

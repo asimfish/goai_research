@@ -116,7 +116,7 @@ def format_entry(key: str, entry_type: str, fields: dict[str, str]) -> str:
 
 
 def record_to_bibtex(rec: dict[str, Any], key: Optional[str] = None) -> str:
-    """统一 paper record → BibTeX。会议/期刊有则 inproceedings/article，否则 misc。"""
+    """统一 paper record → BibTeX，优先使用来源提供的 publication_type。"""
     authors = rec.get("authors") or []
     first_last = strip_accents((authors[0].split()[-1] if authors else "anon")).lower()
     first_word = (norm_title(rec.get("title") or "x").split() or ["x"])[0]
@@ -130,8 +130,15 @@ def record_to_bibtex(rec: dict[str, Any], key: Optional[str] = None) -> str:
     }
     venue = rec.get("venue")
     if venue and venue.lower() != "arxiv":
-        etype = "article" if re.search(
-            r"journal|transactions|letters", venue, re.I) else "inproceedings"
+        publication_type = str(rec.get("publication_type") or "").lower()
+        conference = bool(re.search(
+            r"proceedings|conference|symposium|workshop|meeting|"
+            r"neurips|icml|iclr|aaai|ijcai|cvpr|eccv|iccv|acl|emnlp|naacl|kdd",
+            publication_type + " " + venue, re.I))
+        # 大部分带 venue 的文献是期刊文章。旧逻辑反过来把所有名称中不含
+        # Journal/Transactions/Letters 的期刊（包括 ACS）误写成会议论文。
+        etype = "inproceedings" if conference else "article"
+        venue = re.sub(r"(?<!\\)&", r"\\&", venue)
         fields["journal" if etype == "article" else "booktitle"] = venue
     else:
         etype = "misc"

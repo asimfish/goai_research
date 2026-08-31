@@ -1,4 +1,4 @@
-"""goai-litsearch MCP server —— 多源文献检索 / 滚雪球 / PDF 下载 / BibTeX 导出。
+"""goai-litsearch MCP server —— 本地全文 + 多源检索 / PDF / BibTeX。
 
 启动：python server/litsearch_server.py（stdio）
 环境：GOAI_EMAIL（polite pool 联系邮箱）、S2_API_KEY（可选，提额）
@@ -17,6 +17,7 @@ from server.core.mcp_compat import FastMCP
 
 from server.core import bibtex as bib
 from server.core import http as ghttp
+from server.core import local_corpus
 from server.core import sources as src
 
 mcp = FastMCP("goai-litsearch")
@@ -24,6 +25,7 @@ mcp = FastMCP("goai-litsearch")
 ALL_SOURCES = ("arxiv", "openalex", "semanticscholar", "crossref", "dblp")
 SOURCE_ALIASES = {"s2": "semanticscholar"}
 _ARXIV_DOI = re.compile(r"^10\.48550/arxiv\.(.+)$", re.I)
+DEFAULT_SEARCH_ABSTRACT_CHARS = 1200
 
 
 def _ws(*parts: str) -> str:
@@ -33,6 +35,82 @@ def _ws(*parts: str) -> str:
 
 def _dumps(obj) -> str:
     return json.dumps(obj, ensure_ascii=False, indent=2)
+
+
+def _compact_search_records(records: list[dict]) -> list[dict]:
+    """Limit verbose abstracts in MCP search responses.
+
+    Search is a discovery primitive, not a full-text transport.  Returning an
+    unbounded abstract for every source/result made a single agent turn exceed
+    hundreds of thousands of input tokens.  Exact DOI lookup remains available
+    when a selected record needs richer metadata.
+    """
+    limit = max(200, int(os.environ.get(
+        "GOAI_SEARCH_ABSTRACT_CHARS", str(DEFAULT_SEARCH_ABSTRACT_CHARS)
+    )))
+    out = []
+    for record in records:
+        row = dict(record)
+        abstract = row.get("abstract")
+        if isinstance(abstract, str) and len(abstract) > limit:
+            row["abstract"] = abstract[:limit].rstrip() + " …[truncated]"
+            row["abstract_truncated"] = True
+        out.append(row)
+    return out
+
+
+@mcp.tool()
+def local_corpus_status() -> str:
+    """检查离线全文语料及 DuckDB-Parquet / ripgrep 后端是否可用。"""
+    return _dumps(local_corpus.corpus_status())
+
+
+@mcp.tool()
+def grep_local_corpus(query: str, max_results: int = 20,
+                      context_lines: int = 1, case_sensitive: bool = False,
+                      regex: bool = False, file_glob: str = "*.md") -> str:
+    """在私有 NAS 语料或公开裁剪语料中做流式全文检索。
+
+    Args:
+        query: 文本或正则表达式。
+        max_results: 全局返回上限（1--100）；达到后立即停止扫描。
+        context_lines: 每个命中前后附带的行数（0--10）。
+        case_sensitive: 是否区分大小写。
+        regex: false 时按字面量检索；true 时使用正则。
+        file_glob: Markdown 后端的文件过滤；Parquet 后端忽略此项。
+    Returns:
+        JSON，含文档路径、行号、命中文本、上下文和超时/截断状态。
+    """
+    return _dumps(local_corpus.search_local_corpus(
+        query,
+        max_results=max_results,
+        context_lines=context_lines,
+        case_sensitive=case_sensitive,
+        regex=regex,
+        file_glob=file_glob,
+    ))
+
+
+@mcp.tool()
+def read_local_document(path: str, start_line: int = 1,
+                        end_line: int = 200) -> str:
+    """读取全文检索命中的本地文献片段；路径必须位于配置的语料根目录内。"""
+    return _dumps(local_corpus.read_local_document(
+        path,
+        start_line=start_line,
+        end_line=end_line,
+    ))
+
+
+@mcp.tool()
+def lookup_local_doi(doi: str, start_line: int = 1,
+                     end_line: int = 200) -> str:
+    """用私有 DOI→UUID→Parquet 分片索引直接读取一篇本地全文；未命中时如实返回。"""
+    return _dumps(local_corpus.lookup_local_doi(
+        doi,
+        start_line=start_line,
+        end_line=end_line,
+    ))
 
 
 @mcp.tool()
@@ -81,7 +159,7 @@ def search_papers(query: str, sources: str = "arxiv,openalex,semanticscholar",
                   or ((not year_from or r["year"] >= year_from)
                       and (not year_to or r["year"] <= year_to))]
     return _dumps({"query": query, "total": len(merged),
-                   "errors": errors, "papers": merged})
+                   "errors": errors, "papers": _compact_search_records(merged)})
 
 
 @mcp.tool()
@@ -138,6 +216,8 @@ def snowball(seed: str, direction: str = "both", limit: int = 30) -> str:
                     out["fallback"] = f"semanticscholar 不可用，已用 openalex:{wid} 兜底"
             except Exception as exc2:
                 out["errors"]["openalex"] = str(exc2)
+    out["references"] = _compact_search_records(out["references"])
+    out["citations"] = _compact_search_records(out["citations"])
     return _dumps(out)
 
 
@@ -221,16 +301,38 @@ def save_to_library(papers_json: str,
     library_path = library_path or _ws("library", "papers.jsonl")
     data = json.loads(papers_json)
     incoming = data["papers"] if isinstance(data, dict) else data
-    existing = []
-    if os.path.exists(library_path):
-        with open(library_path, encoding="utf-8") as f:
-            existing = [json.loads(line) for line in f if line.strip()]
-    # dedup_merge 直接吃 sources 列表，多源出处不再丢失
-    merged = src.dedup_merge(existing + incoming)
     os.makedirs(os.path.dirname(library_path) or ".", exist_ok=True)
-    with open(library_path, "w", encoding="utf-8") as f:
-        for r in merged:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    lock_path = library_path + ".lock"
+    with open(lock_path, "a+", encoding="utf-8") as lock_handle:
+        try:
+            import fcntl
+
+            fcntl.flock(lock_handle.fileno(), fcntl.LOCK_EX)
+        except (ImportError, OSError):
+            pass
+        existing = []
+        if os.path.exists(library_path):
+            with open(library_path, encoding="utf-8") as f:
+                existing = [json.loads(line) for line in f if line.strip()]
+        # 锁覆盖完整的read-modify-write周期；临时文件+replace避免半截JSONL。
+        merged = src.dedup_merge(existing + incoming)
+        tmp_path = f"{library_path}.tmp.{os.getpid()}"
+        try:
+            with open(tmp_path, "w", encoding="utf-8") as f:
+                for record in merged:
+                    f.write(json.dumps(record, ensure_ascii=False) + "\n")
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp_path, library_path)
+        finally:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+        try:
+            import fcntl
+
+            fcntl.flock(lock_handle.fileno(), fcntl.LOCK_UN)
+        except (ImportError, OSError):
+            pass
     return _dumps({"ok": True, "library": library_path,
                    "before": len(existing), "added": len(merged) - len(existing),
                    "total": len(merged)})
@@ -238,7 +340,8 @@ def save_to_library(papers_json: str,
 
 @mcp.tool()
 def export_bibtex(library_path: Optional[str] = None,
-                  out_path: Optional[str] = None) -> str:
+                  out_path: Optional[str] = None,
+                  overrides_path: Optional[str] = None) -> str:
     """把文献库导出为 references.bib（key = 一作姓+年份+标题首词）。
 
     路径默认取 $GOAI_WORKSPACE/library/ 下的 papers.jsonl / references.bib。
@@ -249,6 +352,21 @@ def export_bibtex(library_path: Optional[str] = None,
         return _dumps({"ok": False, "error": f"文献库不存在: {library_path}"})
     with open(library_path, encoding="utf-8") as f:
         papers = [json.loads(line) for line in f if line.strip()]
+    overrides_path = overrides_path or os.path.join(
+        os.path.dirname(library_path), "metadata_overrides.json"
+    )
+    overrides = {}
+    if os.path.exists(overrides_path):
+        with open(overrides_path, encoding="utf-8") as f:
+            raw_overrides = json.load(f)
+        overrides = {
+            str(doi).lower().replace("https://doi.org/", ""): values
+            for doi, values in raw_overrides.items()
+        }
+    papers = [
+        {**paper, **overrides.get(str(paper.get("doi") or "").lower(), {})}
+        for paper in papers
+    ]
     entries, seen = [], set()
     for r in papers:
         entry = bib.record_to_bibtex(r)
@@ -262,7 +380,8 @@ def export_bibtex(library_path: Optional[str] = None,
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("\n\n".join(entries) + "\n")
-    return _dumps({"ok": True, "bib": out_path, "entries": len(entries)})
+    return _dumps({"ok": True, "bib": out_path, "entries": len(entries),
+                   "metadata_overrides": len(overrides)})
 
 
 @mcp.tool()

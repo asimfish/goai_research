@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .venv/
+.venv-retro/
 .pytest_cache/
 *.egg-info/
 .DS_Store
@@ -16,19 +17,9 @@ __pycache__/
 examples/**/paper/main.log
 examples/**/paper/main.out
 
-# 运行时工作区产物（保留目录结构，不提交内容）
-workspace/library/pdfs/*.pdf
-workspace/library/*.jsonl
-workspace/library/*.bib
-workspace/notes/*.md
-workspace/figures/svg/*.svg
-workspace/figures/drawio/*.drawio
-workspace/figures/png/*.png
-workspace/figures/figspec/*.json
-workspace/ideas/**
-workspace/drafts/**
-workspace/state/*.json
-workspace/state/round_*/
+# 运行时工作区产物（递归忽略；只保留目录骨架）
+workspace/**
+!workspace/**/
 !workspace/**/.gitkeep
 
 # 实测（live tests）运行产物：报告入库在 docs/live-tests/，产物本身不入库
@@ -40,4 +31,4 @@ configs/claude.mcp.json
 
 # 本地缓存
 .cache/
-workspace/state/*.lock
+*.jsonl.lock

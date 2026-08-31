@@ -1,0 +1,26 @@
+\section{Scope, Evidence Method, and Comparison Rules}
+
+The evidence base is the repository's exact audited library of 46 records covering 2007--2026 search intent, with foundational studies retained outside the emphasis on recent work. Metadata audit passed for all 46 entries, but evidentiary depth is uneven: 25 local records contain abstracts and 21 contain bibliographic metadata and titles only. We use an abstract-bearing record for a statement only when the statement is directly represented in that stored abstract. A title-only record may establish that the collection includes a paper framed around a named route, composition, or processing topic; it does not establish temperatures, property values, mechanisms, or comparative superiority. No sentence below denotes an exhaustive full-text review.
+
+The collection includes studies that explicitly compare solid-state and sol--gel routes \cite{kosir2022comparative}, relate hot-pressing conditions to density and separated transport readouts \cite{david2015microstructure}, compare crucible choices and air-exposure outcomes \cite{xia2016ionic}, and report phase, density, microstructure, and total conductivity together for a submicron Nb-containing garnet \cite{yan2020submicron}. It also includes a cover-powder study whose abstract jointly reports lithium-rich firing conditions, density, total conductivity, activation energy, and grain-boundary composition \cite{zhang2019densification}. These records motivate the fields in Table~\ref{tab:min-record}; they are examples of multi-field reporting, not a statement that every field was measured identically.
+
+\begin{table}[t]
+\centering
+\caption{Minimum comparability record. ``NR'' means not reported in the checked source, never zero or absent.}
+\label{tab:min-record}
+\small
+\begin{tabular}{P{0.20\linewidth}P{0.31\linewidth}P{0.37\linewidth}}
+\toprule
+Block & Required fields & Decision use \\
+\midrule
+Composition and powder & Nominal and measured composition; dopant content; precursor identities; lithium excess; mixing; powder route & Separates formulation from processing and preserves an NR status for unobserved fields. \\
+Thermal and environment & Calcination and sintering temperature/time; ramp; pressure or field; atmosphere; cover powder; crucible; additive & Prevents a route name from standing in for a complete thermal and chemical boundary condition. \\
+Structure & Phase assemblage and method; density and basis; grains, boundaries, and porosity descriptors & Distinguishes achieved densification from an asserted densification mechanism. \\
+Transport & Total, bulk, or grain-boundary conductivity; test temperature; electrodes; activation-energy convention & Blocks numerical comparison when the measured quantity or temperature is not aligned. \\
+Reproducibility & Batch count; spatial sampling; specimen geometry; dispersion or uncertainty & Distinguishes one reported specimen from evidence about repeatability or uniformity. \\
+Provenance & Title, stored abstract, local excerpt, or checked full text & Caps claim strength at the level actually inspected. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We classify comparisons in three tiers. \emph{Directly comparable} requires the relevant minimum-record fields to match or be deliberately controlled. \emph{Parallel qualitative evidence} applies when studies address the same question but differ in a known composition, process, or measurement field. \emph{Insufficient fields} applies when a missing field could change interpretation. This rule is conservative by design: missing metadata in this collection are missing evidence, not proof that an author omitted an experiment or that a process variable had no effect.

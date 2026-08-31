@@ -1,0 +1,29 @@
+\section{Boxed Model-Assisted Precursor Diagnostic}
+
+General LLZO preparation literature provides context for why precursor identity and processing history matter \cite{raju2021crystal,heywood2023tailoring}; it does \emph{not} validate the ranked sets below. The box reports a software-adapter diagnostic from the bundled raw outputs, not a chemical conclusion.
+
+\begin{center}
+\fcolorbox{warningred}{warningbg}{%
+\begin{minipage}{0.91\linewidth}
+\color{warningred}\textbf{MODEL-ASSISTED PRECURSOR DIAGNOSTIC --- INFRASTRUCTURE DEMONSTRATION ONLY}
+
+\textbf{CHEMICAL ROUTES UNVERIFIED --- NOT FOR LAB USE}
+
+\color{black}
+Target: \chem{Li_7La_3Zr_2O_{12}}. The actual model-ranked sets are:
+\begin{enumerate}
+\item \chem{ZrO_2 + La_2O_3 + Li_2CO_3} (Top-1);
+\item \chem{ZrO_2 + La_2O_3 + LiHO};
+\item \chem{ZrO_2 + Li_2CO_3 + La(HO)_3};
+\item \chem{ZrO_2 + La_2O_3 + Li_2CO_3 + LiHO};
+\item \chem{ZrO_2 + LiHO + La(HO)_3}.
+\end{enumerate}
+
+These are model-ranked sets only. The strings \texttt{LiHO} and \texttt{La(HO)3} are explicit nomenclature/entity-normalization warnings, not silently corrected chemical identities. Status is \texttt{model\_output\_verified=true}, \texttt{chemical\_route\_verified=false}, and \texttt{conditions=null}. A model score is not a reaction-success probability. No set above is a chemistry recommendation, no experimental conditions are supplied, and human evidence, entity, hazard, and waste review would be mandatory before any experimental plan could exist. \textbf{NOT FOR LAB USE.}
+
+\smallskip
+\footnotesize Raw provenance: \texttt{data/retro\_llzo\_top5.json} and \texttt{data/experiment\_llzo\_diagnostic.json}. Reviewer issue I4 remains open.
+\end{minipage}}
+\end{center}
+
+The diagnostic has one legitimate manuscript function: it makes the boundary between a verified software return and an evidence-qualified synthesis claim visible. It contributes neither chemical novelty nor an actionable route. The current entity warnings and absent conditions are failure signals to preserve, not fields to repair by inference.

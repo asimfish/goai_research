@@ -1,0 +1,24 @@
+{
+  "documents": [
+    {
+      "source_path": "/private/corpus/path/paper.md",
+      "document_id": "example-evidence-source",
+      "citation_key": "author2026example",
+      "doi": "10.xxxx/example",
+      "url": "https://doi.org/10.xxxx/example",
+      "title": "Example evidence source",
+      "publisher_group": "public-release",
+      "license": "CC-BY-4.0",
+      "redistributable": true,
+      "synthetic": false
+    },
+    {
+      "source_path": "/private/corpus/path/copyrighted-paper.pdf",
+      "citation_key": "author2025copyrighted",
+      "doi": "10.xxxx/copyrighted",
+      "url": "https://doi.org/10.xxxx/copyrighted",
+      "title": "Metadata-only example",
+      "redistributable": false
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+% LLZO evidence-limited review. Render from this directory with XeLaTeX.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape LLZO Processing Evidence}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\emergencystretch=1.5em
+\usepackage{svg}
+
+\definecolor{warningred}{HTML}{A61B1B}
+\definecolor{warningbg}{HTML}{FFF4F4}
+\newcommand{\chem}[1]{\ensuremath{\mathrm{#1}}}
+
+\title{\textbf{From Powder to Comparable Transport Data:}\\
+\textbf{A Faceted Review of LLZO Synthesis, Phase Control, and Densification}}
+\author{Jing Gao\thanks{Shanghai Jiao Tong University; doctoral researcher.}
+\and Dingyang L\"u\thanks{University of Chinese Academy of Sciences; doctoral researcher.}
+\and Yufeng Li\thanks{Shanghai Jiao Tong University; doctoral researcher.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Garnet-type \chem{Li_7La_3Zr_2O_{12}} (LLZO) is discussed through processing routes, substitutions, firing schedules, environmental controls, and transport measurements that are often reported in incompatible combinations. This review maps 46 audited bibliographic records into an evidence-limited process chain: powder synthesis, phase/composition control, thermal treatment and densification, and structure/transport readout. Composition, lithium inventory, additives, and process environment are treated as cross-cutting modifiers rather than serial stages. A separate evidence facet defines the minimum record needed to classify two results as directly comparable, parallel qualitative evidence, or insufficiently specified. The collection is standard-scale, not comprehensive: 25 records include locally stored abstracts, 21 are title-only, and full-text checks were selective. Accordingly, the review reports abstract-level associations and topic coverage without inventing unobserved conditions or universal route rankings. Six research gaps are framed as limitations of discrimination in this collection and paired with falsifiable next actions. A boxed precursor-ranking diagnostic reports the actual model Top-5 only as ranked sets, preserves entity-normalization warnings, and explicitly remains unverified and not for laboratory use. The result is an auditable map of what was varied, what was measured, and what must be recorded before LLZO processing claims can be compared.
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_scope_evidence}
+\input{sections/03_framework}
+\input{sections/04_powder_synthesis}
+\input{sections/05_phase_control}
+\input{sections/06_densification}
+\input{sections/07_environment_additives}
+\input{sections/08_structure_transport}
+\input{sections/09_research_gaps}
+\input{sections/10_model_diagnostic}
+\input{sections/11_limitations_conclusion}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

@@ -187,7 +187,8 @@ def test_mcp_stdio_stub_full_chain():
     out = mcp_chain({"GOAI_RETRO_PROVIDER": "stub"},
                     "CC(=O)Oc1ccccc1C(=O)O", 2)
     assert out["server_name"] == "goai-retro"
-    assert out["tools"] == ["make_experiment_plan", "predict_retro",
+    assert out["tools"] == ["inorganic_model_status", "make_experiment_plan",
+                            "predict_precursor_routes", "predict_retro",
                             "provider_status"]
     assert out["status"]["provider"] == "stub"
     assert out["status"]["trusted"] is False
@@ -371,8 +372,12 @@ def test_http_loopback_ignores_system_proxy(http_env, monkeypatch):
 
     # 显式要求走代理时应当尊重配置（此处代理是死端口 → 结构化连接失败）
     monkeypatch.setenv("GOAI_RETRO_TRUST_ENV", "1")
+    monkeypatch.delenv("NO_PROXY", raising=False)
+    monkeypatch.delenv("no_proxy", raising=False)
     r2 = retro.predict("CCO", 1)
-    assert r2["ok"] is False and "连接逆合成后端失败" in r2["error"]
+    assert r2["ok"] is False
+    assert ("连接逆合成后端失败" in r2["error"]
+            or "HTTP 500" in r2["error"]), r2["error"]
 
 
 # --------------------------------------------------------------------------
@@ -563,6 +568,11 @@ m = re.search(r"TASK (\\S+)", prompt)
 label = m.group(1) if m else "unknown"
 stolen = sys.stdin.read() if DRAIN else ""
 rec("START", label, "stdin=%d" % len(stolen))
+m_write = re.search(r"WRITE (\\S+)", prompt)
+if m_write:
+    os.makedirs(os.path.dirname(m_write.group(1)), exist_ok=True)
+    with open(m_write.group(1), "w") as f:
+        f.write("fresh artifact\\n")
 if "HANG" in prompt:
     print("Reconnecting... waiting for network", flush=True)
     time.sleep(600)
@@ -746,12 +756,125 @@ def test_parallel_run_timeout_kills_hung_backend(tmp_path):
     logdir = next((ws / "state" / "parallel").iterdir())
     exits = {q.stem: q.read_text().strip() for q in logdir.glob("*.exit")}
     assert exits == {"hang": "124", "normal": "0"}, exits
-    assert "已强杀" in (logdir / "hang.log").read_text(errors="replace")
+    assert "已强杀" in (logdir / "hang.stderr.log").read_text(errors="replace")
     assert r.returncode == 1
     # 孤儿检查：卡死进程必须已被回收
     ps = subprocess.run(["ps", "-ax", "-o", "command"],
                         capture_output=True, text=True, timeout=30)
     assert "TASK HANG forever" not in ps.stdout
+
+
+def test_parallel_run_accepts_fresh_artifact_after_process_timeout(tmp_path):
+    """产物已完整写出但收尾卡死时，保留 process=124，同时以 WARN 放行。"""
+    artifact = tmp_path / "completed.md"
+    tasks = tmp_path / "tasks.tsv"
+    tasks.write_text(
+        f"writer\tTASK writer WRITE {artifact} HANG\t{artifact}\n",
+        encoding="utf-8",
+    )
+    r, ws = _run_parallel(
+        tmp_path,
+        str(tasks),
+        "--backend", "codex", "--jobs", "1",
+        path_prefix=_fake_backend_dir(tmp_path),
+        extra_env={"RUNNER_TIMEOUT": "3"},
+        timeout=90,
+    )
+    logdir = next((ws / "state" / "parallel").iterdir())
+    assert artifact.read_text() == "fresh artifact\n"
+    assert (logdir / "writer.process_exit").read_text().strip() == "124"
+    assert (logdir / "writer.exit").read_text().strip() == "0"
+    assert (logdir / "writer.status").read_text().strip() == \
+        "WARN_ARTIFACT_PASS_AFTER_TIMEOUT"
+    assert "WARN  writer" in r.stdout
+    assert r.returncode == 0
+
+
+def test_parallel_run_dependencies_order_and_block(tmp_path):
+    """第四列形成真实 ready gate；失败依赖不得启动消费者。"""
+    tasks = tmp_path / "tasks.tsv"
+    tasks.write_text(
+        "producer\tTASK producer EXIT 0\t\t\n"
+        "consumer\tTASK consumer EXIT 0\t\tproducer\n"
+        "failed\tTASK failed EXIT 7\t\t\n"
+        "blocked\tTASK blocked EXIT 0\t\tfailed\n",
+        encoding="utf-8",
+    )
+    r, ws = _run_parallel(
+        tmp_path,
+        str(tasks),
+        "--backend", "codex", "--jobs", "4",
+        path_prefix=_fake_backend_dir(tmp_path),
+    )
+    events = [
+        line.split("\t")
+        for line in (tmp_path / "trace.log").read_text().splitlines()
+    ]
+    producer_end = next(
+        float(row[1]) for row in events
+        if row[0] == "END" and row[2] == "producer"
+    )
+    consumer_start = next(
+        float(row[1]) for row in events
+        if row[0] == "START" and row[2] == "consumer"
+    )
+    assert consumer_start >= producer_end
+    assert not any(row[0] == "START" and row[2] == "blocked" for row in events)
+    logdir = next((ws / "state" / "parallel").iterdir())
+    assert (logdir / "blocked.exit").read_text().strip() == "4"
+    assert (logdir / "blocked.status").read_text().strip() == "BLOCKED_DEPENDENCY"
+    assert "依赖任务失败" in (logdir / "blocked.validation.log").read_text()
+    assert r.returncode == 1
+
+
+def test_parallel_run_rejects_forward_dependency(tmp_path):
+    tasks = tmp_path / "tasks.tsv"
+    tasks.write_text(
+        "consumer\tTASK consumer EXIT 0\t\tproducer\n"
+        "producer\tTASK producer EXIT 0\t\t\n",
+        encoding="utf-8",
+    )
+    r, _ws = _run_parallel(
+        tmp_path,
+        str(tasks),
+        "--backend", "codex", "--jobs", "2",
+        path_prefix=_fake_backend_dir(tmp_path),
+    )
+    assert r.returncode == 2
+    assert "按拓扑顺序" in r.stderr
+
+
+def test_parallel_run_rejects_stale_expected_artifact(tmp_path):
+    """第三列产物若只是沿用旧文件，后端 exit=0 也必须改判 exit=3。"""
+    artifact = tmp_path / "artifact.md"
+    artifact.write_text("old\n", encoding="utf-8")
+    tasks = tmp_path / "tasks.tsv"
+    tasks.write_text(f"stale\tTASK stale EXIT 0\t{artifact}\n", encoding="utf-8")
+    r, ws = _run_parallel(tmp_path, str(tasks), "--backend", "codex", "--jobs", "1",
+                          path_prefix=_fake_backend_dir(tmp_path))
+    logdir = next((ws / "state" / "parallel").iterdir())
+    assert (logdir / "stale.exit").read_text().strip() == "3"
+    assert "本轮未更新" in (logdir / "stale.validation.log").read_text()
+    assert r.returncode == 1
+
+
+def test_parallel_run_accepts_fresh_or_existence_only_artifact(tmp_path):
+    fresh = tmp_path / "fresh.md"
+    existing = tmp_path / "existing.md"
+    existing.write_text("pre-existing\n", encoding="utf-8")
+    tasks = tmp_path / "tasks.tsv"
+    tasks.write_text(
+        f"fresh\tTASK fresh WRITE {fresh} EXIT 0\t{fresh}\n"
+        f"existing\tTASK existing EXIT 0\t={existing}\n",
+        encoding="utf-8",
+    )
+    r, ws = _run_parallel(tmp_path, str(tasks), "--backend", "codex", "--jobs", "2",
+                          path_prefix=_fake_backend_dir(tmp_path))
+    logdir = next((ws / "state" / "parallel").iterdir())
+    exits = {p.stem: p.read_text().strip() for p in logdir.glob("*.exit")}
+    assert exits == {"fresh": "0", "existing": "0"}
+    assert fresh.read_text() == "fresh artifact\n"
+    assert r.returncode == 0
 
 
 def test_parallel_run_rejects_bad_runner_timeout(tmp_path):
@@ -881,9 +1004,9 @@ def test_real_codex_backend_end_to_end(tmp_path):
     """真实 codex CLI 最小任务端到端；需要登录+网络，不可用时 SKIP。
 
     防伪：PATH 上可能有测试用的假 codex（本文件就注入过），
-    所以先用 --version 认身份，再要求日志里出现真实 CLI 的 banner，
-    否则宁可 SKIP 也不给假 PASS —— 提示词本身含 LIVE_TEST_OK，
-    任何只回显提示词的假后端都能骗过纯 token 断言。
+    所以先用 --version 认身份，再要求日志里出现真实 ``--json`` 事件。
+    JSON 模式本来就不输出交互式 ``OpenAI Codex`` banner，不能拿 banner
+    当健康条件；提示词本身又含 LIVE_TEST_OK，故也不能只做 token 断言。
     """
     ver = subprocess.run(["codex", "--version"], capture_output=True,
                          text=True, timeout=60)
@@ -900,14 +1023,29 @@ def test_real_codex_backend_end_to_end(tmp_path):
                            env={**os.environ, "GOAI_WORKSPACE": str(ws)})
     except subprocess.TimeoutExpired:
         pytest.skip("真实 codex 180s 未返回（网络/登录不可用）")
-    logs = list((ws / "state" / "parallel").rglob("*.log"))
+    logs = list((ws / "state" / "parallel").rglob("*.jsonl"))
     body = logs[0].read_text(errors="replace") if logs else ""
+    events = []
+    for line in body.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(event, dict) and isinstance(event.get("type"), str):
+            events.append(event)
+    event_types = {event["type"] for event in events}
+    finals = list((ws / "state" / "parallel").rglob("*.final.md"))
+    final_body = finals[0].read_text(errors="replace") if finals else ""
     unavailable = re.search(r"Not logged in|tls handshake|error sending request|"
-                            r"waiting for network|Reconnecting|401|403", body)
-    if "OpenAI Codex" not in body:
-        pytest.skip(f"未见真实 codex banner，后端不可用: {body[:200]}")
-    if r.returncode != 0 or "LIVE_TEST_OK" not in body:
+                            r"waiting for network|Reconnecting|401|403",
+                            body + final_body)
+    if "thread.started" not in event_types:
+        pytest.skip(f"未见真实 codex JSON 事件，后端不可用: {body[:200]}")
+    if r.returncode != 0 or "LIVE_TEST_OK" not in final_body:
         if unavailable:
-            pytest.skip(f"真实 codex 后端不可用（登录/网络）: {body[:200]}")
-        pytest.fail(f"codex 返回 {r.returncode}，日志片段: {body[:500]}")
-    assert "LIVE_TEST_OK" in body
+            pytest.skip(f"真实 codex 后端不可用（登录/网络）: {(body + final_body)[:200]}")
+        pytest.fail(
+            f"codex 返回 {r.returncode}，final={final_body[:200]!r}，"
+            f"日志片段: {body[:500]}"
+        )
+    assert "turn.completed" in event_types

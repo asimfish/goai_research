@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Powder to Comparable Transport Data — LLZO Review</title>
+  <style>
+    :root { --ink:#20262c; --muted:#59636d; --blue:#145da0; --line:#d6dce1; --warn:#9f1d1d; --warn-bg:#fff4f4; }
+    * { box-sizing:border-box; }
+    html { font-size:11pt; }
+    body { margin:0; color:var(--ink); background:#f3f5f7; font-family:Georgia,"Times New Roman",serif; line-height:1.48; }
+    article { width:min(210mm,100%); margin:20px auto; padding:18mm 18mm 20mm; background:white; box-shadow:0 1px 8px #0002; }
+    h1 { margin:0; text-align:center; font-size:25pt; line-height:1.14; }
+    h2 { margin:1.4em 0 .45em; padding-bottom:.15em; border-bottom:1px solid var(--line); font-size:16pt; }
+    h3 { margin:1.1em 0 .3em; font-size:12.5pt; }
+    p { margin:.45em 0; text-align:justify; hyphens:auto; }
+    a { color:var(--blue); text-decoration:none; }
+    .authors { margin:1.2em 0 .25em; text-align:center; font-weight:bold; }
+    .affiliations { margin:0 0 1.5em; text-align:center; color:var(--muted); font-size:9.5pt; }
+    .abstract { margin:1.5em 0; padding:1em 1.2em; border:1px solid var(--line); background:#fafbfc; }
+    .abstract h2 { margin:0 0 .45em; border:0; font-size:12pt; }
+    .cite { white-space:nowrap; }
+    figure { margin:1.1em 0; break-inside:avoid; }
+    figure img { width:100%; height:auto; border:1px solid var(--line); }
+    figcaption, caption { color:#38434d; font-size:9pt; line-height:1.35; }
+    table { width:100%; margin:1em 0; border-collapse:collapse; font-size:8.8pt; line-height:1.3; break-inside:avoid; }
+    th, td { padding:.45em .5em; vertical-align:top; border-bottom:1px solid var(--line); }
+    th { text-align:left; border-top:2px solid #68737d; border-bottom:1px solid #68737d; }
+    .diagnostic { margin:1.2em 0; padding:1em 1.2em; border:2px solid var(--warn); background:var(--warn-bg); break-inside:avoid; }
+    .diagnostic h3, .diagnostic .warning { color:var(--warn); font-weight:bold; }
+    .status { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:9pt; }
+    .refs { padding-left:2.2em; font-size:8.7pt; line-height:1.35; }
+    .refs li { margin:.45em 0; padding-left:.25em; break-inside:avoid; }
+    .provenance { color:var(--muted); font-size:9pt; }
+    @page { size:A4; margin:18mm; }
+    @media print {
+      body { background:white; }
+      article { width:auto; margin:0; padding:0; box-shadow:none; }
+      a { color:#145da0; }
+      h2, h3 { break-after:avoid; }
+      .references { break-before:page; }
+    }
+  </style>
+</head>
+<body>
+<article>
+  <header>
+    <h1>From Powder to Comparable Transport Data:<br>A Faceted Review of LLZO Synthesis, Phase Control, and Densification</h1>
+    <p class="authors">Jing Gao · Dingyang Lü · Yufeng Li</p>
+    <p class="affiliations">Jing Gao and Yufeng Li — Shanghai Jiao Tong University — doctoral researchers<br>Dingyang Lü — University of Chinese Academy of Sciences — doctoral researcher</p>
+  </header>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>Garnet-type Li<sub>7</sub>La<sub>3</sub>Zr<sub>2</sub>O<sub>12</sub> (LLZO) is discussed through processing routes, substitutions, firing schedules, environmental controls, and transport measurements that are often reported in incompatible combinations. This review maps 46 audited bibliographic records into an evidence-limited process chain: powder synthesis, phase/composition control, thermal treatment and densification, and structure/transport readout. Composition, lithium inventory, additives, and process environment are treated as cross-cutting modifiers rather than serial stages. A separate evidence facet defines the minimum record needed to classify two results as directly comparable, parallel qualitative evidence, or insufficiently specified. The collection is standard-scale, not comprehensive: 25 records include locally stored abstracts, 21 are title-only, and full-text checks were selective. Six research gaps are framed as limitations of discrimination in this collection and paired with falsifiable next actions. A precursor-ranking diagnostic reports the actual model Top-5 only as ranked sets, preserves entity-normalization warnings, and remains unverified and not for laboratory use.</p>
+  </section>
+
+  <section>
+    <h2>1. Introduction</h2>
+    <p>LLZO research links a nominal garnet composition to several questions: how a precursor mixture becomes a powder, how composition and substitution relate to phase state, how a powder becomes a ceramic, and how the specimen is measured. An audited overview likewise spans crystal structure, preparation, doping, and conductivity rather than treating synthesis as an isolated operation <span class="cite">[<a href="#ref-raju2021crystal">1</a>]</span>. The challenge is that labels such as “solid state,” “sol–gel,” or “spark plasma sintering” rarely specify the full chain that determines what is compared.</p>
+    <p>Stored abstracts illustrate the coupling without licensing a universal mechanism. A solid-state study reports sensitivity to lithium inventory and powder geometry <span class="cite">[<a href="#ref-heywood2023tailoring">9</a>]</span>; a solution-based study focuses on precursor homogeneity and compositional evolution <span class="cite">[<a href="#ref-parascos2022compositional">27</a>]</span>; and a densification study brings particle-size distribution, heating schedule, support geometry, spatial uniformity, and transport into one case <span class="cite">[<a href="#ref-guo2023uniform">31</a>]</span>. A route-only catalogue therefore hides variables that move together.</p>
+    <p>This review contributes an A+B+C bundle. A is a faceted process framework: powder synthesis → phase/composition control → thermal treatment/densification → structure/transport readout. Composition and environment remain modifiers. B is a minimum comparability record that keeps composition, precursors, thermal history, environment, structure, transport definition, and replication together. C is a problem map in which every gap has an evidence limitation and a falsifiable next action. The aim is not a performance leaderboard.</p>
+  </section>
+
+  <section>
+    <h2>2. Scope, evidence method, and comparison rules</h2>
+    <p>The evidence base is the exact audited 46-entry library. Twenty-five local records contain abstracts; 21 contain titles and bibliographic metadata only. An abstract-bearing record supports a statement only when that statement is represented in the stored abstract. A title-only record establishes topic coverage but not temperatures, values, mechanisms, or superiority. No section implies exhaustive full-text verification.</p>
+    <p>The collection includes a route comparison <span class="cite">[<a href="#ref-kosir2022comparative">45</a>]</span>, a hot-pressing study with density and transport readouts <span class="cite">[<a href="#ref-david2015microstructure">20</a>]</span>, a crucible and exposure comparison <span class="cite">[<a href="#ref-xia2016ionic">17</a>]</span>, and studies reporting phase, density, microstructure, and transport together <span class="cite">[<a href="#ref-yan2020submicron">32</a>, <a href="#ref-zhang2019densification">26</a>]</span>. They motivate the fields below; they do not establish identical measurement practice.</p>
+    <table>
+      <caption>Table 1. Minimum comparability record. “NR” means unavailable in the checked source, not zero or absent.</caption>
+      <thead><tr><th>Block</th><th>Required fields</th><th>Decision use</th></tr></thead>
+      <tbody>
+        <tr><td>Composition and powder</td><td>Nominal/measured composition; dopant; precursors; Li excess; mixing; route</td><td>Separates formulation from process and preserves NR.</td></tr>
+        <tr><td>Thermal and environment</td><td>Calcination/sintering temperature and time; ramp; pressure/field; atmosphere; cover; crucible; additive</td><td>Prevents a route name from replacing a complete boundary condition.</td></tr>
+        <tr><td>Structure</td><td>Phase method; density and basis; grains, boundaries, porosity</td><td>Separates achieved density from an asserted mechanism.</td></tr>
+        <tr><td>Transport</td><td>Total/bulk/grain-boundary quantity; temperature; electrodes; activation-energy convention</td><td>Blocks numerical comparison across unlike observables.</td></tr>
+        <tr><td>Reproducibility</td><td>Batch count; spatial sampling; geometry; uncertainty</td><td>Distinguishes one specimen from repeatability evidence.</td></tr>
+        <tr><td>Provenance</td><td>Title, stored abstract, local excerpt, or checked full text</td><td>Caps claim strength at the inspected evidence level.</td></tr>
+      </tbody>
+    </table>
+    <p>Results are <em>directly comparable</em> only when relevant fields match or are deliberately controlled. <em>Parallel qualitative evidence</em> applies when a known composition, process, or measurement field differs. <em>Insufficient fields</em> applies when an unavailable field could change interpretation. Missing metadata are missing evidence, not proof of experimental absence.</p>
+  </section>
+
+  <section>
+    <h2>3. Faceted framework</h2>
+    <p>The framework is faceted, not a single MECE tree. P1 covers solid-state, solution-mediated, and coprecipitation/combustion powder routes. P2 separates Li-sublattice substitution, Zr-site/multi-element substitution, and stoichiometry/defect/phase questions. P3 separates pressureless schedules, assisted or ultrafast methods, and low-temperature/additive-assisted densification. P4 contains phase/microstructure and transport readouts. A modifier facet records dopant identity, lithium inventory, process environment, exposure, and additives. An evidence facet records what must be available before comparison.</p>
+    <figure>
+      <img src="figures/svg/llzo_process_map.svg" alt="LLZO synthesis-to-performance process map">
+      <figcaption><strong>Figure 1.</strong> Faceted LLZO process map. Solid arrows encode group-level process order; dashed arrows encode boundary-condition checks. The map identifies associations to inspect, not proven causal effects.</figcaption>
+    </figure>
+    <p>A computational abstract examines native defects across synthesis conditions and challenges a universal simple vacancy-compensation assumption <span class="cite">[<a href="#ref-squires2019native">5</a>]</span>. Title-only records anchor gallium-associated cubic-phase stabilization <span class="cite">[<a href="#ref-shinawi2013stabilization">2</a>]</span>, lithium stoichiometry in tetragonal LLZO <span class="cite">[<a href="#ref-ilina2014lithium">33</a>]</span>, and synthesis/thermodynamics <span class="cite">[<a href="#ref-aleksandrov2021superionic">35</a>]</span>; no occupancy, transition value, or mechanism is inferred from those titles.</p>
+  </section>
+
+  <section>
+    <h2>4. Powder-synthesis routes</h2>
+    <h3>Solid-state reaction and precursor control</h3>
+    <p>An early title anchors cubic-LLZO solid-state synthesis <span class="cite">[<a href="#ref-tan2012synthesis">36</a>]</span>, while an abstract-bearing Al-LLZO study reports lithium-inventory and powder-geometry sensitivity within its route <span class="cite">[<a href="#ref-heywood2023tailoring">9</a>]</span>. A stored abstract compares monoclinic and tetragonal zirconia precursors under a common reported path and includes phase and transport readouts <span class="cite">[<a href="#ref-rahmawati2021a">39</a>]</span>. In situ neutron diffraction is reported as tracking formation and identifying precursor-state and cooling-history features <span class="cite">[<a href="#ref-rao2015in">44</a>]</span>. Generalization beyond those studied conditions requires full text.</p>
+    <h3>Solution-mediated and chelation routes</h3>
+    <p>Title-level records establish nitrogen-free sol–gel preparation of Al-substituted LLZO <span class="cite">[<a href="#ref-rosenkiewitz2015nitrogen">4</a>]</span> and sol–gel synthesis with conductivity measurement <span class="cite">[<a href="#ref-kokal2011sol">37</a>]</span>, but not comparative advantage. Abstract-bearing records describe solution powder followed by pressure-assisted densification <span class="cite">[<a href="#ref-sakamoto2013synthesis">38</a>]</span>, a solid-state/sol–gel comparison with and without Al <span class="cite">[<a href="#ref-kosir2022comparative">45</a>]</span>, and a PVP-chelated route reporting cubic LLZO together with a secondary phase and impedance result <span class="cite">[<a href="#ref-bae2019use">46</a>]</span>.</p>
+    <h3>Coprecipitation, combustion, and rapid formation</h3>
+    <p>Coprecipitation, low-temperature powder processing, and microwave-assisted solution combustion are represented locally by title-only records <span class="cite">[<a href="#ref-hamao2015synthesis">40</a>, <a href="#ref-padarti2018low">43</a>, <a href="#ref-dandeneau2023rapid">42</a>]</span>. A nonaqueous polymer-combustion abstract follows undoped and Ta-containing nanopowders into sintering and transport characterization <span class="cite">[<a href="#ref-weller2019nonaqueous">41</a>]</span>. Across all P1 branches, a route comparison must also preserve composition, thermal budget, shaping, density, and transport definition.</p>
+  </section>
+
+  <section>
+    <h2>5. Composition and phase stabilization</h2>
+    <p>Title-level studies are framed around Ga addition and cubic stabilization <span class="cite">[<a href="#ref-shinawi2013stabilization">2</a>]</span>, Ga substitution and grain coarsening <span class="cite">[<a href="#ref-li2016ga">10</a>]</span>, and lithium volatilization with phase change during Al-containing LLZO processing <span class="cite">[<a href="#ref-montoya2024lithium">3</a>]</span>. They locate different control objects but do not establish site occupancy or causality here.</p>
+    <p>The defect-calculation abstract reports conditional native-defect and doping responses rather than one universal lithium-vacancy rule <span class="cite">[<a href="#ref-squires2019native">5</a>]</span>. Experimental abstracts associate precursor homogeneity with compositional/structural evolution <span class="cite">[<a href="#ref-parascos2022compositional">27</a>]</span>, report phase/density/microstructure/transport for Nb-containing garnet <span class="cite">[<a href="#ref-yan2020submicron">32</a>]</span>, and report multiple outcomes for AlN addition to Ta-containing garnet <span class="cite">[<a href="#ref-zhang2022high">6</a>]</span>. Detailed mediation remains unverified.</p>
+    <p>A dual-substitution paper also names spark plasma sintering in its title <span class="cite">[<a href="#ref-dong2019dual">12</a>]</span>, making single-variable attribution inappropriate without full context. Title-only lithium-stoichiometry and lithium-excess records map inventory coverage but not effect direction <span class="cite">[<a href="#ref-ilina2014lithium">33</a>, <a href="#ref-norazman2021the">34</a>]</span>. Nominal composition, measured composition, starting excess, firing-stage supply, phase method, and all downstream conditions must remain distinct.</p>
+  </section>
+
+  <section>
+    <h2>6. Thermal treatment and densification</h2>
+    <p>Pressureless firing includes title-level shaping-plus-sintering work <span class="cite">[<a href="#ref-lei2021fabrication">7</a>]</span>, an abstract-bearing dwell/lithium-inventory case <span class="cite">[<a href="#ref-schwab2023towards">8</a>]</span>, and oxygen-assisted firing with several readouts <span class="cite">[<a href="#ref-shen2020a">21</a>]</span>. Uniform densification is also reported as depending on particle distribution, heating, and support geometry within one abstract <span class="cite">[<a href="#ref-guo2023uniform">31</a>]</span>.</p>
+    <p>Title-level records establish SPS-mechanism, field-assisted, rapid ultra-high-temperature, and ultrafast branches <span class="cite">[<a href="#ref-yamada2016sintering">16</a>, <a href="#ref-zhang2014field">19</a>, <a href="#ref-tao2022preparation">11</a>, <a href="#ref-ihrig2021li7la3zr2o12">14</a>]</span>, not efficiency or performance rankings. Abstracts permit bounded within-study comparisons of solid-state/SPS/post-treatment routes <span class="cite">[<a href="#ref-xue2020spark">15</a>]</span> and a hot-pressing series with density and transport partition <span class="cite">[<a href="#ref-david2015microstructure">20</a>]</span>.</p>
+    <p>Cold sintering is reported for an LLZO-based composite rather than silently normalized to monolithic LLZO <span class="cite">[<a href="#ref-seo2020broad">24</a>]</span>. SiO<sub>2</sub>, CuO, and Li<sub>5</sub>AlO<sub>4</sub> abstracts report combinations of lower-temperature processing, densification, boundary interpretation, transport, or cell readouts <span class="cite">[<a href="#ref-zhang2020enhanced">22</a>, <a href="#ref-zhang2019effects">25</a>, <a href="#ref-zhou2024li5alo4">29</a>]</span>. Achieved density is kept separate from the mechanism proposed to explain it.</p>
+  </section>
+
+  <section>
+    <h2>7. Cross-cutting environment and additives</h2>
+    <p>A stored abstract compares alumina and platinum crucibles with composition, density, conductivity, and exposure readouts <span class="cite">[<a href="#ref-xia2016ionic">17</a>]</span>. A title-only record concerns alumina-crucible contamination associated with extra lithium carbonate <span class="cite">[<a href="#ref-lan2019investigation">30</a>]</span>. Starting excess must be separated from lithium activity supplied or lost during firing: the collection includes a title on Li<sub>2</sub>O-atmosphere manipulation <span class="cite">[<a href="#ref-huang2019manipulating">18</a>]</span>, an abstract on LiOH-containing cover material <span class="cite">[<a href="#ref-zhang2019densification">26</a>]</span>, and an abstract screening lithium-containing cover powders <span class="cite">[<a href="#ref-huang2019searching">28</a>]</span>.</p>
+    <p>Lithium–proton exchange is presented in one abstract as a reproducible-processing variable <span class="cite">[<a href="#ref-rosen2021controlling">23</a>]</span>, motivating records of humidity, exposure time, storage, surface treatment, and delay before measurement. Additive studies associate sintering aids with microstructure or transport at title level <span class="cite">[<a href="#ref-luo2019influence">13</a>]</span> and report multi-outcome SiO<sub>2</sub>, CuO, AlN, or Li<sub>5</sub>AlO<sub>4</sub> cases at abstract level <span class="cite">[<a href="#ref-zhang2020enhanced">22</a>, <a href="#ref-zhang2019effects">25</a>, <a href="#ref-zhang2022high">6</a>, <a href="#ref-zhou2024li5alo4">29</a>]</span>. Additive identity, lithium supply, reaction products, density, and boundary response remain possible co-mediators.</p>
+  </section>
+
+  <section>
+    <h2>8. Structure–transport evidence and minimum comparability</h2>
+    <p>Study-specific covariation does not justify the shortcut “denser means more conductive.” Hot pressing, submicron powder, and crucible studies each report density alongside transport and other structural or compositional fields <span class="cite">[<a href="#ref-david2015microstructure">20</a>, <a href="#ref-yan2020submicron">32</a>, <a href="#ref-xia2016ionic">17</a>]</span>. Relative density does not uniquely encode pore location, boundary chemistry, exposure, or uniformity; the uniform-densification abstract explicitly combines microscopic and macroscopic observations <span class="cite">[<a href="#ref-guo2023uniform">31</a>]</span>.</p>
+    <p>Total, bulk, and grain-boundary conductivity are retained as different observables. Test temperature, electrodes, specimen geometry, frequency range, fitting choice, and activation-energy convention remain part of interpretation. The cover-powder abstract is useful because it identifies total conductivity and activation energy alongside density and boundary composition <span class="cite">[<a href="#ref-zhang2019densification">26</a>]</span>; this does not make its values comparable to a record with different or unavailable fields.</p>
+    <ol>
+      <li>Establish composition and provenance.</li>
+      <li>Establish precursor, powder, shaping, and complete thermal/environment history.</li>
+      <li>Establish phase, density basis, microstructure, spatial sampling, and exposure.</li>
+      <li>Establish transport type, temperature, electrodes, analysis, replicates, and uncertainty.</li>
+    </ol>
+    <p>The output is categorical rather than scored: directly comparable, parallel qualitative evidence, or insufficiently specified. Contribution B is therefore the decision layer attached to Contribution A's map; Contribution C uses the same fields to explain why a gap remains unresolved.</p>
+  </section>
+
+  <section>
+    <h2>9. Six evidence-bounded research gaps</h2>
+    <p>These are gaps in discrimination within this collection, not claims that the field has never performed an experiment.</p>
+    <h3>1. Precursor homogeneity versus powder route</h3>
+    <p>Abstracts on precursor homogeneity, route comparison, and solid-state processing do not establish a common-powder, matched-composition, matched-thermal-budget comparison with shared replication <span class="cite">[<a href="#ref-parascos2022compositional">27</a>, <a href="#ref-kosir2022comparative">45</a>, <a href="#ref-heywood2023tailoring">9</a>]</span>. A one-lot factorial route/mixing study could hold composition, shaping, and firing fixed. The hypothesis that improved homogeneity reduces dispersion would be falsified if a prespecified dispersion measure were not lower than the matched control.</p>
+    <h3>2. Starting lithium versus firing-stage supply</h3>
+    <p>Starting inventory, dwell, geometry, and cover supply remain coupled across the checked abstracts <span class="cite">[<a href="#ref-heywood2023tailoring">9</a>, <a href="#ref-schwab2023towards">8</a>, <a href="#ref-zhang2019densification">26</a>]</span>. A two-by-two excess/cover design on one powder could test the interaction. The interaction explanation would be falsified if its preregistered term were indistinguishable from zero within declared uncertainty.</p>
+    <h3>3. Additive densification versus boundary mediation</h3>
+    <p>SiO<sub>2</sub>, Li<sub>5</sub>AlO<sub>4</sub>, and AlN abstracts move additive identity, products, density, and transport together <span class="cite">[<a href="#ref-zhang2020enhanced">22</a>, <a href="#ref-zhou2024li5alo4">29</a>, <a href="#ref-zhang2022high">6</a>]</span>. An additive-free control and dose series with density matching and separated boundary response could test mediation. The explanation fails if the declared boundary signature is absent or does not covary after density is accounted for.</p>
+    <h3>4. Fair comparison of densification technologies</h3>
+    <p>Abstract-level SPS and hot-press cases cannot be ranked against a title-only ultrafast record across unlike powders and conditions <span class="cite">[<a href="#ref-xue2020spark">15</a>, <a href="#ref-david2015microstructure">20</a>, <a href="#ref-ihrig2021li7la3zr2o12">14</a>]</span>. A shared powder, target density, geometry, and impedance protocol could test equivalence. Acceleration would fail the working equivalence hypothesis if it fell outside a predeclared margin.</p>
+    <h3>5. Exposure history as a reproducibility variable</h3>
+    <p>Crucible/exposure, lithium–proton exchange, and precursor-reproducibility abstracts do not supply one shared humidity/storage/pre-measurement block <span class="cite">[<a href="#ref-xia2016ionic">17</a>, <a href="#ref-rosen2021controlling">23</a>, <a href="#ref-parascos2022compositional">27</a>]</span>. Replicates assigned to predeclared humidity–time histories could test the pattern. The hypothesis fails if neither surface-state metric nor transport changes systematically.</p>
+    <h3>6. Interlaboratory density and conductivity record</h3>
+    <p>Uniformity, submicron-powder, and route-comparison abstracts expose relevant fields but are not an interlaboratory round robin <span class="cite">[<a href="#ref-guo2023uniform">31</a>, <a href="#ref-yan2020submicron">32</a>, <a href="#ref-kosir2022comparative">45</a>]</span>. A blind comparison on shared pellets and powder could partition specimen, analysis, and reporting dispersion. Harmonization would fail the hypothesis if the preregistered between-laboratory variance component did not decrease.</p>
+  </section>
+
+  <section>
+    <h2>10. Model-assisted precursor diagnostic</h2>
+    <p>General LLZO preparation literature supplies context for precursor control <span class="cite">[<a href="#ref-raju2021crystal">1</a>, <a href="#ref-heywood2023tailoring">9</a>]</span>; it does not validate the following sets.</p>
+    <div class="diagnostic">
+      <h3>MODEL-ASSISTED PRECURSOR DIAGNOSTIC — INFRASTRUCTURE DEMONSTRATION ONLY</h3>
+      <p class="warning">CHEMICAL ROUTES UNVERIFIED — NOT FOR LAB USE</p>
+      <p>Target: Li<sub>7</sub>La<sub>3</sub>Zr<sub>2</sub>O<sub>12</sub>. Actual model-ranked sets:</p>
+      <ol>
+        <li>ZrO<sub>2</sub> + La<sub>2</sub>O<sub>3</sub> + Li<sub>2</sub>CO<sub>3</sub> (Top-1)</li>
+        <li>ZrO<sub>2</sub> + La<sub>2</sub>O<sub>3</sub> + LiHO</li>
+        <li>ZrO<sub>2</sub> + Li<sub>2</sub>CO<sub>3</sub> + La(HO)<sub>3</sub></li>
+        <li>ZrO<sub>2</sub> + La<sub>2</sub>O<sub>3</sub> + Li<sub>2</sub>CO<sub>3</sub> + LiHO</li>
+        <li>ZrO<sub>2</sub> + LiHO + La(HO)<sub>3</sub></li>
+      </ol>
+      <p><code>LiHO</code> and <code>La(HO)3</code> are nomenclature/entity-normalization warnings. Status: <span class="status">model_output_verified=true; chemical_route_verified=false; conditions=null</span>. Scores are not reaction-success probabilities. No set is a chemistry recommendation; no experimental conditions are supplied. Human evidence, entity, hazard, and waste review would be mandatory before an experimental plan could exist. <strong>NOT FOR LAB USE.</strong></p>
+      <p class="provenance">Raw provenance: <code>data/retro_llzo_top5.json</code> and <code>data/experiment_llzo_diagnostic.json</code>. Reviewer issue I4 remains open.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>11. Limitations</h2>
+    <p>This is a standard-scale evidence-mapped review, not a comprehensive or systematic review. Metadata integrity does not validate claim context. The small recent subset does not establish current coverage, and the condition-preserving matrix is not a numerical meta-analysis. Missing fields are unavailable evidence, not experimental absence. The process map encodes navigation and boundary checks, not causality. The precursor diagnostic is verified only as software output, with unverified chemistry, null conditions, and open issue I4.</p>
+  </section>
+
+  <section>
+    <h2>12. Conclusion</h2>
+    <p>LLZO processing is read most faithfully as a primary process chain with cross-cutting composition and environment modifiers plus a separate evidence facet. The minimum record classifies results as directly comparable, parallel qualitative evidence, or insufficiently specified. The six-gap map prioritizes controlled discrimination: separating starting lithium from firing-boundary supply, separating density mediation from additive-related boundary chemistry, and harmonizing structure/transport records across specimens and laboratories.</p>
+    <p>These conclusions are calibrated to 46 audited records and selective abstract-level evidence. They do not rank a universally superior route. Contributions A+B+C instead expose what was varied, what was measured, what traveled with the intervention, and what observation could overturn a working explanation.</p>
+  </section>
+
+  <section class="references">
+    <h2>References</h2>
+    <ol class="refs">
+      <li id="ref-raju2021crystal">M. M. Raju, F. Altayran, M. E. Johnson, D. Wang, and Q. Zhang. “Crystal Structure and Preparation of Li7La3Zr2O12 (LLZO) Solid-State Electrolyte and Doping Impacts on the Conductivity: An Overview.” <em>Electrochem</em> (2021). <a href="https://doi.org/10.3390/electrochem2030026">doi:10.3390/electrochem2030026</a>.</li>
+      <li id="ref-shinawi2013stabilization">H. El Shinawi and J. Janek. “Stabilization of cubic lithium-stuffed garnets of the type Li7La3Zr2O12 by addition of gallium.” <em>Journal of Power Sources</em> (2013). <a href="https://doi.org/10.1016/j.jpowsour.2012.09.111">doi:10.1016/j.jpowsour.2012.09.111</a>.</li>
+      <li id="ref-montoya2024lithium">S. T. Montoya, S. A. H. Shanto, and R. A. Walker. “Lithium Volatilization and Phase Changes during Aluminum-Doped Cubic Li6.25La3Zr2Al0.25O12 (c-LLZO) Processing.” <em>Crystals</em> (2024). <a href="https://doi.org/10.3390/cryst14090795">doi:10.3390/cryst14090795</a>.</li>
+      <li id="ref-rosenkiewitz2015nitrogen">N. Rosenkiewitz, J. Schuhmacher, M. Bockmeyer, and J. Deubener. “Nitrogen-free sol–gel synthesis of Al-substituted cubic garnet Li7La3Zr2O12 (LLZO).” <em>Journal of Power Sources</em> (2015). <a href="https://doi.org/10.1016/j.jpowsour.2014.12.066">doi:10.1016/j.jpowsour.2014.12.066</a>.</li>
+      <li id="ref-squires2019native">A. G. Squires, D. O. Scanlon, and B. J. Morgan. “Native Defects and Their Doping Response in the Lithium Solid Electrolyte Li7La3Zr2O12.” <em>Chemistry of Materials</em> (2019). <a href="https://doi.org/10.1021/acs.chemmater.9b04319">doi:10.1021/acs.chemmater.9b04319</a>.</li>
+      <li id="ref-zhang2022high">C. Zhang, X. Hu, Z. Nie, C. Wu, N. Zheng, S. Chen, Y. Yang, R. Wei, J. Yu, N. Yang, Y. Yu, and W. Liu. “High-performance Ta-doped Li7La3Zr2O12 garnet oxides with AlN additive.” <em>Journal of Advanced Ceramics</em> (2022). <a href="https://doi.org/10.1007/s40145-022-0626-y">doi:10.1007/s40145-022-0626-y</a>.</li>
+      <li id="ref-lei2021fabrication">C. Lei, D. K. Shetty, M. F. Simpson, and A. V. Virkar. “Fabrication of high-density and translucent Al-containing garnet, Li7−xLa3Zr2−xTaxO12 (LLZTO) solid-state electrolyte by pressure filtration and sintering.” <em>Solid State Ionics</em> (2021). <a href="https://doi.org/10.1016/j.ssi.2021.115640">doi:10.1016/j.ssi.2021.115640</a>.</li>
+      <li id="ref-schwab2023towards">C. Schwab, G. Häuschen, M. Mann, C. Roitzheim, O. Guillon, D. Fattakhova-Rohlfing, and M. Finsterbusch. “Towards economic processing of high performance garnets – case study on zero Li excess Ga-substituted LLZO.” <em>Journal of Materials Chemistry A</em> (2023). <a href="https://doi.org/10.1039/d2ta09250f">doi:10.1039/d2ta09250f</a>.</li>
+      <li id="ref-heywood2023tailoring">S. Heywood, M. Lessmeier, D. R. Driscoll, and S. W. Sofie. “Tailoring solid-state synthesis routes for high confidence production of phase pure, low impedance Al-LLZO.” <em>Journal of the American Ceramic Society</em> (2023). <a href="https://doi.org/10.1111/jace.18994">doi:10.1111/jace.18994</a>.</li>
+      <li id="ref-li2016ga">C. Li, Y. Liu, J. He, and K. S. Brinkman. “Ga-substituted Li7La3Zr2O12: An investigation based on grain coarsening in garnet-type lithium ion conductors.” <em>Journal of Alloys and Compounds</em> (2016). <a href="https://doi.org/10.1016/j.jallcom.2016.11.277">doi:10.1016/j.jallcom.2016.11.277</a>.</li>
+      <li id="ref-tao2022preparation">X. Tao, L. Yang, J. Liu, Z. Zang, P. Zeng, C. Zou, L. Yi, X. Chen, X. Liu, and X. Wang. “Preparation and performances of gallium-doped LLZO electrolyte with high ionic conductivity by rapid ultra-high-temperature sintering.” <em>Journal of Alloys and Compounds</em> (2022). <a href="https://doi.org/10.1016/j.jallcom.2022.168380">doi:10.1016/j.jallcom.2022.168380</a>.</li>
+      <li id="ref-dong2019dual">Z. Dong, C. Xu, Y. Wu, W. Tang, S. Song, J. Yao, Z. Huang, Z. Wen, L. Lu, and N. Hu. “Dual Substitution and Spark Plasma Sintering to Improve Ionic Conductivity of Garnet Li7La3Zr2O12.” <em>Nanomaterials</em> (2019). <a href="https://doi.org/10.3390/nano9050721">doi:10.3390/nano9050721</a>.</li>
+      <li id="ref-luo2019influence">Y. Luo, X. Li, H. Chen, and L. Guo. “Influence of sintering aid on the microstructure and conductivity of the garnet-type W-doped Li7La3Zr2O12 ceramic electrolyte.” <em>Journal of Materials Science: Materials in Electronics</em> (2019). <a href="https://doi.org/10.1007/s10854-019-02067-5">doi:10.1007/s10854-019-02067-5</a>.</li>
+      <li id="ref-ihrig2021li7la3zr2o12">M. Ihrig, T. P. Mishra, W. S. Scheld, G. Häuschen, W. Rheinheimer, M. Bram, M. Finsterbusch, and O. Guillon. “Li7La3Zr2O12 solid electrolyte sintered by the ultrafast high-temperature method.” <em>Journal of the European Ceramic Society</em> (2021). <a href="https://doi.org/10.1016/j.jeurceramsoc.2021.05.041">doi:10.1016/j.jeurceramsoc.2021.05.041</a>.</li>
+      <li id="ref-xue2020spark">J. Xue, K. Zhang, D. Chen, J. Zeng, and B. Luo. “Spark plasma sintering plus heat-treatment of Ta-doped Li7La3Zr2O12 solid electrolyte and its ionic conductivity.” <em>Materials Research Express</em> (2020). <a href="https://doi.org/10.1088/2053-1591/ab7618">doi:10.1088/2053-1591/ab7618</a>.</li>
+      <li id="ref-yamada2016sintering">H. Yamada, T. Ito, and R. H. Basappa. “Sintering Mechanisms of High-Performance Garnet-type Solid Electrolyte Densified by Spark Plasma Sintering.” <em>Electrochimica Acta</em> (2016). <a href="https://doi.org/10.1016/j.electacta.2016.11.020">doi:10.1016/j.electacta.2016.11.020</a>.</li>
+      <li id="ref-xia2016ionic">W. Xia, B. Xu, H. Duan, Y. Guo, H. Kang, H. Li, and H. Liu. “Ionic Conductivity and Air Stability of Al-Doped Li7La3Zr2O12 Sintered in Alumina and Pt Crucibles.” <em>ACS Applied Materials &amp; Interfaces</em> (2016). <a href="https://doi.org/10.1021/acsami.5b12186">doi:10.1021/acsami.5b12186</a>.</li>
+      <li id="ref-huang2019manipulating">X. Huang, Y. Lu, Z. Song, K. Rui, Q. Wang, T. Xiu, M. E. Badding, and Z. Wen. “Manipulating Li2O atmosphere for sintering dense Li7La3Zr2O12 solid electrolyte.” <em>Energy Storage Materials</em> (2019). <a href="https://doi.org/10.1016/j.ensm.2019.01.018">doi:10.1016/j.ensm.2019.01.018</a>.</li>
+      <li id="ref-zhang2014field">Y. Zhang, F. Chen, R. Tu, Q. Shen, and L. Zhang. “Field assisted sintering of dense Al-substituted cubic phase Li7La3Zr2O12 solid electrolytes.” <em>Journal of Power Sources</em> (2014). <a href="https://doi.org/10.1016/j.jpowsour.2014.03.148">doi:10.1016/j.jpowsour.2014.03.148</a>.</li>
+      <li id="ref-david2015microstructure">I. N. David, T. Thompson, J. Wolfenstine, J. L. Allen, and J. Sakamoto. “Microstructure and Li-Ion Conductivity of Hot-Pressed Cubic Li7La3Zr2O12.” <em>Journal of the American Ceramic Society</em> (2015). <a href="https://doi.org/10.1111/jace.13455">doi:10.1111/jace.13455</a>.</li>
+      <li id="ref-shen2020a">F. Shen, W. Guo, D. Zeng, Z. Sun, J. Gao, J. Li, B. Zhao, B. He, and X. Han. “A Simple and Highly Efficient Method toward High-Density Garnet-Type LLZTO Solid-State Electrolyte.” <em>ACS Applied Materials &amp; Interfaces</em> (2020). <a href="https://doi.org/10.1021/acsami.0c04850">doi:10.1021/acsami.0c04850</a>.</li>
+      <li id="ref-zhang2020enhanced">S. Zhang, H. Zhao, J. Wang, T. Xu, K. Zhang, and Z. Du. “Enhanced densification and ionic conductivity of Li-garnet electrolyte: Efficient Li2CO3 elimination and fast grain-boundary transport construction.” <em>Chemical Engineering Journal</em> (2020). <a href="https://doi.org/10.1016/j.cej.2020.124797">doi:10.1016/j.cej.2020.124797</a>.</li>
+      <li id="ref-rosen2021controlling">M. Rosen, R. Ye, M. Mann, S. Lobe, M. Finsterbusch, O. Guillon, and D. Fattakhova-Rohlfing. “Controlling the lithium proton exchange of LLZO to enable reproducible processing and performance optimization.” <em>Journal of Materials Chemistry A</em> (2021). <a href="https://doi.org/10.1039/d0ta11096e">doi:10.1039/d0ta11096e</a>.</li>
+      <li id="ref-seo2020broad">J. Seo, H. Nakaya, Y. Takeuchi, Z. Fan, H. Hikosaka, R. Rajagopalan, E. Gomez, M. Iwasaki, and C. Randall. “Broad temperature dependence, high conductivity, and structure-property relations of cold sintering of LLZO-based composite electrolytes.” (2020). <a href="https://doi.org/10.1016/j.jeurceramsoc.2020.06.050">doi:10.1016/j.jeurceramsoc.2020.06.050</a>.</li>
+      <li id="ref-zhang2019effects">W. Zhang and C. Sun. “Effects of CuO on the microstructure and electrochemical properties of garnet-type Li6.3La3Zr1.65W0.35O12 solid electrolyte.” (2019). <a href="https://doi.org/10.1016/j.jpcs.2019.109080">doi:10.1016/j.jpcs.2019.109080</a>.</li>
+      <li id="ref-zhang2019densification">X. Zhang, T.-S. Oh, and J. W. Fergus. “Densification of Ta-Doped Garnet-Type Li6.75La3Zr1.75Ta0.25O12 Solid Electrolyte Materials by Sintering in a Lithium-Rich Air Atmosphere.” <em>Journal of The Electrochemical Society</em> (2019). <a href="https://doi.org/10.1149/2.1031915jes">doi:10.1149/2.1031915jes</a>.</li>
+      <li id="ref-parascos2022compositional">K. Parascos, J. Watts, J. A. Alarco, Y. Chen, and P. C. Talbot. “Compositional and structural control in LLZO solid electrolytes.” <em>RSC Advances</em> (2022). <a href="https://doi.org/10.1039/d2ra03303h">doi:10.1039/d2ra03303h</a>.</li>
+      <li id="ref-huang2019searching">X. Huang, Z. Song, T. Xiu, M. E. Badding, and Z. Wen. “Searching for low-cost Li MO compounds for compensating Li-loss in sintering of Li-Garnet solid electrolyte.” <em>Journal of Materiomics</em> (2019). <a href="https://doi.org/10.1016/j.jmat.2018.09.004">doi:10.1016/j.jmat.2018.09.004</a>.</li>
+      <li id="ref-zhou2024li5alo4">H. Zhou, Y. Zhou, X. Li, X. Huang, and B. Tian. “Li5AlO4-Assisted Low-Temperature Sintering of Dense Li7La3Zr2O12 Solid Electrolyte with High Critical Current Density.” <em>ACS Applied Materials &amp; Interfaces</em> (2024). <a href="https://doi.org/10.1021/acsami.3c17606">doi:10.1021/acsami.3c17606</a>.</li>
+      <li id="ref-lan2019investigation">W. Lan, D. Lu, R. Zhao, and H. Chen. “Investigation of Al2O3 Crucible Contamination induced by extra Li2CO3 during Li7La3Zr2O12 Solid Electrolyte Sintering process.” <em>International Journal of Electrochemical Science</em> (2019). <a href="https://doi.org/10.20964/2019.10.22">doi:10.20964/2019.10.22</a>.</li>
+      <li id="ref-guo2023uniform">Z. Guo, Q. Li, X. Li, Z. Wang, H. Guo, W. Peng, G. Li, G. Yan, and J. Wang. “Uniform Densification of Garnet Electrolyte for Solid-State Lithium Batteries.” <em>Small Methods</em> (2023). <a href="https://doi.org/10.1002/smtd.202300232">doi:10.1002/smtd.202300232</a>.</li>
+      <li id="ref-yan2020submicron">J. Yan, C. Zhou, F. Lin, B. Li, F. Yang, H. Zhu, J. Duan, and Z. Chen. “Submicron-Sized Nb-Doped Lithium Garnet for High Ionic Conductivity Solid Electrolyte and Performance of Quasi-Solid-State Lithium Battery.” <em>Materials</em> (2020). <a href="https://doi.org/10.3390/ma13030560">doi:10.3390/ma13030560</a>.</li>
+      <li id="ref-ilina2014lithium">E. A. Il’ina, A. A. Raskovalov, P. Y. Shevelin, V. I. Voronin, I. F. Berger, and N. A. Zhyravlev. “Lithium stoichiometry of solid electrolytes based on tetragonal Li7La3Zr2O12.” <em>Materials Research Bulletin</em> (2014). <a href="https://doi.org/10.1016/j.materresbull.2014.01.041">doi:10.1016/j.materresbull.2014.01.041</a>.</li>
+      <li id="ref-norazman2021the">S. N. A. Norazman, N. Yaacob, R. A. M. Osman, M. S. Idris, and K. N. D. K. Muhsen. “The effect of lithium excess toward synthesis of Li7La3Zr2O12 cubic garnet-type as solid electrolyte for all solid-state rechargeable batteries.” <em>AIP Conference Proceedings</em> (2021). <a href="https://doi.org/10.1063/5.0051862">doi:10.1063/5.0051862</a>.</li>
+      <li id="ref-aleksandrov2021superionic">D. Aleksandrov, P. Novikov, A. Popovich, and Q. Wang. “Superionic Solid Electrolyte Li7La3Zr2O12 Synthesis and Thermodynamics for Application in All-Solid-State Lithium-Ion Batteries.” <em>Materials</em> (2021). <a href="https://doi.org/10.3390/ma15010281">doi:10.3390/ma15010281</a>.</li>
+      <li id="ref-tan2012synthesis">J. Tan and A. Tiwari. “Synthesis of Cubic Phase Li7La3Zr2O12 Electrolyte for Solid-State Lithium-Ion Batteries.” <em>Electrochemical and Solid-State Letters</em> (2012). <a href="https://doi.org/10.1149/2.003203esl">doi:10.1149/2.003203esl</a>.</li>
+      <li id="ref-kokal2011sol">I. Kokal, M. Somer, P. H. L. Notten, and H. T. Hintzen. “Sol–gel synthesis and lithium ion conductivity of Li7La3Zr2O12 with garnet-related type structure.” <em>Solid State Ionics</em> (2011). <a href="https://doi.org/10.1016/j.ssi.2011.01.002">doi:10.1016/j.ssi.2011.01.002</a>.</li>
+      <li id="ref-sakamoto2013synthesis">J. Sakamoto, E. Rangasamy, H. Kim, Y. Kim, and J. Wolfenstine. “Synthesis of nano-scale fast ion conducting cubic Li7La3Zr2O12.” <em>Nanotechnology</em> (2013). <a href="https://doi.org/10.1088/0957-4484/24/42/424005">doi:10.1088/0957-4484/24/42/424005</a>.</li>
+      <li id="ref-rahmawati2021a">F. Rahmawati, B. Musyarofah, K. D. Nugrahaningtyas, A. Prasetyo, V. Suendo, H. Haeruddin, M. F. A. Handaka, H. Nilasari, and H. Nursukatmo. “A different zirconia precursor for Li7La3Zr2O12 synthesis.” <em>Journal of Materials Research and Technology</em> (2021). <a href="https://doi.org/10.1016/j.jmrt.2021.09.064">doi:10.1016/j.jmrt.2021.09.064</a>.</li>
+      <li id="ref-hamao2015synthesis">N. Hamao and J. Akimoto. “Synthesis of Garnet-type Li7La3Zr2O12 by Coprecipitation Method.” <em>Chemistry Letters</em> (2015). <a href="https://doi.org/10.1246/cl.150295">doi:10.1246/cl.150295</a>.</li>
+      <li id="ref-weller2019nonaqueous">J. M. Weller, J. A. Whetten, and C. K. Chan. “Nonaqueous Polymer Combustion Synthesis of Cubic Li7La3Zr2O12 Nanopowders.” <em>ACS Applied Materials &amp; Interfaces</em> (2019). <a href="https://doi.org/10.1021/acsami.9b19981">doi:10.1021/acsami.9b19981</a>.</li>
+      <li id="ref-dandeneau2023rapid">C. S. Dandeneau, R. Rajeev, K. S. Brinkman, D. Hitchcock, and B. L. García-Díaz. “Rapid fabrication of Ga-doped Li7La3Zr2O12 powder via microwave-assisted solution combustion synthesis.” <em>Journal of Materials Science</em> (2023). <a href="https://doi.org/10.1007/s10853-023-08397-4">doi:10.1007/s10853-023-08397-4</a>.</li>
+      <li id="ref-padarti2018low">J. K. Padarti, T. T. Jupalli, C. Hirayama, M. Senna, T. Kawaguchi, N. Sakamoto, N. Wakiya, and H. Suzuki. “Low-temperature processing of Garnet-type ion conductive cubic Li7La3Zr2O12 powders for high performance all solid-type Li-ion batteries.” <em>Journal of the Taiwan Institute of Chemical Engineers</em> (2018). <a href="https://doi.org/10.1016/j.jtice.2018.02.021">doi:10.1016/j.jtice.2018.02.021</a>.</li>
+      <li id="ref-rao2015in">R. P. Rao, W. Gu, N. Sharma, V. K. Peterson, M. Avdeev, and S. Adams. “In Situ Neutron Diffraction Monitoring of Li7La3Zr2O12 Formation: Toward a Rational Synthesis of Garnet Solid Electrolytes.” <em>Chemistry of Materials</em> (2015). <a href="https://doi.org/10.1021/acs.chemmater.5b00149">doi:10.1021/acs.chemmater.5b00149</a>.</li>
+      <li id="ref-kosir2022comparative">J. Košir, S. Mousavihashemi, B. P. Wilson, E.-L. Rautama, and T. Kallio. “Comparative analysis on the thermal, structural, and electrochemical properties of Al-doped Li7La3Zr2O12 solid electrolytes through solid state and sol-gel routes.” <em>Solid State Ionics</em> (2022). <a href="https://doi.org/10.1016/j.ssi.2022.115943">doi:10.1016/j.ssi.2022.115943</a>.</li>
+      <li id="ref-bae2019use">J.-J. Bae, S.-J. Lee, and J.-T. Son. “Use of Polyvinylpyrrolidone as a Chelating Agent to Reduce the Calcination Temperature of Li7La3Zr2O12 Synthesized by Using Solution-based Method.” <em>Journal of the Korean Physical Society</em> (2019). <a href="https://doi.org/10.3938/jkps.74.187">doi:10.3938/jkps.74.187</a>.</li>
+    </ol>
+  </section>
+</article>
+</body>
+</html>

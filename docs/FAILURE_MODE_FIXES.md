@@ -1,0 +1,24 @@
+# Agent failure modes and implemented guards
+
+This table turns the BYZSO/LLZO run audit into executable policy. It distinguishes
+scientific uncertainty from orchestration failure: a guard can prove that a tool
+ran correctly, but it cannot turn a model-predicted precursor set into a validated
+synthesis route.
+
+| Observed failure | Implemented guard | Verification |
+|---|---|---|
+| The 2015--2020 extraction subset was mistaken for the full local archive | Corpus status reports the selected roots, engine, package mode, and schema. The example environment now calls the private source the complete prepared archive and does not encode year roots. | `tools/check.sh --corpus` |
+| Markdown-only search could not read the real Parquet store | DuckDB search and bounded reads share the MCP output schema with the Markdown backend. | Offline Parquet search/read test |
+| A public package still depended on the private DOI SQLite and ingest shards | `goai-compact-parquet-v1` resolves DOI directly from its own Parquet rows. Private index variables are optional only for compact packages and must otherwise be configured as a pair. | Repository demo and compact-export DOI tests |
+| An exporter could accidentally carry unrelated private files | Export is allow-list-only, requires an explicit redistributable flag and license, rejects non-empty destinations, accepts only UTF-8 text for compact output, and never writes private source paths into the public manifest. | Allow-list/export regression test |
+| The validation command used system Python and reported missing dependencies | `tools/check.sh` always executes `.venv/bin/python`; `tools/preflight.py` rejects any other prefix and checks server imports and optional corpus/model assets. | `tools/check.sh --servers` |
+| The retro MCP and model dependencies were installed in different environments | `install.sh --retro` installs MCP and model dependencies into the same `.venv`, then runs the model asset/dependency/hash preflight. | `tools/check.sh --retro` |
+| Long agents waited until the final response to write results | Declared-artifact tasks receive a runner protocol requiring early, incremental writes. Fresh/non-empty artifacts remain mandatory. | Runner artifact tests |
+| A retry read its own growing JSONL and recursively amplified context | The runner injects the exact active log directory as forbidden input; only an explicitly named, closed prior run may be inspected. The repository agent rules repeat this boundary. | Prompt protocol plus trace audit |
+| A report or reference guard completed its files but hung during shutdown | Process status and artifact status are separate: `.process_exit=124` is preserved, while fresh declared artifacts can yield `WARN_ARTIFACT_PASS_AFTER_TIMEOUT`. Set `RUNNER_TIMEOUT_ARTIFACT_POLICY=fail` for strict mode. | Live timeout-after-write test |
+| A consumer started before its evidence producer finished | TSV column 4 declares dependencies. Dependencies must reference earlier rows; failure blocks the consumer without launching it. | Live ordering/block test |
+
+The GitHub fixture under `examples/demo_corpus/` is deliberately synthetic,
+CC0, and marked non-citable. A real submission package should be produced with
+`tools/export_corpus_subset.py --format compact-parquet` from an approved license
+allow-list, then pass `tools/check.sh --corpus` before release.
