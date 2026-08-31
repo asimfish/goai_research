@@ -7,7 +7,7 @@
 
 | 用户意图 | 读哪个 skill |
 |---|---|
-| 跑整条综述流水线 / 继续上次的活 | `skills/goai-orchestrator/SKILL.md` |
+| 跑整条综述流水线 / 继续上次的活 / **只给了一个研究主题** | `skills/goai-orchestrator/SKILL.md` |
 | 检索文献、下载 PDF、导 BibTeX | `skills/goai-lit-search/SKILL.md` |
 | 核查引用真伪/作者/顺序 | `skills/goai-ref-guard/SKILL.md` |
 | 画论文图 / taxonomy 图 | `skills/goai-figure-studio/SKILL.md` |
@@ -19,6 +19,12 @@
 
 **先读对应 SKILL.md 再动手**；被 parallel_run 以子任务派活时，提示词里
 指明的那个 skill 就是你的全部职责边界，别越界碰公共文件。
+
+**裸主题默认全流程**：用户输入只包含一个研究主题（如「调研主题：XXX」
+「survey on XXX」），没有明确限定「只检索 / 只画图 / 只核引用」时，一律
+按「跑整条综述流水线」处理，进入 goai-orchestrator 走完整个状态机；
+最终交付硬性包含 `workspace/drafts/` 下的 tex+pdf。「没说只要检索」不等于
+「只要检索」——禁止把裸主题降级成单纯文献检索或一份 Markdown 报告了事。
 
 ## 铁律（所有角色通用）
 
