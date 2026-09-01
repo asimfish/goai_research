@@ -25,15 +25,15 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 
 | 阶段 | 负责 skill | 验收闸门（gate 名） |
 |---|---|---|
-| scoping | 本 skill 直接做 | `scope_confirmed`（子主题分解 + 范围边界写入 workspace/inputs/scope.md） |
-| lit_search | goai-lit-search | `lit_coverage`（coverage_report 无 gap + 规模档位配额达标） |
+| scoping | 本 skill 直接做 | `scope_confirmed`（子主题分解 + 范围边界 + **交付语言**写入 workspace/inputs/scope.md） |
+| lit_search | goai-lit-search | `lit_coverage`（coverage_report 无 gap + 规模档位配额达标 + 材料主题的近邻体系/相图检索面已做） |
 | style_bank | goai-style-bank | `style_bank_ready`（30 篇经典综述风格卡 + 范图库） |
 | ref_gate | goai-ref-guard | `ref_integrity`（verify_bib_file gate=PASS） |
 | taxonomy | goai-survey-writer（阶段一） | `taxonomy_ready`（分类法 + 每叶 ≥3 篇支撑） |
-| figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；主图走两轮候选制） |
-| ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验） |
-| writing | goai-survey-writer | `draft_complete`（bib_guard PASS + 全节完成） |
-| review | goai-reviewer | `review_pass`（无 open blocker/major） |
+| figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；**含行文路线图**；主图走 image-first 两轮候选制） |
+| ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验；材料 idea 带 retro MCP 前驱体预测） |
+| writing | goai-survey-writer | `draft_complete`（bib_guard + tex_guard PASS + 全节完成 + 骨架强制项齐） |
+| review | goai-reviewer | `review_pass`（无 open blocker/major；终审含制作质量逐页 PDF 审计） |
 
 ## 执行规程
 
@@ -53,7 +53,9 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    排除项写入 `workspace/inputs/scope.md`；材料/实验科学主题的子主题
    分解**必须包含**「近邻/同型体系」与「相图与热力学数据」两个子主题
    （精确目标文献稀少时它们就是主证据来源，lit-search 侧有对应的
-   强制检索面）；`loopctl gate --name scope_confirmed --status PASS`。
+   强制检索面）；**交付语言**同时定死写入 scope.md（用户指定为准，
+   未指定跟随主题语言；它决定 writer 用哪份模板——中文 ctexart、
+   英文 article——中途不得漂移）；`loopctl gate --name scope_confirmed --status PASS`。
    **scope 确认分级**（非交互客户端不能卡死在无条件停点上）：
    - 裸主题且范围无实质歧义 → 按 scope.md 已写明的默认值**自动确认**，
      `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后

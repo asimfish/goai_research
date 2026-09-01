@@ -832,16 +832,23 @@ def test_tex_guard_bibkey_leak_blocks(tmp_path):
         r"来源见 \texttt{lin1999phase} 的实验部分。",
         r"合法引用 \cite{vaswani2017attention,",
         r"  he2016deep} 不应误报。",
+        r"中文紧贴无空格：据zou2021crystal报道。",     # CJK 邻接，\b 抓不到
+        r"题首词数字开头：见 zhang20202d 的结果。",     # 年份后接数字
         r"\end{document}",
     ]))
     r = run_tex_guard(d)
     assert r.returncode != 0
-    assert "lin1999phase" in r.stdout
+    for leaked in ("lin1999phase", "zou2021crystal", "zhang20202d"):
+        assert leaked in r.stdout, f"missed {leaked}\n{r.stdout}"
     assert "he2016deep" not in r.stdout      # 跨行 cite 参数不是泄漏
 
+    # 全部 cite/ref 变体都是合法载体；行尾豁免标记生效
     (d / "main.tex").write_text("\n".join([
         r"\begin{document}",
-        r"合法引用 \cite{lin1999phase} 与 \citep{zou2021crystal}。",
+        r"合法引用 \cite{lin1999phase} 与 \citep{zou2021crystal}，",
+        r"\citealp{ab2020cd} \citet*{ef2021gh} \nocite{ij2022kl} \textcite{mn2023op}",
+        r"\pageref{sec:qr2024st} \hyperref[fig:uv2025wx]{图} \label{tab:yz2026ab}",
+        r"同形词豁免 model2020x 见注释。  % tex-guard: allow-key",
         r"\end{document}",
     ]))
     r2 = run_tex_guard(d)
@@ -877,6 +884,44 @@ def test_tex_guard_cjk_english_template_warns(tmp_path):
     ]))
     r2 = run_tex_guard(d)
     assert "survey_main_zh" not in r2.stdout
+
+    # article + \usepackage{ctex} 同样是合法中文支持，不告警
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\usepackage[fontset=fandol]{ctex}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r3 = run_tex_guard(d)
+    assert "survey_main_zh" not in r3.stdout
+
+
+# ---------- templates ----------
+
+def test_survey_templates_contract():
+    """两份主模板的排版契约：语言分工、健壮性、可被 tex_guard 拦住未替换占位。"""
+    en = open(os.path.join(ROOT, "templates", "survey_main.tex"), encoding="utf-8").read()
+    zh = open(os.path.join(ROOT, "templates", "survey_main_zh.tex"), encoding="utf-8").read()
+    # 语言分工：英文 article，中文 ctexart（标签本地化）
+    assert r"\documentclass[11pt]{article}" in en
+    assert "{ctexart}" in zh and "fontset=fandol" in zh
+    for tpl in (en, zh):
+        # svg 包只在存在时加载——缺包/缺 inkscape 不得拖垮编译
+        assert r"\IfFileExists{svg.sty}{\usepackage{svg}}{}" in tpl
+        assert r"\usepackage{svg}" + "\n" not in tpl.replace(
+            r"\IfFileExists{svg.sty}{\usepackage{svg}}{}", "")
+        # 共同排版契约：学术蓝引用、P 列型、Times 字体链、参考文献前 clearpage
+        assert "citecolor=blue" in tpl
+        assert r"\newcolumntype{P}" in tpl
+        assert r"\usepackage{newtxtext}" in tpl and r"\usepackage{newtxmath}" in tpl
+        assert r"\usepackage{amssymb}" not in tpl
+        assert r"\clearpage" in tpl
+        # 占位符必须在（writer 替换）且能被 tex_guard 拦住
+        assert "TODO" in tpl
+    r = subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"),
+         os.path.join(ROOT, "templates", "survey_main_zh.tex")],
+        capture_output=True, text=True)
+    assert r.returncode != 0 and "占位残留" in r.stdout
 
 
 # ---------- bank_check ----------

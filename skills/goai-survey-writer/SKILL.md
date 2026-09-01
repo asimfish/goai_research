@@ -239,10 +239,16 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    - 每节抽 2 段与 style_bank 写作卡的句式模式对照，偏离领域惯用
      表达的改写；super_library lint 报告里的 wording 项逐条处理。
 4. 组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts` ——
-   检查 TODO 占位残留（模板的标题/作者/摘要必须已替换）、`\input` 与
-   图文件存在、`\ref` 无悬空、环境与花括号闭合。任一阻塞项不得记
-   `draft_complete`。有 latex 环境则再编译验证，编译告警逐条处理或在
-   revision_log 说明。
+   阻塞项：TODO 占位残留（模板的标题/作者/摘要必须已替换）、`\input` 与
+   图文件存在、`\ref` 无悬空、环境与花括号闭合、**裸 BibTeX key 泄漏到
+   正文**（含与汉字紧贴的 key；确属同形词可在行尾注释
+   `% tex-guard: allow-key` 豁免）；告警项：`\texttt` 密度过高、中文稿
+   套英文模板。任一阻塞项不得记 `draft_complete`，告警项逐条处理或在
+   revision_log 说明原因。有 latex 环境则再编译验证（中文稿 xelatex；
+   图一律先 `drawio_export` 出 pdf 再 `\includegraphics`，不依赖
+   `\includesvg`），编译告警逐条处理；编译后 `pdftoppm` 抽首页、
+   一张表所在页、参考文献页各看一眼——标签语言、表格完整性、文献条目
+   有无被压小写的化学式，这三处是制作质量事故的高发区。
 5. `loopctl gate --name draft_complete --status PASS
    --inputs workspace/drafts/main.tex,workspace/library/references.bib`
    并交 review。

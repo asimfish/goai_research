@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-45%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-46%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -27,20 +27,35 @@
 
 ## 📰 News
 
+- **2026-08-31 — Scholarly content contract.** Domain-expert feedback on a
+  materials survey became skill-level rules: every survey now ships a
+  **paper roadmap figure**; materials topics get two mandatory search lanes
+  (analogous/isostructural systems, phase diagrams) and a dedicated
+  analogous-systems intro subsection; results open with a consolidated
+  prior-findings table; every future direction must land on a concrete
+  synthesis recommendation — named process + precursor candidates from the
+  retro MCP tool, marked "model prediction, pending validation"; conclusions
+  end with the highest-discovery-value next experiments. Figures: ≤2 theme
+  colors, image-first reference generation for every delivered figure.
 - **2026-08-31 — Production-quality layer.** A cold-start run in Chinese
   exposed a blind spot: correct content, degraded typesetting. Now shipped —
   a CJK language contract with a dedicated `ctexart` template (no more
-  hybrid EN/CN documents), table design rules (no split half-tables, no raw
-  BibTeX keys in cells, no typewriter `NA` dumps), a pipeline-jargon firewall
-  for reader-facing text, bib field hygiene (DOI/URL redundancy, brace
-  protection for chemical formulas), and a "production quality" review
-  dimension that requires page-by-page PDF inspection. `tex_guard` now
-  **blocks** bare-bibkey leaks; 45 offline tests.
+  hybrid EN/CN documents; compile-verified with xelatex), table design rules
+  (no split half-tables, no raw BibTeX keys in cells, no typewriter `NA`
+  dumps), a pipeline-jargon firewall for reader-facing text, bib field
+  hygiene (DOI/URL redundancy, brace protection for chemical formulas), and
+  a "production quality" review dimension that requires page-by-page PDF
+  inspection. `tex_guard` now **blocks** bare-bibkey leaks — CJK-adjacent
+  and digit-leading keys included; 46 offline tests.
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
   gains section-heading lexicon rules (noun phrases, no "A, B, and C rules"
   titles) and top-venue run-in list conventions.
+
+<details>
+<summary>Earlier milestones</summary>
+
 - **2026-08-29 — First public sample deliverable.** A 26-page survey on COF
   photocatalytic hydrogen evolution, produced end-to-end:
   [`examples/survey_cof_her`](examples/survey_cof_her) — 143 verified references
@@ -51,10 +66,6 @@
   a full survey); a style bank distilled from 30 classic surveys feeds writing
   and figure style; [super_library](https://github.com/asimfish/super_library)
   is wired in as the writing-language authority.
-
-<details>
-<summary>Earlier milestones</summary>
-
 - **2026-08-28 — Typography lint v1.** Print-equivalent font floors, shape-aware
   text overflow, and occlusion checks; `render_figure` refuses to render while
   lint errors remain.
@@ -150,6 +161,11 @@ Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh
 available). Optional extras: `brew install --cask drawio` (export .drawio → png/pdf),
 `.venv/bin/pip install -e '.[preview]'` (PNG previews for figure self-checks),
 Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live browser editing).
+For the final PDF you need a TeX distribution: English surveys compile with
+`pdflatex`/`xelatex` + `newtx`; **Chinese surveys require `xelatex` + `ctex` +
+Fandol fonts** (bundled in TeX Live full; on a slim install run
+`tlmgr install ctex fandol newtx`). Both templates load the `svg` package
+only if present, so a missing `svg.sty`/Inkscape never breaks a build.
 
 ## 3. 🧩 What's Inside
 
@@ -422,7 +438,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 45 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 46 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 

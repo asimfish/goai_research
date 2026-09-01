@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-45%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-46%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -25,17 +25,27 @@
 
 ## 📰 动态
 
+- **2026-08-31 —— 学术内容契约。** 材料领域专家对综述的反馈固化为 skill
+  级规则：每篇综述必配**行文路线图**；材料主题强制两条检索面（近邻/同型
+  体系、相图）并在引言单独成节讲近邻体系发现；结果部分先给前人实验结论
+  合集；每个新方向必须落到具体合成建议——工艺路线名 + 来自 retro MCP 的
+  前驱体候选（标注「模型预测，待实验验证」）；结论以「最有科学发现价值的
+  下一步实验」收尾。图纸：全图 ≤2 主题色，所有交付图走 image-first 参照生成。
 - **2026-08-31 —— 制作质量层。** 一次中文冷启动实跑暴露盲区：内容对、
   排版垮。本次上线：CJK 语言契约与专用 `ctexart` 模板（不再产出中英
-  杂交文档）、表格设计规范（禁拆半表、禁单元格裸 BibTeX key、禁打字机
-  体 NA 铺表）、面向读者文本的流水线术语防火墙、bib 字段卫生
-  （DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」维度
-  （必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**；
-  离线测试 45 项。
+  杂交文档；已 xelatex 实编验证）、表格设计规范（禁拆半表、禁单元格裸
+  BibTeX key、禁打字机体 NA 铺表）、面向读者文本的流水线术语防火墙、
+  bib 字段卫生（DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」
+  维度（必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**（含与
+  汉字紧贴、题词数字开头的 key）；离线测试 46 项。
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
   行内列表排版规则。
+
+<details>
+<summary>更早的里程碑</summary>
+
 - **2026-08-29 —— 首个公开样例交付物。** COF 光催化产氢综述，端到端实跑
   26 页：[`examples/survey_cof_her`](examples/survey_cof_her) —— 143 篇验证
   文献（整合率 100%、密度 51.2 次/千词）、通过排版 lint 的可编辑图、
@@ -44,10 +54,6 @@
   exhaustive 三档分层配额（完整综述 100+ 文献）；从 30 篇经典综述蒸馏出
   风格库；接入 [super_library](https://github.com/asimfish/super_library)
   作为写作语言权威。
-
-<details>
-<summary>更早的里程碑</summary>
-
 - **2026-08-28 —— 排版 lint v1。** 打印等效字号地板、形状感知的文字溢出
   检测、遮挡检查；lint 有错时 `render_figure` 拒绝渲染。
 - **2026-08-27 —— 首次完整竞赛实跑。** 37 篇文献综述 + 合成路线设计，
@@ -144,6 +150,10 @@ tools/check.sh --servers
 可选增强：`brew install --cask drawio`（.drawio 导出 png/pdf）、
 `.venv/bin/pip install -e '.[preview]'`（图纸自检出 PNG 预览）、
 Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器实时编辑）。
+出终稿 PDF 需要 TeX 发行版：英文综述 `pdflatex`/`xelatex` + `newtx` 即可；
+**中文综述必须 `xelatex` + `ctex` + Fandol 字库**（TeX Live 完整版自带，
+精简安装执行 `tlmgr install ctex fandol newtx`）。两份模板都只在 `svg.sty`
+存在时才加载它，缺包/缺 Inkscape 不会拖垮编译。
 
 ## 3. 🧩 内部构成
 
@@ -167,7 +177,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 | 层 | 内容 | 为什么 |
 |---|---|---|
 | `skills/` —— 9 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
-| `server/` —— 4 个 MCP server、24 个工具 | 在线检索与本地全文搜索、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
+| `server/` —— 4 个 MCP server、25 个工具 | 在线检索与本地全文搜索、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
 | `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `tex_guard.py` 组稿闸门 · `bank_check.py` 支持库校验 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
 
 | MCP server | 工具 |
@@ -389,7 +399,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 45 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 46 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 

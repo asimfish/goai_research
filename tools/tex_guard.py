@@ -37,15 +37,27 @@ GRAPHIC_EXTS = ["", ".pdf", ".png", ".svg", ".jpg", ".jpeg", ".eps"]
 
 # --- 排版/泄漏检查 ---
 # 剥掉合法携带 key/路径的命令参数后，正文残留的 `名字+年份+词` 裸 token
-# 即为 BibTeX key 泄漏（写作规范：引用一律 \cite，表格单元格不得出现裸 key）
+# 即为 BibTeX key 泄漏（写作规范：引用一律 \cite，表格单元格不得出现裸 key）。
+# 载体覆盖 natbib/biblatex 全部 cite 变体（citet/citep/citealp/nocite/
+# autocite/textcite…）、全部 ref 变体（ref/autoref/cref/pageref/nameref/
+# hyperref/href…）、label、url/path、bib 相关、input/include 家族。
 RE_KEY_CARRIER = re.compile(
-    r"\\(?:cite[tp]?\*?|citeauthor|citeyear|label|ref|autoref|cref|Cref|eqref|"
-    r"url|href|path|bibliography|bibliographystyle|bibitem|input|include|"
-    r"includegraphics|includesvg)(?:\[[^\]]*\])?\{[^}]*\}")
-RE_BARE_BIBKEY = re.compile(r"\b[a-z]{2,}(?:19|20)\d{2}[a-z][a-z0-9]*\b")
+    r"\\(?:[A-Za-z]*[Cc]ite[A-Za-z]*\*?|[A-Za-z]*ref\*?|label|url|path|"
+    r"bibliography[A-Za-z]*|bibitem|input|include[A-Za-z]*)"
+    r"(?:\[[^\]]*\])?\{[^}]*\}")
+# key 形态与 server.core.bibtex.record_to_bibtex 一致：字母 ≥2 + 年份 +
+# 题首词（可以数字开头，如 zhang20202d）。边界用 lookaround 而非 \b：
+# 中文正文里 key 与汉字紧贴时 \b 不成立（汉字属 \w）。
+RE_BARE_BIBKEY = re.compile(
+    r"(?<![A-Za-z0-9])[A-Za-z]{2,}(?:19|20)\d{2}[A-Za-z0-9]+(?![A-Za-z0-9])")
+# 行内豁免标记（写在该行注释里）：% tex-guard: allow-key
+RE_ALLOW_KEY = re.compile(r"tex-guard:\s*allow-key", re.I)
 RE_TEXTTT = re.compile(r"\\texttt\{")
 RE_CJK = re.compile(r"[\u4e00-\u9fff]")
 RE_DOCCLASS = re.compile(r"\\documentclass(?:\[[^\]]*\])?\{([^}]+)\}")
+# 中文支持既可来自 ctex 文档类，也可来自 \usepackage{ctex}/xeCJK 等
+RE_CJK_PKG = re.compile(
+    r"\\usepackage(?:\[[^\]]*\])?\{[^}]*(?:ctex|xeCJK|luatexja|CJKutf8|CJK)[^}]*\}")
 TEXTTT_WARN_MIN_COUNT = 8       # 少量合法用法（命令/代码名）不告警
 TEXTTT_WARN_PER_1K = 2.0        # 每千字符超过该密度则告警
 CJK_RATIO_ZH_DOC = 0.05         # CJK 字符占比超过 5% 视为中文稿
@@ -116,10 +128,14 @@ def check_file(path: str, roots: list[str]) -> tuple[list[str], list[str],
 
 
 def check_bibkey_leak(path: str) -> list[str]:
-    """BibTeX key 泄漏检查（全文级：\\cite 参数允许跨行，逐行剥会误伤）。"""
+    """BibTeX key 泄漏检查（全文级：\\cite 参数允许跨行，逐行剥会误伤）。
+
+    行尾注释写 `% tex-guard: allow-key` 可豁免该行（真有同形词时的安全阀）。
+    """
     base = os.path.basename(path)
     with open(path, encoding="utf-8", errors="replace") as f:
-        text = "\n".join(strip_comment(l) for l in f.read().splitlines())
+        raw_lines = f.read().splitlines()
+    text = "\n".join(strip_comment(l) for l in raw_lines)
     visible = RE_KEY_CARRIER.sub(
         lambda m: "".join(c if c == "\n" else " " for c in m.group(0)), text)
     line_starts = [0] + [i + 1 for i, ch in enumerate(visible) if ch == "\n"]
@@ -130,9 +146,13 @@ def check_bibkey_leak(path: str) -> list[str]:
 
     out = []
     for km in RE_BARE_BIBKEY.finditer(visible):
+        ln = line_of(km.start())
+        if ln <= len(raw_lines) and RE_ALLOW_KEY.search(raw_lines[ln - 1]):
+            continue
         out.append(
-            f"{base}:{line_of(km.start())} 疑似 BibTeX key 泄漏到正文: "
-            f"{km.group(0)}（引用一律 \\cite，表格单元格不得出现裸 key）")
+            f"{base}:{ln} 疑似 BibTeX key 泄漏到正文: {km.group(0)}"
+            "（引用一律 \\cite，表格单元格不得出现裸 key；确属同形词可在行尾"
+            "注释 % tex-guard: allow-key 豁免）")
     return out
 
 
@@ -143,6 +163,7 @@ def check_typography(files: list[str]) -> list[str]:
     total_texttt = 0
     total_cjk = 0
     doc_classes: list[str] = []
+    has_cjk_pkg = False
     for fp in files:
         with open(fp, encoding="utf-8", errors="replace") as f:
             text = "\n".join(strip_comment(l) for l in f)
@@ -150,6 +171,7 @@ def check_typography(files: list[str]) -> list[str]:
         total_texttt += len(RE_TEXTTT.findall(text))
         total_cjk += len(RE_CJK.findall(text))
         doc_classes += RE_DOCCLASS.findall(text)
+        has_cjk_pkg = has_cjk_pkg or bool(RE_CJK_PKG.search(text))
 
     density = total_texttt / max(total_chars / 1000, 1e-9)
     if total_texttt >= TEXTTT_WARN_MIN_COUNT and density > TEXTTT_WARN_PER_1K:
@@ -158,12 +180,13 @@ def check_typography(files: list[str]) -> list[str]:
             "打字机体只该给真正的代码/命令；正文术语、缺失值（NA）、"
             "证据代号应改正体或数学记号，检查是否有内部术语泄漏")
     cjk_ratio = total_cjk / max(total_chars, 1)
+    has_cjk_class = any("ctex" in c for c in doc_classes)
     if cjk_ratio > CJK_RATIO_ZH_DOC and doc_classes and \
-            not any("ctex" in c for c in doc_classes):
+            not (has_cjk_class or has_cjk_pkg):
         warnings.append(
             f"中文稿（CJK 占比 {cjk_ratio:.0%}）使用非 ctex 文档类 "
-            f"{doc_classes}：Abstract/Table/Figure 标签将是英文，"
-            "请改用 templates/survey_main_zh.tex（ctexart + 本地化标签）")
+            f"{doc_classes} 且未加载 ctex/xeCJK：Abstract/Table/Figure 标签"
+            "将是英文，请改用 templates/survey_main_zh.tex（ctexart + 本地化标签）")
     return warnings
 
 

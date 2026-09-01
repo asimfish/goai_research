@@ -51,6 +51,10 @@
     只有提示词明确指定的已关闭历史 run_id 才可作为诊断输入。
 12. **依赖显式化**：TSV 第四列声明前序任务名（逗号分隔），并按拓扑顺序
     排列。数据/证据生产者未通过时，消费者由 runner 记为 blocked 而不启动。
+13. **交付物只说读者语言**：tex/pdf/图注里禁止出现流水线内部词汇
+    （gate/issue/ledger/ref_gate/niche-balanced/WARN…）与裸 BibTeX key
+    （tex_guard 直接阻塞）；证据代号要用必须在文中正式定义。交付语言
+    以 scope.md 为准，中文稿用 `templates/survey_main_zh.tex`，禁止套英文模板。
 
 ## 环境速查
 

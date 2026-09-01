@@ -8,14 +8,14 @@
 
 | # | 阶段 | 执行者 | 出口闸门 | 闸门判据 |
 |---|------|--------|---------|---------|
-| 0 | scoping | orchestrator+人 | `scope_confirmed` | scope.md 有主题/边界/子主题清单/目标篇幅 |
-| 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；一轮新增去重后 <5 篇 |
+| 0 | scoping | orchestrator+人 | `scope_confirmed` | scope.md 有主题/边界/子主题清单/目标篇幅/**交付语言**；材料主题含「近邻/同型体系」「相图与热力学」子主题 |
+| 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；档位配额达标（comprehensive ≥100）；材料主题两条强制检索面已做 |
 | 2 | ref_gate | goai-ref-guard | `ref_integrity` | references.bib 零 UNVERIFIED/MISMATCH |
-| 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置；贡献声明经用户确认 |
-| 4a | figures | goai-figure-studio/-editable | `figures_ready` | 每图 svg+drawio 齐全且过自检 |
-| 4b | writing | goai-survey-writer | `draft_complete` | bib_guard + tex_guard PASS；全节成文 |
-| 4c | ideas | goai-idea-forge | `ideas_reviewed` | 每条 idea 过对抗审 + 引用二审（跳过时记 WARN） |
-| 5 | review | goai-reviewer | `review_pass` | 0 blocker 且 0 major（PASS 须带审稿回执）；或连续两轮仅 minor |
+| 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置；贡献声明经用户确认（不可达时降级记录） |
+| 4a | figures | goai-figure-studio/-editable | `figures_ready` | 每图 svg+drawio 齐全且过自检；**含行文路线图**；主图走 image-first 候选制 |
+| 4b | writing | goai-survey-writer | `draft_complete` | bib_guard + tex_guard PASS；全节成文；语言契约对应模板；骨架强制项齐（近邻体系节 / 实验结论合集 / 方向→工艺+前驱体 / 结论双段式） |
+| 4c | ideas | goai-idea-forge | `ideas_reviewed` | 每条 idea 过对抗审 + 引用二审；材料 idea 必带 retro MCP 前驱体预测（跳过时记 WARN） |
+| 5 | review | goai-reviewer | `review_pass` | 0 blocker 且 0 major（PASS 须带审稿回执）；或连续两轮仅 minor；终审三视角含**制作质量**逐页 PDF 审计 |
 | 6 | final | orchestrator | （无独立 gate） | `check-done` 通过：gate 全 PASS/WARN 且 0 open blocker/major（open minor 由 final 清理后 close） |
 
 4a/4b/4c 无写冲突，**可并行**（见 parallel_run.sh）。
@@ -29,9 +29,9 @@ review 产出的 issue 按 target 字段路由回源头阶段：
 | lit_search | goai-lit-search | 覆盖缺口、漏热点 → 增量补检（不重跑全量） |
 | ref_gate | goai-ref-guard | 引用可疑、wrong-context |
 | taxonomy | goai-survey-writer | 分类不 MECE、章节错位 |
-| figures | goai-figure-studio | 图文不符、图不可读 |
-| writing | goai-survey-writer | 无证据断言、术语漂移、AI 腔 |
-| ideas | goai-idea-forge | 证据不实、安全缺失 |
+| figures | goai-figure-studio | 图文不符、图不可读、配色花哨/非学术观感 |
+| writing | goai-survey-writer | 无证据断言、术语漂移、AI 腔、拗口/翻译腔、制作质量（表格拆半/裸 key/NA 铺表/中英杂交/内部术语泄漏/参考文献区损坏） |
+| ideas | goai-idea-forge | 证据不实、安全缺失、方向未落到工艺+前驱体 |
 
 **级联规则**：上游返工后，其下游闸门自动失效需复核——
 lit_search 变 → ref_gate、taxonomy 需复核；taxonomy 变 → figures、writing 需复核。

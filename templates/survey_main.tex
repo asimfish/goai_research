@@ -42,7 +42,10 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
 \emergencystretch=1.5em
-\usepackage{svg}             % figures/svg 直接引入；无 inkscape 时改用 drawio_export 出 pdf
+% svg 包依赖编译机装有 inkscape；缺包/缺 inkscape 时不得拖垮整篇编译——
+% 图一律先用 drawio_export 出 pdf/png 再 \includegraphics，\includesvg 仅作可选路径
+\IfFileExists{svg.sty}{\usepackage{svg}}{}
+\usepackage{textcomp}        % \textcelsius 等符号（材料稿常用）
 % 标题过长时手工三行断行，行长均衡（禁止让 LaTeX 自动折出孤词行）
 
 \title{TODO: Survey Title}
