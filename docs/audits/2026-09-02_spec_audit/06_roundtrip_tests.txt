@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: <repo>
+configfile: pyproject.toml
+plugins: anyio-4.14.2
+collected 46 items / 42 deselected / 4 selected
+
+tests/test_offline.py ....                                               [100%]
+
+======================= 4 passed, 42 deselected in 0.05s =======================
+PASSED tests/test_offline.py::test_bibtex_parse_roundtrip
+PASSED tests/test_offline.py::test_render_svg_node_label_bold_default
+PASSED tests/test_offline.py::test_render_svg_contains_elements
+PASSED tests/test_offline.py::test_svg_roundtrip_to_figspec

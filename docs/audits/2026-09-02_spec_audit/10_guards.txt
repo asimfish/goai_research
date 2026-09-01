@@ -1,0 +1,25 @@
+--- tex_guard leak.tex (expect FAIL naming 3 keys, not the 4 legal ones)
+检查文件: 1  labels: 0  refs: 0
+
+[阻塞] 3 项:
+  - leak.tex:2 疑似 BibTeX key 泄漏到正文: lin1999phase（引用一律 \cite，表格单元格不得出现裸 key；确属同形词可在行尾注释 % tex-guard: allow-key 豁免）
+  - leak.tex:2 疑似 BibTeX key 泄漏到正文: zou2021crystal（引用一律 \cite，表格单元格不得出现裸 key；确属同形词可在行尾注释 % tex-guard: allow-key 豁免）
+  - leak.tex:2 疑似 BibTeX key 泄漏到正文: zhang20202d（引用一律 \cite，表格单元格不得出现裸 key；确属同形词可在行尾注释 % tex-guard: allow-key 豁免）
+
+结论: FAIL
+exit=1
+--- tex_guard clean.tex (expect PASS)
+检查文件: 1  labels: 0  refs: 0
+
+结论: PASS
+exit=0
+--- bib_guard (expect hygiene warnings only for chem2024x)
+稿件文件: 1  引用调用: 2  去重 key: 2
+bib 条目: 2  整合率: 100%  引用密度: 333.3 次/千词
+
+[告警] 2 项 bib 字段卫生问题:
+  - chem2024x: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - chem2024x: title 含未保护 token ['BaZn2Si2O7', 'LLZO']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+
+结论: PASS
+exit=0

@@ -1,0 +1,60 @@
+{
+  "checks": {
+    "environment": {
+      "dependencies": {
+        "duckdb": true,
+        "httpx": true,
+        "mcp": true
+      },
+      "expected_prefix": "<repo>/.venv",
+      "hint": null,
+      "ok": true,
+      "prefix": "<repo>/.venv",
+      "python": "<repo>/.venv/bin/python",
+      "using_repository_venv": true
+    },
+    "retro": {
+      "assets": {
+        "charge_path": true,
+        "data_path": true,
+        "precursor_id_mapping": true,
+        "stage1_checkpoint": true,
+        "stage1_summary": true,
+        "stage2_checkpoint": true,
+        "stage2_summary": true
+      },
+      "available": false,
+      "checkpoint_hash_ok": {
+        "stage1": true,
+        "stage2": true
+      },
+      "checkpoint_sha256": {
+        "stage1": "f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e",
+        "stage2": "373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de"
+      },
+      "dependencies": {
+        "numpy": false,
+        "pandas": false,
+        "pymatgen": false,
+        "torch": false
+      },
+      "ok": false,
+      "protocol": {
+        "default_pool_cap": 15,
+        "default_routes": 5,
+        "default_top_m": 30,
+        "input": "inorganic target formula",
+        "set_sizes": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "stage1": "formula-token precursor Top-K retriever",
+        "stage2": "precursor combination enumeration + learned set reranker"
+      },
+      "provider": "local_two_stage_inorganic"
+    }
+  },
+  "ok": false
+}

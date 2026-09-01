@@ -1,0 +1,21 @@
+Reading dataset: <repo>/vendor/two_stage_retro/data/retro_split.csv
+Reading precursor ids: <repo>/vendor/two_stage_retro/data/retro_precursor_id.json
+Reading precursor charges: <repo>/vendor/two_stage_retro/data/retro_deepseek_charge.csv
+Split sizes: train=24034 val=1842 test=2558
+<repo>/.venv/lib/python3.11/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+<repo>/.venv/lib/python3.11/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+<repo>/.venv/lib/python3.11/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+ChemistryPriorV2: 6860 pairs, 794 precursors from 24034 samples
+Loaded charge memory: matched=798 mismatched=0 nonzero=1859
+elapsed: 6.4s
+ok: True | provider: local_two_stage_inorganic
+top-level keys: ['candidate_generation', 'chemical_route_verified', 'model', 'model_output_verified', 'ok', 'provider', 'routes', 'runtime', 'target_formula_input', 'target_formula_normalized', 'top_k', 'warning']
+n_routes: 3
+  [1] {"rank": 1, "route_id": "two-stage-53f3773ee47b", "provider": "local_two_stage_inorganic", "model_output_verified": true, "chemical_route_verified": false, "target_formula": "BaZn2Si2O7", "precursors": [{"id": 457, "formula": "ZnO", "stage1_probability": 0.9998021721839905}, {"id
+  [2] {"rank": 2, "route_id": "two-stage-70d8a3d13d7f", "provider": "local_two_stage_inorganic", "model_output_verified": true, "chemical_route_verified": false, "target_formula": "BaZn2Si2O7", "precursors": [{"id": 457, "formula": "ZnO", "stage1_probability": 0.9998021721839905}, {"id
+  [3] {"rank": 3, "route_id": "two-stage-a12b6447c319", "provider": "local_two_stage_inorganic", "model_output_verified": true, "chemical_route_verified": false, "target_formula": "BaZn2Si2O7", "precursors": [{"id": 457, "formula": "ZnO", "stage1_probability": 0.9998021721839905}, {"id
+plan keys: ['chemical_route_verified', 'model_output_verified', 'objective', 'provider', 'provider_verified', 'review_gates', 'route_id', 'steps', 'warning']
+plan snippet: {"objective": "audit: BaZn2Si2O7", "route_id": "two-stage-53f3773ee47b", "provider": "local_two_stage_inorganic", "provider_verified": true, "model_output_verified": true, "chemical_route_verified": false, "steps": [{"step": 1, "reaction": "candidate inorganic synthesis (conditions not predicted)", "inputs": ["ZnO", "SiO2", "BaCO3"], "conditions": "TODO: 温度/溶剂/催化剂/时长（由 agent 依文献填写并给出引用）", "characterization": "TODO: NMR/MS/HPLC 等表征手段", "safety": "TODO: 危险性评估与防护（强制项，审核不过不得输出）", "citations_required": true}], "review_gates": ["文献支持：每步条件至少 1 条真实引用（经 goai-refcheck 核验）", "可行性：试剂可购/可制备，路线深度合理", "安全性：安

@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-46%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -25,6 +25,13 @@
 
 ## 📰 动态
 
+- **2026-09-02 —— 独立审计补上两个回环协议漏洞。** 对照最初需求做的只读
+  审计发现：`check-done` 只记一个 gate 就能宣告 DONE（恰是停在文献检索的
+  那种账本形态），`review_pass` 无回执也能记 PASS。现已机械化：9 个必需
+  gate 必须全部落账（跳过要显式 WARN，自造 gate 名会被警告），审稿 PASS
+  的 trace 文件不存在或为占位即拒绝。同时修复 vendored 模型一处缩进错误
+  ——无机前驱体预测器此前根本 import 不了，现在 `BaZn2Si2O7 → ZnO / SiO₂ /
+  BaCO₃` 本机端到端可跑。离线测试 48 项。
 - **2026-08-31 —— 学术内容契约。** 材料领域专家对综述的反馈固化为 skill
   级规则：每篇综述必配**行文路线图**；材料主题强制两条检索面（近邻/同型
   体系、相图）并在引言单独成节讲近邻体系发现；结果部分先给前人实验结论
@@ -37,15 +44,14 @@
   BibTeX key、禁打字机体 NA 铺表）、面向读者文本的流水线术语防火墙、
   bib 字段卫生（DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」
   维度（必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**（含与
-  汉字紧贴、题词数字开头的 key）；离线测试 46 项。
+  汉字紧贴、题词数字开头的 key）。
+<details>
+<summary>更早的里程碑</summary>
+
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
   行内列表排版规则。
-
-<details>
-<summary>更早的里程碑</summary>
-
 - **2026-08-29 —— 首个公开样例交付物。** COF 光催化产氢综述，端到端实跑
   26 页：[`examples/survey_cof_her`](examples/survey_cof_her) —— 143 篇验证
   文献（整合率 100%、密度 51.2 次/千词）、通过排版 lint 的可编辑图、
@@ -399,7 +405,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 46 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 48 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 

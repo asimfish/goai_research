@@ -45,8 +45,15 @@ orchestrator 负责按此把受影响闸门重置为 PENDING（`gate --status PE
 - 一轮 = 阶段 1→5 走完一遍（返工只重跑受影响链路）。
 - `next_round` 时机：review 未过且 issue 已路由完毕。
 - **终止条件**（满足其一）：
-  1. `check-done` 退出码 0（gate 全 PASS/WARN 且无 open blocker/major）
-     → 交付；open minor 由 final 阶段清理完后逐条 close；
+  1. `check-done` 退出码 0 → 交付；open minor 由 final 阶段清理完后逐条 close。
+     `check-done` 的放行条件是**机械**的：(a) 九个必需 gate
+     （scope_confirmed / lit_coverage / style_bank_ready / ref_integrity /
+     taxonomy_ready / figures_ready / ideas_reviewed / draft_complete /
+     review_pass）**全部已记录**且为 PASS/WARN——缺一个即该阶段从未执行，
+     账本停在半路不得宣告完成；跳过必须显式记 WARN；自造 gate 名不计入；
+     (b) 无 open blocker/major；(c) `review_pass` 的回执 trace 文件真实存在
+     且非占位（`gate` 命令对无回执/空 trace 的 PASS 直接拒绝，check-done
+     再核一遍防事后删档）。
   2. 达 `--max-rounds`（默认 5）→ 强制收敛：带着未清 minor 交付 + 遗留清单；
   3. 同一 issue 三轮未收敛 → 升级人类决策，暂停该链路。
 - **反空转**（阶梯执行，不允许原地换个说法重试）：任何 agent 连续两次

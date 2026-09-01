@@ -1,0 +1,99 @@
+=== provider_status ===
+{
+  "provider": "stub",
+  "api_url": null,
+  "trusted": false,
+  "molecular_provider_trusted": false,
+  "local_inorganic_ready": false,
+  "note": "stub 输出仅供流程演示，不可作为化学结论写入论文",
+  "local_inorganic": {
+    "provider": "local_two_stage_inorganic",
+    "available": false,
+    "dependencies": {
+      "torch": false,
+      "numpy": false,
+      "pandas": false,
+      "pymatgen": false
+    },
+    "assets": {
+      "stage1_checkpoint": true,
+      "stage1_summary": true,
+      "stage2_checkpoint": true,
+      "stage2_summary": true,
+      "data_path": true,
+      "precursor_id_mapping": true,
+      "charge_path": true
+    },
+    "checkpoint_sha256": {
+      "stage1": "f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e",
+      "stage2": "373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de"
+    },
+    "checkpoint_hash_ok": {
+      "stage1": true,
+      "stage2": true
+    },
+    "protocol": {
+      "input": "inorganic target formula",
+      "stage1": "formula-token precursor Top-K retriever",
+      "stage2": "precursor combination enumeration + learned set reranker",
+      "default_top_m": 30,
+      "default_pool_cap": 15,
+      "set_sizes": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "default_routes": 5
+    }
+  }
+}
+=== inorganic_model_status ===
+{
+  "provider": "local_two_stage_inorganic",
+  "available": false,
+  "dependencies": {
+    "torch": false,
+    "numpy": false,
+    "pandas": false,
+    "pymatgen": false
+  },
+  "assets": {
+    "stage1_checkpoint": true,
+    "stage1_summary": true,
+    "stage2_checkpoint": true,
+    "stage2_summary": true,
+    "data_path": true,
+    "precursor_id_mapping": true,
+    "charge_path": true
+  },
+  "checkpoint_sha256": {
+    "stage1": "f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e",
+    "stage2": "373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de"
+  },
+  "checkpoint_hash_ok": {
+    "stage1": true,
+    "stage2": true
+  },
+  "protocol": {
+    "input": "inorganic target formula",
+    "stage1": "formula-token precursor Top-K retriever",
+    "stage2": "precursor combination enumeration + learned set reranker",
+    "default_top_m": 30,
+    "default_pool_cap": 15,
+    "set_sizes": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "default_routes": 5
+  }
+}
+=== predict_precursor_routes(BaZn2Si2O7, top_k=3) ===
+{
+  "ok": false,
+  "provider": "local_two_stage_inorganic",
+  "target_formula_input": "BaZn2Si2O7",
+  "error": "RuntimeError: local retro model is unavailable: {'provider': 'local_two_stage_inorganic', 'available': False, 'dependencies': {'torch': False, 'numpy': False, 'pandas': False, 'pymatgen': False}, 'assets': {'stage1_checkpoint': True, 'stage1_summary': True, 'stage2_checkpoint': True, 'stage2_summary': True, 'data_path': True, 'precursor_id_mapping': True, 'charge_path': True}, 'checkpoint_sha256': {'stage1': 'f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e', 'stage2': '373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de'}, 'checkpoint_hash_ok': {'stage1': True, 'stage2': True}, 'protocol': {'input': 'inorganic target formula', 'stage1': 'formula-token precursor Top-K retriever', 'stage2': 'precursor combination enumeration + learned set reranker', 'default_top_m': 30, 'default_pool_cap': 15, 'set_sizes': [2, 3, 4, 5], 'default_routes': 5}}"
+}

@@ -110,7 +110,11 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 6. **终止条件**（满足其一）：
    - `loopctl check-done` 退出码 0 → 进入 final，组装交付物
      （WARN=合规跳过、open minor 均不阻塞 check-done；
-     open minor 由 final 阶段清理完后逐条 close，不许静默留尾）
+     open minor 由 final 阶段清理完后逐条 close，不许静默留尾）。
+     check-done 是机械闸门：上表 9 个 gate **必须全部用协议名落账**
+     （缺席 = 阶段没跑，直接不放行；跳过要显式 WARN；自造名如
+     `ref_audit`/`review_round1` 会被警告且不计入），`review_pass` 的
+     PASS 必须带真实存在、非占位的 trace 回执，否则 `gate` 命令拒绝。
    - 达到 max_rounds → 停止，如实汇报未收敛项，绝不谎报完成
 7. **final 交付物**：`workspace/drafts/`（tex+pdf）、`workspace/library/references.bib`、
    `workspace/figures/{svg,drawio}/`、`workspace/state/CITATION_AUDIT.md`、

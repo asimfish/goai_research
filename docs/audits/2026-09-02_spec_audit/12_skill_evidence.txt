@@ -1,0 +1,112 @@
+## R8 writing/layout (PaperOrchestra/PaperSpine methodology)
+3:description: Use when drafting the survey manuscript — 综述写作 agent：贡献先行 + 五步流水线：taxonomy → 引用支持库 → 章节蓝图 → 逐节写作 → 精修，claim 级引用绑定，LaTeX 交付。触发词：「写综述」「survey draft」「组稿」「写 related work」。
+9:- **贡献先行**：没确认综述的贡献与 motivation 不动笔；
+10:  引用支持库让每个候选引用先绑定到句子级 claim；产物链可审计。
+12:  refinement，配 halt rules（≥90% 引用整合率、防评审博弈）。
+19:## 语言契约（scoping 定死，全程一致）
+25:- 中文交付 → `templates/survey_main_zh.tex`（ctexart + fandol 字库，
+94:## 阶段二：引用支持库（citation support bank）
+96:产出 `workspace/notes/citation_bank.md`：按未来章节组织，每行 =
+102:整合率仍须 ≥90%——不许「检索一大库、正文只用零头」。
+106:python3 tools/bank_check.py workspace/notes/citation_bank.md \
+115:## 阶段三：章节蓝图
+117:产出 `workspace/drafts/blueprint.md`，逐节写清：本节回答什么问题、
+
+## R9 figure methodology (figure-studio-pro)
+3:description: Use when the survey needs publication-quality figures — 画图 agent：顶会级主图走「策略合同 → AI 生图两轮候选 → 可编辑化重建」三段管线，辅助图走 figspec 直渲；产物恒为 svg+drawio 可编辑双格式。触发词：「画图」「框架图」「taxonomy 图」「figure」。
+9:**源忠实、edge-label-first、模块化不碎片化、克制配色**。
+14:再按参照做可编辑化重建（figspec → svg + drawio）——直接手写 figspec
+22:| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选（4+2） → C 可编辑化重建 |
+23:| **标准图** | **行文路线图（每篇综述必配）**、时间线、多模块流程 | A 策略合同 → B 单轮 2 候选 → C 可编辑化重建 |
+24:| **辅助图** | 简单示意、统计小图 | A 策略合同 → 单轮 1 参照图 → figspec 重建（无通道时直渲） |
+41:- **源忠实表**：逐行列出可见模块/边/符号/关键标签，每行标 `direct`（库内
+47:- **edge-label-first**：变量/指标/权重放边 label，不做同级盒子。
+59:- **配色合同（学术克制是硬约束，花哨即返工）**：优先采用
+62:  描边 + **全图至多 2 个主题色**（其余信息用灰阶与线型区分）、强调色
+76:标准图/辅助图走本节的裁剪版：跳过 B1 的 4 候选探索，直接按 A2 合同写
+79:### B1 第一轮：4 候选草图探索
+
+## R10 image-to-editable
+3:description: Use when an existing figure image/SVG must become an editable drawio file — 图转可编辑 agent：结构化 SVG 走确定性逆向，位图/PDF 图走「视觉重建 figspec → 渲染 → 对照自检 → 修正」回环，输出 .drawio 原生可编辑文件并接入 draw.io 工具链。触发词：「转成可编辑」「图转 drawio」「editable figure」。
+6:# GoAI Figure-Editable —— 图 → drawio 可编辑重建 agent
+8:把「一张定死的图」变成「可继续编辑的图」。核心是重建循环
+9:（重建 → 自我检查 → 页内修正）加分层策略：**可读文字恢复为原生文本、
+17:| 位图 PNG/JPG、PDF 里的图、复杂 SVG | 路线 B：视觉重建回环 |
+20:**先想清楚是否值得转**：视觉重建回环需要多轮读图与渲染对照，token 成本
+36:svg_file_to_drawio(svg_path, out_path)
+45:## 路线 B：视觉重建回环（≤3 轮）
+server/figure_server.py:24:from server.core.svg2drawio import svg_to_figspec
+server/figure_server.py:184:def svg_file_to_drawio(svg_path: str, out_path: str = "") -> str:
+server/figure_server.py:195:        spec = svg_to_figspec(f.read())
+server/core/svg2drawio.py:49:def svg_to_figspec(svg_text: str) -> dict[str, Any]:
+tests/test_offline.py:47:def test_bibtex_parse_roundtrip():
+tests/test_offline.py:352:def test_svg_roundtrip_to_figspec():
+
+## R11 drawio integration
+server/core/render_drawio.py:164:    return f'''<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+server/core/render_drawio.py:166:    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+server/core/render_drawio.py:174:    </mxGraphModel>
+server/core/render_drawio.py:176:</mxfile>
+server/figure_server.py:29:    os.environ.get("GOAI_DRAWIO_CLI", ""),
+server/figure_server.py:45:def _find_drawio_cli() -> str | None:
+server/figure_server.py:211:def drawio_export(drawio_path: str, fmt: str = "png") -> str:
+server/figure_server.py:213:    cli = _find_drawio_cli()
+163:Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live browser editing).
+
+## R12 ARIS-style adversarial design
+skills/goai-orchestrator/SKILL.md:85:   2. proposer ↔ attacker：idea-forge 内部提案-攻击双角色 + 引用二审；
+skills/goai-orchestrator/SKILL.md:95:   `review_pass` 额外校验：PASS 必须带审稿回执（`--receipt`，含模型名与
+skills/goai-idea-forge/SKILL.md:9:你是执行者；审核必须交给 goai-reviewer（跨模型优先），你不能自审自批。
+skills/goai-idea-forge/SKILL.md:22:生成前**必须**先读 `workspace/memory/idea_graveyard.md`（历次被毙提案的
+skills/goai-idea-forge/SKILL.md:74:- 被毙的 idea **完整写回** `workspace/memory/idea_graveyard.md`
+skills/goai-reviewer/SKILL.md:3:description: Use when artifacts need adversarial review inside the loop — 审稿 agent：对综述稿/图纸/idea 提案做对抗式审查，跨模型优先（Codex MCP 可用时必须用独立模型），产出结构化 issue 写回账本并路由目标阶段；两轮无新 blocker 即放行。触发词：「审稿」「review draft」「审 idea」「挑毛病」。
+skills/goai-reviewer/SKILL.md:8:执行者与审稿人必须是**不同视角**——同一模型自审会掉进自我盲区
+skills/goai-reviewer/SKILL.md:9:（自博弈局部极小），所以跨模型审稿优先。你的产出不是评语散文，而是
+skills/goai-reviewer/SKILL.md:14:1. **跨模型**（首选）：宿主有 `mcp__codex__codex` 或等价跨模型通道时，
+skills/goai-reviewer/SKILL.md:15:   把审稿提示词交给独立模型跑，每次审稿用**全新会话**（禁止 reply 复用——
+skills/goai-reviewer/SKILL.md:20:2. **本模型冷启动**（降级）：无跨模型通道时，你自己审，但必须
+skills/goai-reviewer/SKILL.md:25:   跨模型通道恢复后需补一轮独立复审方可转正。
+skills/goai-reviewer/SKILL.md:27:**审稿留痕（防「声称审过实际没审」）**：跨模型审稿的每轮原始提问与回复
+skills/goai-reviewer/SKILL.md:28:全文存 `workspace/state/review_traces/round<N>_<seq>.md`，供事后独立性
+
+## A2 bare topic + tiered scope
+skills/goai-orchestrator/SKILL.md:3:description: Use when the user wants to run the GoAI survey pipeline end-to-end — 文献综述多智能体总编排：初始化回环账本、按阶段路由 7 个专职 agent、并行分派、闸门验收、审稿意见回路由，直到全部 gate PASS 或达到回合上限。触发词：「跑综述流水线」「run survey pipeline」「开始文献调研」；用户**只给一个研究主题**（未限定只要某个环节）时也默认进入本 skill 跑全流程。
+skills/goai-orchestrator/SKILL.md:12:**进入条件（默认全流程）**：用户只给一个研究主题、没有明确限定只要某个
+skills/goai-orchestrator/SKILL.md:60:   - 裸主题且范围无实质歧义 → 按 scope.md 已写明的默认值**自动确认**，
+skills/goai-orchestrator/SKILL.md:61:     `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后
+skills/goai-orchestrator/SKILL.md:64:   - 涉及生成可直接执行的危险实验协议 → 停下来问，安全停点永不自动确认。
+skills/goai-orchestrator/SKILL.md:66:   自动确认）、taxonomy 阶段的贡献声明确认（用户不可达时按 writer skill
+skills/goai-orchestrator/SKILL.md:67:   的降级规则记录后继续）、化学安全方案（不可自动确认；用户不可达时该
+AGENTS.md:23:**裸主题默认全流程**：用户输入只包含一个研究主题（如「调研主题：XXX」
+AGENTS.md:27:「只要检索」——禁止把裸主题降级成单纯文献检索或一份 Markdown 报告了事。
+docs/LOOP_PROTOCOL.md:112:- **scope.md 定稿**（方向错了后面全白干）：裸主题且无实质歧义时按已写明的
+
+## A3 production quality
+skills/goai-reviewer/SKILL.md:48:| 制作质量 | 必须**翻最终 PDF** 逐页看，不是只读 tex：表格可读性（拆成两半的表/整表铺 NA/裸 BibTeX key 入表）；语言一致性（中文稿冒英文 Abstract/Table 标签）；内部术语泄漏（ref_gate、gate、niche-balanced 等流水线词汇出现在正文）；参考文献区（化学式被压成 `bazn 2 si 2 o 7` 碎片、长 URL 断行、DOI/URL 冗余）；`\texttt` 滥用 | target=writing |
+skills/goai-reviewer/SKILL.md:66:读者定位/同类综述差异化，**并对照 style_bank 范文逐页做制作质量审计**——
+skills/goai-reviewer/SKILL.md:67:上表「制作质量」维度的每一项都要过，PDF 没翻过不算审过）。三视角各出
+skills/goai-survey-writer/SKILL.md:25:- 中文交付 → `templates/survey_main_zh.tex`（ctexart + fandol 字库，
+skills/goai-survey-writer/SKILL.md:184:  - 单元格内容是**读者语言**：禁止出现裸 BibTeX key（tex_guard 直接
+skills/goai-survey-writer/SKILL.md:214:   组装同时做 **bib 字段卫生**（bib_guard 会告警）：条目 doi 与 url
+skills/goai-survey-writer/SKILL.md:243:   图文件存在、`\ref` 无悬空、环境与花括号闭合、**裸 BibTeX key 泄漏到
+skills/goai-survey-writer/SKILL.md:251:   有无被压小写的化学式，这三处是制作质量事故的高发区。
+tools/bib_guard.py:11:4. bib 字段卫生（告警）：doi 与 url 同存（编译后 URL 断行难看且冗余，
+tools/bib_guard.py:40:def bib_hygiene(entries: list[dict]) -> list[str]:
+
+## A4 scholarly content contract
+skills/goai-orchestrator/SKILL.md:29:| lit_search | goai-lit-search | `lit_coverage`（coverage_report 无 gap + 规模档位配额达标 + 材料主题的近邻体系/相图检索面已做） |
+skills/goai-orchestrator/SKILL.md:33:| figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；**含行文路线图**；主图走 image-first 两轮候选制） |
+skills/goai-orchestrator/SKILL.md:54:   分解**必须包含**「近邻/同型体系」与「相图与热力学数据」两个子主题
+skills/goai-idea-forge/SKILL.md:51:   `predict_precursor_routes(target_formula, top_k=5)`。后者执行Stage-1单前驱体
+skills/goai-idea-forge/SKILL.md:58:   - **相图核查**：库内有该体系（或近邻体系）相图的，路线条件要对照
+skills/goai-idea-forge/SKILL.md:59:     相区与共晶/包晶点；无相图时在方案里写明「相图未见报道」，并把
+skills/goai-idea-forge/SKILL.md:60:     测定相图列为前置或并行实验；
+skills/goai-idea-forge/SKILL.md:89:3. **前驱体建议**：来自 `predict_precursor_routes` 的 Top 候选（列 2–3 组），
+skills/goai-reviewer/SKILL.md:51:Intro 有无独立的近邻/同型体系发现小节？结果部分有无前人实验结论
+skills/goai-reviewer/SKILL.md:53:推荐（预测工具产物带「待实验验证」标注）？相图是否核查过（引用或
+skills/goai-reviewer/SKILL.md:55:有无行文路线图？Conclusion 是否给出「最有科学发现价值的下一步实验」？
+skills/goai-survey-writer/SKILL.md:129:- **行文路线图（roadmap figure）**：Intro 末尾或 §2 开头必须配一张
+skills/goai-survey-writer/SKILL.md:132:- **近邻/同型体系小节**：材料与实验科学主题的 Intro 必须有独立小节
+skills/goai-survey-writer/SKILL.md:136:- **既有实验结论合集**：结果部分先给「前人实验结论的系统合集」
+skills/goai-survey-writer/SKILL.md:143:- **Conclusion 双段式**：(a) 主要结论按证据强度总结；(b) 「最有科学
+skills/goai-survey-writer/SKILL.md:191:  - 记录中出现 **Pt 坩埚 / Au 坩埚**（及 Ir/刚玉坩埚 + 高温慢冷组合）
