@@ -44,8 +44,15 @@ python3 tools/loopctl.py gate --name review_pass --status PASS \
 | 引用 | 抽查 10 条 claim-cite：引文真的支撑该 claim？（wrong-context 是最危险的错） | target=ref_gate / writing |
 | 图文 | 图的主线与正文一致？符号约定冲突？图不可读? | target=figures |
 | 论证 | 无证据断言?结论强度超出证据?对比公平? | target=writing |
-| 写作 | 重复/术语漂移/AI 腔（模板化转折、忏悔式套话） | target=writing |
+| 写作 | 重复/术语漂移/AI 腔（模板化转折、忏悔式套话）；**拗口与翻译腔**（英文稿的中式英语、中文稿的欧化长句/"进行了"空转——抽段朗读测试，读不顺即 issue） | target=writing |
 | 制作质量 | 必须**翻最终 PDF** 逐页看，不是只读 tex：表格可读性（拆成两半的表/整表铺 NA/裸 BibTeX key 入表）；语言一致性（中文稿冒英文 Abstract/Table 标签）；内部术语泄漏（ref_gate、gate、niche-balanced 等流水线词汇出现在正文）；参考文献区（化学式被压成 `bazn 2 si 2 o 7` 碎片、长 URL 断行、DOI/URL 冗余）；`\texttt` 滥用 | target=writing |
+
+**材料/实验科学综述附加检查单**（逐项核对，缺项开 major issue）：
+Intro 有无独立的近邻/同型体系发现小节？结果部分有无前人实验结论
+合集（条件-结果对照）？每个新方向是否落到「工艺 + 前驱体」级实验
+推荐（预测工具产物带「待实验验证」标注）？相图是否核查过（引用或
+明确声明未见报道）？Pt/Au 坩埚记录是否正确归类为晶体生长？
+有无行文路线图？Conclusion 是否给出「最有科学发现价值的下一步实验」？
 
 审 idea 提案时换四维：证据真实性/新颖性/可行性/安全性（化学方案必须
 逐条看 safety 字段，空的直接 blocker）。**防误杀**：以「不新颖」毙掉

@@ -50,7 +50,10 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 2. **scoping**：把主题分解为若干 MECE 子主题——数量按 effort 分档：
    lite 3–6、balanced 6–12、max 8–12（mini/实测运行按任务书上限为准，
    偏离档位要在账本记 decision）；连同 2020 起的时间窗、
-   排除项写入 `workspace/inputs/scope.md`；`loopctl gate --name scope_confirmed --status PASS`。
+   排除项写入 `workspace/inputs/scope.md`；材料/实验科学主题的子主题
+   分解**必须包含**「近邻/同型体系」与「相图与热力学数据」两个子主题
+   （精确目标文献稀少时它们就是主证据来源，lit-search 侧有对应的
+   强制检索面）；`loopctl gate --name scope_confirmed --status PASS`。
    **scope 确认分级**（非交互客户端不能卡死在无条件停点上）：
    - 裸主题且范围无实质歧义 → 按 scope.md 已写明的默认值**自动确认**，
      `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后

@@ -5,19 +5,28 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 
 # GoAI Figure-Studio —— 论文图纸 agent
 
-方法论四支柱：**源忠实、edge-label-first、模块化不碎片化、克制配色**。
+方法论四支柱（承自 paper-framework-figure-studio-pro 的 image-first
+流程，https://github.com/c-narcissus/paper-framework-figure-studio-pro ）：
+**源忠实、edge-label-first、模块化不碎片化、克制配色**。
 执行形态是**自动化回环**：不等人逐步确认，候选生成与审计全自动收敛，
 人只看最终产物。工具来自 MCP server `goai-figure`。
+
+**image-first 是默认路径**：凡进论文的图，一律先用 AI 生图拿视觉参照、
+再按参照做可编辑化重建（figspec → svg + drawio）——直接手写 figspec
+只在无生图通道时作为降级路径，且必须 `loopctl log --event decision`
+记录降级原因。生图是参照物，**永远不是交付物**。
 
 ## 图纸分级（先分级再动手）
 
 | 级别 | 适用 | 管线 |
 |---|---|---|
-| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选 → C 可编辑化重建 |
-| **辅助图** | 时间线、简单流程、统计示意 | A 策略合同 → figspec 直渲（跳过 B/C） |
+| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选（4+2） → C 可编辑化重建 |
+| **标准图** | **行文路线图（每篇综述必配）**、时间线、多模块流程 | A 策略合同 → B 单轮 2 候选 → C 可编辑化重建 |
+| **辅助图** | 简单示意、统计小图 | A 策略合同 → 单轮 1 参照图 → figspec 重建（无通道时直渲） |
 
-对比矩阵优先建议用表格，不硬画。宿主无生图通道时主图降级走辅助图管线，
-`loopctl log --event decision` 记录降级原因。
+对比矩阵优先建议用表格，不硬画。宿主无生图通道时降级 figspec 直渲，
+记账说明。**行文路线图**（本文组织结构：各节回答什么问题、怎么推进）
+是综述标配，writer 蓝图登记后由本 skill 按标准图管线出图。
 
 ## Phase A：策略与合同（每图必做，写进 workspace/notes/figure_plan.md）
 
@@ -48,18 +57,25 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 - **模糊指令规范化**：上游给的模糊视觉指令（「体现方法差异」）先翻译成
   具体含义/安全画法/禁止的误实现，翻译不出来退回提问。
 - **可见文字白名单**：本图允许出现的全部文字，用词与 taxonomy/正文一致。
-- **配色合同**：优先采用 `workspace/style_bank/figure_style_cards.md` 的
-  领域配色基准；无风格库时一主一辅 + 灰阶可读。**禁**：AI 蓝紫渐变、
-  霓虹饱和、玻璃球高光、bokeh、营销海报打光、装饰性色带。
+- **配色合同（学术克制是硬约束，花哨即返工）**：优先采用
+  `workspace/style_bank/figure_style_cards.md` 的领域配色基准；无风格库
+  时一主一辅 + 灰阶可读。顶刊学术图的基线是：白/浅灰卡片底 + 中饱和
+  描边 + **全图至多 2 个主题色**（其余信息用灰阶与线型区分）、强调色
+  只给 1 个焦点元素；大面积彩色 lane 平铺、每个分组一种鲜艳底色的
+  「彩虹泳道」都算花哨，改用浅灰分区 + 描边区分。**禁**：AI 蓝紫渐变、
+  霓虹饱和、玻璃球高光、bokeh、营销海报打光、装饰性色带。自查基准：
+  与 style_bank 范图并排对照，若明显比范图鲜艳/花哨即违反合同。
 - **密度预算**：主内容占画面中心，模块数落在风格卡舒适区间；
   大片空白、微块散射、头重脚轻的背景横幅都是阻塞项。
 
-## Phase B：AI 生图两轮候选（仅主图）
+## Phase B：AI 生图候选（主图两轮 4+2；标准图单轮 2；辅助图单轮 1）
 
 生图路由：Codex 宿主用 `image_gen`；Cursor 宿主用 GenerateImage 工具；
-均无 → 降级辅助图管线并记账。风格参照：prompt 附
+均无 → 降级 figspec 直渲并记账。风格参照：prompt 附
 `workspace/style_bank/exemplar_figures/` 的范图路径（支持 reference image
 的通道传入；不支持则在 prompt 里文字化描述风格卡要点）。
+标准图/辅助图走本节的裁剪版：跳过 B1 的 4 候选探索，直接按 A2 合同写
+prompt 生成 2/1 张参照，过一遍 B2 审计要点后进 Phase C。
 
 ### B1 第一轮：4 候选草图探索
 
@@ -91,7 +107,7 @@ description: Use when the survey needs publication-quality figures — 画图 ag
   （重建是矢量级控制，能修生图模型改不动的毛病）。两轮共 6 次生图为
   预算上限，不许无限重试。
 
-## Phase C：可编辑化重建（测量驱动，仅主图）
+## Phase C：可编辑化重建（测量驱动，凡有生图参照的图都走）
 
 把参照定稿重建为 figspec，产出可编辑矢量——这是交付物的唯一来源，
 AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重建、后对照**。
@@ -157,10 +173,13 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
    布局拓扑一致？模块/边无缺漏？文字 ⊆ 白名单（逐字）？配色贴合？
    渲染级检查：文字溢出？连线穿节点？分组框住成员？
    语义级：B2/B3 遗留 issue 是否已在重建中修复？
+   **学术观感终检**：与 style_bank 范图并排——配色克制度、信息密度、
+   字号层级是否达到「可以直接印进顶刊」的观感，花哨即回改。
    注意 drawio 导出按内容裁边、坐标系与画布不同：waypoint/几何对账
    以 .drawio XML 为准，不做导出图的像素级坐标对账。
    有问题改 figspec 重渲染；3 轮后仍有硬伤记 issue 交人决策。
-4. 辅助图跳过 1-2，直接按 A2 合同写 figspec 走 3 的检查单。
+4. 无生图通道的降级路径：跳过 1-2，直接按 A2 合同写 figspec 走 3 的
+   检查单（含学术观感终检）。
 
 ## 交付与登记
 
