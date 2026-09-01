@@ -622,6 +622,31 @@ def run_loopctl(tmpdir, *args):
         capture_output=True, text=True, env=env)
 
 
+REQUIRED_GATES = ["scope_confirmed", "lit_coverage", "style_bank_ready",
+                  "ref_integrity", "taxonomy_ready", "figures_ready",
+                  "ideas_reviewed", "draft_complete", "review_pass"]
+
+
+def make_trace(tmpdir, name="r1.md", size=2000):
+    """落一份体量足够的审稿 trace（回执要求 trace 真实存在且非占位）。"""
+    d = tmpdir / "state" / "review_traces"
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / name
+    p.write_text("# review trace\n" + "audit line\n" * (size // 11))
+    return str(p)
+
+
+def pass_all_gates(tmpdir, *, except_for=()):
+    """把全部必需 gate 记成 PASS（review_pass 带合规回执），except_for 里的跳过。"""
+    trace = make_trace(tmpdir)
+    for g in REQUIRED_GATES:
+        if g in except_for:
+            continue
+        extra = ["--receipt", f"model=x;trace={trace}"] if g == "review_pass" else []
+        r = run_loopctl(tmpdir, "gate", "--name", g, "--status", "PASS", *extra)
+        assert r.returncode == 0, r.stderr
+
+
 def test_loopctl_full_cycle(tmp_path):
     r = run_loopctl(tmp_path, "init", "--topic", "test topic", "--max-rounds", "2")
     assert r.returncode == 0, r.stderr
@@ -639,6 +664,10 @@ def test_loopctl_full_cycle(tmp_path):
     assert run_loopctl(tmp_path, "check-done").returncode != 0  # open issue → 未完成
     assert run_loopctl(tmp_path, "issue", "close", "--id", "I1",
                        "--note", "fixed").returncode == 0
+    # 只记了 1 个 gate：其余必需 gate 缺席 → 仍未完成（账本停半路不许宣告 DONE）
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "missing_required_gates" in r.stdout
+    pass_all_gates(tmp_path)
     assert run_loopctl(tmp_path, "check-done").returncode == 0  # 全 PASS 无 open
 
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
@@ -656,15 +685,17 @@ def test_loopctl_full_cycle(tmp_path):
 
 def test_loopctl_check_done_semantics(tmp_path):
     run_loopctl(tmp_path, "init", "--topic", "t")
-    run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    pass_all_gates(tmp_path, except_for=("ideas_reviewed", "review_pass"))
     # WARN = 合规跳过，不阻塞
     run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed",
                 "--status", "WARN", "--detail", "skipped")
-    assert run_loopctl(tmp_path, "check-done").returncode == 0
     # PENDING 阻塞
     run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PENDING")
     assert run_loopctl(tmp_path, "check-done").returncode != 0
-    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
+    trace = make_trace(tmp_path)
+    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                "--receipt", f"model=x;trace={trace}")
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
     # open minor 不阻塞（移交 final 清理），blocker/major 阻塞
     run_loopctl(tmp_path, "issue", "add", "--severity", "minor", "--text", "typo")
     r = run_loopctl(tmp_path, "check-done")
@@ -673,10 +704,65 @@ def test_loopctl_check_done_semantics(tmp_path):
     assert run_loopctl(tmp_path, "check-done").returncode != 0
 
 
+def test_loopctl_check_done_requires_every_gate_recorded(tmp_path):
+    """审计发现的漏洞：只记 scope_confirmed 就 check-done 曾返回 DONE。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS")
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0
+    payload = json.loads(r.stdout)
+    assert set(payload["missing_required_gates"]) == set(REQUIRED_GATES) - {"scope_confirmed"}
+    # status 也要把缺席的必需 gate 点出来，编排者一眼看到还差哪些阶段
+    assert "未记录的必需 gate" in run_loopctl(tmp_path, "status").stdout
+    # 自造 gate 名（真实样例账本里出现过 ref_audit / review_round1）当场警告
+    r = run_loopctl(tmp_path, "gate", "--name", "ref_audit", "--status", "PASS")
+    assert r.returncode == 0 and "不是协议 gate 名" in r.stderr
+    # 静默跳过不行，显式 WARN 才算记录
+    pass_all_gates(tmp_path, except_for=("style_bank_ready",))
+    assert run_loopctl(tmp_path, "check-done").returncode != 0
+    run_loopctl(tmp_path, "gate", "--name", "style_bank_ready", "--status", "WARN",
+                "--detail", "浅层风格库")
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+
+
+def test_loopctl_review_pass_requires_real_receipt(tmp_path):
+    """审计发现的漏洞：review_pass 无回执记 PASS 曾被接受。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    # 无回执 → 命令拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
+    assert r.returncode != 0 and "回执" in r.stderr
+    # 回执指向不存在的 trace → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", "model=x;trace=/nonexistent/r1.md")
+    assert r.returncode != 0 and "不存在" in r.stderr
+    # 占位 trace（几十字节）→ 拒绝
+    stub = make_trace(tmp_path, "stub.md", size=20)
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", f"model=x;trace={stub}")
+    assert r.returncode != 0 and "占位" in r.stderr
+    # FAIL/PENDING 不需要回执（审稿没过当然没有放行回执）
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass",
+                       "--status", "FAIL").returncode == 0
+    # 合规回执 → 接受并入账
+    trace = make_trace(tmp_path)
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", f"model=gpt-x;trace={trace}")
+    assert r.returncode == 0, r.stderr
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    assert "trace" in ledger["gates"]["review_pass"]["receipt"]
+    # 事后 trace 被删 → check-done 再核时判无效
+    pass_all_gates(tmp_path, except_for=("review_pass",))
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    os.remove(trace)
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "invalid_receipts" in r.stdout
+
+
 def test_loopctl_stale_inputs_reset_gate(tmp_path):
     artifact = tmp_path / "refs.bib"
     artifact.write_text("v1")
     run_loopctl(tmp_path, "init", "--topic", "t")
+    pass_all_gates(tmp_path, except_for=("ref_integrity",))
     run_loopctl(tmp_path, "gate", "--name", "ref_integrity", "--status", "PASS",
                 "--inputs", str(artifact))
     assert run_loopctl(tmp_path, "check-done").returncode == 0
@@ -685,14 +771,6 @@ def test_loopctl_stale_inputs_reset_gate(tmp_path):
     assert r.returncode != 0 and "stale" in r.stdout
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
     assert ledger["gates"]["ref_integrity"]["status"] == "PENDING"
-
-
-def test_loopctl_gate_receipt_recorded(tmp_path):
-    run_loopctl(tmp_path, "init", "--topic", "t")
-    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
-                "--receipt", "model=x;trace=state/review_traces/r1.md")
-    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
-    assert "trace" in ledger["gates"]["review_pass"]["receipt"]
 
 
 def test_loopctl_concurrent_writes_no_loss(tmp_path):
@@ -893,6 +971,20 @@ def test_tex_guard_cjk_english_template_warns(tmp_path):
     ]))
     r3 = run_tex_guard(d)
     assert "survey_main_zh" not in r3.stdout
+
+
+# ---------- vendored retro model: syntax guard ----------
+
+def test_vendor_retro_modules_compile():
+    """审计发现：chemistry.py 曾带缩进错误入库，装好 torch 后预测直接崩；
+    重依赖缺席时 retro 测试整体跳过，所以语法级损坏要用零依赖的编译检查兜底。"""
+    import glob
+    import py_compile
+    vendor_dir = os.path.join(ROOT, "vendor", "two_stage_retro")
+    files = sorted(glob.glob(os.path.join(vendor_dir, "*.py")))
+    assert len(files) >= 6, files
+    for fp in files:
+        py_compile.compile(fp, doraise=True)
 
 
 # ---------- templates ----------

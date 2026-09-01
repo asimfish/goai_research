@@ -1,0 +1,14 @@
+[exact] ok=True issues=[]
+[missing (dropped Parmar)] ok=False issues=[('missing', '权威作者「Niki Parmar」未出现在声称名单')]
+[fabricated (added Fake Person)] ok=False issues=[('extra', '声称作者「Fake Person」不在权威名单')]
+[swapped order (2<->3)] ok=False issues=[('order', '作者顺序与权威来源不一致')]
+[abbrev (should pass)] ok=True issues=[]
+[Last, First via split_authors] ok=True issues=[]
+[adversarial: wrong first name same surname] ok=False issues=[('extra', '声称作者「Bob Vaswani」不在权威名单'), ('missing', '权威作者「Ashish Vaswani」未出现在声称名单')]
+[adversarial: surname only] ok=True issues=[]
+[adversarial: wrong initial] ok=False issues=[('extra', '声称作者「B. Vaswani」不在权威名单'), ('missing', '权威作者「Ashish Vaswani」未出现在声称名单')]
+[adversarial: diacritics Łukasz] ok=True issues=[]
+---server-level verdict emulation (refcheck_server.py:221-226)---
+missing (dropped Parmar) -> MISMATCH
+fabricated (added Fake Person) -> MISMATCH
+swapped order (2<->3) -> FIX

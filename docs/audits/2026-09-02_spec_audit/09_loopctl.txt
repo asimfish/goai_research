@@ -1,0 +1,19 @@
+=== init
+已初始化回环账本: <audit>/ws/state/ledger.json  topic=audit  effort=balanced strictness=normal auto_proceed=true
+=== status
+topic     : audit
+round     : 1/2   stage: intake
+mode      : effort=balanced strictness=normal auto_proceed=True
+gates     :
+open issue: 0
+=== gate scope PASS
+gate scope_confirmed = PASS
+=== check-done (expect non-zero)
+DONE: 全部 gate PASS/WARN 且无 open blocker/major
+check-done exit=0
+=== issue add + receipt-less review PASS (expect rejection or degraded)
+新 issue I1 → writing
+gate review_pass = PASS
+gate-no-receipt exit=0
+{"done": false, "failing_gates": {}, "stale_gates": [], "open_blocking_issues": ["I1"], "open_minor_issues": []}
+check-done exit=1

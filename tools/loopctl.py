@@ -17,14 +17,22 @@
   loopctl.py issue list [--open]
   loopctl.py log --stage writing --agent survey-writer --event draft --detail "sec3 v2"
   loopctl.py next-round
-  loopctl.py check-done   # gate 全 PASS/WARN 且无 open blocker/major → exit 0；
-                          # gate 带 --inputs 指纹的会先重算，上游产物变更即置回 PENDING（stale）
+  loopctl.py check-done   # 必需 gate 全部已记录且为 PASS/WARN、无 open blocker/major
+                          # → exit 0；gate 带 --inputs 指纹的会先重算，上游产物变更即
+                          # 置回 PENDING（stale）；review_pass 的回执 trace 必须真实存在
 
 gate 状态语义：
-  PASS    通过；PASS 前建议带 --inputs 记录产物指纹、审稿类 gate 带 --receipt 记录回执
+  PASS    通过；PASS 前建议带 --inputs 记录产物指纹；review_pass 记 PASS
+          **必须**带 --receipt "model=<审稿模型>;trace=<存档路径>"，且 trace 文件
+          存在且非占位（无回执/空 trace 的审稿等于没审，命令直接拒绝）
   FAIL    未通过，阻塞 check-done
   WARN    合规跳过/带保留通过（如 ideas 支线跳过），不阻塞 check-done
   PENDING 待复审（级联失效重置用），阻塞 check-done
+
+必需 gate（check-done 要求每一个都已记录，缺任何一个 = 该阶段从未执行 = 未完成；
+跳过要显式记 WARN，禁止静默跳过）：
+  scope_confirmed lit_coverage style_bank_ready ref_integrity taxonomy_ready
+  figures_ready ideas_reviewed draft_complete review_pass
 """
 from __future__ import annotations
 
@@ -39,6 +47,39 @@ from datetime import datetime, timezone
 
 STAGES = ["intake", "scoping", "lit_search", "ref_gate", "taxonomy",
           "figures", "ideas", "writing", "review", "final"]
+# 全流程必需闸门：check-done 只认「全部已记录」，防止账本停在半路就宣告完成
+REQUIRED_GATES = ["scope_confirmed", "lit_coverage", "style_bank_ready",
+                  "ref_integrity", "taxonomy_ready", "figures_ready",
+                  "ideas_reviewed", "draft_complete", "review_pass"]
+# 记 PASS 必须带审稿回执的闸门
+RECEIPT_GATES = {"review_pass"}
+# 回执 trace 的最小体量：完整的审稿提问+回复不可能低于此，低于即视为占位文件
+RECEIPT_TRACE_MIN_BYTES = 512
+
+
+def _parse_receipt(raw: str) -> dict[str, str]:
+    """解析 "model=<x>;trace=<path>" 形态的回执。"""
+    out: dict[str, str] = {}
+    for part in (raw or "").split(";"):
+        if "=" in part:
+            k, v = part.split("=", 1)
+            out[k.strip()] = v.strip()
+    return out
+
+
+def _receipt_problem(raw: str) -> str | None:
+    """回执不合规时返回原因；合规返回 None。"""
+    r = _parse_receipt(raw)
+    if not r.get("model") or not r.get("trace"):
+        return ('缺回执或格式不对，需 --receipt "model=<审稿模型>;trace=<存档路径>"'
+                '（无回执的审稿等于没审）')
+    trace = r["trace"]
+    if not os.path.isfile(trace):
+        return f"回执 trace 文件不存在: {trace}（先落盘审稿原始问答再置 gate）"
+    if os.path.getsize(trace) < RECEIPT_TRACE_MIN_BYTES:
+        return (f"回执 trace 疑似占位文件（{os.path.getsize(trace)} B < "
+                f"{RECEIPT_TRACE_MIN_BYTES} B）: {trace}")
+    return None
 
 
 def _ws() -> str:
@@ -136,6 +177,9 @@ def cmd_status(args) -> None:
     for name, g in lg["gates"].items():
         extra = "  [有回执]" if g.get("receipt") else ""
         print(f"  - {name}: {g['status']}  ({g.get('detail', '')}){extra}")
+    missing = [g for g in REQUIRED_GATES if g not in lg["gates"]]
+    if missing:
+        print(f"  未记录的必需 gate（check-done 前须全部落账）: {', '.join(missing)}")
     print(f"open issue: {len(open_issues)}")
     for i in open_issues:
         print(f"  - [{i['id']}][{i['severity']}] {i['from']} → {i['target']}: "
@@ -155,6 +199,16 @@ def cmd_advance(args) -> None:
 
 def cmd_gate(args) -> None:
     lg = load()
+    if args.name in RECEIPT_GATES and args.status == "PASS":
+        problem = _receipt_problem(args.receipt)
+        if problem:
+            sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
+    if args.name not in REQUIRED_GATES:
+        # 自造 gate 名（ref_audit / review_round1 …）不计入必需集，账本会
+        # 「看起来全 PASS」却过不了 check-done——当场提醒，别等收尾才发现
+        print(f"警告: 『{args.name}』不是协议 gate 名，不计入 check-done 必需集。"
+              f"协议名: {', '.join(REQUIRED_GATES)}（辅助 gate 可保留，但对应"
+              "阶段仍须用协议名落账）", file=sys.stderr)
     entry = {"status": args.status, "detail": args.detail,
              "round": lg["round"], "at": _now()}
     if args.receipt:
@@ -255,14 +309,26 @@ def cmd_check_done(_args) -> None:
                   if i["status"] == "open" and i["severity"] == "minor"]
     failing = {k: v for k, v in lg["gates"].items()
                if v["status"] not in ("PASS", "WARN")}
-    if not blocking_issues and not failing and lg["gates"]:
-        msg = "DONE: 全部 gate PASS/WARN 且无 open blocker/major"
+    # 必需 gate 缺席 = 该阶段从未执行（账本停在半路不得宣告完成）
+    missing = [g for g in REQUIRED_GATES if g not in lg["gates"]]
+    # 审稿回执再核一遍：账本可能被非本工具写入，trace 也可能事后被删
+    bad_receipts = {}
+    for name in RECEIPT_GATES:
+        g = lg["gates"].get(name)
+        if g and g["status"] == "PASS":
+            problem = _receipt_problem(g.get("receipt", ""))
+            if problem:
+                bad_receipts[name] = problem
+    if not blocking_issues and not failing and not missing and not bad_receipts:
+        msg = "DONE: 必需 gate 全部记录且 PASS/WARN，无 open blocker/major"
         if minor_open:
             msg += f"（open minor {minor_open} 移交 final 阶段清理后逐条 close）"
         print(msg)
         sys.exit(0)
     print(json.dumps({"done": False,
                       "failing_gates": failing,
+                      "missing_required_gates": missing,
+                      "invalid_receipts": bad_receipts,
                       "stale_gates": stale,
                       "open_blocking_issues": [i["id"] for i in blocking_issues],
                       "open_minor_issues": minor_open},

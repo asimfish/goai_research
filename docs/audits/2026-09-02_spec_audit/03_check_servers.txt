@@ -1,0 +1,39 @@
+{
+  "checks": {
+    "environment": {
+      "dependencies": {
+        "duckdb": true,
+        "httpx": true,
+        "mcp": true
+      },
+      "expected_prefix": "<repo>/.venv",
+      "hint": null,
+      "ok": true,
+      "prefix": "<repo>/.venv",
+      "python": "<repo>/.venv/bin/python",
+      "using_repository_venv": true
+    },
+    "servers": {
+      "modules": {
+        "figure": {
+          "ok": true,
+          "path": "<repo>/server/figure_server.py"
+        },
+        "litsearch": {
+          "ok": true,
+          "path": "<repo>/server/litsearch_server.py"
+        },
+        "refcheck": {
+          "ok": true,
+          "path": "<repo>/server/refcheck_server.py"
+        },
+        "retro": {
+          "ok": true,
+          "path": "<repo>/server/retro_server.py"
+        }
+      },
+      "ok": true
+    }
+  },
+  "ok": true
+}

@@ -5,8 +5,7 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 
 # GoAI Figure-Studio —— 论文图纸 agent
 
-方法论四支柱（承自 paper-framework-figure-studio-pro 的 image-first
-流程，https://github.com/c-narcissus/paper-framework-figure-studio-pro ）：
+方法论四支柱（image-first 流程）：
 **源忠实、edge-label-first、模块化不碎片化、克制配色**。
 执行形态是**自动化回环**：不等人逐步确认，候选生成与审计全自动收敛，
 人只看最终产物。工具来自 MCP server `goai-figure`。

@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-46%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -27,6 +27,15 @@
 
 ## 📰 News
 
+- **2026-09-02 — Independent audit closes two loop-protocol holes.** A
+  read-only audit against the original spec found that `check-done` could
+  declare DONE with a single recorded gate (the exact shape of a pipeline that
+  stalled at literature search) and that `review_pass` accepted a PASS with no
+  receipt. Now mechanical: nine required gates must all be recorded (skips as
+  explicit WARN, home-made gate names warned), and a review PASS is refused
+  unless its trace file exists and is not a stub. Also fixed a vendored-model
+  indentation bug that made the inorganic precursor predictor unimportable —
+  `BaZn2Si2O7 → ZnO / SiO₂ / BaCO₃` now runs end-to-end locally. 48 offline tests.
 - **2026-08-31 — Scholarly content contract.** Domain-expert feedback on a
   materials survey became skill-level rules: every survey now ships a
   **paper roadmap figure**; materials topics get two mandatory search lanes
@@ -46,16 +55,15 @@
   hygiene (DOI/URL redundancy, brace protection for chemical formulas), and
   a "production quality" review dimension that requires page-by-page PDF
   inspection. `tex_guard` now **blocks** bare-bibkey leaks — CJK-adjacent
-  and digit-leading keys included; 46 offline tests.
+  and digit-leading keys included.
+<details>
+<summary>Earlier milestones</summary>
+
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
   gains section-heading lexicon rules (noun phrases, no "A, B, and C rules"
   titles) and top-venue run-in list conventions.
-
-<details>
-<summary>Earlier milestones</summary>
-
 - **2026-08-29 — First public sample deliverable.** A 26-page survey on COF
   photocatalytic hydrogen evolution, produced end-to-end:
   [`examples/survey_cof_her`](examples/survey_cof_her) — 143 verified references
@@ -438,7 +446,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 46 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 48 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 

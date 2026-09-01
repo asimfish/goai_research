@@ -1,0 +1,18 @@
+validate(recovered): []
+orig nodes/edges/groups/texts: 9 11 3 1
+recovered nodes/edges/groups/texts: 9 11 3 1
+node labels lost: {'Figure-Studio', 'Lit-Search', 'Ref-Guard', 'Reviewer', 'Survey-Writer', 'Loop Ledger', 'Idea-Forge'}
+node labels extra: {'', 'Idea-Forge\nretro predictor', 'Survey-Writer\nclaim-cite bound', 'Lit-Search\n5 sources + snowball', 'Reviewer\ncross-model, adversarial', 'Ref-Guard\nauthors / order / venue', 'Figure-Studio\nSVG + drawio'}
+edge labels lost: set()
+recovered→drawio root: mxfile cells: 26
+'Lit-Search\n5 sources + snowball' rounded 60.0 100.0 220.0 56.0
+'Ref-Guard\nauthors / order / venue' rounded 60.0 190.0 220.0 56.0
+'Taxonomy' rect 390.0 100.0 220.0 48.0
+'Figure-Studio\nSVG + drawio' rect 390.0 180.0 220.0 56.0
+'Survey-Writer\nclaim-cite bound' rect 390.0 268.0 220.0 56.0
+'Idea-Forge\nretro predictor' rect 390.0 356.0 220.0 56.0
+'Reviewer\ncross-model, adversarial' rounded 710.0 100.0 220.0 56.0
+'' ellipse 710.0 260.0 220.0 16.8
+'Survey (tex + bib + figs)' stadium 690.0 470.0 260.0 50.0
+texts: ['GoAI Research — Survey Pipeline']
+groups: ['Discovery', 'Production (parallel) route back until 0 blockers, max N rounds', 'Quality Loop Loop Ledger gates + issues']
