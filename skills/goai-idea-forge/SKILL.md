@@ -40,7 +40,9 @@ description: Use when generating research ideas or experiment plans from a surve
 
 ### 2. 逆合成与实验方案（化学/材料类 idea）
 
-工具来自 MCP server `goai-retro`：
+工具来自 MCP server `goai-retro`。**材料/化学类 idea 调用预测工具不是
+可选项**——每个提出的新方向都必须配到「工艺 + 前驱体」级别的实验推荐，
+空谈方向不许过审：
 1. `provider_status()` 先确认后端：`stub` 输出仅演示流程，**禁止**把 stub
    路线当化学结论写进任何交付物；真实预测需 `GOAI_RETRO_PROVIDER=http`
    接 ASKCOS/RXN/自建服务。
@@ -51,6 +53,12 @@ description: Use when generating research ideas or experiment plans from a surve
 3. `make_experiment_plan(route_json, objective)`拿骨架；无机Top-5输出则逐条建立
    路线方案，然后**你**负责：
    - 每步 `conditions`（温度/溶剂/催化剂/时长）依库内文献填写并附引用 key；
+   - **工艺路线明确命名**（固相烧结/助熔剂生长/水热/溶胶-凝胶…），并给
+     选择理由；近邻体系已验证的工艺优先，写明从哪个体系迁移、引用出处；
+   - **相图核查**：库内有该体系（或近邻体系）相图的，路线条件要对照
+     相区与共晶/包晶点；无相图时在方案里写明「相图未见报道」，并把
+     测定相图列为前置或并行实验；
+   - 涉及 Pt/Au 坩埚的路线按晶体生长归类（坩埚材质即路线证据）；
    - `safety` 字段完整填写（危险性/防护），这是强制项；
    - `characterization` 写明表征手段。
    计算机类 idea 跳过本节，验证计划直接写训练/评测方案。
@@ -74,8 +82,13 @@ description: Use when generating research ideas or experiment plans from a surve
 
 ### 5. 汇入综述
 
-通过双关的 idea 压缩成 1–2 段，写入综述的 Open Problems / Future
-Directions 节（交给 goai-survey-writer 合稿），并在段落里标注支撑引用。
+通过双关的 idea 按统一结构写入综述的 Open Problems / Future Directions
+节（交给 goai-survey-writer 合稿），每个方向四要素缺一不可：
+1. **方向陈述 + 缺口证据**（库内引用支撑）；
+2. **推荐合成实验**：工艺路线名 + 关键条件窗口（温度/气氛/坩埚）；
+3. **前驱体建议**：来自 `predict_precursor_routes` 的 Top 候选（列 2–3 组），
+   全部标注「模型预测，待实验验证」，与已发表事实用词严格区分；
+4. **判据**：这个实验成功/失败分别意味着什么（可裁决的科学问题）。
 
 ## 硬性规则
 
