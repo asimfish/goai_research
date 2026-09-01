@@ -749,6 +749,37 @@ def test_bib_guard_integration_rate_blocks(tmp_path):
     assert "整合率" in r.stdout
 
 
+def test_bib_guard_bib_hygiene_warns(tmp_path):
+    drafts = tmp_path / "drafts"
+    drafts.mkdir()
+    (drafts / "s1.tex").write_text(
+        r"A \cite{chem2024tio} and B \cite{plain2020ok}.")
+    bib = tmp_path / "refs.bib"
+    bib.write_text("""
+@article{chem2024tio,
+  title  = {Growth of BaZn2Si2O7 single crystals},
+  author = {Ann One},
+  year   = {2024},
+  doi    = {10.1000/x},
+  url    = {https://example.org/x},
+  journal = {J}
+}
+@article{plain2020ok,
+  title  = {A survey of {LLZO} interfaces},
+  author = {Bob Two},
+  year   = {2020},
+  doi    = {10.1000/y},
+  journal = {J}
+}
+""")
+    r = run_bib_guard(drafts, bib)
+    assert r.returncode == 0, r.stdout        # 卫生问题只告警不阻塞
+    assert "doi 与 url 同存" in r.stdout      # chem2024tio 冗余 url
+    assert "BaZn2Si2O7" in r.stdout           # 未保护化学式
+    hygiene = r.stdout.split("bib 字段卫生")[1]
+    assert "plain2020ok" not in hygiene       # 已保护 + 无冗余 → 不告警
+
+
 # ---------- tex_guard ----------
 
 def run_tex_guard(target):
@@ -790,6 +821,62 @@ def test_tex_guard_blocks_and_passes(tmp_path):
         "\\section{Intro}\\label{sec:intro}\nSee \\ref{sec:intro}.")
     r2 = run_tex_guard(good)
     assert r2.returncode == 0, r2.stdout
+
+
+def test_tex_guard_bibkey_leak_blocks(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    # 裸 key 出现在正文（含 \texttt 包裹）→ 阻塞；跨行 \cite 参数不误伤
+    (d / "main.tex").write_text("\n".join([
+        r"\begin{document}",
+        r"来源见 \texttt{lin1999phase} 的实验部分。",
+        r"合法引用 \cite{vaswani2017attention,",
+        r"  he2016deep} 不应误报。",
+        r"\end{document}",
+    ]))
+    r = run_tex_guard(d)
+    assert r.returncode != 0
+    assert "lin1999phase" in r.stdout
+    assert "he2016deep" not in r.stdout      # 跨行 cite 参数不是泄漏
+
+    (d / "main.tex").write_text("\n".join([
+        r"\begin{document}",
+        r"合法引用 \cite{lin1999phase} 与 \citep{zou2021crystal}。",
+        r"\end{document}",
+    ]))
+    r2 = run_tex_guard(d)
+    assert r2.returncode == 0, r2.stdout
+
+
+def test_tex_guard_texttt_density_warns(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    body = " ".join(r"\texttt{NA}" for _ in range(12))
+    (d / "main.tex").write_text(
+        "\\begin{document}\n" + body + "\n\\end{document}\n")
+    r = run_tex_guard(d)
+    assert r.returncode == 0, r.stdout       # 密度问题只告警不阻塞
+    assert "texttt" in r.stdout
+
+
+def test_tex_guard_cjk_english_template_warns(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    zh_body = "本综述覆盖高温溶液法与固相路线的全部公开条件记录。" * 3
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r = run_tex_guard(d)
+    assert r.returncode == 0, r.stdout       # 告警不阻塞
+    assert "survey_main_zh" in r.stdout      # 建议改用中文模板
+
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt,fontset=fandol]{ctexart}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r2 = run_tex_guard(d)
+    assert "survey_main_zh" not in r2.stdout
 
 
 # ---------- bank_check ----------

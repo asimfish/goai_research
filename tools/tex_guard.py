@@ -8,6 +8,11 @@
 4. \\ref / \\autoref / \\cref 无悬空（有对应 \\label）＝阻塞
 5. \\begin/\\end 环境闭合 ＝阻塞
 6. 花括号平衡 ＝告警（verbatim 等场景可能误报）
+7. BibTeX key 泄漏到正文（形如 lin1999phase 的裸 key 出现在读者可见文本，
+   引用必须走 \\cite）＝阻塞
+8. \\texttt 密度过高（正文大量打字机体是内部术语泄漏的信号）＝告警
+9. 中文稿套英文模板（CJK 占比高但 documentclass 非 ctex 系，Abstract/
+   Table 等标签会是英文）＝告警
 
 用法：
   python3 tools/tex_guard.py <draft_dir_or_main.tex>
@@ -29,6 +34,21 @@ RE_REF = re.compile(r"\\(?:ref|autoref|cref|Cref|eqref)\{([^}]+)\}")
 RE_ENV = re.compile(r"\\(begin|end)\{([^}]+)\}")
 
 GRAPHIC_EXTS = ["", ".pdf", ".png", ".svg", ".jpg", ".jpeg", ".eps"]
+
+# --- 排版/泄漏检查 ---
+# 剥掉合法携带 key/路径的命令参数后，正文残留的 `名字+年份+词` 裸 token
+# 即为 BibTeX key 泄漏（写作规范：引用一律 \cite，表格单元格不得出现裸 key）
+RE_KEY_CARRIER = re.compile(
+    r"\\(?:cite[tp]?\*?|citeauthor|citeyear|label|ref|autoref|cref|Cref|eqref|"
+    r"url|href|path|bibliography|bibliographystyle|bibitem|input|include|"
+    r"includegraphics|includesvg)(?:\[[^\]]*\])?\{[^}]*\}")
+RE_BARE_BIBKEY = re.compile(r"\b[a-z]{2,}(?:19|20)\d{2}[a-z][a-z0-9]*\b")
+RE_TEXTTT = re.compile(r"\\texttt\{")
+RE_CJK = re.compile(r"[\u4e00-\u9fff]")
+RE_DOCCLASS = re.compile(r"\\documentclass(?:\[[^\]]*\])?\{([^}]+)\}")
+TEXTTT_WARN_MIN_COUNT = 8       # 少量合法用法（命令/代码名）不告警
+TEXTTT_WARN_PER_1K = 2.0        # 每千字符超过该密度则告警
+CJK_RATIO_ZH_DOC = 0.05         # CJK 字符占比超过 5% 视为中文稿
 
 
 def strip_comment(line: str) -> str:
@@ -95,6 +115,58 @@ def check_file(path: str, roots: list[str]) -> tuple[list[str], list[str],
     return blocking, warnings, labels, refs
 
 
+def check_bibkey_leak(path: str) -> list[str]:
+    """BibTeX key 泄漏检查（全文级：\\cite 参数允许跨行，逐行剥会误伤）。"""
+    base = os.path.basename(path)
+    with open(path, encoding="utf-8", errors="replace") as f:
+        text = "\n".join(strip_comment(l) for l in f.read().splitlines())
+    visible = RE_KEY_CARRIER.sub(
+        lambda m: "".join(c if c == "\n" else " " for c in m.group(0)), text)
+    line_starts = [0] + [i + 1 for i, ch in enumerate(visible) if ch == "\n"]
+
+    def line_of(pos: int) -> int:
+        import bisect
+        return bisect.bisect_right(line_starts, pos)
+
+    out = []
+    for km in RE_BARE_BIBKEY.finditer(visible):
+        out.append(
+            f"{base}:{line_of(km.start())} 疑似 BibTeX key 泄漏到正文: "
+            f"{km.group(0)}（引用一律 \\cite，表格单元格不得出现裸 key）")
+    return out
+
+
+def check_typography(files: list[str]) -> list[str]:
+    """跨文件排版体检：\\texttt 密度 + 中文稿模板匹配。→ warnings"""
+    warnings: list[str] = []
+    total_chars = 0
+    total_texttt = 0
+    total_cjk = 0
+    doc_classes: list[str] = []
+    for fp in files:
+        with open(fp, encoding="utf-8", errors="replace") as f:
+            text = "\n".join(strip_comment(l) for l in f)
+        total_chars += len(text)
+        total_texttt += len(RE_TEXTTT.findall(text))
+        total_cjk += len(RE_CJK.findall(text))
+        doc_classes += RE_DOCCLASS.findall(text)
+
+    density = total_texttt / max(total_chars / 1000, 1e-9)
+    if total_texttt >= TEXTTT_WARN_MIN_COUNT and density > TEXTTT_WARN_PER_1K:
+        warnings.append(
+            f"\\texttt 使用 {total_texttt} 次（{density:.1f} 次/千字符）——"
+            "打字机体只该给真正的代码/命令；正文术语、缺失值（NA）、"
+            "证据代号应改正体或数学记号，检查是否有内部术语泄漏")
+    cjk_ratio = total_cjk / max(total_chars, 1)
+    if cjk_ratio > CJK_RATIO_ZH_DOC and doc_classes and \
+            not any("ctex" in c for c in doc_classes):
+        warnings.append(
+            f"中文稿（CJK 占比 {cjk_ratio:.0%}）使用非 ctex 文档类 "
+            f"{doc_classes}：Abstract/Table/Figure 标签将是英文，"
+            "请改用 templates/survey_main_zh.tex（ctexart + 本地化标签）")
+    return warnings
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("draft", help="稿件目录或 main.tex")
@@ -121,6 +193,8 @@ def main() -> None:
         warnings += w
         all_labels |= ls
         all_refs |= rs
+        blocking += check_bibkey_leak(fp)
+    warnings += check_typography(files)
 
     dangling = sorted(all_refs - all_labels)
     for r in dangling:

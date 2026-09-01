@@ -16,6 +16,30 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 只允许引用 `workspace/library/references.bib`（已过 ref_gate）里的 key。
 写作中发现需要库外文献 → 开 issue 请 lit_search 补检，**不许手写 bib 条目**。
 
+## 语言契约（scoping 定死，全程一致）
+
+交付语言在 scope.md 里显式记录：用户指定为准；未指定时跟随主题语言。
+语言决定模板与排版规范，**禁止中文正文套英文模板**（Abstract/Table 标签
+混排是杂交文档，tex_guard 会告警）：
+- 英文交付 → `templates/survey_main.tex`（article + newtx + pdflatex/xelatex）；
+- 中文交付 → `templates/survey_main_zh.tex`（ctexart + fandol 字库，
+  **必须 xelatex**），标签自动本地化（摘要/图/表/参考文献）。中文细则：
+  正文标点全角；中西文间隙交给 xeCJK，禁手工空格；段首加粗小标签用
+  「……：」或 `\paragraph{}`，禁英文式 run-in「标签。」；页眉短题用楷体。
+- 两种语言的参考文献均保持 natbib 数字制；正文语言与文献条目语言允许
+  不同（中文综述引英文文献是常态，不翻译条目）。
+
+## 术语防火墙（内部词汇不入正文）
+
+流水线内部词汇——gate/issue/ledger/loopctl、ref_gate、niche-balanced、
+comprehensive 档、bank、WARN 等——**禁止出现在题目/摘要/正文/表格/图注**
+里。读者面前只有学术语言：「检索截至 2026-08-31」而不是「ref_gate 后」。
+证据分级代号（如 D0/D1/N1/P1、strong/weak）如果确要作为论文的记号体系，
+必须在正文里正式定义（表格或术语节），排版用正体或小型大写，
+**不用 `\texttt`**。`\texttt` 只留给真正的代码、命令、文件名；
+缺失值/未报道一律用 —（em dash）或「未报道/not reported」，
+禁止打字机体 `NA` 铺表——tex_guard 对 `\texttt` 密度有告警线。
+
 ## 阶段零：风格与语料装载（可与文献检索并行）
 
 ### 0a 领域风格卡（来自 goai-style-bank）
@@ -134,21 +158,36 @@ Open Problems（含 idea-forge 产出） → Conclusion。
   内容；禁止每项以同一动词开头的平行复读（"Establish… Establish…
   Establish…"），改名词短语引导或并成一句；真正的步骤/协议才用
   编号列表，平行要素用 run-in 或 itemize；
+- **表格设计规范**（数据表是综述的门面，按数据形状设计而不是硬塞）：
+  - 一张逻辑表**禁止拆成上下两半共享行号**让读者自己拼——列太多时按
+    「主题分组拆成多张完整子表」（各自带表头与 caption）、转置、或
+    `landscape` 横排；正文表列数指导线 ≤7，超线必须重新设计；
+  - 单元格内容是**读者语言**：禁止出现裸 BibTeX key（tex_guard 直接
+    阻塞），来源一律 `\cite{key}` 或「作者 (年份) \cite{key}」；
+  - 缺失值统一 — 或「未报道」，禁止整表铺 `\texttt{NA}`；一行内
+    多字段全缺时合并为一格说明，不逐格复读；
+  - 长表（>1 页）用 `longtable` 并重复表头；窄列一律模板的 `P{}` 列型；
+  - 每张表交稿前自查：拿掉正文，单看此表 + caption 能否自解释。
 - 并行写作时只碰自己的节文件，公共文件（main.tex/bib）只由汇合者动。
 
 ## 阶段五：组装与精修
 
-1. 用 `templates/survey_main.tex` 组装，`\input` 各节。模板内置排版
+1. 按语言契约选模板组装（英文 `templates/survey_main.tex`、中文
+   `templates/survey_main_zh.tex`），`\input` 各节。模板内置排版
    规范不许降级：Times 字体系（newtx，加载顺序 amsmath→newtxtext→
    newtxmath，禁 amssymb）、引用/交叉引用/URL 统一学术蓝
    （`colorlinks` + `citecolor=blue`）、caption 小号加粗标签、
-   `\arraystretch 1.18`、titlesec 紧凑节标题、fancyhdr 运行页眉、
+   `\arraystretch 1.18`、紧凑节标题、fancyhdr 运行页眉、
    参考文献前 `\clearpage`。表格定宽列一律用模板的 `P{宽}`
    （raggedright）列型，禁用裸 `p{宽}`——窄列两端对齐会产生
    justify 空洞，是"表格乱"的头号来源；正文含 Unicode 组合符/希腊
-   字母时用 xelatex 编译。组装时必须完成两处替换：页眉短题
-   （`TODO: Short Running Title`→论文短题，斜体）；主标题超一行时
+   字母时用 xelatex 编译（中文模板必须 xelatex）。组装时必须完成
+   两处替换：页眉短题（`TODO` 短题→论文短题）；主标题超一行时
    **手工断行成 2–3 行且行长均衡**，禁止让 LaTeX 自动折出孤词行。
+   组装同时做 **bib 字段卫生**（bib_guard 会告警）：条目 doi 与 url
+   同存时删 url 留 doi（长 URL 断行是参考文献区最难看的伤）；title
+   中化学式/多大写缩写（BaZn2Si2O7、COF、LLZO…）加 `{}` 保护，
+   防止 plainnat 压成 `bazn 2 si 2 o 7` 碎片。
 2. 一致性闸门（未定义 key＝阻塞；库内条目整合率 <90%＝阻塞——孤儿条目
    要么在正文找到落点，要么开 issue 交 lit_search 评估后移出库，
    不许留着充数）：

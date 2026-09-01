@@ -1,0 +1,82 @@
+% goai_research 中文综述主模板（ctexart 版，必须用 xelatex 编译）。
+% 语言契约：主题/交付语言为中文时用本模板；英文交付用 survey_main.tex。
+% ctexart 自动本地化文档标签（摘要/图/表/参考文献），禁止中文稿套英文
+% article 模板——那会产出 Abstract/Table 混排的杂交文档（tex_guard 会告警）。
+\documentclass[11pt,fontset=fandol]{ctexart}
+% fontset=fandol：TeX Live 自带 Fandol 中文字体，服务器免装系统字体
+
+\usepackage[margin=1in]{geometry}
+% Latin 部分保持 Times 观感（xelatex 下 newtx 走 TeX Gyre Termes）。
+% 加载顺序硬规则：amsmath → newtxtext → newtxmath；禁止再加载 amssymb
+\usepackage{amsmath}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}        % 对比表
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+% 排版规范（paper-orchestra 风格）：引用/交叉引用/URL 统一学术蓝
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+% caption 统一：小号字体 + 加粗标签；表格行距放松
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+% 定宽左对齐列：窄列禁用两端对齐，避免 justify 空洞（表格必须用 P 而非 p）
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+% 期刊风紧凑节标题（ctex 已处理中文节名字体）
+\ctexset{
+  section = {format = \large\bfseries, beforeskip = 14pt plus 3pt minus 2pt,
+             afterskip = 6pt plus 1pt},
+  subsection = {format = \normalsize\bfseries,
+                beforeskip = 10pt plus 2pt minus 2pt, afterskip = 4pt plus 1pt},
+}
+% 紧凑列表（贡献 bullets 等）
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+% 运行页眉：楷体短题 + 页码（TODO 替换短题；中文无斜体，用楷体做变体）
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\kaishu TODO: 运行短题}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\emergencystretch=1.5em
+\usepackage{svg}             % figures/svg 直接引入；无 inkscape 时改用 drawio_export 出 pdf
+% 中文排版细则（writer 阶段五自查）：
+% 1) 正文标点全角（，。；：？！），公式/代码/文献条目内标点半角；
+% 2) 中西文与数字之间由 xeCJK 自动加隙，禁止手工空格；
+% 3) 段首加粗小标签用「……：」或 \paragraph{}，禁止英文式 run-in「标签。」；
+% 4) 表格缺失值统一用 —（em dash）或「未报道」，禁止打字机体 NA 铺表。
+% 标题过长时手工三行断行，行长均衡（禁止让 LaTeX 自动折出孤词行）
+
+\title{TODO: 综述标题}
+\author{TODO: 作者}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% writer 阶段五填充：贡献声明浓缩版（来自 workspace/notes/contribution.md）
+TODO
+\end{abstract}
+
+% ---- 章节由 workspace/drafts/sections/ 逐个 \input ----
+% \input{sections/01_introduction}
+% \input{sections/02_background}
+% \input{sections/03_taxonomy}      % 配主图：\includesvg{figures/svg/taxonomy}
+% \input{sections/04_branch_a}
+% \input{sections/05_branch_b}
+% \input{sections/06_discussion}
+% \input{sections/07_open_problems} % 含 idea-forge 通过双关的提案
+% \input{sections/08_conclusion}
+
+% paper-orchestra 硬规则：参考文献前 flush 所有浮动体，防止图表漂进 References
+\clearpage
+
+\bibliographystyle{plainnat}
+\bibliography{references}    % 指向 workspace/library/references.bib
+\end{document}

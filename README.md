@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-45%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -27,11 +27,20 @@
 
 ## 📰 News
 
+- **2026-08-31 — Production-quality layer.** A cold-start run in Chinese
+  exposed a blind spot: correct content, degraded typesetting. Now shipped —
+  a CJK language contract with a dedicated `ctexart` template (no more
+  hybrid EN/CN documents), table design rules (no split half-tables, no raw
+  BibTeX keys in cells, no typewriter `NA` dumps), a pipeline-jargon firewall
+  for reader-facing text, bib field hygiene (DOI/URL redundancy, brace
+  protection for chemical formulas), and a "production quality" review
+  dimension that requires page-by-page PDF inspection. `tex_guard` now
+  **blocks** bare-bibkey leaks; 45 offline tests.
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
   gains section-heading lexicon rules (noun phrases, no "A, B, and C rules"
-  titles) and top-venue run-in list conventions. 32 offline tests.
+  titles) and top-venue run-in list conventions.
 - **2026-08-29 — First public sample deliverable.** A 26-page survey on COF
   photocatalytic hydrogen evolution, produced end-to-end:
   [`examples/survey_cof_her`](examples/survey_cof_her) — 143 verified references
@@ -296,9 +305,13 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
    agents cross-check, author approval required for corrections.
 4. **Draft-side gates**: `bib_guard.py` — undefined `\cite` keys block the build,
    bib integration rate < 90% blocks (orphan entries must earn a place in the text
-   or leave the library), citation density < 8 / 1000 words warns.
+   or leave the library), citation density < 8 / 1000 words warns, and field
+   hygiene warns (DOI + URL redundancy; unprotected chemical formulas /
+   acronyms in titles that bibliography styles would lowercase into fragments).
    `tex_guard.py` — leftover TODO placeholders, missing `\input`/figure files,
-   dangling `\ref`, and unclosed environments all block assembly.
+   dangling `\ref`, unclosed environments, and **bare BibTeX keys leaking into
+   reader-visible text** all block assembly; typewriter-font (`\texttt`)
+   overuse and a Chinese manuscript on the English template warn.
 5. **Context check** (reviewer): samples claim–citation pairs and verifies the cited
    paper actually supports the claim — the most diagnostic and most-missed check.
 
@@ -409,7 +422,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 40+ offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 45 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 
@@ -426,8 +439,9 @@ floors, shape-aware text overflow, label occlusion), SVG and mxGraph rendering,
 retro stub + plan skeleton, full loopctl ledger cycle plus concurrency (12
 parallel writers, zero lost updates), check-done semantics (WARN pass-through,
 minor deferral, stale-input fingerprint reset, review receipts), bib_guard
-blocking (undefined keys + integration rate), tex_guard assembly gate, and
-bank_check validation.
+blocking (undefined keys + integration rate) and field-hygiene warnings,
+tex_guard assembly gate (including bibkey-leak blocking, `\texttt` density and
+CJK-template-mismatch warnings), and bank_check validation.
 
 ## 12. 📐 Design Notes
 

@@ -45,6 +45,7 @@ python3 tools/loopctl.py gate --name review_pass --status PASS \
 | 图文 | 图的主线与正文一致？符号约定冲突？图不可读? | target=figures |
 | 论证 | 无证据断言?结论强度超出证据?对比公平? | target=writing |
 | 写作 | 重复/术语漂移/AI 腔（模板化转折、忏悔式套话） | target=writing |
+| 制作质量 | 必须**翻最终 PDF** 逐页看，不是只读 tex：表格可读性（拆成两半的表/整表铺 NA/裸 BibTeX key 入表）；语言一致性（中文稿冒英文 Abstract/Table 标签）；内部术语泄漏（ref_gate、gate、niche-balanced 等流水线词汇出现在正文）；参考文献区（化学式被压成 `bazn 2 si 2 o 7` 碎片、长 URL 断行、DOI/URL 冗余）；`\texttt` 滥用 | target=writing |
 
 审 idea 提案时换四维：证据真实性/新颖性/可行性/安全性（化学方案必须
 逐条看 safety 字段，空的直接 blocker）。**防误杀**：以「不新颖」毙掉
@@ -55,8 +56,10 @@ python3 tools/loopctl.py gate --name review_pass --status PASS \
 **终审轮**（final 前最后一轮 review）升级为三视角过稿：
 **领域专家**（挑覆盖缺口与分类法合理性）、**方法严谨派**（挑 claim-cite
 绑定与对比公平性）、**期刊编辑**（挑与目标 venue 的匹配：篇幅/图表规范/
-读者定位/同类综述差异化）。三视角各出一份异议清单，逐条给出修改或反驳；
-三视角审计未完成前，不得宣称稿件「可交付/可投稿」。
+读者定位/同类综述差异化，**并对照 style_bank 范文逐页做制作质量审计**——
+上表「制作质量」维度的每一项都要过，PDF 没翻过不算审过）。三视角各出
+一份异议清单，逐条给出修改或反驳；三视角审计未完成前，不得宣称稿件
+「可交付/可投稿」。
 
 ## 产出协议（必须落账本）
 

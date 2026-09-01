@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-45%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -25,10 +25,17 @@
 
 ## 📰 动态
 
+- **2026-08-31 —— 制作质量层。** 一次中文冷启动实跑暴露盲区：内容对、
+  排版垮。本次上线：CJK 语言契约与专用 `ctexart` 模板（不再产出中英
+  杂交文档）、表格设计规范（禁拆半表、禁单元格裸 BibTeX key、禁打字机
+  体 NA 铺表）、面向读者文本的流水线术语防火墙、bib 字段卫生
+  （DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」维度
+  （必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**；
+  离线测试 45 项。
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
-  行内列表排版规则。离线测试 32 项。
+  行内列表排版规则。
 - **2026-08-29 —— 首个公开样例交付物。** COF 光催化产氢综述，端到端实跑
   26 页：[`examples/survey_cof_her`](examples/survey_cof_her) —— 143 篇验证
   文献（整合率 100%、密度 51.2 次/千词）、通过排版 lint 的可编辑图、
@@ -382,7 +389,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 40+ 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 45 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 
@@ -397,7 +404,8 @@ figspec 校验（节点重叠与同义平行线检测）+ 排版 lint（印刷�
 figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
 骨架、本地全文搜索/受限读取/公开子集导出、两步模型资产哈希、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
 语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard
-阻塞行为（未定义 key 与整合率）、tex_guard 组稿闸门、bank_check 支持库校验。
+阻塞行为（未定义 key 与整合率）与字段卫生告警、tex_guard 组稿闸门
+（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、bank_check 支持库校验。
 
 ## 12. 📐 设计笔记
 
