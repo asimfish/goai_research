@@ -44,7 +44,10 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
 \emergencystretch=1.5em
-\usepackage{svg}             % figures/svg 直接引入；无 inkscape 时改用 drawio_export 出 pdf
+% svg 包依赖编译机装有 inkscape；缺包/缺 inkscape 时不得拖垮整篇编译——
+% 图一律先用 drawio_export 出 pdf/png 再 \includegraphics，\includesvg 仅作可选路径
+\IfFileExists{svg.sty}{\usepackage{svg}}{}
+\usepackage{textcomp}        % \textcelsius 等符号（材料稿常用）
 % 中文排版细则（writer 阶段五自查）：
 % 1) 正文标点全角（，。；：？！），公式/代码/文献条目内标点半角；
 % 2) 中西文与数字之间由 xeCJK 自动加隙，禁止手工空格；
