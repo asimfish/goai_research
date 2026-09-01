@@ -228,15 +228,22 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 
 | 阶段 | Agent | 出口闸门 |
 |---|---|---|
-| scoping | orchestrator + 你 | `scope_confirmed` |
+| scoping | orchestrator + 你 | `scope_confirmed` —— 子主题、边界、交付语言 |
 | lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖 + 规模档位配额（正式综述 ≥100 篇） |
 | style_bank | goai-style-bank | `style_bank_ready` —— 30 篇经典综述风格卡 + 范图库 |
 | ref_gate | goai-ref-guard | `ref_integrity` —— 零 UNVERIFIED / MISMATCH |
 | taxonomy | goai-survey-writer | `taxonomy_ready` —— 每叶 ≥ 3 篇支撑 |
-| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全 |
-| writing | goai-survey-writer | `draft_complete` —— bib_guard PASS，全节完成 |
+| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全，含行文路线图 |
+| writing | goai-survey-writer | `draft_complete` —— bib_guard + tex_guard PASS，全节完成 |
 | ideas | goai-idea-forge | `ideas_reviewed` —— 对抗审 + 引用二次核查 |
-| review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major |
+| review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major，**必须带回执** |
+
+**「完成」由机器判定，不听 agent 自报。** `loopctl check-done` 只在以下条件
+全部成立时退出 0：上表九个闸门**全部已记录**（缺一个即该阶段从未执行——允许
+跳过，但必须显式记 `WARN`）、无 FAIL/PENDING、无 open blocker/major、
+`review_pass` 的回执指向真实存在且非占位的审稿 trace 文件。用自造名字记的
+闸门写入时即被警告；无回执的审稿 PASS 直接拒绝。产物指纹（`--inputs`）在
+上游文件变更时自动把过期闸门置回 PENDING。
 
 ## 5. 🎨 永远可编辑的图纸
 
@@ -419,9 +426,15 @@ figspec 校验（节点重叠与同义平行线检测）+ 排版 lint（印刷�
 形状感知文字溢出、标签遮挡）、SVG 与 mxGraph 渲染、**SVG →
 figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
 骨架、本地全文搜索/受限读取/公开子集导出、两步模型资产哈希、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
-语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard
+语义（九个必需闸门全部落账、WARN 放行、minor 移交、产物指纹变更重置闸门、
+回执校验——trace 缺失/占位/事后删除均拒绝）、vendored 无机模型语法守卫、bib_guard
 阻塞行为（未定义 key 与整合率）与字段卫生告警、tex_guard 组稿闸门
 （含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、bank_check 支持库校验。
+
+对照最初需求做的一次独立只读审计（证据与判定表见
+[docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md)）
+正是这两个回环协议漏洞和 vendored 模型 import 故障的发现来源——仓库有意
+保留审计痕迹。
 
 ## 12. 📐 设计笔记
 
@@ -446,6 +459,13 @@ trace 存档）——没人能审计的 PASS 等于没有 PASS。
 **为什么用账本而不是 agent 之间对话交接？**
 口头交接活不过并行支线、重试和会话重启。账本是唯一状态源：闸门、issue、日志
 是 agent 之间唯一的协议——每次运行可续跑，每个结论可审计。
+
+**为什么「完成」必须机械判定？**
+时间压力下的 LLM 编排者会把半截账本合理化成「已完成」——我们亲眼看到过：
+一次停在文献检索的运行交了一份 Markdown 报告，一个没有任何审稿 trace 的
+review PASS 被记进账本。写在 skill 里的规则两次都没拦住。所以终止判定是
+代码：必需闸门必须齐、跳过必须显式、回执必须指向真实文件、指纹必须仍然
+匹配。文字告诉 agent 什么叫好；只有代码能拒绝把一件事叫做完成。
 
 ## 13. ❓ 常见问题
 
