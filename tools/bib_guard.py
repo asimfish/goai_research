@@ -8,6 +8,9 @@
 3. 引用密度（综述质检：正文引用过少给告警）
    密度统计只应覆盖正文章节文件（如 workspace/drafts/sections），
    蓝图、修订日志等过程文档不要计入词数分母。
+4. bib 字段卫生（告警）：doi 与 url 同存（编译后 URL 断行难看且冗余，
+   应删 url 留 doi）；title 中化学式/多大写缩写未加 {} 保护
+   （plainnat 会把 BaZn2Si2O7 压成 bazn 2 si 2 o 7）。
 
 用法：
   python3 tools/bib_guard.py <draft_dir_or_file> <references.bib> \
@@ -28,6 +31,31 @@ from server.core.bibtex import parse_bibtex  # noqa: E402
 CITE_TEX = re.compile(r"\\cite[tp]?\*?(?:\[[^\]]*\])?\{([^}]+)\}")
 CITE_MD = re.compile(r"\[@([A-Za-z0-9_:\-]+)(?:[;,\s]+@?[A-Za-z0-9_:\-]+)*\]")
 CITE_MD_EACH = re.compile(r"@([A-Za-z0-9_:\-]+)")
+# title 里需要 {} 保护的 token：≥2 个大写字母 + ≥1 个数字（化学式/缩写），
+# 或全大写缩写词（≥3 字母）。plainnat 等样式会把未保护 token 压成小写。
+RE_PROTECT_NEEDED = re.compile(
+    r"\b(?=\w*[A-Z]\w*[A-Z])(?=\w*\d)[\w()\[\]+.\-]*[A-Za-z0-9]|\b[A-Z]{3,}\b")
+
+
+def bib_hygiene(entries: list[dict]) -> list[str]:
+    """bib 字段卫生检查 → 告警清单（不阻塞）。"""
+    warns: list[str] = []
+    for e in entries:
+        fields = e.get("fields", {})
+        key = e["key"]
+        if fields.get("doi") and fields.get("url"):
+            warns.append(f"{key}: doi 与 url 同存——删 url 留 doi"
+                         "（正文已链接 DOI，长 URL 编译后断行难看）")
+        title = fields.get("title", "")
+        # 去掉已被 {} 保护的片段后再扫
+        unprotected = re.sub(r"\{[^{}]*\}", " ", title)
+        hits = sorted({m.group(0) for m in
+                       RE_PROTECT_NEEDED.finditer(unprotected)})
+        if hits:
+            warns.append(f"{key}: title 含未保护 token {hits[:4]}——"
+                         "加 {{}} 防止 bibliography 样式压成小写"
+                         "（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）")
+    return warns
 
 
 def collect_cites(path: str) -> list[tuple[str, str, int]]:
@@ -78,7 +106,8 @@ def main() -> None:
         sys.exit(f"未找到 bib 文件: {args.bib}")
 
     with open(args.bib, encoding="utf-8") as f:
-        bib_keys = {e["key"] for e in parse_bibtex(f.read())}
+        bib_entries = parse_bibtex(f.read())
+    bib_keys = {e["key"] for e in bib_entries}
 
     cites: list[tuple[str, str, int]] = []
     word_count = 0
@@ -111,6 +140,11 @@ def main() -> None:
     if density < args.min_cites_per_1k:
         print(f"\n[告警] 引用密度 {density:.1f} 低于线 {args.min_cites_per_1k}"
               "（综述通常需要更密的证据支撑）")
+    hygiene = bib_hygiene(bib_entries)
+    if hygiene:
+        print(f"\n[告警] {len(hygiene)} 项 bib 字段卫生问题:")
+        for h in hygiene[:30]:
+            print(f"  - {h}")
     failed = bool(undefined) or bool(integration_fail)
     reasons = ([f"{len(undefined)} 个未定义引用"] if undefined else []) + \
               ([f"整合率 {integration:.0%} 低于 {args.min_integration:.0%}"]
