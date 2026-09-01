@@ -243,15 +243,23 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](doc
 
 | Stage | Agent | Exit gate |
 |---|---|---|
-| scoping | orchestrator + you | `scope_confirmed` |
+| scoping | orchestrator + you | `scope_confirmed` — subtopics, boundaries, delivery language |
 | lit_search | goai-lit-search | `lit_coverage` — all subtopics covered + scale quota (≥100 papers for a full survey) |
 | style_bank | goai-style-bank | `style_bank_ready` — style cards + exemplar figures from 30 classic surveys |
 | ref_gate | goai-ref-guard | `ref_integrity` — zero UNVERIFIED / MISMATCH entries |
 | taxonomy | goai-survey-writer | `taxonomy_ready` — every leaf backed by ≥ 3 papers |
-| figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure |
-| writing | goai-survey-writer | `draft_complete` — bib_guard PASS, all sections done |
+| figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure, incl. the paper roadmap figure |
+| writing | goai-survey-writer | `draft_complete` — bib_guard + tex_guard PASS, all sections done |
 | ideas | goai-idea-forge | `ideas_reviewed` — adversarial review + second citation pass |
-| review | goai-reviewer | `review_pass` — 0 blockers and 0 majors |
+| review | goai-reviewer | `review_pass` — 0 blockers and 0 majors, **with receipt** |
+
+**"Done" is decided by a machine, not by an agent's say-so.** `loopctl check-done`
+exits 0 only when all nine gates above are *recorded* (a missing gate means the stage
+never ran — skipping is allowed but must be an explicit `WARN`), none is FAIL/PENDING,
+no blocker/major issue is open, and the `review_pass` receipt points at a real,
+non-stub reviewer trace file. A gate recorded under a home-made name is warned about
+at write time; a receipt-less review PASS is refused outright. Product fingerprints
+(`--inputs`) turn stale gates back to PENDING automatically when upstream files change.
 
 ## 5. 🎨 Figures That Stay Editable
 
@@ -460,12 +468,19 @@ missing/fabricated), multi-source dedup, figspec validation (node-overlap and
 synonymous parallel-edge detection) plus typography lint (print-equivalent font
 floors, shape-aware text overflow, label occlusion), SVG and mxGraph rendering,
 **SVG → figspec → drawio round-trip** (groups recovered as containers, edge labels reattached),
-retro stub + plan skeleton, full loopctl ledger cycle plus concurrency (12
-parallel writers, zero lost updates), check-done semantics (WARN pass-through,
-minor deferral, stale-input fingerprint reset, review receipts), bib_guard
-blocking (undefined keys + integration rate) and field-hygiene warnings,
-tex_guard assembly gate (including bibkey-leak blocking, `\texttt` density and
-CJK-template-mismatch warnings), and bank_check validation.
+retro stub + plan skeleton, vendored inorganic model syntax guard, full loopctl
+ledger cycle plus concurrency (12 parallel writers, zero lost updates),
+check-done semantics (all nine required gates recorded, WARN pass-through,
+minor deferral, stale-input fingerprint reset, receipt validation — missing /
+stub / deleted trace files are rejected), bib_guard blocking (undefined keys +
+integration rate) and field-hygiene warnings, tex_guard assembly gate
+(including bibkey-leak blocking, `\texttt` density and CJK-template-mismatch
+warnings), template contract, and bank_check validation.
+
+An independent read-only audit against the original specification (evidence and
+verdict table in [docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md))
+is what surfaced the two loop-protocol holes and the vendored-model import bug
+fixed on 2026-09-02 — the repo keeps its audit trail on purpose.
 
 ## 12. 📐 Design Notes
 
@@ -497,6 +512,15 @@ while the marginal benefit decays — the big win is going from 1 to 2, not from
 Oral hand-offs don't survive parallel lanes, retries, or session restarts. The
 ledger is the single state source: gates, issues, and logs are the only protocol
 between agents, which makes every run resumable and every claim auditable.
+
+**Why must "done" be mechanical?**
+An LLM orchestrator under time pressure will rationalize a half-finished ledger
+as complete — we watched it happen: a run that stopped at literature search
+shipped a Markdown report, and a review PASS was recorded with no reviewer trace
+behind it. Rules written in skill prose did not stop either. So the termination
+check is code: every required gate must exist, skips must be explicit, receipts
+must point at real files, fingerprints must still match. Prose tells agents what
+good looks like; only code can refuse to call something finished.
 
 ## 13. ❓ FAQ
 
