@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -25,6 +25,14 @@
 
 ## 📰 动态
 
+- **2026-09-02 —— 美感成为闸门，文字度量变得诚实。** 图纸 lint 新增第二层，
+  把审稿人说的「有点乱」变成可测量指标：色系数（≤2 主题色 + 1 强调色，≥4 直接
+  error）、彩虹泳道、近失对齐、兄弟尺寸漂移、间距过密、连线穿节点、交叉数、
+  描边档数、标题层级、边标签压在自己的端点上。底层三方（SVG、draw.io、lint）
+  改为共用一套按词折行、按 Helvetica 真实字宽（含粗体系数）计算的算法——
+  过去均一 0.61em 的估算让大写密集的粗体芯片在 draw.io 里溢出，而 lint 还说
+  「放得下」；draw.io 输出改带显式 `<br/>`，渲染的行与 lint 度量的完全一致。
+  样例图重排到零告警。离线测试 54 项。
 - **2026-09-02 —— 独立审计补上两个回环协议漏洞。** 对照最初需求做的只读
   审计发现：`check-done` 只记一个 gate 就能宣告 DONE（恰是停在文献检索的
   那种账本形态），`review_pass` 无回执也能记 PASS。现已机械化：9 个必需
@@ -38,16 +46,6 @@
   合集；每个新方向必须落到具体合成建议——工艺路线名 + 来自 retro MCP 的
   前驱体候选（标注「模型预测，待实验验证」）；结论以「最有科学发现价值的
   下一步实验」收尾。图纸：全图 ≤2 主题色，所有交付图走 image-first 参照生成。
-- **2026-08-31 —— 制作质量层。** 一次中文冷启动实跑暴露盲区：内容对、
-  排版垮。本次上线：CJK 语言契约与专用 `ctexart` 模板（不再产出中英
-  杂交文档；已 xelatex 实编验证）、表格设计规范（禁拆半表、禁单元格裸
-  BibTeX key、禁打字机体 NA 铺表）、面向读者文本的流水线术语防火墙、
-  bib 字段卫生（DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」
-  维度（必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**（含与
-  汉字紧贴、题词数字开头的 key）。
-<details>
-<summary>更早的里程碑</summary>
-
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
@@ -271,6 +269,15 @@ PDF）、形状感知的文字溢出检查（菱形只有外框 ~55% 的有效�
 skill 里固化了字号层级表（标题 > lane 标签 > 节点主标 > 副文），生成的
 图从源头就是比例得当、印刷可读的。
 
+**美感同样是强制的。** 同一套 lint 还有第二层，把「像不像顶刊图」变成可
+测量的指标：配色克制（有彩色按色相聚成色系——≤2 主题色 + 1 强调色，
+≥4 个色系直接 error）、禁彩虹泳道（每个分组各铺一种饱和底色会被拒绝）、
+禁饱和色块铺满、禁近失对齐（卡片边缘差 1–8px——最显业余的一个破绽）、
+兄弟节点尺寸一致、内容不越出画布、留白均衡、最小间距、连线不穿过无关
+节点、少交叉、描边至多两档、标题必须是全图最大字号。error 阻塞出图；
+每条 warning 要么修掉、要么在 figure_plan 写明保留理由，否则
+`figures_ready` 不得通过。
+
 已有的图不是 figspec 怎么办？
 
 - **结构化 SVG** → `svg_file_to_drawio` 确定性逆向
@@ -412,7 +419,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 48 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 54 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 

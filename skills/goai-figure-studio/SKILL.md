@@ -123,6 +123,14 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
    一律手工 `\n` 控行；边只能连 node 不能连 group——「连到分组带」的
    合同边用组边缘的隐形锚点小节点（`label:"", fill/stroke 同组底色`）
    落点；超长 edge label 改用 texts 独立摆放。
+   **美学 lint（机械化的合同条款）**：`validate_figspec` / `render_figure` 除排版
+   项外还跑 `server/core/aesthetics.py`——配色色系数、彩虹泳道、饱和色块比例、
+   近失对齐（1–8px）、兄弟节点尺寸一致性、越界/留白失衡、间距过密、连线穿
+   节点、交叉过多、描边档数、标题层级。其中 **≥4 色系、彩虹泳道、越界为
+   error 直接拒绝出图**；其余为 warning——**每条 warning 要么改 figspec 消掉，
+   要么在 figure_plan.md 写一行「保留理由」**（如「徽章有意错开」），不许
+   带着未处理的 warning 置 `figures_ready`。「看起来还行」不是理由：这些指标
+   正是审稿人肉眼说「有点乱」时实际在感知的东西。
    **出版级版式硬规范**（实测迭代出的顶会观感底线，重建时按此自查）：
    - **字号层级表**（硬闸门：render_figure 内置 lint，印刷等效
      `pt = px × 468 / canvas.width` 低于 4.5pt 拒绝渲染，<5.2pt 警告）。
@@ -144,8 +152,10 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
    - **文字-形状适配**（lint 自动查，写 figspec 时预防）：斜边形状的
      有效文本区远小于外框（diamond 55%、hexagon 70%、ellipse 72%、
      stadium 86% 宽），长文本放矩形卡，菱形/六边形只放短判定语；
-     多行文本估行数 = 文本宽(字符数×0.58×字号) ÷ 有效宽，行数×1.25×字号
-     不得超过有效高。端点徽章（stadium chip）单行放不下就加高到两行
+     多行文本行数由渲染器/lint 共用的按词折行 + Helvetica 真实字宽表（大写≈0.7em、
+     小写≈0.5em、`≤ × ≥`≈0.58em，粗体 ×1.08）算出；行数×1.25×字号不得超过
+     有效高。大写/符号密集的粗体短语（"FWHM ≤ 1.3× · SSA ≥"）比小写句子宽
+     得多，别按字符数目测。draw.io 产物带显式 <br/>，与 SVG 逐行一致。端点徽章（stadium chip）单行放不下就加高到两行
      体量（h ≥ 字号×2.5×1.25），禁止让文字贴边框。
    - 密度是**双向约束**：画布宽 ≤ 正文字号×122（防稀疏），同时留足
      呼吸空间（防拥挤，见下）。稀疏时首选**全局坐标等比缩小而字号
@@ -190,7 +200,9 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
   --detail "<N 图 svg+drawio 齐；主图 M 张走两轮候选制（6 生图/图上限），
-  审计 ledger 在 figure_plan.md>"`。独立图纸任务（无 loop 会话、
+  审计 ledger 在 figure_plan.md；lint warning 0 条或逐条附保留理由>"`。
+  置 gate 前对每张图的 figspec 重跑一次 `validate_figspec`，把返回的
+  `typo_warnings` 原文贴进 figure_plan.md 的「lint 收尾」节并逐条对应处置。独立图纸任务（无 loop 会话、
   `state/ledger.json` 未 init）不必强行 gate——交付登记写进
   figure_plan.md 即可。
 

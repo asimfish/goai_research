@@ -10,9 +10,26 @@ open_drawio_xml 打开继续编辑。
 from __future__ import annotations
 
 from typing import Any
-from xml.sax.saxutils import quoteattr
+from xml.sax.saxutils import escape, quoteattr
 
-from .figspec import DEFAULTS, edge_style_of, style_of
+from .figspec import DEFAULTS, edge_style_of, style_of, wrap_lines
+
+# 与 render_svg.TEXT_WIDTH_RATIO 同步：各形状的有效文本宽度比例
+_TEXT_WIDTH_RATIO = {
+    "diamond": 0.55, "hexagon": 0.70, "ellipse": 0.72, "cloud": 0.62,
+    "parallelogram": 0.78, "document": 0.85, "cylinder": 0.85,
+    "rect": 0.90, "rounded": 0.90, "stadium": 0.86,
+}
+
+
+def _html_lines(text: str, w: float, font_size: float, bold: bool = False) -> str:
+    """文字 → 显式 <br/> 折行的 HTML（html=1 会折叠 "\\n"，必须转成 <br/>）。
+
+    行由 figspec.wrap_lines 决定（Helvetica 真实字宽 + 粗体系数），与 SVG 渲染和
+    lint 完全一致：draw.io 自己的 whiteSpace=wrap 只作兜底，不再产生与 lint
+    估算不同的行数。
+    """
+    return "<br/>".join(escape(line) for line in wrap_lines(text, w, font_size, bold))
 
 _SHAPE_STYLE = {
     "rect": "rounded=0;whiteSpace=wrap;html=1;",
@@ -60,7 +77,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
                    "strokeColor=none;fillColor=none;")
         if ts.get("bold", True):
             t_style += "fontStyle=1;"
-        cells.append(_cell("goai-title", spec["title"], t_style,
+        cells.append(_cell("goai-title", escape(spec["title"]), t_style,
                            W / 2 - 240, t_y - 16, 480, 32))
 
     for g in spec.get("groups", []):
@@ -78,7 +95,7 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             style += "dashed=1;"
         if g.get("shadow"):
             style += "shadow=1;"
-        cells.append(_cell(g["id"], g.get("label", ""), style,
+        cells.append(_cell(g["id"], escape(g.get("label", "")), style,
                            g["x"], g["y"], g["w"], g["h"]))
 
     for nd in spec.get("nodes", []):
@@ -99,14 +116,16 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             style += "dashed=1;"
         if nd.get("shadow"):
             style += "shadow=1;"
-        value = nd.get("label", "")
+        nd_fs = style_of(nd, spec, "font_size", DEFAULTS["font_size"])
+        text_w = nd["w"] * _TEXT_WIDTH_RATIO.get(shape, 0.90)
+        lab_bold = bool(nd.get("label_bold", True)) or bool(nd.get("sublabel"))
+        value = _html_lines(nd.get("label", ""), text_w, nd_fs, bold=lab_bold)
         if nd.get("sublabel"):
-            nd_fs = style_of(nd, spec, "font_size", DEFAULTS["font_size"])
             sub_px = max(nd_fs * SUBLABEL_RATIO, SUBLABEL_MIN)
-            value = (f"<b>{nd.get('label', '')}</b><br/>"
+            value = (f"<b>{value}</b><br/>"
                      f"<font style='font-size:{sub_px:g}px' "
                      f"color='{nd.get('sublabel_color', '#555555')}'>"
-                     f"{nd['sublabel']}</font>")
+                     f"{_html_lines(nd['sublabel'], text_w, sub_px)}</font>")
         parent = "1"
         x, y = nd["x"], nd["y"]
         if nd.get("group") and nd["group"] in groups:
@@ -135,8 +154,9 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
                 f'              <mxPoint x="{p[0]:g}" y="{p[1]:g}" />' for p in wps)
             points = (f'\n            <Array as="points">\n{pts}\n'
                       f'            </Array>')
+        label_html = "<br/>".join(escape(ln) for ln in (e.get("label") or "").split("\n"))
         cells.append(
-            f'        <mxCell id={quoteattr(eid)} value={quoteattr(e.get("label", ""))} '
+            f'        <mxCell id={quoteattr(eid)} value={quoteattr(label_html)} '
             f'style={quoteattr(style)} edge="1" parent="1" '
             f'source={quoteattr(e["from"])} target={quoteattr(e["to"])}>\n'
             f'          <mxGeometry relative="1" as="geometry">{points}\n'
@@ -157,7 +177,8 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
         est_h = max(24, n_lines * t.get("font_size", 12) * 1.3)
         tx = t["x"] if align == "left" else (
             t["x"] - est_w if align == "right" else t["x"] - est_w / 2)
-        cells.append(_cell(t.get("id") or f"text-{i}", t.get("text", ""), style,
+        text_html = "<br/>".join(escape(ln) for ln in t.get("text", "").split("\n"))
+        cells.append(_cell(t.get("id") or f"text-{i}", text_html, style,
                            tx, t["y"] - est_h / 2, est_w, est_h))
 
     body = "\n".join(cells)

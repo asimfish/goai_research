@@ -4,7 +4,8 @@ from __future__ import annotations
 from typing import Any
 from xml.sax.saxutils import escape
 
-from .figspec import DEFAULTS, border_point, center, edge_style_of, style_of
+from .figspec import (DEFAULTS, center, edge_label_point, edge_points, edge_style_of,
+                      style_of, text_units, wrap_lines)
 
 FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif"
 
@@ -75,28 +76,16 @@ def _shape_svg(nd: dict[str, Any], fill: str, stroke: str, dashed: bool,
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" {common}/>'
 
 
-def _wrap_label(label: str, w: float, font_size: float) -> list[str]:
-    """按宽度粗略折行（CJK 记 1 字宽，拉丁按 0.61 字宽估算（加粗体偏保守））。"""
-    max_units = max(int(w / (font_size * 0.62)), 4)
-    lines: list[str] = []
-    for hard in (label or "").split("\n"):
-        cur, units = "", 0.0
-        for ch in hard:
-            u = 1.0 if ord(ch) > 0x2E7F else 0.61
-            if units + u > max_units and cur:
-                lines.append(cur)
-                cur, units = ch, u
-            else:
-                cur += ch
-                units += u
-        lines.append(cur)
-    return lines or [""]
+def _wrap_label(label: str, w: float, font_size: float, bold: bool = False) -> list[str]:
+    """按单词折行，Helvetica 真实字宽表；实现在 figspec.wrap_lines，
+    与 drawio 渲染和 lint 共用，保证三方行数一致。"""
+    return wrap_lines(label, w, font_size, bold)
 
 
 def _text_block(cx: float, cy: float, label: str, w: float, font_size: float,
                 color: str = "#1a1a1a", bold: bool = False,
                 anchor: str = "middle") -> str:
-    lines = _wrap_label(label, w, font_size)
+    lines = _wrap_label(label, w, font_size, bold)
     lh = font_size * 1.25
     y0 = cy - lh * (len(lines) - 1) / 2
     weight = ' font-weight="bold"' if bold else ""
@@ -156,11 +145,9 @@ def render(spec: dict[str, Any]) -> str:
                 f'{escape(g["label"])}</text>')
 
     for e in spec.get("edges", []):
-        src, dst = nodes[e["from"]], nodes[e["to"]]
-        wps = [tuple(p) for p in (e.get("waypoints") or [])]
-        p_start = border_point(src, wps[0] if wps else center(dst))
-        p_end = border_point(dst, wps[-1] if wps else center(src))
-        pts = [p_start, *wps, p_end]
+        pts = edge_points(e, nodes)      # 与 lint 共用的点列/标签锚点算法
+        if not pts:
+            continue
         color = edge_style_of(e, spec, "color", DEFAULTS["edge_color"])
         width = edge_style_of(e, spec, "width", DEFAULTS["edge_width"])
         dash = ' stroke-dasharray="7,5"' if e.get("dashed") else ""
@@ -170,13 +157,10 @@ def render(spec: dict[str, Any]) -> str:
         parts.append(f'<path d="{d}" fill="none" stroke="{color}" '
                      f'stroke-width="{width}"{dash}{marker}/>')
         if e.get("label"):
-            mid = pts[len(pts) // 2] if len(pts) % 2 == 1 else (
-                (pts[len(pts) // 2 - 1][0] + pts[len(pts) // 2][0]) / 2,
-                (pts[len(pts) // 2 - 1][1] + pts[len(pts) // 2][1]) / 2)
+            mid = edge_label_point(pts)
             fs = style_of(e, spec, "font_size", 12.5)
             lab_lines = e["label"].split("\n")
-            est_w = max(sum(1.0 if ord(c) > 0x2E7F else 0.61 for c in ln) * fs
-                        for ln in lab_lines) + 8
+            est_w = max(text_units(ln) * fs for ln in lab_lines) + 8
             est_h = fs * 1.25 * (len(lab_lines) - 1) + fs * 1.5
             parts.append(
                 f'<rect x="{mid[0] - est_w / 2}" y="{mid[1] - est_h / 2}" '
@@ -196,7 +180,7 @@ def render(spec: dict[str, Any]) -> str:
         tw = text_width(nd)
         if nd.get("sublabel"):
             sub_fs = max(fs * SUBLABEL_RATIO, SUBLABEL_MIN)
-            n_lab = len(_wrap_label(label, tw, fs))
+            n_lab = len(_wrap_label(label, tw, fs, bold=True))
             n_sub = len(_wrap_label(nd["sublabel"], tw, sub_fs))
             lab_h = fs * 1.25 * n_lab
             sub_h = sub_fs * 1.25 * n_sub

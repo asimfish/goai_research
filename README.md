@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -27,6 +27,17 @@
 
 ## 📰 News
 
+- **2026-09-02 — Aesthetics become a gate; text metrics become honest.** The
+  figure lint gains a second layer that measures what reviewers mean by "looks
+  messy": colour-family count (≤ 2 + accent, ≥ 4 is an error), rainbow lanes,
+  near-miss alignment, sibling-size drift, cramped spacing, edges cutting
+  through nodes, crossings, stroke-weight tiers, title hierarchy, and edge
+  labels colliding with their own endpoints. Underneath, all three consumers
+  (SVG, draw.io, lint) now share one word-level wrapper driven by real
+  Helvetica glyph widths with a bold factor — the old uniform 0.61 em estimate
+  let caps-heavy bold chips overflow in draw.io while the lint said "fits".
+  draw.io output carries explicit `<br/>` breaks so it renders exactly the
+  lines the lint measured. Sample figures re-laid-out to zero warnings. 54 tests.
 - **2026-09-02 — Independent audit closes two loop-protocol holes.** A
   read-only audit against the original spec found that `check-done` could
   declare DONE with a single recorded gate (the exact shape of a pipeline that
@@ -46,19 +57,6 @@
   retro MCP tool, marked "model prediction, pending validation"; conclusions
   end with the highest-discovery-value next experiments. Figures: ≤2 theme
   colors, image-first reference generation for every delivered figure.
-- **2026-08-31 — Production-quality layer.** A cold-start run in Chinese
-  exposed a blind spot: correct content, degraded typesetting. Now shipped —
-  a CJK language contract with a dedicated `ctexart` template (no more
-  hybrid EN/CN documents; compile-verified with xelatex), table design rules
-  (no split half-tables, no raw BibTeX keys in cells, no typewriter `NA`
-  dumps), a pipeline-jargon firewall for reader-facing text, bib field
-  hygiene (DOI/URL redundancy, brace protection for chemical formulas), and
-  a "production quality" review dimension that requires page-by-page PDF
-  inspection. `tex_guard` now **blocks** bare-bibkey leaks — CJK-adjacent
-  and digit-leading keys included.
-<details>
-<summary>Earlier milestones</summary>
-
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
@@ -293,6 +291,18 @@ remain, and the skill ships a font-size hierarchy table (title > lane label >
 node title > sublabel) so generated figures come out with proportionate,
 readable type by construction.
 
+**So is aesthetics.** The same lint carries a second layer that turns "looks
+like a top-venue figure" into measurable checks: colour restraint (chromatic
+colours clustered into hue families — ≤ 2 theme colours + 1 accent; four or
+more families is an error), no rainbow lanes (groups each painted a saturated
+colour are rejected), no saturated-block overload, no near-miss alignment
+(cards whose edges differ by 1–8 px — the single most amateur tell), sibling
+nodes of equal size, no content outside the canvas, balanced margins, minimum
+spacing, edges that never cut through unrelated nodes, few crossings, at most
+two stroke weights, and the title as the largest type on the page. Errors
+block the render; every warning must be either fixed or justified in the
+figure plan before `figures_ready` can pass.
+
 Already have a figure that isn't a figspec?
 
 - **Structured SVG** → `svg_file_to_drawio` reverses it deterministically
@@ -454,7 +464,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 48 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 54 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 
