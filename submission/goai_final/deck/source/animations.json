@@ -25,7 +25,7 @@
         "trigger": "after-previous"
       }
     },
-    "02_科学问题": {
+    "02_背景与科学gap": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -37,7 +37,7 @@
         "trigger": "after-previous"
       }
     },
-    "03_系统能力": {
+    "03_科学问题": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -49,7 +49,19 @@
         "trigger": "after-previous"
       }
     },
-    "04_Agent交互与数据流": {
+    "04_系统能力": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "05_Agent交互与数据流": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -61,7 +73,7 @@
         "trigger": "after-previous"
       },
       "groups": {
-        "p04-lead": {
+        "p05-lead": {
           "effect": "fade",
           "order": 1,
           "duration": 0.5
@@ -130,7 +142,7 @@
         }
       }
     },
-    "05_方法路线与闸门": {
+    "06_方法路线与闸门": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -142,7 +154,7 @@
         "trigger": "after-previous"
       }
     },
-    "06_RECIPE融入": {
+    "07_RECIPE融入": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -154,7 +166,7 @@
         "trigger": "after-previous"
       }
     },
-    "07_正式案例结果": {
+    "08_正式案例结果": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -166,7 +178,7 @@
         "trigger": "after-previous"
       }
     },
-    "08_科学结论与实验方向": {
+    "09_科学结论与实验方向": {
       "transition": {
         "effect": "fade",
         "duration": 0.4
@@ -178,19 +190,7 @@
         "trigger": "after-previous"
       }
     },
-    "09_LLZO案例": {
-      "transition": {
-        "effect": "fade",
-        "duration": 0.4
-      },
-      "animation": {
-        "effect": "none",
-        "duration": 0.4,
-        "stagger": 0.3,
-        "trigger": "after-previous"
-      }
-    },
-    "10_基准指标": {
+    "10_LLZO案例": {
       "transition": {
         "effect": "fade",
         "duration": 0.4

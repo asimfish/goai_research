@@ -69,8 +69,7 @@
 - mode: baseline
 
 ## page_charts
-- P07: kpi_cards
-- P10: grouped_bar_chart
+- P08: kpi_cards
 
 ## forbidden
 - Mixing icon libraries

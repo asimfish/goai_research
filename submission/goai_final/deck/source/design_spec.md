@@ -129,8 +129,7 @@ Catalog read: 76 templates
 | Page | Template | Path | Summary-quote (verbatim) | Usage |
 | ---- | -------- | ---- | ------------------------ | ----- |
 | P06 | pipeline_with_stages（改为用户提供的论文架构图，不再套模板） | templates/charts/pipeline_with_stages.svg | "Pick for 3-5 horizontal pipeline stages, each = title + 1-line description + output artifact, connected by arrows (data pipelines, ETL, build pipelines)." | RECIPE 三阶段（候选生成 → 过滤枚举 → 集合重排）+ MCP 输出产物 |
-| P07 | kpi_cards | templates/charts/kpi_cards.svg | "Pick for 4-8 standalone numeric metrics shown as overview cards (2x2 or 1x4) — exec summary opener, dashboard headline, quarterly recap, results-at-a-glance." | 正式案例四个关键数字（51/51、100 条、219 次、23 页） |
-| P10 | grouped_bar_chart | templates/charts/grouped_bar_chart.svg | "Pick for 2-4 series side-by-side across the same categories (e.g. YoY/QoQ)." | Retrieval-Retro vs RECIPE（checkpoint 评测汇总）在 Combo@1 / Combo@5 / Combo@20 / Combo MRR 四类指标上的对照 |
+| P08 | kpi_cards | templates/charts/kpi_cards.svg | "Pick for 4-8 standalone numeric metrics shown as overview cards (2x2 or 1x4) — exec summary opener, dashboard headline, quarterly recap, results-at-a-glance." | 正式案例四个关键数字（51/51、100 条、219 次、23 页） |
 
 Runners-up considered:
 - numbered_steps | rejected for P05: 每个阶段都有明确输出产物（候选池 / 4,928 个集合 / Top-K 排序），pipeline_with_stages 更贴合
@@ -168,7 +167,16 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 - **Subtitle**: 一行主题进去，可核验的综述、证据链与候选合成路线出来
 - **Info**: GOAI 2026 · AI for Research 材料方向 · 进阶路线 C ｜ 高京 · 吕丁阳 · 李雨峰（上海交通大学 / 中国科学院大学）｜ github.com/asimfish/goai_research
 
-#### Slide 02 - 科学问题
+#### Slide 02 - 背景与科学 gap
+- **Layout**: 左侧四节点知识闭环图（历史文献 → 大模型抽取压缩 → 假设与合成方案 → 自动化实验室 → 回到文献），右侧三条"为什么现在重要" + 我们的科学 gap
+- **Title**: 自动化实验室缺的不是产能，而是能随实验迭代的知识闭环
+- **Core message**: 实验平台已能高通量做实验，"做什么、为什么"仍靠人读文献；AI for Science 的空缺是让大模型把文献知识抽取、总结、压缩成可执行的假设，并与实验结果、历史文献迭代。
+- **Content**:
+  - 闭环四节点；实线为本系统覆盖的知识侧，虚线为下一环
+  - 为什么重要：实验产能 ≫ 知识吞吐；文献中的成功与失败边界是最便宜的实验；闭环要自我纠错需要可核验证据
+  - 我们的科学 gap：把散落的合成知识变成可执行、可追溯、可回写的方案
+
+#### Slide 03 - 科学问题
 - **Layout**: 上方核心结论行；下方左右两栏（两个案例）+ 底部三条难点
 - **Title**: 新化合物的合成条件散落在文献里，"哪些能迁移"才是要回答的问题
 - **Core message**: 对只有单篇报道的化合物，研究者需要知道文献能限定什么、哪些条件可从近邻体系迁移、哪些迁移不成立、下一步做什么实验最有发现价值。
@@ -177,7 +185,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 案例 B · LLZO 石榴石固态电解质：低温致密化、两步烧结、冷烧结、超快烧结各有先例，却缺少跨掺杂体系可比的工艺图景——"文献丰富、条件不可比"。
   - 难点：检索混入综述与参考文献 · "未检出"≠"未研究"（别名与语料覆盖制造假空白） · 温度/气氛/致密度只有在实验语境一致时才能比较
 
-#### Slide 03 - 系统能力
+#### Slide 04 - 系统能力
 - **Layout**: 左 812px 系统流水线图（no-crop），右侧三层要点
 - **Title**: 系统把"生成像论文的结论"改为"保存证据与判定过程"
 - **Core message**: 三层分离——认知层 9 个 Markdown 技能由 Codex 宿主执行，确定性层 4 个 MCP server/25 个工具可离线测试，控制层账本回环由代码判定"完成"。
@@ -189,7 +197,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 
 ### Part 2: 方法
 
-#### Slide 04 - Agent 交互与数据流
+#### Slide 05 - Agent 交互与数据流
 - **Layout**: 三行泳道（Agent / MCP 工具 / 交接产物）× 六个步骤，下方共享状态条，再下方闭环三段（本轮输出 → 自动化实验室 → 结果回写），左侧回环箭头回到编排器；底部两行 takeaway
 - **Title**: Agent 只通过产物文件与账本交接，每一步数据流都可审计
 - **Core message**: 中间产物在六类 Agent 之间逐级流转，每一步产物落盘可查；审稿 issue 沿原路返工；输出的候选路线、表征方案与失败判据是自动化实验室闭环探索可以直接消费、并回写为证据的结构化对象。
@@ -200,7 +208,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 闭环：本轮输出（综述 PDF · claim_evidence · 候选路线 + 前驱体 + 表征方案 + 失败判据）→ 自动化实验室（合成、表征、同格式记录）→ 结果回写为证据 → 新一轮
   - takeaway：解决的科学问题 / 对闭环探索的关键
 
-#### Slide 05 - 方法路线与闸门
+#### Slide 06 - 方法路线与闸门
 - **Layout**: 上方 9 节点水平闸门链（自绘直角节点 + 单线），下方两栏：人工停点 / 对抗审稿
 - **Title**: 九个出口闸门由代码判定完成，审与做分离
 - **Core message**: 完成不是模型自报——`check-done` 只在九个闸门全部落账、无 FAIL、无 open blocker/major、且 review_pass 指向真实 trace 时退出 0。
@@ -209,7 +217,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 人工停点（正式运行触发 4 次）：范围确认 · 5 条作者名 MISMATCH 三轮未收敛升级 · 贡献结构确认 · 终审
   - 对抗审稿：全新上下文、三视角（领域专家 / 方法严谨派 / 期刊编辑）、结构化 issue 路由回属主阶段；同一 issue 三轮未收敛升级人工
 
-#### Slide 06 - RECIPE 融入
+#### Slide 07 - RECIPE 融入
 - **Layout**: 上方三阶段流水线（pipeline_with_stages 结构），下方左右：融入规则 / 输出字段
 - **Title**: 前驱体预测来自团队 NeurIPS 2026 投稿 RECIPE：把逆合成改为变长集合排序
 - **Core message**: Generator 高召回 → 化学过滤与 2–5 元集合枚举 → Complete-Set Reranker 对完整前驱体集合排序；以 MCP 工具 `predict_precursor_routes` 进入想法环节，输出只能标注为"模型候选、待实验验证"。
@@ -223,7 +231,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 
 ### Part 3: 结果
 
-#### Slide 07 - 正式案例结果
+#### Slide 08 - 正式案例结果
 - **Layout**: 上方 1x4 KPI 卡（kpi_cards 结构，直角无阴影），下方研究路线图（no-crop，居中）
 - **Title**: 纯主题冷启动：51 篇文献全部核验、100 条结论全部可追溯、23 页正式报告
 - **Core message**: 唯一输入是一行主题；系统在 4 个人工停点续跑后交出 20 页综述，再经专家反馈修订为 23 页正式稿。
@@ -235,7 +243,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 两轮对抗审稿：0 blocker / 0 major / 0 minor
   - 图注：正式报告研究路线图——从 Ba–Y–Si–O 组成空间，经候选晶相与两条合成路径，到互补表征反馈
 
-#### Slide 08 - 科学结论与实验方向
+#### Slide 09 - 科学结论与实验方向
 - **Layout**: 左栏三条结论（编号），右栏四个方向 + 模型 Top-1 前驱体
 - **Title**: 目标相只有一篇直接报道；组成坐标比单一温度更能解释成相差异
 - **Core message**: 系统给出的不是配方，而是文献证据限定的可迁移范围与四类可检验实验方向。
@@ -246,7 +254,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 方向 1 目标组成附近的局部相图 · 方向 2 Zn–Y–氧计量耦合 · 方向 3 固相成相与高温溶液长晶并行 · 方向 4 Mg/Co 类比
   - 模型候选（待实验验证）：Zn `ZnO+Y2O3+SiO2+BaCO3` · Mg `MgO+Y2O3+BaCO3+SiO2` · Co `Co3O4+Y2O3+BaCO3+SiO2`
 
-#### Slide 09 - LLZO 案例
+#### Slide 10 - LLZO 案例
 - **Layout**: 左侧三个数字（竖排）+ Top-1 路线；右侧失效模式列表（两列）
 - **Title**: 初赛承诺的 LLZO 诊断轮跑通端到端，并暴露、修复了 11 类集成失效模式
 - **Core message**: 46 篇文献六个子主题覆盖、46/46 核验通过、10 页综述、模型 Top-1 与文献一致；Top-2 起出现可疑命名，因而保留"模型生成—规范化—文献复核—审稿"闸门。
@@ -255,19 +263,6 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
   - 模型 Top-1 `ZrO2 + La2O3 + Li2CO3` 与文献一致；Top-2–5 出现 `LiHO` / `La(HO)3` → 标记"化学路线未验证"
   - 失效模式（已修复）：MCP 审批配置 · Agent 工作目录 · 并行写库竞争 · exit=0 假成功 · 旧产物假成功 · 上下文膨胀 · 上游限流 · 图片 lint 假绿 · retro 字段不兼容 · 测试契约漂移 · 同模型审稿独立性
   - 后续替代材料分析：Li6PS5Cl / Li3YCl6 / LATP 的模型 Top-1 路线均通过文献复核
-
-#### Slide 10 - 基准指标
-- **Layout**: 左 2/3 分组柱状图，右 1/3 解读 + 一致性说明
-- **Title**: 留出测试集 Combo@1 71.81，比 Retrieval-Retro 高 11.4 点
-- **Core message**: 指标来自随 checkpoint 提交的源包评测汇总，落在论文三种子区间内；逆合成部分只交 checkpoint、最小加载/预测代码与原料库，CPU dry run 保证可加载可预测。
-- **Visualization**: grouped_bar_chart（两系列：Retrieval-Retro / RECIPE checkpoint 评测汇总；类别：Combo@1、Combo@5、Combo@20、Combo MRR；值 60.40/66.22/69.00/63.29 vs 71.81/84.71/89.21/77.48）
-- **Content**:
-  - Stage 1 Top-20 覆盖 95.78（基线 92.96）
-  - 论文三种子均值：71.70 ± 0.10 / 84.52 ± 1.48 / 89.82 ± 1.74 / 77.43 ± 0.69
-  - 同枚举 product 对照仅 Combo@1 11.65 / MRR 23.24 → 增益来自学习到的集合级排序，而非枚举或过滤
-  - 来源：vendor/two_stage_retro/checkpoints/stage1_summary.json、stage2_summary.json；dry run：tools/retro_dry_run.py
-
-### Part 4: 复现与开源
 
 #### Slide 11 - 证据链与可追溯
 - **Layout**: 上方五节点水平链（自绘），中部一条真实结论示例，底部运行统计三段

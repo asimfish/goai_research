@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <g id="p07-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p07-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">合成方案建模：AI 预测前驱体，合成条件由近邻体系类比推理</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p07-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">
+      <tspan x="72" dy="0">前驱体交给 RECIPE：把无机逆合成重述为<tspan fill="#C48A2B" font-weight="700">变长前驱体集合的排序问题</tspan>（团队 NeurIPS 2026 投稿）；</tspan>
+      <tspan x="72" dy="34">温度、气氛、助熔剂不由模型臆造，而从结构近邻的实验记录中按证据等级类比，并标出不可迁移的边界。</tspan>
+    </text>
+  </g>
+  <g id="figure-recipe">
+    <rect x="72" y="214" width="560" height="382" fill="#FFFFFF" stroke="#D5DBE3" stroke-width="1"/>
+    <image href="../images/recipe_architecture.png" x="76" y="218" width="552" height="374" preserveAspectRatio="xMidYMid meet"/>
+    <text x="72" y="616" font-size="16" fill="#5A6573">RECIPE 两阶段架构（NeurIPS 2026 投稿图 1）：候选生成 → 候选集合重排</text>
+  </g>
+  <g id="stage-summary">
+    <rect x="72" y="628" width="560" height="44" fill="#F3F5F8"/>
+    <text x="84" y="646" font-size="16" fill="#5A6573">Retro 留出测试集 2,558 条（RECIPE / Retrieval-Retro，checkpoint 评测汇总）</text>
+    <text x="84" y="665" font-size="16" fill="#1D1D1F">Combo@1 <tspan font-weight="700" fill="#1F4D78">71.81</tspan> / 60.40 · Combo@20 <tspan font-weight="700" fill="#1F4D78">89.21</tspan> / 69.00 · MRR <tspan font-weight="700" fill="#1F4D78">77.48</tspan> / 63.29</text>
+  </g>
+  <g id="precursor-block">
+    <rect x="664" y="214" width="6" height="170" fill="#1F4D78"/>
+    <text x="688" y="240" font-size="24" font-weight="700" fill="#1F4D78">① 前驱体：让 AI 预测</text>
+    <text x="688" y="274" font-size="18" fill="#1D1D1F">
+      <tspan x="688" dy="0">Top-30 候选池 → 2–5 元集合枚举 → 学习到的集合重排 Top-K；</tspan>
+      <tspan x="688" dy="26">每条路线附分数与校验值，标注“模型候选、未经实验验证”</tspan>
+      <tspan x="688" dy="34"><tspan font-weight="700">Zn 目标 Top-1</tspan>  ZnO + Y2O3 + SiO2 + BaCO3 · <tspan fill="#C48A2B" font-weight="700">0.594</tspan></tspan>
+      <tspan x="688" dy="26"><tspan font-weight="700">Mg / Co 类比</tspan>  MgO · Co3O4 分别为首选 Zn 位替代源</tspan>
+    </text>
+  </g>
+  <g id="integration-rules">
+    <rect x="664" y="404" width="6" height="264" fill="#C48A2B"/>
+    <text x="688" y="430" font-size="24" font-weight="700" fill="#1F4D78">② 合成条件：近邻体系类比推理</text>
+    <text x="688" y="464" font-size="18" fill="#1D1D1F">
+      <tspan x="688" dy="0"><tspan font-weight="700">固相成相</tspan>  1300 °C 预烧 → 1600 °C 烧成（Ba–Y–Si–O 陶瓷系列）</tspan>
+      <tspan x="688" dy="28"><tspan font-weight="700">助熔生长</tspan>  MoO3 助熔 · Pt 坩埚 · 1150 °C · 2 K/h 慢冷（同谱系单晶）</tspan>
+      <tspan x="688" dy="28"><tspan font-weight="700">相场筛查</tspan>  1273 K 预烧 + 1573 K 三次退火（粉体相场研究）</tspan>
+      <tspan x="688" dy="36"><tspan font-weight="700" fill="#C48A2B">边界</tspan>  以上数值来自无 Zn 谱系，不得无条件迁移到含 Zn 目标，</tspan>
+      <tspan x="688" dy="26">因此第一步实验是目标组成附近的局部相图</tspan>
+      <tspan x="688" dy="36"><tspan font-weight="700" fill="#1F4D78">方案</tspan> = 前驱体 + 条件 + 表征（PXRD / 单晶 / EDS）+ 失败判据</tspan>
+    </text>
+  </g>
+  <g id="p07-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">7 / 13</text>
+  </g>
+</svg>

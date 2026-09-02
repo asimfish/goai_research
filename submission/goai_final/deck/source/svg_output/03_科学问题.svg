@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
-  <g id="p02-bg">
+  <g id="p03-bg">
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
-  <g id="p02-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">合成条件散落在文献里，“哪些能迁移”才是要回答的科学问题</text>
+  <g id="p03-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">合成条件与前人经验散落在文献里，站在巨人肩膀上才有新发现</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
-  <g id="p02-lead">
+  <g id="p03-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
-      <tspan x="72" dy="0">对只有单篇报道的化合物，研究者需要知道文献能限定什么、哪些近邻条件可以迁移、</tspan>
-      <tspan x="72" dy="32">哪些迁移<tspan fill="#C48A2B" font-weight="700">不成立</tspan>，以及下一步做什么实验<tspan fill="#C48A2B" font-weight="700">最有发现价值</tspan>。</tspan>
-      <tspan x="72" dy="32">科学问题本身也是探索出来的：一个来自团队自主探索，一个来自领域专家推荐。</tspan>
+      <tspan x="72" dy="0">成功的合成条件和失败的边界都写在文献里，关键是<tspan fill="#C48A2B" font-weight="700">用哪些、怎么找</tspan>，以及找到之后</tspan>
+      <tspan x="72" dy="32">哪里还有<tspan fill="#C48A2B" font-weight="700">新的科学发现</tspan>。科学问题本身也是探索出来的：一个来自团队自主探索，</tspan>
+      <tspan x="72" dy="32">一个来自领域专家推荐。</tspan>
     </text>
   </g>
-  <g id="p02-case-a">
+  <g id="p03-case-a">
     <rect x="72" y="238" width="556" height="250" fill="#F3F5F8"/>
     <rect x="72" y="238" width="6" height="250" fill="#1F4D78"/>
     <text x="102" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 A · LLZO 石榴石固态电解质</text>
     <text x="102" y="306" font-size="18" fill="#5A6573">团队在初赛调研中自主探索确定的科学问题</text>
     <text x="102" y="322" font-size="24" fill="#1D1D1F">
       <tspan x="102" dy="16">低温致密化、两步烧结、冷烧结、超快烧结</tspan>
-      <tspan x="102" dy="32">各有先例，却缺少跨掺杂体系可比的统一</tspan>
-      <tspan x="102" dy="32">工艺图景；温度、气氛与致密度只有在</tspan>
-      <tspan x="102" dy="32">实验语境一致时才能比较。</tspan>
+      <tspan x="102" dy="32">各有先例，文献很多，却没有人把它们整理成</tspan>
+      <tspan x="102" dy="32">跨掺杂体系的统一工艺图景；要找的是</tspan>
+      <tspan x="102" dy="32">可迁移的有效路线，而非重复已有探索。</tspan>
     </text>
-    <text x="102" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献丰富 · 条件不可比</text>
+    <text x="102" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献丰富 · 需要梳理出可迁移路线</text>
   </g>
-  <g id="p02-case-b">
+  <g id="p03-case-b">
     <rect x="652" y="238" width="556" height="250" fill="#F3F5F8"/>
     <rect x="652" y="238" width="6" height="250" fill="#4F8A9E"/>
     <text x="682" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 B · Ba5Y12Zn[O(SiO4)]8（BYZSO）</text>
@@ -40,21 +40,21 @@
     </text>
     <text x="682" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献稀缺 · 近邻丰富</text>
   </g>
-  <g id="p02-difficulties">
+  <g id="p03-difficulties">
     <line x1="72" y1="528" x2="1208" y2="528" stroke="#D5DBE3" stroke-width="1"/>
-    <text x="72" y="560" font-size="18" fill="#5A6573">三个难点</text>
+    <text x="72" y="560" font-size="18" fill="#5A6573">我们要回答的三个问题</text>
     <use data-icon="tabler-outline/search" x="72" y="582" width="32" height="32" fill="#1F4D78" stroke-width="2"/>
-    <text x="116" y="606" font-size="24" fill="#1D1D1F">检索混入综述与参考文献列表</text>
-    <text x="116" y="636" font-size="18" fill="#5A6573">召回率与阅读成本相互牵制</text>
-    <use data-icon="tabler-outline/alert-triangle" x="452" y="582" width="32" height="32" fill="#1F4D78" stroke-width="2"/>
-    <text x="496" y="606" font-size="24" fill="#1D1D1F">“未检出”不等于“未研究”</text>
-    <text x="496" y="636" font-size="18" fill="#5A6573">别名、缩写与语料覆盖会制造假空白</text>
+    <text x="116" y="606" font-size="24" fill="#1D1D1F">用哪些文献</text>
+    <text x="116" y="636" font-size="18" fill="#5A6573">按结构近邻判据筛选，而非只看元素相似</text>
+    <use data-icon="tabler-outline/database" x="452" y="582" width="32" height="32" fill="#1F4D78" stroke-width="2"/>
+    <text x="496" y="606" font-size="24" fill="#1D1D1F">怎么找到、怎么核对</text>
+    <text x="496" y="636" font-size="18" fill="#5A6573">全文库 + 在线库检索，逐条核对后再用</text>
     <use data-icon="tabler-outline/flask" x="832" y="582" width="32" height="32" fill="#1F4D78" stroke-width="2"/>
-    <text x="876" y="606" font-size="24" fill="#1D1D1F">数值只在语境一致时可比</text>
-    <text x="876" y="636" font-size="18" fill="#5A6573">误读升温节点或淬火温度会产生假规律</text>
+    <text x="876" y="606" font-size="24" fill="#1D1D1F">新发现在哪里</text>
+    <text x="876" y="636" font-size="18" fill="#5A6573">相图缺口、组成—结构耦合、模型候选路线</text>
   </g>
-  <g id="p02-footer">
+  <g id="p03-footer">
     <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">2 / 13</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">3 / 13</text>
   </g>
 </svg>

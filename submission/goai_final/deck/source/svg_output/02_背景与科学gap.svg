@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <defs>
+    <marker id="loopA" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1F4D78"/>
+    </marker>
+    <marker id="loopB" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#4F8A9E"/>
+    </marker>
+  </defs>
+  <g id="p02-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p02-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">自动化实验室缺的不是产能，而是能随实验迭代的知识闭环</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p02-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">
+      <tspan x="72" dy="0">实验平台已能高通量地做实验，“做什么实验、为什么做”仍靠人读文献。AI for Science 的空缺是：</tspan>
+      <tspan x="72" dy="36">让大模型把文献知识<tspan fill="#C48A2B" font-weight="700">抽取、总结、压缩</tspan>成可执行的假设，并与实验结果、历史文献形成迭代。</tspan>
+    </text>
+  </g>
+  <g id="loop-literature">
+    <rect x="72" y="244" width="252" height="84" fill="#F3F5F8"/>
+    <rect x="72" y="244" width="252" height="4" fill="#1F4D78"/>
+    <text x="92" y="278" font-size="18" font-weight="700" fill="#1F4D78">历史文献与数据库</text>
+    <text x="92" y="304" font-size="16" fill="#5A6573">3.8 kw 篇全文 + 在线五源检索</text>
+    <line x1="326" y1="286" x2="386" y2="286" stroke="#1F4D78" stroke-width="2" marker-end="url(#loopA)"/>
+  </g>
+  <g id="loop-llm">
+    <rect x="392" y="244" width="300" height="84" fill="#1F4D78"/>
+    <text x="412" y="278" font-size="18" font-weight="700" fill="#FFFFFF">大模型 Agent：抽取 · 总结 · 压缩</text>
+    <text x="412" y="304" font-size="16" fill="#FFFFFF" fill-opacity="0.85">检索 → 核对 → 条件表 → 可迁移范围</text>
+    <line x1="542" y1="330" x2="542" y2="480" stroke="#1F4D78" stroke-width="2" marker-end="url(#loopA)"/>
+  </g>
+  <g id="loop-hypothesis">
+    <rect x="392" y="486" width="300" height="84" fill="#FFFFFF" stroke="#1F4D78" stroke-width="1.5"/>
+    <rect x="392" y="486" width="300" height="4" fill="#C48A2B"/>
+    <text x="412" y="520" font-size="18" font-weight="700" fill="#1F4D78">假设与合成方案</text>
+    <text x="412" y="546" font-size="16" fill="#5A6573">前驱体 · 温度/气氛 · 表征 · 失败判据</text>
+    <line x1="388" y1="528" x2="330" y2="528" stroke="#4F8A9E" stroke-width="2" marker-end="url(#loopB)"/>
+  </g>
+  <g id="loop-lab">
+    <rect x="72" y="486" width="252" height="84" fill="#FFFFFF" stroke="#4F8A9E" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <rect x="72" y="486" width="252" height="4" fill="#4F8A9E"/>
+    <text x="92" y="520" font-size="18" font-weight="700" fill="#4F8A9E">自动化实验室</text>
+    <text x="92" y="546" font-size="16" fill="#5A6573">合成 · 表征 · 结果回写为证据</text>
+    <line x1="198" y1="482" x2="198" y2="334" stroke="#4F8A9E" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#loopB)"/>
+  </g>
+  <g id="loop-center">
+    <text x="382" y="404" font-size="18" font-weight="700" fill="#C48A2B" text-anchor="middle">知识闭环</text>
+    <text x="382" y="428" font-size="16" fill="#5A6573" text-anchor="middle">每一轮都站在前人的成功与失败之上</text>
+    <text x="72" y="612" font-size="16" fill="#8A94A0">实线：本系统覆盖的知识侧（文献 → 抽取压缩 → 假设方案）　虚线：下一环，实验结果回写后触发新一轮</text>
+  </g>
+  <g id="why-now">
+    <rect x="740" y="244" width="6" height="286" fill="#1F4D78"/>
+    <text x="764" y="270" font-size="24" font-weight="700" fill="#1F4D78">为什么现在重要</text>
+    <text x="764" y="308" font-size="18" fill="#1D1D1F">
+      <tspan x="764" dy="0"><tspan fill="#C48A2B" font-weight="700">①</tspan> 实验产能已经远大于知识吞吐：机器人一天能做的实验，</tspan>
+      <tspan x="764" dy="26">   人几周也读不完对应的文献</tspan>
+      <tspan x="764" dy="34"><tspan fill="#C48A2B" font-weight="700">②</tspan> 文献里的成功经验与失败边界，是最便宜的“实验”；</tspan>
+      <tspan x="764" dy="26">   跳过它们等于重复别人已经做过的探索</tspan>
+      <tspan x="764" dy="34"><tspan fill="#C48A2B" font-weight="700">③</tspan> 闭环要能自我纠错：每条假设必须带可核验的证据，</tspan>
+      <tspan x="764" dy="26">   而不是一段无法追溯的总结</tspan>
+    </text>
+    <line x1="764" y1="474" x2="1208" y2="474" stroke="#D5DBE3" stroke-width="1"/>
+    <text x="764" y="506" font-size="18" fill="#1D1D1F">
+      <tspan x="764" dy="0"><tspan font-weight="700" fill="#1F4D78">我们的科学 gap</tspan>　把散落在文献中的合成知识，变成</tspan>
+      <tspan x="764" dy="26"><tspan fill="#C48A2B" font-weight="700">可执行、可追溯、可回写</tspan>的合成方案，接到实验闭环里。</tspan>
+    </text>
+  </g>
+  <g id="p02-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">2 / 13</text>
+  </g>
+</svg>

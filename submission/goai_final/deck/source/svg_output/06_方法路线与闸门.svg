@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
-  <g id="p05-bg">
+  <g id="p06-bg">
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
-  <g id="p05-header">
+  <g id="p06-header">
     <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">九道质量关卡由程序检查，写稿与审稿分离</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
-  <g id="p05-lead">
+  <g id="p06-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
       <tspan x="72" dy="0">“做完了”不由模型自己宣布：九道关卡全部通过、没有未关闭的严重问题、</tspan>
       <tspan x="72" dy="38">终审有审稿记录，程序才放行交付。</tspan>
     </text>
   </g>
-  <g id="p05-gate-chain">
+  <g id="p06-gate-chain">
     <line x1="126" y1="272" x2="1154" y2="272" stroke="#D5DBE3" stroke-width="2"/>
     <rect x="72" y="240" width="108" height="64" fill="#FFFFFF" stroke="#1F4D78" stroke-width="1.5"/>
     <rect x="72" y="240" width="108" height="5" fill="#1F4D78"/>
@@ -40,12 +40,23 @@
     <text x="1025.5" y="280" font-size="18" fill="#1D1D1F" text-anchor="middle">想法审稿</text>
     <rect x="1100" y="240" width="108" height="64" fill="#1F4D78" stroke="#1F4D78" stroke-width="1.5"/>
     <text x="1154" y="280" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">终审</text>
-    <rect x="72" y="322" width="14" height="5" fill="#1F4D78"/>
-    <text x="94" y="331" font-size="16" fill="#5A6573">通过</text>
-    <rect x="232" y="322" width="14" height="5" fill="#C48A2B"/>
-    <text x="254" y="331" font-size="16" fill="#5A6573">有备注的降级（文献规模档、写作风格样本数、想法为诊断级）</text>
+
+    <text x="126" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">① 编排</text>
+    <text x="254.5" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">② 文献检索</text>
+    <text x="383" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">③ 风格学习</text>
+    <text x="511.5" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">④ 引用核对</text>
+    <text x="640" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">⑤ 写作</text>
+    <text x="768.5" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">⑥⑦ 绘图</text>
+    <text x="897" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">⑤ 写作</text>
+    <text x="1025.5" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">⑧ 想法 · ⑨ 审稿</text>
+    <text x="1154" y="324" font-size="16" fill="#4F8A9E" text-anchor="middle">⑨ 对抗审稿</text>
+    <rect x="72" y="346" width="14" height="5" fill="#1F4D78"/>
+    <text x="94" y="355" font-size="16" fill="#5A6573">通过</text>
+    <rect x="232" y="346" width="14" height="5" fill="#C48A2B"/>
+    <text x="254" y="355" font-size="16" fill="#5A6573">有备注的降级（文献规模档、写作风格样本数、想法为诊断级）</text>
+    <text x="1208" y="355" font-size="16" fill="#4F8A9E" text-anchor="end">节点下方：负责该关卡的 Agent 编号（对应系统能力页）</text>
   </g>
-  <g id="p05-human-gates">
+  <g id="p06-human-gates">
     <rect x="72" y="372" width="556" height="270" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/users" x="96" y="392" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
     <text x="134" y="414" font-size="24" font-weight="700" fill="#1F4D78">需要人确认的节点（正式运行出现 4 次）</text>
@@ -56,7 +67,7 @@
       <tspan x="96" dy="34">④ 终审由人确认：没有严重问题，且有审稿记录</tspan>
     </text>
   </g>
-  <g id="p05-adversarial-review">
+  <g id="p06-adversarial-review">
     <rect x="652" y="372" width="556" height="270" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/shield-check" x="676" y="392" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
     <text x="714" y="414" font-size="24" font-weight="700" fill="#1F4D78">对抗审稿：审与做永远分离</text>
@@ -70,8 +81,8 @@
       <tspan x="676" dy="26">  “通过”不算通过</tspan>
     </text>
   </g>
-  <g id="p05-footer">
+  <g id="p06-footer">
     <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">5 / 13</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">6 / 13</text>
   </g>
 </svg>
