@@ -1,43 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
-  <g id="p12-bg">
+  <g id="p13-bg">
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
     <rect x="0" y="0" width="1280" height="8" fill="#1F4D78"/>
   </g>
-  <g id="p12-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">MIT 开源、tag 固定；下一步是跨模型审稿与实验验证</text>
+  <g id="p13-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">MIT 开源；下一步是跨模型审稿与实验验证</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
-  <g id="p12-takeaway">
+  <g id="p13-takeaway">
     <text x="640" y="212" font-size="30" font-weight="700" fill="#1D1D1F" text-anchor="middle">这套系统真正改变的，是把“该不该相信这条结论”</text>
     <text x="640" y="256" font-size="30" font-weight="700" fill="#C48A2B" text-anchor="middle">变成一个可以点开 DOI 与原文段落回答的问题</text>
     <text x="640" y="296" font-size="18" fill="#5A6573" text-anchor="middle">文献稀缺（BYZSO）与文献丰富但不可比（LLZO）两种情形下，都产出了可逐条核对的结论与可检验的实验建议</text>
   </g>
-  <g id="p12-open-source">
+  <g id="p13-open-source">
     <rect x="72" y="336" width="360" height="264" fill="#F3F5F8"/>
-    <use data-icon="tabler-outline/brand-github" x="96" y="356" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
-    <text x="134" y="378" font-size="24" font-weight="700" fill="#1F4D78">开源情况</text>
+    <text x="96" y="378" font-size="24" font-weight="700" fill="#1F4D78">MIT 开源</text>
+    <use data-icon="tabler-outline/brand-github" x="96" y="390" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="136" y="417" font-size="18" fill="#1D1D1F">asimfish/goai_research</text>
     <text x="96" y="416" font-size="18" fill="#1D1D1F">
-      <tspan x="96" dy="0">github.com/asimfish/goai_research</tspan>
-      <tspan x="96" dy="28">MIT · tag goai-final-2026-09-03</tspan>
-      <tspan x="96" dy="34">提交全部 Prompt、配置、依赖版本、</tspan>
+      <tspan x="96" dy="44">提交全部 Prompt、配置、依赖版本、</tspan>
       <tspan x="96" dy="26">模型 checkpoint、构筑与运行轨迹、</tspan>
       <tspan x="96" dy="26">证据包与指标代码</tspan>
-      <tspan x="96" dy="34">仓库在提交前设为公开</tspan>
+    </text>
+    <text x="96" y="552" font-size="18" fill="#1D1D1F">
+      <tspan x="96" dy="0">全部代码与产物按 MIT 协议发布，</tspan>
+      <tspan x="96" dy="26">安装、测试与流水线均可复用</tspan>
     </text>
   </g>
-  <g id="p12-reusable">
+  <g id="p13-reusable">
     <rect x="460" y="336" width="360" height="264" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/git-branch" x="484" y="356" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
     <text x="522" y="378" font-size="24" font-weight="700" fill="#1F4D78">可复用的部分</text>
     <text x="484" y="416" font-size="18" fill="#1D1D1F">
-      <tspan x="484" dy="0">· 任意主题的综述回环（账本 + 闸门）</tspan>
-      <tspan x="484" dy="30">· 引用零信任核验（三轴、作者顺序）</tspan>
+      <tspan x="484" dy="0">· 任意主题的综述流程与质量关卡</tspan>
+      <tspan x="484" dy="30">· 引用零信任核验（逐条比对作者）</tspan>
       <tspan x="484" dy="30">· figspec 可编辑图纸：SVG + draw.io</tspan>
       <tspan x="484" dy="30">· 无机前驱体预测 MCP 工具（RECIPE）</tspan>
       <tspan x="484" dy="30">· 精简知识库导出与结论—证据映射</tspan>
     </text>
   </g>
-  <g id="p12-next">
+  <g id="p13-next">
     <rect x="848" y="336" width="360" height="264" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/flask" x="872" y="356" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
     <text x="910" y="378" font-size="24" font-weight="700" fill="#1F4D78">下一步</text>
@@ -50,11 +52,11 @@
       <tspan x="872" dy="26">  助熔剂），与前驱体预测联用</tspan>
     </text>
   </g>
-  <g id="p12-team">
+  <g id="p13-team">
     <text x="640" y="650" font-size="18" fill="#5A6573" text-anchor="middle">高京（上海交通大学）· 吕丁阳（中国科学院大学）· 李雨峰（上海交通大学） · SafeLab ICML 2026 · AI4Science 黑客松沪京双站三等奖</text>
   </g>
-  <g id="p12-footer">
-    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">12 / 12</text>
+  <g id="p13-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">13 / 13</text>
   </g>
 </svg>

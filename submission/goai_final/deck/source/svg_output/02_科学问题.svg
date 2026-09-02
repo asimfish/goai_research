@@ -9,32 +9,36 @@
   <g id="p02-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
       <tspan x="72" dy="0">对只有单篇报道的化合物，研究者需要知道文献能限定什么、哪些近邻条件可以迁移、</tspan>
-      <tspan x="72" dy="38">哪些迁移<tspan fill="#C48A2B" font-weight="700">不成立</tspan>，以及下一步做什么实验<tspan fill="#C48A2B" font-weight="700">最有发现价值</tspan>。</tspan>
+      <tspan x="72" dy="32">哪些迁移<tspan fill="#C48A2B" font-weight="700">不成立</tspan>，以及下一步做什么实验<tspan fill="#C48A2B" font-weight="700">最有发现价值</tspan>。</tspan>
+      <tspan x="72" dy="32">科学问题本身也是探索出来的：一个来自团队自主探索，一个来自领域专家推荐。</tspan>
     </text>
   </g>
   <g id="p02-case-a">
     <rect x="72" y="238" width="556" height="250" fill="#F3F5F8"/>
     <rect x="72" y="238" width="6" height="250" fill="#1F4D78"/>
-    <text x="102" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 A · Ba5Y12Zn[O(SiO4)]8（BYZSO）</text>
+    <text x="102" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 A · LLZO 石榴石固态电解质</text>
+    <text x="102" y="306" font-size="18" fill="#5A6573">团队在初赛调研中自主探索确定的科学问题</text>
     <text x="102" y="322" font-size="24" fill="#1D1D1F">
-      <tspan x="102" dy="0">2024 年首次报道的非中心对称硅酸盐；</tspan>
-      <tspan x="102" dy="36">公开文献仅 <tspan fill="#1F4D78" font-weight="700">1 篇</tspan>直接合成报道，未给出可复现的</tspan>
-      <tspan x="102" dy="36">投料比、温程与冷却程序；Ba–Y–Si–O、</tspan>
-      <tspan x="102" dy="36">Ba–Zn–Si–O、Y–Si–O 近邻体系证据丰富。</tspan>
+      <tspan x="102" dy="16">低温致密化、两步烧结、冷烧结、超快烧结</tspan>
+      <tspan x="102" dy="32">各有先例，却缺少跨掺杂体系可比的统一</tspan>
+      <tspan x="102" dy="32">工艺图景；温度、气氛与致密度只有在</tspan>
+      <tspan x="102" dy="32">实验语境一致时才能比较。</tspan>
     </text>
-    <text x="102" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献稀缺 · 近邻丰富</text>
+    <text x="102" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献丰富 · 条件不可比</text>
   </g>
   <g id="p02-case-b">
     <rect x="652" y="238" width="556" height="250" fill="#F3F5F8"/>
     <rect x="652" y="238" width="6" height="250" fill="#4F8A9E"/>
-    <text x="682" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 B · LLZO 石榴石固态电解质（初赛承诺）</text>
+    <text x="682" y="278" font-size="24" font-weight="700" fill="#1F4D78">案例 B · Ba5Y12Zn[O(SiO4)]8（BYZSO）</text>
+    <text x="682" y="306" font-size="18" fill="#5A6573">材料领域专家推荐的科学问题</text>
     <text x="682" y="322" font-size="24" fill="#1D1D1F">
-      <tspan x="682" dy="0">低温致密化、两步烧结、冷烧结、超快烧结</tspan>
-      <tspan x="682" dy="36">各有先例，却缺少<tspan fill="#1F4D78" font-weight="700">跨掺杂体系可比</tspan>的统一</tspan>
-      <tspan x="682" dy="36">工艺图景；温度、气氛与致密度只有在实验</tspan>
-      <tspan x="682" dy="36">语境一致时才能比较。</tspan>
+      <tspan x="682" dy="16">2024 年首次报道的非中心对称硅酸盐；</tspan>
+      <tspan x="682" dy="28">公开文献仅 <tspan fill="#1F4D78" font-weight="700">1 篇</tspan>直接合成报道，</tspan>
+      <tspan x="682" dy="28">投料比、温程与冷却程序仍不可复现；</tspan>
+      <tspan x="682" dy="28">Ba–Y–Si–O、Ba–Zn–Si–O、Y–Si–O</tspan>
+      <tspan x="682" dy="28">近邻体系证据丰富。</tspan>
     </text>
-    <text x="682" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献丰富 · 条件不可比</text>
+    <text x="682" y="470" font-size="18" font-weight="700" fill="#C48A2B">文献稀缺 · 近邻丰富</text>
   </g>
   <g id="p02-difficulties">
     <line x1="72" y1="528" x2="1208" y2="528" stroke="#D5DBE3" stroke-width="1"/>
@@ -50,7 +54,7 @@
     <text x="876" y="636" font-size="18" fill="#5A6573">误读升温节点或淬火温度会产生假规律</text>
   </g>
   <g id="p02-footer">
-    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">2 / 12</text>
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">2 / 13</text>
   </g>
 </svg>

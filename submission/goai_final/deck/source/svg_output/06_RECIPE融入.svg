@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <g id="p06-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p06-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">RECIPE：把无机逆合成重述为变长前驱体集合的排序问题</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p06-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">先保证前驱体召回，再对<tspan fill="#C48A2B" font-weight="700">完整前驱体集合</tspan>直接排序；以 MCP 工具接入想法生成环节。</text>
+  </g>
+  <g id="figure-recipe">
+    <rect x="72" y="200" width="640" height="434" fill="#FFFFFF" stroke="#D5DBE3" stroke-width="1"/>
+    <image href="../images/recipe_architecture.png" x="76" y="204" width="632" height="426" preserveAspectRatio="xMidYMid meet"/>
+    <text x="72" y="658" font-size="16" fill="#5A6573">图：RECIPE 两阶段架构（团队 NeurIPS 2026 投稿图 1）：候选生成 → 候选集合重排。</text>
+  </g>
+  <g id="stage-summary">
+    <text x="744" y="226" font-size="24" font-weight="700" fill="#1F4D78">三个阶段</text>
+    <text x="744" y="258" font-size="18" fill="#1D1D1F">
+      <tspan x="744" dy="0"><tspan fill="#C48A2B" font-weight="700">①</tspan> Generator：formula-token Transformer</tspan>
+      <tspan x="744" dy="24">   对 798 个前驱体打分 → Top-30 高召回候选池</tspan>
+      <tspan x="744" dy="30"><tspan fill="#C48A2B" font-weight="700">②</tspan> 化学硬过滤 + 2–5 元枚举（pool ≤ 15）</tspan>
+      <tspan x="744" dy="24">   典型 4,928 个候选集合，不预设真实集合大小</tspan>
+      <tspan x="744" dy="30"><tspan fill="#C48A2B" font-weight="700">③</tspan> Complete-Set Reranker：集合 token + 374 维</tspan>
+      <tspan x="744" dy="24">   描述子，listwise 重排 + 负样本间隔 → Top-K</tspan>
+    </text>
+  </g>
+  <g id="integration-rules">
+    <rect x="744" y="422" width="464" height="212" fill="#F3F5F8"/>
+    <text x="764" y="452" font-size="18" font-weight="700" fill="#1F4D78">融入规则（skill 层硬约束）与正式报告调用</text>
+    <text x="764" y="482" font-size="16" fill="#1D1D1F">
+      <tspan x="764" dy="0">· 每条路线都标注“模型候选、未经实验验证”，</tspan>
+      <tspan x="764" dy="22">  附各阶段分数与 checkpoint 校验值供复核</tspan>
+      <tspan x="764" dy="22">· 路线须经文献证据补全与审稿复核后才进入实验方案</tspan>
+      <tspan x="764" dy="30"><tspan font-weight="700">Zn</tspan>  ZnO + Y2O3 + SiO2 + BaCO3 · <tspan fill="#C48A2B" font-weight="700">0.594</tspan>（常规氧化物 / 碳酸盐）</tspan>
+      <tspan x="764" dy="22"><tspan font-weight="700">Mg</tspan>  MgO + Y2O3 + BaCO3 + SiO2 · <tspan fill="#C48A2B" font-weight="700">0.522</tspan></tspan>
+      <tspan x="764" dy="22"><tspan font-weight="700">Co</tspan>  Co3O4 + Y2O3 + BaCO3 + SiO2 · <tspan fill="#C48A2B" font-weight="700">0.298</tspan>（前三名反映氧化态不确定）</tspan>
+    </text>
+  </g>
+  <g id="p06-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">6 / 13</text>
+  </g>
+</svg>

@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "defaults": {
+    "transition": {
+      "effect": "fade",
+      "duration": 0.4
+    },
+    "animation": {
+      "effect": "none",
+      "duration": 0.4,
+      "stagger": 0.3,
+      "trigger": "after-previous"
+    }
+  },
+  "slides": {
+    "01_封面": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "02_科学问题": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "03_系统能力": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "04_Agent交互与数据流": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "wipe",
+        "duration": 0.45,
+        "stagger": 0.35,
+        "trigger": "after-previous"
+      },
+      "groups": {
+        "p04-lead": {
+          "effect": "fade",
+          "order": 1,
+          "duration": 0.5
+        },
+        "step-1-orchestrator": {
+          "effect": "wipe",
+          "order": 2,
+          "duration": 0.45
+        },
+        "step-2-litsearch": {
+          "effect": "wipe",
+          "order": 3,
+          "duration": 0.45
+        },
+        "step-3-refguard": {
+          "effect": "wipe",
+          "order": 4,
+          "duration": 0.45
+        },
+        "step-4-writer-figure": {
+          "effect": "wipe",
+          "order": 5,
+          "duration": 0.45
+        },
+        "step-5-ideaforge": {
+          "effect": "wipe",
+          "order": 6,
+          "duration": 0.45
+        },
+        "step-6-reviewer": {
+          "effect": "wipe",
+          "order": 7,
+          "duration": 0.45
+        },
+        "rework-route": {
+          "effect": "fade",
+          "order": 8,
+          "duration": 0.5,
+          "delay": 0.2
+        },
+        "ledger-bar": {
+          "effect": "wipe",
+          "order": 9,
+          "duration": 0.5
+        },
+        "loop-output": {
+          "effect": "fly",
+          "order": 10,
+          "duration": 0.5
+        },
+        "loop-lab": {
+          "effect": "fly",
+          "order": 11,
+          "duration": 0.5
+        },
+        "loop-feedback": {
+          "effect": "fly",
+          "order": 12,
+          "duration": 0.5
+        },
+        "takeaway": {
+          "effect": "fade",
+          "order": 13,
+          "duration": 0.7,
+          "delay": 0.3
+        }
+      }
+    },
+    "05_方法路线与闸门": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "06_RECIPE融入": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "07_正式案例结果": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "08_科学结论与实验方向": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "09_LLZO案例": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "10_基准指标": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "11_证据链与可追溯": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "12_复现情况与限制": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    },
+    "13_开源与结论": {
+      "transition": {
+        "effect": "fade",
+        "duration": 0.4
+      },
+      "animation": {
+        "effect": "none",
+        "duration": 0.4,
+        "stagger": 0.3,
+        "trigger": "after-previous"
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <g id="p09-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p09-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">LLZO 主题端到端跑通：46 篇文献、10 页综述、路线与文献一致</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p09-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">
+      <tspan x="72" dy="0">初赛承诺的主题交出 46 篇文献、六个子主题覆盖与 10 页综述；模型首选前驱体路线</tspan>
+      <tspan x="72" dy="38">与文献一致，系统把每一步都留在<tspan fill="#C48A2B" font-weight="700">可追溯的质量回环</tspan>里。</tspan>
+    </text>
+  </g>
+  <g id="p09-numbers">
+    <text x="72" y="286" font-size="56" font-weight="700" fill="#1F4D78">46</text>
+    <text x="72" y="316" font-size="18" fill="#5A6573">篇文献覆盖六个子主题，逐条核对通过</text>
+    <text x="72" y="396" font-size="56" font-weight="700" fill="#1F4D78">21 · 49</text>
+    <text x="72" y="426" font-size="18" fill="#5A6573">个 Agent 任务 · 次工具调用，全过程留痕</text>
+    <text x="72" y="506" font-size="56" font-weight="700" fill="#1F4D78">10 页</text>
+    <text x="72" y="536" font-size="18" fill="#5A6573">A4 综述 PDF，46 篇全部整合</text>
+  </g>
+  <g id="p09-route">
+    <rect x="72" y="566" width="448" height="80" fill="#F3F5F8"/>
+    <rect x="72" y="566" width="6" height="80" fill="#1F4D78"/>
+    <text x="96" y="596" font-size="18" fill="#1D1D1F"><tspan font-weight="700">首选路线</tspan>  ZrO2 + La2O3 + Li2CO3 <tspan fill="#2E7D32" font-weight="700">与文献一致</tspan></text>
+    <text x="96" y="626" font-size="18" fill="#1D1D1F"><tspan font-weight="700">质量把关</tspan>  次选命名可疑，持续执行四步核对</text>
+  </g>
+  <g id="p09-failure-modes">
+    <rect x="556" y="236" width="652" height="330" fill="#F3F5F8"/>
+    <use data-icon="tabler-outline/shield-check" x="580" y="256" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="618" y="278" font-size="24" font-weight="700" fill="#1F4D78">四步把关，让模型建议可审查</text>
+    <text x="580" y="320" font-size="18" fill="#1D1D1F">
+      <tspan x="580" dy="0">· 模型首选前驱体路线 ZrO2 + La2O3 + Li2CO3 与文献一致</tspan>
+      <tspan x="580" dy="30">· 系统始终坚持：模型生成 → 化学式规范化 → 文献复核 → 审稿</tspan>
+      <tspan x="580" dy="30">· 次选命名可疑也不直接采信，四步把关</tspan>
+      <tspan x="580" dy="30">· 多源检索 + 逐条核对，模型与文献互证</tspan>
+      <tspan x="580" dy="30">· 每一步可追溯，建议不被直接采信</tspan>
+    </text>
+  </g>
+  <g id="p09-alternatives">
+    <text x="556" y="606" font-size="18" fill="#1D1D1F">
+      <tspan x="556" dy="0"><tspan font-weight="700" fill="#1F4D78">替代材料分析</tspan>  Li6PS5Cl、Li3YCl6、LATP 的模型首选路线均通过文献复核</tspan>
+      <tspan x="556" dy="26">分别对应高电导冷压、高电压正极侧、低成本空气中操作三种场景。</tspan>
+    </text>
+  </g>
+  <g id="p09-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">9 / 13</text>
+  </g>
+</svg>

@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
-  <g id="p09-bg">
+  <g id="p10-bg">
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
-  <g id="p09-header">
+  <g id="p10-header">
     <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">留出测试集 Combo@1 71.81，比 Retrieval-Retro 高 11.4 点</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
-  <g id="p09-lead">
+  <g id="p10-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
       <tspan x="72" dy="0">指标来自随 checkpoint 提交的源包评测汇总（2,558 条留出反应），落在论文三种子区间内；</tspan>
       <tspan x="72" dy="38">逆合成部分只交 checkpoint、最小加载/预测代码与原料库，<tspan fill="#C48A2B" font-weight="700">CPU dry run 保证模型可加载、可预测</tspan>。</tspan>
     </text>
   </g>
-  <g id="p09-legend">
+  <g id="p10-legend">
     <rect x="140" y="220" width="16" height="16" fill="#8A94A0"/>
     <text x="166" y="233" font-size="16" fill="#5A6573">Retrieval-Retro（先前最优基线）</text>
     <rect x="420" y="220" width="16" height="16" fill="#1F4D78"/>
     <text x="446" y="233" font-size="16" fill="#5A6573">RECIPE（checkpoint 评测汇总，种子 20260504）</text>
   </g>
-  <g id="p09-chart" data-pptx-native="chart">
+  <g id="p10-chart" data-pptx-native="chart">
     <metadata data-pptx-native="chart">
       {
         "name": "p09-retro-benchmark",
@@ -73,7 +73,7 @@
     </g>
     <text x="140" y="628" font-size="16" fill="#8A94A0">Retro 测试集 2,558 条，精确集合命中率 %，全分母；top_m 30 · pool 15 · 集合 2–5 元</text>
   </g>
-  <g id="p09-reading">
+  <g id="p10-reading">
     <rect x="840" y="220" width="368" height="410" fill="#F3F5F8"/>
     <text x="864" y="256" font-size="24" font-weight="700" fill="#1F4D78">读数与对照</text>
     <text x="864" y="296" font-size="18" fill="#1D1D1F">
@@ -88,13 +88,13 @@
       <tspan x="864" dy="26">   而非候选枚举或过滤本身</tspan>
     </text>
     <text x="864" y="592" font-size="16" fill="#5A6573">
-      <tspan x="864" dy="0">来源：vendor/two_stage_retro/checkpoints/</tspan>
-      <tspan x="864" dy="24">stage1_summary.json · stage2_summary.json</tspan>
-      <tspan x="864" dy="24">dry run：tools/retro_dry_run.py（CPU 数秒）</tspan>
+      <tspan x="864" dy="0">来源：随模型 checkpoint 提交的评测汇总</tspan>
+      <tspan x="864" dy="24">（Retro 测试集 2,558 条）；CPU dry run 数秒</tspan>
+      <tspan x="864" dy="24">即可验证模型可加载、可预测</tspan>
     </text>
   </g>
-  <g id="p09-footer">
-    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">9 / 12</text>
+  <g id="p10-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">10 / 13</text>
   </g>
 </svg>

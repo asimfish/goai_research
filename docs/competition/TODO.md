@@ -33,7 +33,7 @@
 - [x] `scripts/smoke_test.sh`（干净环境 1–2 分钟）与 `scripts/reproduce_core.sh`（同一模型与推理强度重跑）。
 - [x] 构筑阶段（Codex 原生 rollout + 网关导出）与运行阶段轨迹分目录；密钥模式脱敏；Harness / 模型 / 推理强度声明。
 - [x] `.env.example`；包内无 API key / Token / 私有目录布局。
-- [x] 复赛报告 DOCX（官方模板六章加强版）与方案说明 PPT（12 页，ppt-master 生成，PPTX + PDF + 可编辑 SVG 源）。
+- [x] 复赛报告 DOCX（官方模板六章加强版）与方案说明 PPT（13 页，ppt-master 生成，含 Agent 数据流动画页与 RECIPE 论文架构图；PPTX + PDF + 可编辑 SVG 源）。
 
 ## 暂不扩展
 - 不新增同质化 Agent 角色；不以"顶会综述篇幅"为目标；不上传私有大语料。

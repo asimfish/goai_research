@@ -48,6 +48,7 @@
 - system_pipeline: images/system_pipeline.png | no-crop
 - byzso_roadmap: images/byzso_roadmap.png | no-crop
 - byzso_evidence_map: images/byzso_evidence_map.png | no-crop
+- recipe_architecture: images/recipe_architecture.png | no-crop
 
 ## page_rhythm
 - P01: anchor
@@ -61,15 +62,15 @@
 - P09: dense
 - P10: dense
 - P11: dense
-- P12: anchor
+- P12: dense
+- P13: anchor
 
 ## pptx_structure
 - mode: baseline
 
 ## page_charts
-- P05: pipeline_with_stages
-- P06: kpi_cards
-- P09: grouped_bar_chart
+- P07: kpi_cards
+- P10: grouped_bar_chart
 
 ## forbidden
 - Mixing icon libraries

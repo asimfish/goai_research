@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
-  <g id="p04-bg">
+  <g id="p05-bg">
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
-  <g id="p04-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">九个出口闸门由代码判定完成，审与做分离</text>
+  <g id="p05-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">九道质量关卡由程序检查，写稿与审稿分离</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
-  <g id="p04-lead">
+  <g id="p05-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
-      <tspan x="72" dy="0">完成不是模型自报：<tspan font-family='Consolas, "Courier New", monospace'>check-done</tspan> 只在九个闸门全部落账、无 FAIL、</tspan>
-      <tspan x="72" dy="38">无 open blocker / major，且 <tspan font-family='Consolas, "Courier New", monospace'>review_pass</tspan> 指向真实存在的审稿 trace 时才退出 0。</tspan>
+      <tspan x="72" dy="0">“做完了”不由模型自己宣布：九道关卡全部通过、没有未关闭的严重问题、</tspan>
+      <tspan x="72" dy="38">终审有审稿记录，程序才放行交付。</tspan>
     </text>
   </g>
-  <g id="p04-gate-chain">
+  <g id="p05-gate-chain">
     <line x1="126" y1="272" x2="1154" y2="272" stroke="#D5DBE3" stroke-width="2"/>
     <rect x="72" y="240" width="108" height="64" fill="#FFFFFF" stroke="#1F4D78" stroke-width="1.5"/>
     <rect x="72" y="240" width="108" height="5" fill="#1F4D78"/>
@@ -41,37 +41,37 @@
     <rect x="1100" y="240" width="108" height="64" fill="#1F4D78" stroke="#1F4D78" stroke-width="1.5"/>
     <text x="1154" y="280" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">终审</text>
     <rect x="72" y="322" width="14" height="5" fill="#1F4D78"/>
-    <text x="94" y="331" font-size="16" fill="#5A6573">PASS（正式运行）</text>
+    <text x="94" y="331" font-size="16" fill="#5A6573">通过</text>
     <rect x="232" y="322" width="14" height="5" fill="#C48A2B"/>
-    <text x="254" y="331" font-size="16" fill="#5A6573">WARN：显式记录的降级（niche-balanced 覆盖档、风格库仅 15 篇综述、想法为诊断级）</text>
+    <text x="254" y="331" font-size="16" fill="#5A6573">有备注的降级（文献规模档、写作风格样本数、想法为诊断级）</text>
   </g>
-  <g id="p04-human-gates">
+  <g id="p05-human-gates">
     <rect x="72" y="372" width="556" height="270" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/users" x="96" y="392" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
-    <text x="134" y="414" font-size="24" font-weight="700" fill="#1F4D78">人工停点：正式运行触发 4 次，同一主题续跑</text>
+    <text x="134" y="414" font-size="24" font-weight="700" fill="#1F4D78">需要人确认的节点（正式运行出现 4 次）</text>
     <text x="96" y="456" font-size="18" fill="#1D1D1F">
-      <tspan x="96" dy="0">① 范围草案自动确认（裸主题、范围无实质歧义）</tspan>
-      <tspan x="96" dy="34">② 5 条作者名 MISMATCH 三轮未收敛 → 升级人工，</tspan>
-      <tspan x="96" dy="26">    采纳“删除这 5 条背景文献并继续”</tspan>
-      <tspan x="96" dy="34">③ 贡献结构确认：身份谱系 / 路线—变量—验证矩阵 / 迁移边界</tspan>
-      <tspan x="96" dy="34">④ 终审：0 blocker / 0 major / 0 minor，PASS 带回执落账</tspan>
+      <tspan x="96" dy="0">① 范围草案由人确认（裸主题且范围无实质歧义）</tspan>
+      <tspan x="96" dy="34">② 5 条作者名不匹配三轮未收敛，交人决定后删除</tspan>
+      <tspan x="96" dy="34">③ 贡献结构由人确认：身份谱系、路线—变量—验证矩阵、迁移边界</tspan>
+      <tspan x="96" dy="34">④ 终审由人确认：没有严重问题，且有审稿记录</tspan>
     </text>
   </g>
-  <g id="p04-adversarial-review">
+  <g id="p05-adversarial-review">
     <rect x="652" y="372" width="556" height="270" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/shield-check" x="676" y="392" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
     <text x="714" y="414" font-size="24" font-weight="700" fill="#1F4D78">对抗审稿：审与做永远分离</text>
     <text x="676" y="456" font-size="18" fill="#1D1D1F">
-      <tspan x="676" dy="0">· 全新上下文的独立 reviewer；先验证后批评</tspan>
-      <tspan x="676" dy="26">  （指控引用造假前必须先跑 verify_entry）</tspan>
+      <tspan x="676" dy="0">· 全新上下文的独立 reviewer；先核对引用是否真实，</tspan>
+      <tspan x="676" dy="26">  再提出批评</tspan>
       <tspan x="676" dy="34">· 三视角裁决：领域专家 / 方法严谨派 / 期刊编辑</tspan>
       <tspan x="676" dy="34">· 结构化 issue 带 target 阶段，路由回属主返工，</tspan>
-      <tspan x="676" dy="26">  上游变更级联重置下游闸门</tspan>
-      <tspan x="676" dy="34">· 同一 issue 三轮未收敛升级人类；无回执的 PASS 被账本拒绝</tspan>
+      <tspan x="676" dy="26">  上游变更后，下游自动重新检查</tspan>
+      <tspan x="676" dy="34">· 同一 issue 三轮未收敛升级人类；没有审稿记录的</tspan>
+      <tspan x="676" dy="26">  “通过”不算通过</tspan>
     </text>
   </g>
-  <g id="p04-footer">
-    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛</text>
-    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">4 / 12</text>
+  <g id="p05-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">5 / 13</text>
   </g>
 </svg>
