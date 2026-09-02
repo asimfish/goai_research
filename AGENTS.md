@@ -58,12 +58,17 @@
     只有提示词明确指定的已关闭历史 run_id 才可作为诊断输入。
 12. **依赖显式化**：TSV 第四列声明前序任务名（逗号分隔），并按拓扑顺序
     排列。数据/证据生产者未通过时，消费者由 runner 记为 blocked 而不启动。
-
-13. **学术语言与内部控制分离**：agent 可以在账本和日志中使用 gate、ledger、
+13. **交付物只说读者语言**：agent 可以在账本和日志中使用 gate、ledger、
     field、tag、endpoint、normalization 等便于程序协作的词，但这些词不得原样
     出现在论文正文、摘要、标题、表格、图中文字或图注中。交付稿统一改用
     “文献依据、实验项目、结构关系、合成条件、表征方法、可外推范围”等学科
-    表达；组稿后必须运行 `tools/academic_language_guard.py`。
+    表达；组稿后必须运行 `tools/academic_language_guard.py`。裸 BibTeX key
+    同样不得进入读者可见文本（`tex_guard` 直接阻塞）。交付语言以 scope.md
+    为准，中文稿用 `templates/survey_main_zh.tex`，禁止套英文模板。
+14. **图纸美学是闸门**：`render_figure` 对配色 ≥4 色系、彩虹泳道、越界直接
+    拒绝；其余美学告警（近失对齐、尺寸漂移、间距、连线穿节点、描边档数…）
+    要么改 figspec 消掉，要么在 figure_plan.md 逐条写明保留理由，否则不得置
+    `figures_ready`。
 
 ## 环境速查
 
