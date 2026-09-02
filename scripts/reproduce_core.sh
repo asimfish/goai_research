@@ -99,8 +99,15 @@ TOML
 echo "codex profile written: $CODEX_HOME/$PROFILE.config.toml (model=$MODEL, effort=$EFFORT)"
 
 # --- preflight ------------------------------------------------------------------------
-tools/check.sh --servers --corpus --retro > "$LOGDIR/preflight.json"
+# The repository MCP servers run in .venv, while the vendored inorganic model
+# intentionally runs in the separate .venv-retro environment.  Calling
+# tools/check.sh --retro with .venv would therefore report a false failure when
+# the model environment is healthy.  Validate the two environments explicitly
+# and keep both receipts in the per-run audit directory.
+tools/check.sh --servers --corpus > "$LOGDIR/preflight.json"
+"$RETRO_PY" tools/retro_dry_run.py Li7La3Zr2O12 --device cpu > "$LOGDIR/retro_preflight.log"
 echo "preflight: $(python3 -c 'import json,sys;print("OK" if json.load(open(sys.argv[1]))["ok"] else "FAILED")' "$LOGDIR/preflight.json")"
+echo "retro preflight: PASS"
 printf '%s\n' "$TOPIC" > "$WORKDIR/inputs/topic_input.txt"
 
 # --- the run (identical flags to the formal case; sub-agents inherit RUNNER_* vars) ----
