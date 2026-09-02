@@ -444,6 +444,23 @@ def lookup_doi(
                 start_line=start_line,
                 end_line=end_line,
             )
+        # A private full corpus may be distributed as publisher-partitioned
+        # Parquet without the optional DOI SQLite adapter.  The same exact DOI
+        # predicate is still safe and correct; DuckDB prunes/streams the
+        # configured files, while the optional index remains the fast path for
+        # deployments that provide the expected_members schema.
+        if files:
+            result = _lookup_compact_doi(
+                normalized,
+                uuid=uuid,
+                files=files,
+                roots=roots,
+                start_line=start_line,
+                end_line=end_line,
+            )
+            if result.get("lookup_engine") == "compact-parquet":
+                result["lookup_engine"] = "full-parquet-scan"
+            return result
         return {
             "ok": False,
             "doi": normalized,
@@ -459,9 +476,32 @@ def lookup_doi(
         return {"ok": False, "doi": normalized, "error": "configured DOI index/shard root is unavailable"}
     connection = sqlite3.connect(f"file:{index_path}?mode=ro&immutable=1", uri=True)
     try:
-        hit = connection.execute(
-            "SELECT archive_name FROM expected_members WHERE uuid=?", (uuid,)
-        ).fetchone()
+        try:
+            hit = connection.execute(
+                "SELECT archive_name FROM expected_members WHERE uuid=?", (uuid,)
+            ).fetchone()
+        except sqlite3.OperationalError as exc:
+            # Older/private indexes may expose DOI rows under another schema.
+            # Do not turn a recoverable lookup mismatch into an MCP crash: use
+            # the authoritative Parquet DOI column and retain the reason in the
+            # response for auditability.
+            if not files:
+                return {
+                    "ok": False,
+                    "doi": normalized,
+                    "error": f"configured DOI index lacks expected_members: {exc}",
+                }
+            result = _lookup_compact_doi(
+                normalized,
+                uuid=uuid,
+                files=files,
+                roots=roots,
+                start_line=start_line,
+                end_line=end_line,
+            )
+            result["lookup_engine"] = "full-parquet-scan-index-fallback"
+            result["index_fallback"] = f"expected_members unavailable: {exc}"
+            return result
     finally:
         connection.close()
     if hit is None:

@@ -664,6 +664,13 @@ def test_parquet_corpus_search_read_and_doi_lookup(tmp_path, monkeypatch):
     assert excerpt["ok"] is True
     assert excerpt["lines"][1]["text"].startswith("Ba5Y12Zn")
 
+    # A full/private Parquet package may not ship a compact manifest or the
+    # optional expected_members SQLite adapter; DOI lookup must still work by
+    # using the authoritative doi_normalized column.
+    direct_lookup = local_corpus.lookup_local_doi("10.0000/BYZSO-TEST")
+    assert direct_lookup["found"] is True
+    assert direct_lookup["lookup_engine"] == "full-parquet-scan"
+
     index = tmp_path / "expected.sqlite"
     sql = sqlite3.connect(index)
     sql.execute("CREATE TABLE expected_members(uuid TEXT PRIMARY KEY, archive_name TEXT NOT NULL)")
