@@ -11,9 +11,12 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 人只看最终产物。工具来自 MCP server `goai-figure`。
 
 **image-first 是默认路径**：凡进论文的图，一律先用 AI 生图拿视觉参照、
-再按参照做可编辑化重建（figspec → svg + drawio）——直接手写 figspec
-只在无生图通道时作为降级路径，且必须 `loopctl log --event decision`
-记录降级原因。生图是参照物，**永远不是交付物**。
+再按参照做可编辑化重建（figspec → svg + drawio）。生图可用于探索构图、
+晶体/材料纹理和抽象结构意象；但生图模型生成的文字、化学式、数值和箭头
+不具有证据效力，必须在重建阶段由 SVG/Draw.io 原生图元确定性补回。必要时，
+可将经审查的生图作为 Draw.io 中的锁定底图或图像图层，再叠加原生文字、节点、
+曲线和连接器。**生图本身永远不是论文交付物**。直接手写 figspec 只在无生图
+通道时作为降级路径，且必须 `loopctl log --event decision` 记录降级原因。
 
 ## 图纸分级（先分级再动手）
 
@@ -202,6 +205,18 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
   （单一事实源）、主图另附 `candidates/<fig>/`（两轮候选与参照定稿，
   审计可溯源）。
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
+
+### 箭头与连接器专项检查（每张图必做）
+
+- 箭头必须与连线端点绑定：SVG 使用 `marker-end`/`marker-start`，Draw.io
+  使用原生 `source`/`target` 连接器；禁止把三角形箭头头部作为独立装饰图元
+  手工摆在路径旁边。
+- 箭头尖端应落在目标边界（或明确的隐形锚点）上，末段切线与箭头方向一致；
+  曲线和折线在 200% 放大、SVG/PNG 和 PDF 三种输出中均不得出现断缝、反向或
+  飘离端点。导出 Draw.io 后再次检查连接器的 `endArrow`、`endFill`、
+  `targetSpacing` 和折点，避免自动 routing 产生视觉脱节。
+- 生图参照中的箭头只作为构图提示，重建时必须重新计算端点和方向；若发现
+  脱节，优先修正路径几何/连接器属性，不通过移动独立箭头头部补救。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
   --detail "<N 图 svg+drawio 齐；主图 M 张走两轮候选制（6 生图/图上限），
   审计 ledger 在 figure_plan.md；lint warning 0 条或逐条附保留理由>"`。

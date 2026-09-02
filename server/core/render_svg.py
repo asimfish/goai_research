@@ -105,13 +105,15 @@ def render(spec: dict[str, Any]) -> str:
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
         f'viewBox="0 0 {W} {H}">',
         '<defs>'
-        '<marker id="arrow-block" viewBox="0 0 10 10" refX="9" refY="5" '
-        'markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
-        '<path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>'
-        '<marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" '
-        'markerWidth="8" markerHeight="8" orient="auto-start-reverse">'
-        '<path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="context-stroke" '
-        'stroke-width="1.5"/></marker>'
+        # refX is the arrow-tip coordinate: keeping it on the path endpoint
+        # prevents the detached-head artifact seen in raster/PDF exporters.
+        '<marker id="arrow-block" viewBox="0 0 12 12" refX="12" refY="6" '
+        'markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">'
+        '<path d="M 0 0 L 12 6 L 0 12 z" fill="context-stroke"/></marker>'
+        '<marker id="arrow-open" viewBox="0 0 12 12" refX="12" refY="6" '
+        'markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">'
+        '<path d="M 0 0 L 12 6 L 0 12" fill="none" stroke="context-stroke" '
+        'stroke-width="1.5" stroke-linejoin="round"/></marker>'
         '<filter id="goai-shadow" x="-20%" y="-20%" width="140%" height="140%">'
         '<feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#2A3B47" '
         'flood-opacity="0.28"/></filter>'
@@ -155,7 +157,8 @@ def render(spec: dict[str, Any]) -> str:
         marker = "" if arrow == "none" else f' marker-end="url(#arrow-{arrow})"'
         d = "M " + " L ".join(f"{x:.1f} {y:.1f}" for x, y in pts)
         parts.append(f'<path d="{d}" fill="none" stroke="{color}" '
-                     f'stroke-width="{width}"{dash}{marker}/>')
+                     f'stroke-width="{width}" stroke-linecap="round" '
+                     f'stroke-linejoin="round"{dash}{marker}/>')
         if e.get("label"):
             mid = edge_label_point(pts)
             fs = style_of(e, spec, "font_size", 12.5)

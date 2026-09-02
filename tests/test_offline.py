@@ -432,6 +432,17 @@ def test_render_svg_contains_elements():
     ET.fromstring(svg)  # 必须是合法 XML
 
 
+def test_render_svg_arrow_tip_is_endpoint_bound():
+    """箭头头部由 marker 绑定到路径端点，不能用脱节的独立三角形。"""
+    svg = render_svg.render(SPEC)
+    assert 'markerUnits="userSpaceOnUse"' in svg
+    assert 'refX="12"' in svg and 'orient="auto"' in svg
+    assert 'stroke-linecap="round"' in svg and 'stroke-linejoin="round"' in svg
+    # Each non-none edge has exactly one marker-end; no standalone arrow polygon.
+    assert svg.count('marker-end="url(#arrow-block)"') == 2
+    assert '<polygon points=' not in svg
+
+
 def test_render_drawio_valid_mxgraph():
     xml = render_drawio.render(SPEC)
     root = ET.fromstring(xml)
@@ -470,6 +481,17 @@ def test_render_label_style_and_edge_defaults():
     title = next(c for c in root.findall(".//mxCell")
                  if c.get("id") == "goai-title")
     assert "fontSize=20" in title.get("style")
+
+
+def test_render_drawio_arrow_spacing_is_zero():
+    """Draw.io 连接器的目标间距为零，导出时箭头尖端贴合目标边界。"""
+    xml = render_drawio.render(SPEC)
+    root = ET.fromstring(xml)
+    edges = [c for c in root.findall(".//mxCell") if c.get("edge") == "1"]
+    assert all("targetSpacing=0" in c.get("style") for c in edges)
+    assert all("perimeterSpacing=0" in c.get("style") for c in edges)
+    assert all("endSize=8" in c.get("style") for c in edges)
+    assert all("jettySize=0" in c.get("style") for c in edges if "orthogonalEdgeStyle" in c.get("style"))
 
 
 def test_render_publication_style_fields():

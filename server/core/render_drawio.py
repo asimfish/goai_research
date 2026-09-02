@@ -134,15 +134,18 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             x, y = nd["x"] - g["x"], nd["y"] - g["y"]
         cells.append(_cell(nd["id"], value, style, x, y, nd["w"], nd["h"], parent))
 
-    arrow_map = {"block": "endArrow=block;endFill=1;",
-                 "open": "endArrow=open;endFill=0;",
-                 "none": "endArrow=none;"}
+    # Keep the arrowhead on the target perimeter.  Zero spacing is intentional:
+    # Draw.io's default perimeter/jetty gaps otherwise look like a detached
+    # arrowhead after SVG/PDF export, especially on short curved/orthogonal edges.
+    arrow_map = {"block": "endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;",
+                 "open": "endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;",
+                 "none": "endArrow=none;targetSpacing=0;perimeterSpacing=0;"}
     for i, e in enumerate(spec.get("edges", [])):
         eid = e.get("id") or f"edge-{i}"
         # 有 waypoint：按作者给的折点走正交路由；无 waypoint：直线连边框交点——
         # 与 SVG 渲染和 lint 的几何完全一致（draw.io 自动正交路由会拐进相邻卡片，
         # 而 lint 按直线判定，二者不一致就会漏检）
-        routing = ("edgeStyle=orthogonalEdgeStyle;jettySize=auto;orthogonalLoop=1;"
+        routing = ("edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;"
                    if e.get("waypoints") else "edgeStyle=none;")
         style = (routing + "rounded=0;html=1;"
                  + arrow_map.get(e.get("arrow", "block"), arrow_map["block"])
