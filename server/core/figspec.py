@@ -150,27 +150,102 @@ TYPO = {
 }
 
 
-def _wrap_units(label: str, w: float, font_size: float) -> int:
-    """与 render_svg._wrap_label 同步的折行估算 → 行数。"""
-    max_units = max(int(w / (font_size * 0.62)), 4)
-    n = 0
-    for hard in (label or "").split("\n"):
-        units, cur = 0.0, False
-        for ch in hard:
-            u = 1.0 if ord(ch) > 0x2E7F else 0.61
-            if units + u > max_units and cur:
-                n += 1
-                units, cur = u, True
+# Helvetica 字宽表（em 单位，常规体；draw.io 与 SVG 渲染器都用 Helvetica 系）。
+# 统一按 0.61em 估算会对大写/符号密集的粗体短语（"FWHM ≤ 1.3× · SSA ≥"）
+# 乐观 20–30%，draw.io 按真实字宽折行就多出一行、文字顶出卡片。
+_W_LOWER = {"a": .556, "b": .556, "c": .500, "d": .556, "e": .556, "f": .278, "g": .556,
+            "h": .556, "i": .222, "j": .222, "k": .500, "l": .222, "m": .833, "n": .556,
+            "o": .556, "p": .556, "q": .556, "r": .333, "s": .500, "t": .278, "u": .556,
+            "v": .500, "w": .722, "x": .500, "y": .500, "z": .500}
+_W_UPPER = {"A": .667, "B": .667, "C": .722, "D": .722, "E": .667, "F": .611, "G": .778,
+            "H": .722, "I": .278, "J": .500, "K": .667, "L": .556, "M": .833, "N": .722,
+            "O": .778, "P": .667, "Q": .778, "R": .722, "S": .667, "T": .611, "U": .722,
+            "V": .667, "W": .944, "X": .667, "Y": .667, "Z": .611}
+_W_OTHER = {" ": .278, ".": .278, ",": .278, ":": .278, ";": .278, "!": .278, "|": .260,
+            "'": .191, "`": .333, "/": .278, "(": .333, ")": .333, "[": .278, "]": .278,
+            "{": .334, "}": .334, "-": .333, "*": .389, "+": .584, "=": .584, "<": .584,
+            ">": .584, "%": .889, "&": .667, "@": 1.015, "#": .556, "$": .556, "?": .556,
+            '"': .355, "_": .556, "~": .584, "^": .469, "\\": .278,
+            "–": .556, "—": 1.0, "·": .278, "•": .350, "×": .584, "÷": .584, "≤": .584,
+            "≥": .584, "≈": .584, "±": .584, "≠": .584, "°": .400, "→": 1.0, "←": 1.0,
+            "↑": .584, "↓": .584, "…": 1.0, "’": .222, "‘": .222, "“": .333, "”": .333,
+            "′": .25, "″": .4, "∙": .35, "∞": .8, "√": .6, "∑": .7, "Δ": .667, "Φ": .8,
+            "μ": .556, "τ": .45, "λ": .5, "ν": .5, "η": .556, "θ": .55, "π": .58,
+            "σ": .58, "ε": .5, "α": .6, "β": .58, "γ": .5, "δ": .55, "ω": .72}
+_BOLD_FACTOR = 1.08
+
+
+def _char_units(ch: str, bold: bool = False) -> float:
+    o = ord(ch)
+    if ch in _W_LOWER:
+        u = _W_LOWER[ch]
+    elif ch in _W_UPPER:
+        u = _W_UPPER[ch]
+    elif ch in _W_OTHER:
+        u = _W_OTHER[ch]
+    elif ch.isdigit():
+        u = .556
+    elif 0x2080 <= o <= 0x209F or 0x2070 <= o <= 0x207F:   # 上下标数字/符号
+        u = .40
+    elif o > 0x2E7F:                                         # CJK 等全角
+        return 1.0
+    else:
+        u = .60
+    return u * _BOLD_FACTOR if bold else u
+
+
+def text_units(s: str, bold: bool = False) -> float:
+    """一行文字的宽度（em 单位）。"""
+    return sum(_char_units(c, bold) for c in s)
+
+
+def wrap_lines(text: str, w: float, font_size: float, bold: bool = False) -> list[str]:
+    """单一折行实现：SVG 渲染、drawio 渲染（显式 <br/>）与 lint 三方共用。
+
+    按**单词**折行（与 draw.io 的 whiteSpace=wrap 一致），单个超长词或无空格的
+    CJK 串退化为逐字符硬切；figspec 里的 "\\n" 是硬换行。字宽按 Helvetica 真实
+    字宽表逐字符累加（粗体 ×1.08）。三方行数一致，lint 的溢出判定才对最终
+    产物负责——此前 SVG/lint 按字符均一宽度切、drawio 按真实字宽切，行数不同，
+    lint 放过的卡片在 drawio 导出里文字会顶出边框。
+    """
+    max_units = max(w / font_size, 2.5)
+    space = _char_units(" ", bold)
+    lines: list[str] = []
+    for hard in (text or "").split("\n"):
+        cur, units = "", 0.0
+        for word in hard.split(" "):
+            wu = text_units(word, bold)
+            if wu > max_units:                      # 超长词：逐字符硬切
+                if cur:
+                    lines.append(cur)
+                    cur, units = "", 0.0
+                for ch in word:
+                    u = _char_units(ch, bold)
+                    if cur and units + u > max_units:
+                        lines.append(cur)
+                        cur, units = "", 0.0
+                    cur += ch
+                    units += u
+                continue
+            if cur and units + space + wu > max_units:
+                lines.append(cur)
+                cur, units = word, wu
+            elif cur:
+                cur += " " + word
+                units += space + wu
             else:
-                units += u
-                cur = True
-        n += 1
-    return max(n, 1)
+                cur, units = word, wu
+        lines.append(cur)
+    return lines or [""]
 
 
-def _est_text_w(s: str, fs: float) -> float:
-    return max((sum(1.0 if ord(c) > 0x2E7F else 0.61 for c in ln) for ln in
-                (s or "").split("\n")), default=0) * fs
+def _wrap_units(label: str, w: float, font_size: float, bold: bool = False) -> int:
+    """折行后的行数（与渲染器同一实现）。"""
+    return len(wrap_lines(label, w, font_size, bold))
+
+
+def _est_text_w(s: str, fs: float, bold: bool = False) -> float:
+    return max((text_units(ln, bold) for ln in (s or "").split("\n")), default=0) * fs
 
 
 def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
@@ -218,7 +293,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
         shape = nd.get("shape", "rect")
         wr, hr = TYPO["text_area"].get(shape, (0.90, 0.86))
         tw, th = nd["w"] * wr, nd["h"] * hr
-        n_lab = _wrap_units(nd.get("label", ""), tw, fs)
+        n_lab = _wrap_units(nd.get("label", ""), tw, fs, bold=nd.get("label_bold", True))
         need = fs * 1.25 * n_lab
         if nd.get("sublabel"):
             sub_fs = max(fs * sub_ratio, sub_min)
@@ -244,7 +319,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
                     f"group {gid} 标签 {g_fs}px 小于组内节点主标 "
                     f"{max(member_fs)}px（小标题字号应 ≥ 正文，建议加大）")
             lab_box = (g["x"] + 12, g["y"] + 4,
-                       _est_text_w(g["label"], g_fs), g_fs * 1.7)
+                       _est_text_w(g["label"], g_fs, bold=True), g_fs * 1.7)
             for nd in spec.get("nodes", []):
                 if nd.get("group") != gid:
                     continue
@@ -265,15 +340,27 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
         e_fs = e.get("font_size", 12.5)
         check_pt(e_fs, f"edge {eid} 标签")
         wps = e.get("waypoints") or []
-        if wps:
-            mid = wps[len(wps) // 2]
-        else:
-            a, b = nodes_by_id.get(e.get("from")), nodes_by_id.get(e.get("to"))
-            if not (a and b):
-                continue
-            mid = ((a["x"] + a["w"] / 2 + b["x"] + b["w"] / 2) / 2,
-                   (a["y"] + a["h"] / 2 + b["y"] + b["h"] / 2) / 2)
+        pts = edge_points(e, nodes_by_id)
+        if not pts:
+            continue
+        mid = edge_label_point(pts)      # 与渲染器同一锚点算法
         lab_w = _est_text_w(e["label"], e_fs)
+        lab_h = e_fs * 1.25 * len(str(e["label"]).split("\n"))
+        if not wps:
+            # 无 waypoint 的边，标签落在两端点连线中点：端点间距容不下标签高/宽时
+            # 文字会压在卡片边框上（Lane 内相邻卡片的短边最常见）
+            for nd in (nodes_by_id.get(e.get("from")), nodes_by_id.get(e.get("to"))):
+                if not (nd and all(isinstance(nd.get(k), (int, float))
+                                   for k in ("x", "y", "w", "h"))):
+                    continue
+                if (mid[0] + lab_w / 2 > nd["x"] and mid[0] - lab_w / 2 < nd["x"] + nd["w"]
+                        and mid[1] + lab_h / 2 > nd["y"]
+                        and mid[1] - lab_h / 2 < nd["y"] + nd["h"]):
+                    warnings.append(
+                        f"edge {eid} 标签与端点 {nd.get('id')} 重叠（标签约 "
+                        f"{lab_w:.0f}×{lab_h:.0f}px，端点间距不足）——拉开两节点、"
+                        "缩短标签或加 waypoint 把标签引到空处")
+                    break
         for nd in spec.get("nodes", []):
             if nd.get("id") in (e.get("from"), e.get("to")):
                 continue
@@ -287,6 +374,13 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
 
     for t in spec.get("texts", []):
         check_pt(t.get("font_size", 13), f"text {t.get('id', '?')}")
+
+    # 美学 lint（配色克制/对齐/尺寸/留白/间距/连线/层级）与排版 lint 合并输出：
+    # render_figure 只认一个 errors 列表，花哨与不可读同样阻塞出图
+    from server.core.aesthetics import lint_aesthetics
+    aes = lint_aesthetics(spec)
+    errors += aes["errors"]
+    warnings += aes["warnings"]
 
     return {"errors": errors, "warnings": warnings}
 
@@ -319,3 +413,29 @@ def border_point(nd: dict[str, Any], toward: tuple[float, float]) -> tuple[float
 
 def center(nd: dict[str, Any]) -> tuple[float, float]:
     return nd["x"] + nd["w"] / 2, nd["y"] + nd["h"] / 2
+
+
+def edge_points(e: dict[str, Any], nodes_by_id: dict[str, dict[str, Any]]
+                ) -> list[tuple[float, float]]:
+    """边的折线点列：[起点边框交点, *waypoints, 终点边框交点]。
+    渲染器与 lint 共用，标签位置由 edge_label_point 从同一点列推出。"""
+    src, dst = nodes_by_id.get(e.get("from")), nodes_by_id.get(e.get("to"))
+    if not (src and dst):
+        return []
+    for nd in (src, dst):
+        if not all(isinstance(nd.get(k), (int, float)) for k in ("x", "y", "w", "h")):
+            return []
+    wps = [(float(p[0]), float(p[1])) for p in (e.get("waypoints") or [])
+           if isinstance(p, (list, tuple)) and len(p) == 2]
+    p_start = border_point(src, wps[0] if wps else center(dst))
+    p_end = border_point(dst, wps[-1] if wps else center(src))
+    return [p_start, *wps, p_end]
+
+
+def edge_label_point(pts: list[tuple[float, float]]) -> tuple[float, float]:
+    """标签锚点：点数为奇取中间点，为偶取中间两点均值（与渲染器一致）。"""
+    n = len(pts)
+    if n % 2 == 1:
+        return pts[n // 2]
+    a, b = pts[n // 2 - 1], pts[n // 2]
+    return (a[0] + b[0]) / 2, (a[1] + b[1]) / 2

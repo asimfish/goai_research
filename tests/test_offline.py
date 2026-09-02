@@ -268,6 +268,151 @@ def test_figspec_lint_group_label_hierarchy():
     assert not any("小于组内节点主标" in w for w in r2["warnings"])
 
 
+# ---------- figspec 美学 lint（顶刊观感机械化） ----------
+
+def _aes(spec):
+    from server.core.aesthetics import lint_aesthetics
+    return lint_aesthetics(spec)
+
+
+def _node(i, x, y, w=160, h=60, **kw):
+    return {"id": i, "label": i, "x": x, "y": y, "w": w, "h": h, **kw}
+
+
+def test_aesthetics_color_restraint_and_rainbow_lanes():
+    # 4 个饱和色系 → error；同时 3 个分组各铺一种饱和底色 → 彩虹泳道 error
+    spec = {"canvas": {"width": 1200, "height": 500},
+            "groups": [{"id": "g1", "x": 0, "y": 0, "w": 380, "h": 400, "fill": "#F28E8E"},
+                       {"id": "g2", "x": 400, "y": 0, "w": 380, "h": 400, "fill": "#8ED18E"},
+                       {"id": "g3", "x": 800, "y": 0, "w": 380, "h": 400, "fill": "#8EA9F2"}],
+            "nodes": [_node("a", 20, 40, stroke="#D97706"), _node("b", 420, 40),
+                      _node("c", 820, 40)]}
+    r = _aes(spec)
+    assert any("色系" in e for e in r["errors"]), r
+    assert any("彩虹泳道" in e for e in r["errors"]), r
+    # 学术克制：淡底（近白）+ 一个主题色描边 → 无配色问题
+    clean = {"canvas": {"width": 1200, "height": 500},
+             "groups": [{"id": "g1", "x": 0, "y": 0, "w": 380, "h": 400, "fill": "#F3F6FA"},
+                        {"id": "g2", "x": 400, "y": 0, "w": 380, "h": 400, "fill": "#F3F6FA"}],
+             "nodes": [_node("a", 20, 40, stroke="#2F5597"), _node("b", 420, 40, stroke="#2F5597")]}
+    r2 = _aes(clean)
+    assert r2["errors"] == [] and not any("色系" in w for w in r2["warnings"]), r2
+
+
+def test_aesthetics_alignment_sizes_and_badges():
+    # 并排两卡顶边差 5px → 近失对齐；宽 160 vs 172（7%）→ 兄弟尺寸不一致
+    spec = {"canvas": {"width": 1000, "height": 400},
+            "nodes": [_node("a", 20, 40), _node("b", 220, 45, w=172)]}
+    w = _aes(spec)["warnings"]
+    assert any("近失对齐" in x for x in w), w
+    assert any("尺寸近似而不相等" in x for x in w), w
+    # 对齐且等尺寸 → 两项都消失；高度不同但顶边对齐不算近失（中线差属正常）
+    ok = {"canvas": {"width": 1000, "height": 400},
+          "nodes": [_node("a", 20, 40), _node("b", 220, 40), _node("c", 420, 40, h=90)]}
+    w2 = _aes(ok)["warnings"]
+    assert not any("近失对齐" in x or "尺寸近似" in x for x in w2), w2
+    # 徽章贴母卡正下方 4px 是 skill 规定的设计，不算间距过密、不参与对齐
+    badge = {"canvas": {"width": 1000, "height": 400}, "defaults": {"font_size": 16},
+             "nodes": [_node("card", 20, 40, w=200, h=90, group="g"),
+                       _node("chip", 60, 134, w=120, h=26, shape="stadium", group="g")]}
+    w3 = _aes(badge)["warnings"]
+    assert not any("间距过密" in x or "近失对齐" in x for x in w3), w3
+    # 同组两张同等级卡片只隔 4px → 过密
+    tight = {"canvas": {"width": 1000, "height": 400}, "defaults": {"font_size": 16},
+             "nodes": [_node("a", 20, 40, group="g"), _node("b", 184, 40, group="g")]}
+    assert any("间距过密" in x for x in _aes(tight)["warnings"])
+
+
+def test_wrap_lines_uses_real_helvetica_widths_and_word_breaks():
+    """三方共用的折行：按词折行 + Helvetica 字宽表 + 粗体系数。
+    审计实拍：'FWHM ≤ 1.3× · SSA ≥ 0.7× ref' 在 200px 芯片里按均一 0.61em 估成一行，
+    draw.io 实际折成两行、文字顶出边框。"""
+    chip = "FWHM ≤ 1.3× · SSA ≥ 0.7× ref"
+    # 大写/符号密集的粗体短语宽度 > 小写句子
+    assert figspec.text_units(chip, bold=True) > figspec.text_units("the quick brown fox jumps", bold=False)
+    lines = figspec.wrap_lines(chip, 200 * 0.86, 17, bold=True)
+    assert len(lines) == 2 and all(" " in ln or len(ln) < 12 for ln in lines), lines
+    # 按词折行：不在单词中间切断
+    for ln in figspec.wrap_lines("Band and carrier mapping across many words", 120, 16):
+        assert not ln.startswith(" ") and not ln.endswith(" ")
+    assert "carr" not in " ".join(figspec.wrap_lines("Band and carrier mapping", 60, 16)).replace("carrier", "")
+    # 显式 \n 是硬换行；CJK 无空格串按字符硬切
+    assert figspec.wrap_lines("a\nb", 500, 12) == ["a", "b"]
+    assert len(figspec.wrap_lines("这是一个没有空格的很长的中文标签用来测试", 100, 16)) >= 3
+    # 粗体系数：同一文本粗体更宽 → 更可能多折一行
+    assert figspec.text_units("Mixed", True) > figspec.text_units("Mixed", False)
+
+
+def test_render_drawio_explicit_breaks_match_svg_lines():
+    """drawio html=1 会折叠 \\n，必须输出显式 <br/>，且行与 SVG/lint 完全一致。"""
+    spec = {"canvas": {"width": 800, "height": 300},
+            "nodes": [{"id": "n", "label": "Structure & porosity QC", "sublabel":
+                       "PXRD FWHM · BET SSA · FTIR\nketo-form · same-batch splits",
+                       "x": 20, "y": 20, "w": 200, "h": 96, "font_size": 17}],
+            "edges": [], "texts": [{"id": "t", "text": "line one\nline two", "x": 400, "y": 250}]}
+    xml = render_drawio.render(spec)
+    tw = 200 * 0.90
+    lab_lines = figspec.wrap_lines("Structure & porosity QC", tw, 17, bold=True)
+    sub_lines = figspec.wrap_lines("PXRD FWHM · BET SSA · FTIR\nketo-form · same-batch splits",
+                                   tw, max(17 * 0.85, 10.5))
+    from xml.sax.saxutils import escape, quoteattr
+    expected_label = "<br/>".join(escape(l) for l in lab_lines)
+    assert quoteattr(f"<b>{expected_label}</b>")[1:-1].split("&lt;br/&gt;&lt;font")[0] in xml
+    assert xml.count("&lt;br/&gt;") >= len(lab_lines) - 1 + len(sub_lines) - 1 + 1 + 1  # +label/sub 分隔 +text
+    assert "&amp;amp;" in xml            # & 先 HTML 转义再 XML 属性转义
+    assert "&#10;" not in xml            # 不再把裸换行塞进 html 值
+
+
+def test_lint_edge_label_vs_endpoints_uses_renderer_anchor():
+    """边标签锚点与渲染器同算法（边框交点中点），标签压在端点卡片上才报。"""
+    close = {"canvas": {"width": 800, "height": 400},
+             "nodes": [_node("a", 20, 100, w=200, h=80), _node("b", 20, 200, w=200, h=80)],
+             "edges": [{"id": "e", "from": "a", "to": "b", "label": "two line\nlabel here",
+                        "font_size": 15}]}
+    w = figspec.lint(close)["warnings"]
+    assert any("标签与端点" in x for x in w), w        # 20px 间隙放不下 2 行标签
+    far = {"canvas": {"width": 800, "height": 400},
+           "nodes": [_node("a", 20, 40, w=200, h=80), _node("b", 20, 240, w=200, h=80)],
+           "edges": [{"id": "e", "from": "a", "to": "b", "label": "two line\nlabel here",
+                      "font_size": 15}]}
+    assert not any("标签与端点" in x for x in figspec.lint(far)["warnings"])
+    # 与渲染器一致：并排两卡的标签落在边框交点中点，不落在中心连线中点
+    side = {"canvas": {"width": 800, "height": 400},
+            "nodes": [_node("a", 20, 100, w=200, h=80), _node("b", 380, 100, w=200, h=80)],
+            "edges": [{"id": "e", "from": "a", "to": "b", "label": "short", "font_size": 15}]}
+    pts = figspec.edge_points(side["edges"][0], {n["id"]: n for n in side["nodes"]})
+    assert figspec.edge_label_point(pts) == (300.0, 140.0)
+    assert not any("标签与端点" in x for x in figspec.lint(side)["warnings"])
+
+
+def test_aesthetics_edges_canvas_and_hierarchy():
+    # a→c 直线穿过中间的 b → 连线穿节点；加 waypoint 绕行后消失
+    spec = {"canvas": {"width": 1000, "height": 400},
+            "nodes": [_node("a", 20, 100), _node("b", 300, 100), _node("c", 580, 100)],
+            "edges": [{"from": "a", "to": "c"}]}
+    assert any("穿过" in x for x in _aes(spec)["warnings"])
+    spec["edges"][0]["waypoints"] = [[380, 40]]
+    assert not any("穿过" in x for x in _aes(spec)["warnings"])
+    # 内容越出画布 → error
+    out = {"canvas": {"width": 300, "height": 200}, "nodes": [_node("a", 200, 100, w=200)]}
+    assert any("越出画布" in e for e in _aes(out)["errors"])
+    # 描边 3 档 + 标题小于组标签 → 两条层级告警
+    tiers = {"canvas": {"width": 1000, "height": 400}, "title": "T",
+             "title_style": {"font_size": 16},
+             "groups": [{"id": "g", "label": "Lane", "x": 0, "y": 0, "w": 900, "h": 300,
+                         "font_size": 20}],
+             "nodes": [_node("a", 20, 60, stroke_width=1.5), _node("b", 220, 60, stroke_width=1.8),
+                       _node("c", 420, 60, stroke_width=2.4)]}
+    w = _aes(tiers)["warnings"]
+    assert any("描边粗细" in x for x in w) and any("标题" in x and "最大" in x for x in w), w
+    # 仓库样例图：美学项不得产生 error（历史告警允许，但不能被新规则挡住出图）
+    for p in ("examples/pipeline.figspec.json",
+              "examples/survey_cof_her/paper/figures/src/fig1_factor_chain.json",
+              "examples/survey_cof_her/paper/figures/src/fig2_tppa1_idea.json"):
+        with open(os.path.join(ROOT, p), encoding="utf-8") as f:
+            assert _aes(json.load(f))["errors"] == [], p
+
+
 def test_render_svg_node_label_bold_default():
     spec = {"canvas": {"width": 800, "height": 300},
             "nodes": [{"id": "a", "label": "Bold by default",

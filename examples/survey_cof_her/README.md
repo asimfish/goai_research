@@ -18,7 +18,7 @@ survey PDF out — with every citation verified and every figure still editable.
 | 文献库 | **143 篇**验证文献，五源检索 + snowballing，全部通过 ref_audit（零 UNVERIFIED/MISMATCH） |
 | 综述正文 | **26 页** xelatex 编译 PDF，8 节 + 143 条参考文献（蓝色可点 DOI/URL） |
 | 引用绑定 | bib 整合率 **100%**（零孤儿条目），密度 **51.2 次/千词**（闸门线 ≥8） |
-| 图纸 | 2 张主图 × 四件套（figspec/SVG/drawio/PDF+PNG），全部通过排版 lint（字号地板/溢出/遮挡 0 error） |
+| 图纸 | 2 张主图 × 四件套（figspec/SVG/drawio/PDF+PNG），全部通过排版 + 美学 lint（字号地板/溢出/遮挡 0 error；配色/对齐/尺寸/间距/连线 0 告警）。2026-09-02 按真实字宽折行重排：卡片加宽加高、列距与 waypoint 重算、边标签改窄，draw.io 导出与 SVG 逐行一致 |
 | 风格库 | 30 篇经典综述蒸馏的写作与图纸风格卡（`style_bank`） |
 | 预注册 idea | TpPa-1 mixed-linker D–A 掺杂路线：假设 → 匹配对照 → 量化闸门 G1–G4 → fallback（[idea_tppa1_route.md](idea_tppa1_route.md)） |
 | 闸门 | 12 个全 PASS，账本带产物指纹（[ledger.json](ledger.json)）。注：该次运行早于「协议 gate 名 + 回执机械校验」上线，账本用的是当时 agent 自定的 gate 名（`ref_audit`/`review_round1` 等），review 回执为账本 detail 文字；现行 `loopctl check-done` 对这种账本会判缺必需 gate——这正是后来加严的原因 |

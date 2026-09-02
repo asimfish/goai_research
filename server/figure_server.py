@@ -97,10 +97,14 @@ def figspec_schema() -> str:
 
 @mcp.tool()
 def validate_figspec(figspec_json: str) -> str:
-    """校验 figspec JSON：结构 + 排版（字号印刷等效地板、文字溢出、标签遮挡）。
+    """校验 figspec JSON：结构 + 排版 + 美学。
 
-    返回 {ok, errors, typo_errors, typo_warnings}。errors/typo_errors 均阻塞渲染；
-    typo_warnings 建议修复（副文级文字略小等）。
+    排版：字号印刷等效地板、文字溢出、标签遮挡。美学（顶刊观感机械化）：
+    配色 ≤2 主题色 + 1 强调色、无彩虹泳道、无饱和色块铺满、无近失对齐、
+    兄弟节点尺寸一致、不越界/留白均衡、间距不过密、连线不穿节点/少交叉、
+    描边 ≤2 档、标题为最大层级。
+    返回 {ok, errors, typo_errors, typo_warnings}。errors/typo_errors 均阻塞渲染
+    （≥4 色系、彩虹泳道、越界属阻塞）；typo_warnings 建议修复。
     """
     try:
         spec = json.loads(figspec_json)
@@ -133,12 +137,16 @@ def render_figure(figspec_json: str, name: str, out_dir: str = "") -> str:
         return _dumps({"ok": False, "error": str(exc)})
     typo = fs.lint(spec)
     if typo["errors"]:
-        return _dumps({"ok": False, "error": "排版 lint 未通过（字号/溢出/遮挡）",
+        return _dumps({"ok": False,
+                       "error": "排版/美学 lint 未通过（字号/溢出/遮挡/配色/越界）",
                        "typo_errors": typo["errors"],
                        "hint": "字号印刷等效 = px × 468 / canvas.width，正文需 ≥4.5pt；"
-                               "溢出改文本或加大节点；遮挡调坐标。修完重新 render。"})
+                               "溢出改文本或加大节点；遮挡调坐标；配色收敛到 ≤2 主题色 + "
+                               "1 强调色，分组底色改浅灰/极淡；内容不得越出画布。"
+                               "修完重新 render。"})
     paths = {}
     if typo["warnings"]:
+        # 美学告警不阻塞出图，但 figure-studio 合同要求逐条处理或在 figure_plan 记录理由
         paths["typo_warnings"] = typo["warnings"]
     for sub in ("figspec", "svg", "drawio", "png"):
         os.makedirs(os.path.join(out_dir, sub), exist_ok=True)
