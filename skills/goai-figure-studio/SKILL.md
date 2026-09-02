@@ -48,6 +48,10 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 - **模糊指令规范化**：上游给的模糊视觉指令（「体现方法差异」）先翻译成
   具体含义/安全画法/禁止的误实现，翻译不出来退回提问。
 - **可见文字白名单**：本图允许出现的全部文字，用词与 taxonomy/正文一致。
+- **学科用语约束**：图面、图例和图注使用材料学中的相组成、结构关系、
+  合成条件和表征方法；不得把 agent 内部的“过闸、标签、字段、端点、
+  工具箱、降权”等控制术语作为可见文字。优先写“目标化合物直接报道、
+  相关结构体系、实验条件、互补表征和可外推范围”等学术表达。
 - **配色合同**：优先采用 `workspace/style_bank/figure_style_cards.md` 的
   领域配色基准；无风格库时一主一辅 + 灰阶可读。**禁**：AI 蓝紫渐变、
   霓虹饱和、玻璃球高光、bokeh、营销海报打光、装饰性色带。
@@ -182,3 +186,7 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
 - 两轮候选的每张生图、每条 ledger issue、每次重建对照都要在
   figure_plan.md 留痕——审计链完整才许过闸。
 - 风格库缺失不阻塞：按合同默认配色执行并记账。
+- 交付前对包含图注或图中文字的稿件运行
+  `.venv/bin/python tools/academic_language_guard.py workspace/drafts/sections
+  workspace/drafts/main.tex`；命中内部控制术语时先修改图稿和 caption，
+  再进行 figures_ready 登记。

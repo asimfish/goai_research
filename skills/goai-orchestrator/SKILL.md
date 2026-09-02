@@ -1,6 +1,6 @@
 ---
 name: goai-orchestrator
-description: Use when the user wants to run the GoAI survey pipeline end-to-end — 文献综述多智能体总编排：初始化回环账本、按阶段路由 7 个专职 agent、并行分派、闸门验收、审稿意见回路由，直到全部 gate PASS 或达到回合上限。触发词：「跑综述流水线」「run survey pipeline」「开始文献调研」；用户**只给一个研究主题**（未限定只要某个环节）时也默认进入本 skill 跑全流程。
+description: Use when the user wants to run the GoAI survey pipeline end-to-end, or supplies only a research topic without restricting the task to one stage — 文献综述多智能体总编排：初始化回环账本、按阶段路由 7 个专职 agent、并行分派、闸门验收、审稿意见回路由，直到全部 gate PASS 或达到回合上限。触发词：「跑综述流水线」「run survey pipeline」「开始文献调研」，以及未指定单阶段意图的裸研究主题。
 ---
 
 # GoAI Orchestrator —— 综述流水线总编排
@@ -61,6 +61,16 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    自动确认）、taxonomy 阶段的贡献声明确认（用户不可达时按 writer skill
    的降级规则记录后继续）、化学安全方案（不可自动确认；用户不可达时该
    支线记 WARN skipped 并在终报如实说明，不得输出可执行危险协议）。
+   通过非交互式 `codex exec` 运行的裸主题冷启动，以及用户已明确要求“只给主题、
+   无人值守完成全部任务”的运行，均视为用户在阶段中不可达：自动采用
+   `contribution.md` 给出的推荐组合，将 `taxonomy_ready` 置为 PASS，并在账本和
+   最终汇报注明“贡献声明未经用户逐项确认”；不得停下来要求回复选项。
+   化学安全方案只有在 ideas 支线生成新的、可执行实验方案时才要求人工确认；
+   对已发表合成条件的文献综述只需标注证据等级和安全边界，不构成人工停点。
+   用户已明确要求客户端无人值守完成时，ref_gate 连续三次仍只剩非核心背景条目
+   MISMATCH/UNVERIFIED，不得因需要选择处置方案而退出：确认目标论文与核心证据
+   均为 PASS 后，删除这些背景条目及依赖它们的非必要论述，记录 decision，并重新
+   运行引用闸门。若核心证据不通过或删除会实质改变结论，仍须 fail-closed 停止。
 3. **逐阶段分派——并发是默认，串行是降级**：`loopctl advance --to <stage>`
    后分派对应 skill。
    - 在 Cursor/Claude 环境：用 Task 工具**单条消息多路并行**拉起子 agent，
@@ -79,8 +89,8 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    1. executor ↔ reviewer：对抗审稿两轮起，issue 路由返工（review 阶段）；
    2. proposer ↔ attacker：idea-forge 内部提案-攻击双角色 + 引用二审；
    3. candidate ↔ auditor：figure-studio 两轮候选制的 issue-ledger 审计；
-   4. draft ↔ guards：writer 与确定性闸门（bib_guard/tex_guard/bank_check/
-      superlib lint）的机械互搏——闸门不过即返工，模型说了不算。
+   4. draft ↔ guards：writer 与确定性检查（bib_guard/tex_guard/bank_check/
+      superlib lint/academic_language_guard）的机械互搏——检查不过即返工，模型说了不算。
 4. **验收**：阶段完成后检查对应 gate 是否已 PASS（`loopctl status`）。
    gate 没过不允许 advance；agent 自报完成不算数，以账本 gate 为准。
    验收时抽查证据三件套：账本内该阶段的过程 log、产物文件实际存在
@@ -89,6 +99,9 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    并把 gate 置回 FAIL——禁止让报告「看起来完成」。
    `review_pass` 额外校验：PASS 必须带审稿回执（`--receipt`，含模型名与
    trace 存档路径），无回执的 PASS 回退为 FAIL 并要求重审。
+   `draft_complete` 额外运行 `.venv/bin/python tools/academic_language_guard.py
+   workspace/drafts/sections workspace/drafts/main.tex`，阻止内部控制术语
+   进入正文、表格和图注；未在 revision_log 中说明的命中一律退回 writing。
    关键 gate 建议带 `--inputs` 记录产物指纹：上游产物变更后 check-done
    会自动把旧 gate 置回 PENDING（旧审计不得当新审计用）。
    指纹范围规则：盖「该闸门结论真正依赖的全部文件」，不止本阶段产物——

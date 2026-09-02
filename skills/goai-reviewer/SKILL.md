@@ -44,7 +44,7 @@ python3 tools/loopctl.py gate --name review_pass --status PASS \
 | 引用 | 抽查 10 条 claim-cite：引文真的支撑该 claim？（wrong-context 是最危险的错） | target=ref_gate / writing |
 | 图文 | 图的主线与正文一致？符号约定冲突？图不可读? | target=figures |
 | 论证 | 无证据断言?结论强度超出证据?对比公平? | target=writing |
-| 写作 | 重复/术语漂移/AI 腔（模板化转折、忏悔式套话） | target=writing |
+| 写作 | 重复/术语漂移/AI 腔（模板化转折、忏悔式套话）以及软件流程术语泄漏 | target=writing |
 
 审 idea 提案时换四维：证据真实性/新颖性/可行性/安全性（化学方案必须
 逐条看 safety 字段，空的直接 blocker）。**防误杀**：以「不新颖」毙掉
@@ -59,6 +59,17 @@ python3 tools/loopctl.py gate --name review_pass --status PASS \
 三视角审计未完成前，不得宣称稿件「可交付/可投稿」。
 
 ## 产出协议（必须落账本）
+
+### 学术表达专项检查
+
+审阅中文材料学综述时，必须单独检查正文、表格和图注是否使用学科语言。
+“证据级、比较标签、过闸、字段、端点、工具箱、降权、迁移权限、身份锚点、
+验证闭环”等词属于 agent 的内部控制语汇，除非它们本身是研究对象，否则
+不得出现在交付稿中。应要求作者改写为“与目标相的关系、已通过文献核查、
+实验项目、表征方法、方法参照、限制其适用范围、可外推范围、直接结构依据、
+可迭代的实验依据”等材料学表达。终审前运行
+`tools/academic_language_guard.py`；存在未解释的命中时至少开一个 major
+issue，未修复不得放行。
 
 每条 issue 执行：
 ```bash

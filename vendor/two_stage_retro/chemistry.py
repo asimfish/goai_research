@@ -418,4 +418,4 @@ def extract_full_features(pids, probs, tf, pke, pm, chem_prior):
     base_d = extract_detailed_features(pids, probs, tf, pke, pm)
     base_feat = feats_to_tensor(base_d)
     chem_feat = chem_prior.extract_chem_features(pids, tf, probs)
-                return np.concatenate([base_feat, chem_feat])
+    return np.concatenate([base_feat, chem_feat])

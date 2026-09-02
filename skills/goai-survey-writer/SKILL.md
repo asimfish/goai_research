@@ -65,7 +65,10 @@ bib_guard 的参数取值，在账本记 decision。
    与 motivation 摘要呈给用户确认或修改；确认前 `taxonomy_ready` 只能记
    PENDING，不得进入阶段二。用户明确不可达（全自动无人值守 run）时，
    账本记 `--detail "contribution 未经用户确认"`，并在最终汇报中如实声明。
-   确认后 `loopctl gate --name taxonomy_ready --status PASS`。
+   确认后 `loopctl gate --name taxonomy_ready --status PASS`。通过非交互式
+   `codex exec` 执行裸主题，或上游已声明无人值守完成全流程时，必须把用户视为
+   阶段中不可达：采用候选贡献的推荐组合，账本明确记录“贡献未经用户逐项确认”，
+   将 `taxonomy_ready` 置为 PASS 并继续；不得输出选项题后退出。
 
 ## 阶段二：引用支持库（citation support bank）
 
@@ -136,6 +139,31 @@ Open Problems（含 idea-forge 产出） → Conclusion。
   编号列表，平行要素用 run-in 或 itemize；
 - 并行写作时只碰自己的节文件，公共文件（main.tex/bib）只由汇合者动。
 
+### 学术语言与内部术语隔离
+
+正文、摘要、标题、表头、图中文字和图注必须使用本学科的研究对象、实验
+条件、结构关系与表征方法来表述；账本、提示词和程序日志中的内部术语不得
+直接进入论文。写作时将内部表达转换为下列学术表达：
+
+| 内部表达（仅限 agent 状态） | 论文表达 |
+|---|---|
+| 证据级、比较标签 | 与目标相的关系、分类依据 |
+| 过闸、证据包、引用池 | 已通过文献核查、本文获得的文献材料、本文核查的文献 |
+| 字段、字段归一化 | 实验项目、合成条件的统一比较 |
+| 验证终点、端点 | 表征方法、参照相 |
+| 降权、迁移权限、工具箱 | 限制其适用范围、可外推范围、方法参照 |
+| 身份锚点、谱系核验、验证闭环 | 直接结构依据、结构关系复核、可迭代的实验依据 |
+
+不要在论文中使用“过闸”“标签”“字段”“端点”“证据包”“工具箱”等
+软件流程隐喻。完成组稿后运行：
+
+```bash
+.venv/bin/python tools/academic_language_guard.py workspace/drafts/sections workspace/drafts/main.tex
+```
+
+该检查出现任何未解释的术语均视为写作阻塞项；若某术语确为研究对象本身，
+必须在 `revision_log.md` 说明理由后以 `--allow` 明确放行。
+
 ## 阶段五：组装与精修
 
 1. 用 `templates/survey_main.tex` 组装，`\input` 各节。模板内置排版
@@ -167,7 +195,8 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    检查 TODO 占位残留（模板的标题/作者/摘要必须已替换）、`\input` 与
    图文件存在、`\ref` 无悬空、环境与花括号闭合。任一阻塞项不得记
    `draft_complete`。有 latex 环境则再编译验证，编译告警逐条处理或在
-   revision_log 说明。
+   revision_log 说明。另外，`academic_language_guard.py` 必须通过，确保
+   内部控制语言没有泄漏到正文、表格和图注。
 5. `loopctl gate --name draft_complete --status PASS
    --inputs workspace/drafts/main.tex,workspace/library/references.bib`
    并交 review。
