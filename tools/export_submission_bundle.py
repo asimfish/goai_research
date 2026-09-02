@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import io
 import json
 import re
 import shutil
@@ -161,7 +162,7 @@ def export_dev_trace(detail_dir: Path, out_dir: Path, log: list[str]) -> dict:
     redactions = 0
     first_ts = last_ts = None
     out_path = out_dir / "whalent_codex_conversation.jsonl.gz"
-    with gzip.open(out_path, "wt", encoding="utf-8") as sink:
+    with gzip.GzipFile(out_path, "wb", mtime=0) as raw, io.TextIOWrapper(raw, encoding="utf-8") as sink:
         for f in files:
             payload = json.loads(f.read_text(encoding="utf-8"))
             msg = payload.get("message", payload)
@@ -233,7 +234,8 @@ def export_codex_sessions(sessions_dir: Path, out: Path, log: list[str]) -> dict
             target_dir = rt_dir / (Path(cwd).name if cwd else "unknown_cwd")
             info["runtime"].append(rec)
         target_dir.mkdir(parents=True, exist_ok=True)
-        with gzip.open(target_dir / (path.name + ".gz"), "wt", encoding="utf-8") as sink:
+        # mtime=0 keeps the archive byte-identical for identical content (git-friendly)
+        with gzip.GzipFile(target_dir / (path.name + ".gz"), "wb", mtime=0) as raw, io.TextIOWrapper(raw, encoding="utf-8") as sink:
             sink.write(text)
     (out / "traces" / "codex_sessions_index.json").write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
     log.append(f"codex rollouts exported: {len(info['development'])} development, {len(info['runtime'])} runtime")

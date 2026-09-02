@@ -10,7 +10,21 @@
 - `workspace/style_bank/generated_references/fig02_matrix_reference.png`
 - `workspace/style_bank/generated_references/fig03_roadmap_reference.png`
 
-生成图只用于布局和视觉语法，不进入论文。三张最终图均由 figspec 单一事实源生成 SVG 与原生 Draw.io，并由 Draw.io Desktop 导出紧裁切 PDF。
+生成图只用于布局和视觉语法，不进入论文。图 1、图 2 由 figspec 单一事实源生成
+SVG 与原生 Draw.io；图 3 采用“SVG 图像单元 + Draw.io 封装”的版式锁定方案，
+其精确文字和几何仍由 SVG 脚本控制，并保留可整体移动、缩放和加注释的 Draw.io
+编辑入口。三张图均由同一 SVG 源生成论文侧 PDF。
+
+### 2026-09-03 生图参照与箭头专项复核
+
+新增参照图 `workspace/figures/candidates/nature_headfigure_reference_arrow_checked.png`，
+用于校正研究路线图的构图比例、晶体结构意象和表征读出布局。参照图中的文字、
+化学式和箭头不作为事实来源；最终 SVG/Draw.io 仍由脚本确定性生成。
+
+箭头专项复核结果：当前图 3 的 6 条方向线均改为路径端点绑定的 SVG marker，
+删除了独立三角形箭头头部；marker 尖端与路径终点重合，曲线末段切线与方向一致，
+并在 PNG、PDF 和 Draw.io 图像单元中检查无脱节。仓库渲染器同步采用端点绑定、
+圆角线帽/连接和零目标间距；后续新图禁止手工摆放独立箭头头部。
 
 ### 材料知识的公开边界
 
@@ -34,9 +48,12 @@ Pt/Au 容器、研磨介质和氧分压等材料知识只作为内部知识库�
 
 - `fig01_evidence_synthesis_map`：figspec / SVG / Draw.io / PDF / PNG。
 - `fig02_route_variable_matrix`：figspec / SVG / Draw.io / PDF / PNG。
-- `fig03_research_roadmap`：figspec / SVG / Draw.io / PDF / PNG。
+- `fig03_research_roadmap`：SVG / Draw.io（SVG 图像单元）/ PDF / PNG；
+  需要拆分为原生 Draw.io 子元素时，以 SVG 脚本为单一事实源再行拆分。
 
-三张 PDF 均为单页紧裁切；论文只嵌入 PDF，位图仅用于审图。Draw.io 文件中的文字、形状和连线均保持可编辑。
+三张 PDF 均为单页紧裁切；论文只嵌入 PDF，位图仅用于审图。图 1、图 2 的
+文字、形状和连线保持原生可编辑；图 3 以可编辑 SVG 源封装为单一 Draw.io
+图像单元，适合整体移动、缩放和叠加标注。
 
 > 汇合范围：本文件由 `workspace/notes/figure_parts/fig01.md` 与
 > `workspace/notes/figure_parts/fig02.md` 原样汇合；最终 gate 仅在本轮重新核对

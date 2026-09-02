@@ -39,10 +39,11 @@ def line(x1: float, y1: float, x2: float, y2: float, stroke: str = "#58717F",
 
 
 def path(d: str, stroke: str = "none", width: float = 1.0, fill: str = "none",
-         opacity: float = 1.0, dash: str = "") -> str:
+         opacity: float = 1.0, dash: str = "", marker: str = "") -> str:
     da = f' stroke-dasharray="{dash}"' if dash else ""
+    ma = f' marker-end="url(#{marker})"' if marker else ""
     return (f'<path d="{d}" fill="{fill}" stroke="{stroke}" stroke-width="{width}" '
-            f'opacity="{opacity}"{da}/>' )
+            f'opacity="{opacity}" stroke-linecap="round" stroke-linejoin="round"{da}{ma}/>' )
 
 
 def circle(cx: float, cy: float, r: float, fill: str, stroke: str = "none",
@@ -78,8 +79,8 @@ def build_svg() -> str:
         '<linearGradient id="amber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4D9A3"/><stop offset="1" stop-color="#C88929"/></linearGradient>',
         '<linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BCD6D5"/><stop offset="1" stop-color="#477C80"/></linearGradient>',
         '<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset dy="5" result="off"/><feComponentTransfer><feFuncA type="linear" slope=".17"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>',
-        '<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#607E88"/></marker>',
-        '<marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#B8791E"/></marker>',
+        '<marker id="arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 12 6 L 0 12 Z" fill="#607E88"/></marker>',
+        '<marker id="arrowAmber" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 12 6 L 0 12 Z" fill="#B8791E"/></marker>',
         '</defs>',
         f'<rect width="{W}" height="{H}" fill="#FFFFFF"/>',
         text(800, 44, "从组成空间到可检验合成", 31, "#183A4A", weight="700"),
@@ -101,8 +102,7 @@ def build_svg() -> str:
           text(225, 184, "Zn", 14, "#627A84"),
           # small neighboring motifs
           tetra(121, 320, 26, "#9FB8C4"), tetra(326, 315, 26, "#9FB8C4"),
-          path("M 372 374 C 442 337 494 300 552 263", "#7895A0", 2.2, "none", .9),
-          '<path d="M 542 252 L 565 258 L 548 273 Z" fill="#7895A0"/>']
+          path("M 372 374 C 442 337 494 300 552 263", "#7895A0", 2.2, "none", .9, marker="arrow")]
 
     # Central object: a lattice-like schematic with depth and no enclosing box.
     a += [text(800, 126, "候选晶相", 22, "#183A4A", weight="700"),
@@ -121,10 +121,8 @@ def build_svg() -> str:
                     (760,370,14,"#B8A5C6"),(895,380,16,"#AABF95"),(690,407,12,"#B8A5C6")]:
         a.append(circle(x,y,r,c,"#6D7F7A",1.1,.94))
     a += ['</g>',
-          path("M 548 600 C 630 569 676 534 717 486", "#7895A0", 2.2, "none", .85),
-          '<path d="M 708 494 L 719 470 L 731 493 Z" fill="#7895A0"/>',
-          path("M 1020 470 C 1084 500 1117 534 1165 582", "#7895A0", 2.2, "none", .85),
-          '<path d="M 1155 574 L 1180 588 L 1158 598 Z" fill="#7895A0"/>']
+          path("M 548 600 C 630 569 676 534 717 486", "#7895A0", 2.2, "none", .85, marker="arrow"),
+          path("M 1020 470 C 1084 500 1117 534 1165 582", "#7895A0", 2.2, "none", .85, marker="arrow")]
 
     # Lower left: solid-state route shown as objects, not a workflow card.
     a += [text(200, 625, "固相成相", 19, "#183A4A", weight="700"),
@@ -144,8 +142,7 @@ def build_svg() -> str:
           '<rect x="435" y="680" width="48" height="31" rx="13" fill="#D8902B" opacity=".9"/>',
           '<rect x="447" y="691" width="24" height="12" rx="4" fill="#F5D39A"/>',
           text(457, 770, "混合 · 压片 · 热处理", 15, "#657C86"),
-          path("M 520 700 C 566 700 590 682 622 654", "#7895A0", 2.0, "none", .8),
-          '<path d="M 612 644 L 636 647 L 620 665 Z" fill="#7895A0"/>']
+          path("M 520 700 C 566 700 590 682 622 654", "#7895A0", 2.0, "none", .8, marker="arrow")]
 
     # Lower center: high-temperature solution route.
     a += [text(650, 625, "高温溶液长晶", 19, "#805718", weight="700"),
@@ -157,8 +154,7 @@ def build_svg() -> str:
           '<path d="M 768 732 L 796 659 L 823 732 L 796 759 Z" fill="#EBC27E" stroke="#A06C1D" stroke-width="1.4" opacity=".9"/>',
           '<path d="M 796 659 L 823 732 L 796 719 L 768 732 Z" fill="#F4DCA9" stroke="#A06C1D" stroke-width="1.1" opacity=".9"/>',
           text(710, 797, "熔体 · 保温 · 慢冷", 15, "#805718"),
-          path("M 852 696 C 898 696 927 686 963 661", "#B8791E", 2.2, "none", .9),
-          '<path d="M 955 651 L 978 651 L 963 671 Z" fill="#B8791E"/>']
+          path("M 852 696 C 898 696 927 686 963 661", "#B8791E", 2.2, "none", .9, marker="arrowAmber")]
 
     # Right: three compact readouts, floating like a journal figure, not cards.
     a += [text(1350, 126, "互补表征", 21, "#183A4A", weight="700"),
@@ -178,8 +174,7 @@ def build_svg() -> str:
           line(1395, 670, 1395, 688, "#8298A0", 1.2), line(1488, 670, 1488, 688, "#8298A0", 1.2),
           circle(1265, 674, 6, "#4E7880"), circle(1355, 674, 7, "#B8791E"), circle(1420, 674, 6, "#4E7880"), circle(1470, 674, 6, "#A4B2B4"),
           text(1350, 716, "EDS / EPMA · 实际化学计量", 16, "#536D79"),
-          path("M 1490 744 C 1360 820 1160 820 1010 750", "#8299A1", 1.8, "none", .75, "6 7"),
-          '<path d="M 1022 740 L 1000 748 L 1018 761 Z" fill="#8299A1"/>',
+          path("M 1490 744 C 1360 820 1160 820 1010 750", "#8299A1", 1.8, "none", .75, "6 7", marker="arrow"),
           text(1348, 813, "结果反馈至下一轮组成与工艺", 15, "#657C86")]
 
     # A restrained scientific footer, not a third row of cards.
