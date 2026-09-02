@@ -139,8 +139,12 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
                  "none": "endArrow=none;"}
     for i, e in enumerate(spec.get("edges", [])):
         eid = e.get("id") or f"edge-{i}"
-        style = ("edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"
-                 "jettySize=auto;orthogonalLoop=1;"
+        # 有 waypoint：按作者给的折点走正交路由；无 waypoint：直线连边框交点——
+        # 与 SVG 渲染和 lint 的几何完全一致（draw.io 自动正交路由会拐进相邻卡片，
+        # 而 lint 按直线判定，二者不一致就会漏检）
+        routing = ("edgeStyle=orthogonalEdgeStyle;jettySize=auto;orthogonalLoop=1;"
+                   if e.get("waypoints") else "edgeStyle=none;")
+        style = (routing + "rounded=0;html=1;"
                  + arrow_map.get(e.get("arrow", "block"), arrow_map["block"])
                  + f"strokeColor={edge_style_of(e, spec, 'color', DEFAULTS['edge_color'])};"
                  + f"strokeWidth={edge_style_of(e, spec, 'width', DEFAULTS['edge_width'])};"
