@@ -1,12 +1,13 @@
-% goai_research 综述主模板（单栏 article 版；投稿时换会议/期刊官方模板，
-% 各 section 文件可原样迁移）。
-\documentclass[11pt]{article}
+% goai_research 中文综述主模板（ctexart 版，必须用 xelatex 编译）。
+% 语言契约：主题/交付语言为中文时用本模板；英文交付用 survey_main.tex。
+% ctexart 自动本地化文档标签（摘要/图/表/参考文献），禁止中文稿套英文
+% article 模板——那会产出 Abstract/Table 混排的杂交文档（tex_guard 会告警）。
+\documentclass[11pt,fontset=fandol]{ctexart}
+% fontset=fandol：TeX Live 自带 Fandol 中文字体，服务器免装系统字体
 
 \usepackage[margin=1in]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-% Times 字体系（顶刊综述标准观感）。加载顺序硬规则：amsmath → newtxtext →
-% newtxmath；禁止再加载 amssymb（newtxmath 自带符号集，同载会 \Bbbk 冲突）
+% Latin 部分保持 Times 观感（xelatex 下 newtx 走 TeX Gyre Termes）。
+% 加载顺序硬规则：amsmath → newtxtext → newtxmath；禁止再加载 amssymb
 \usepackage{amsmath}
 \usepackage{newtxtext}
 \usepackage{newtxmath}
@@ -24,20 +25,21 @@
 \renewcommand{\arraystretch}{1.18}
 % 定宽左对齐列：窄列禁用两端对齐，避免 justify 空洞（表格必须用 P 而非 p）
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
-% 期刊风紧凑节标题
-\usepackage{titlesec}
-\titleformat{\section}{\large\bfseries}{\thesection}{0.7em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
-\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt plus 1pt}
-\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+% 期刊风紧凑节标题（ctex 已处理中文节名字体）
+\ctexset{
+  section = {format = \large\bfseries, beforeskip = 14pt plus 3pt minus 2pt,
+             afterskip = 6pt plus 1pt},
+  subsection = {format = \normalsize\bfseries,
+                beforeskip = 10pt plus 2pt minus 2pt, afterskip = 4pt plus 1pt},
+}
 % 紧凑列表（贡献 bullets 等）
 \usepackage{enumitem}
 \setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
-% 运行页眉：斜体短题 + 页码（TODO 替换短题）
+% 运行页眉：楷体短题 + 页码（TODO 替换短题；中文无斜体，用楷体做变体）
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\itshape TODO: Short Running Title}
+\fancyhead[L]{\small\kaishu TODO: 运行短题}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
@@ -46,10 +48,15 @@
 % 图一律先用 drawio_export 出 pdf/png 再 \includegraphics，\includesvg 仅作可选路径
 \IfFileExists{svg.sty}{\usepackage{svg}}{}
 \usepackage{textcomp}        % \textcelsius 等符号（材料稿常用）
+% 中文排版细则（writer 阶段五自查）：
+% 1) 正文标点全角（，。；：？！），公式/代码/文献条目内标点半角；
+% 2) 中西文与数字之间由 xeCJK 自动加隙，禁止手工空格；
+% 3) 段首加粗小标签用「……：」或 \paragraph{}，禁止英文式 run-in「标签。」；
+% 4) 表格缺失值统一用 —（em dash）或「未报道」，禁止打字机体 NA 铺表。
 % 标题过长时手工三行断行，行长均衡（禁止让 LaTeX 自动折出孤词行）
 
-\title{TODO: Survey Title}
-\author{TODO: Authors}
+\title{TODO: 综述标题}
+\author{TODO: 作者}
 \date{}
 
 \begin{document}

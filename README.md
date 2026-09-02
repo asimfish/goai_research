@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -27,11 +27,43 @@
 
 ## 📰 News
 
+- **2026-09-02 — Independent audit closes two loop-protocol holes.** A
+  read-only audit against the original spec found that `check-done` could
+  declare DONE with a single recorded gate (the exact shape of a pipeline that
+  stalled at literature search) and that `review_pass` accepted a PASS with no
+  receipt. Now mechanical: nine required gates must all be recorded (skips as
+  explicit WARN, home-made gate names warned), and a review PASS is refused
+  unless its trace file exists and is not a stub. Also fixed a vendored-model
+  indentation bug that made the inorganic precursor predictor unimportable —
+  `BaZn2Si2O7 → ZnO / SiO₂ / BaCO₃` now runs end-to-end locally. 48 offline tests.
+- **2026-08-31 — Scholarly content contract.** Domain-expert feedback on a
+  materials survey became skill-level rules: every survey now ships a
+  **paper roadmap figure**; materials topics get two mandatory search lanes
+  (analogous/isostructural systems, phase diagrams) and a dedicated
+  analogous-systems intro subsection; results open with a consolidated
+  prior-findings table; every future direction must land on a concrete
+  synthesis recommendation — named process + precursor candidates from the
+  retro MCP tool, marked "model prediction, pending validation"; conclusions
+  end with the highest-discovery-value next experiments. Figures: ≤2 theme
+  colors, image-first reference generation for every delivered figure.
+- **2026-08-31 — Production-quality layer.** A cold-start run in Chinese
+  exposed a blind spot: correct content, degraded typesetting. Now shipped —
+  a CJK language contract with a dedicated `ctexart` template (no more
+  hybrid EN/CN documents; compile-verified with xelatex), table design rules
+  (no split half-tables, no raw BibTeX keys in cells, no typewriter `NA`
+  dumps), a pipeline-jargon firewall for reader-facing text, bib field
+  hygiene (DOI/URL redundancy, brace protection for chemical formulas), and
+  a "production quality" review dimension that requires page-by-page PDF
+  inspection. `tex_guard` now **blocks** bare-bibkey leaks — CJK-adjacent
+  and digit-leading keys included.
+<details>
+<summary>Earlier milestones</summary>
+
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
   gains section-heading lexicon rules (noun phrases, no "A, B, and C rules"
-  titles) and top-venue run-in list conventions. 32 offline tests.
+  titles) and top-venue run-in list conventions.
 - **2026-08-29 — First public sample deliverable.** A 26-page survey on COF
   photocatalytic hydrogen evolution, produced end-to-end:
   [`examples/survey_cof_her`](examples/survey_cof_her) — 143 verified references
@@ -42,10 +74,6 @@
   a full survey); a style bank distilled from 30 classic surveys feeds writing
   and figure style; [super_library](https://github.com/asimfish/super_library)
   is wired in as the writing-language authority.
-
-<details>
-<summary>Earlier milestones</summary>
-
 - **2026-08-28 — Typography lint v1.** Print-equivalent font floors, shape-aware
   text overflow, and occlusion checks; `render_figure` refuses to render while
   lint errors remain.
@@ -141,6 +169,11 @@ Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh
 available). Optional extras: `brew install --cask drawio` (export .drawio → png/pdf),
 `.venv/bin/pip install -e '.[preview]'` (PNG previews for figure self-checks),
 Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live browser editing).
+For the final PDF you need a TeX distribution: English surveys compile with
+`pdflatex`/`xelatex` + `newtx`; **Chinese surveys require `xelatex` + `ctex` +
+Fandol fonts** (bundled in TeX Live full; on a slim install run
+`tlmgr install ctex fandol newtx`). Both templates load the `svg` package
+only if present, so a missing `svg.sty`/Inkscape never breaks a build.
 
 ## 3. 🧩 What's Inside
 
@@ -210,15 +243,23 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](doc
 
 | Stage | Agent | Exit gate |
 |---|---|---|
-| scoping | orchestrator + you | `scope_confirmed` |
+| scoping | orchestrator + you | `scope_confirmed` — subtopics, boundaries, delivery language |
 | lit_search | goai-lit-search | `lit_coverage` — all subtopics covered + scale quota (≥100 papers for a full survey) |
 | style_bank | goai-style-bank | `style_bank_ready` — style cards + exemplar figures from 30 classic surveys |
 | ref_gate | goai-ref-guard | `ref_integrity` — zero UNVERIFIED / MISMATCH entries |
 | taxonomy | goai-survey-writer | `taxonomy_ready` — every leaf backed by ≥ 3 papers |
-| figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure |
-| writing | goai-survey-writer | `draft_complete` — bib_guard PASS, all sections done |
+| figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure, incl. the paper roadmap figure |
+| writing | goai-survey-writer | `draft_complete` — bib_guard + tex_guard PASS, all sections done |
 | ideas | goai-idea-forge | `ideas_reviewed` — adversarial review + second citation pass |
-| review | goai-reviewer | `review_pass` — 0 blockers and 0 majors |
+| review | goai-reviewer | `review_pass` — 0 blockers and 0 majors, **with receipt** |
+
+**"Done" is decided by a machine, not by an agent's say-so.** `loopctl check-done`
+exits 0 only when all nine gates above are *recorded* (a missing gate means the stage
+never ran — skipping is allowed but must be an explicit `WARN`), none is FAIL/PENDING,
+no blocker/major issue is open, and the `review_pass` receipt points at a real,
+non-stub reviewer trace file. A gate recorded under a home-made name is warned about
+at write time; a receipt-less review PASS is refused outright. Product fingerprints
+(`--inputs`) turn stale gates back to PENDING automatically when upstream files change.
 
 ## 5. 🎨 Figures That Stay Editable
 
@@ -296,9 +337,13 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
    agents cross-check, author approval required for corrections.
 4. **Draft-side gates**: `bib_guard.py` — undefined `\cite` keys block the build,
    bib integration rate < 90% blocks (orphan entries must earn a place in the text
-   or leave the library), citation density < 8 / 1000 words warns.
+   or leave the library), citation density < 8 / 1000 words warns, and field
+   hygiene warns (DOI + URL redundancy; unprotected chemical formulas /
+   acronyms in titles that bibliography styles would lowercase into fragments).
    `tex_guard.py` — leftover TODO placeholders, missing `\input`/figure files,
-   dangling `\ref`, and unclosed environments all block assembly.
+   dangling `\ref`, unclosed environments, and **bare BibTeX keys leaking into
+   reader-visible text** all block assembly; typewriter-font (`\texttt`)
+   overuse and a Chinese manuscript on the English template warn.
 5. **Context check** (reviewer): samples claim–citation pairs and verifies the cited
    paper actually supports the claim — the most diagnostic and most-missed check.
 
@@ -409,7 +454,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 40+ offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 48 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 
@@ -423,11 +468,19 @@ missing/fabricated), multi-source dedup, figspec validation (node-overlap and
 synonymous parallel-edge detection) plus typography lint (print-equivalent font
 floors, shape-aware text overflow, label occlusion), SVG and mxGraph rendering,
 **SVG → figspec → drawio round-trip** (groups recovered as containers, edge labels reattached),
-retro stub + plan skeleton, full loopctl ledger cycle plus concurrency (12
-parallel writers, zero lost updates), check-done semantics (WARN pass-through,
-minor deferral, stale-input fingerprint reset, review receipts), bib_guard
-blocking (undefined keys + integration rate), tex_guard assembly gate, and
-bank_check validation.
+retro stub + plan skeleton, vendored inorganic model syntax guard, full loopctl
+ledger cycle plus concurrency (12 parallel writers, zero lost updates),
+check-done semantics (all nine required gates recorded, WARN pass-through,
+minor deferral, stale-input fingerprint reset, receipt validation — missing /
+stub / deleted trace files are rejected), bib_guard blocking (undefined keys +
+integration rate) and field-hygiene warnings, tex_guard assembly gate
+(including bibkey-leak blocking, `\texttt` density and CJK-template-mismatch
+warnings), template contract, and bank_check validation.
+
+An independent read-only audit against the original specification (evidence and
+verdict table in [docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md))
+is what surfaced the two loop-protocol holes and the vendored-model import bug
+fixed on 2026-09-02 — the repo keeps its audit trail on purpose.
 
 ## 12. 📐 Design Notes
 
@@ -459,6 +512,15 @@ while the marginal benefit decays — the big win is going from 1 to 2, not from
 Oral hand-offs don't survive parallel lanes, retries, or session restarts. The
 ledger is the single state source: gates, issues, and logs are the only protocol
 between agents, which makes every run resumable and every claim auditable.
+
+**Why must "done" be mechanical?**
+An LLM orchestrator under time pressure will rationalize a half-finished ledger
+as complete — we watched it happen: a run that stopped at literature search
+shipped a Markdown report, and a review PASS was recorded with no reviewer trace
+behind it. Rules written in skill prose did not stop either. So the termination
+check is code: every required gate must exist, skips must be explicit, receipts
+must point at real files, fingerprints must still match. Prose tells agents what
+good looks like; only code can refuse to call something finished.
 
 ## 13. ❓ FAQ
 

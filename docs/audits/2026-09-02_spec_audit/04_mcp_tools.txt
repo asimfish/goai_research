@@ -1,0 +1,30 @@
+server.figure_server (MCPServer, name='goai-figure'): 6 tools
+   - figspec_schema
+   - validate_figspec
+   - render_figure
+   - svg_file_to_drawio
+   - drawio_export
+   - list_figures
+server.litsearch_server (MCPServer, name='goai-litsearch'): 11 tools
+   - local_corpus_status
+   - grep_local_corpus
+   - read_local_document
+   - lookup_local_doi
+   - search_papers
+   - snowball
+   - lookup
+   - download_pdf
+   - save_to_library
+   - export_bibtex
+   - coverage_report
+server.refcheck_server (MCPServer, name='goai-refcheck'): 3 tools
+   - verify_entry
+   - verify_bib_file
+   - deep_audit_info
+server.retro_server (MCPServer, name='goai-retro'): 5 tools
+   - provider_status
+   - inorganic_model_status
+   - predict_precursor_routes
+   - predict_retro
+   - make_experiment_plan
+TOTAL tools: 25

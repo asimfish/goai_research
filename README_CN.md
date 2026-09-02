@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-37%20offline%20%2B%2097%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-48%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -25,10 +25,33 @@
 
 ## 📰 动态
 
+- **2026-09-02 —— 独立审计补上两个回环协议漏洞。** 对照最初需求做的只读
+  审计发现：`check-done` 只记一个 gate 就能宣告 DONE（恰是停在文献检索的
+  那种账本形态），`review_pass` 无回执也能记 PASS。现已机械化：9 个必需
+  gate 必须全部落账（跳过要显式 WARN，自造 gate 名会被警告），审稿 PASS
+  的 trace 文件不存在或为占位即拒绝。同时修复 vendored 模型一处缩进错误
+  ——无机前驱体预测器此前根本 import 不了，现在 `BaZn2Si2O7 → ZnO / SiO₂ /
+  BaCO₃` 本机端到端可跑。离线测试 48 项。
+- **2026-08-31 —— 学术内容契约。** 材料领域专家对综述的反馈固化为 skill
+  级规则：每篇综述必配**行文路线图**；材料主题强制两条检索面（近邻/同型
+  体系、相图）并在引言单独成节讲近邻体系发现；结果部分先给前人实验结论
+  合集；每个新方向必须落到具体合成建议——工艺路线名 + 来自 retro MCP 的
+  前驱体候选（标注「模型预测，待实验验证」）；结论以「最有科学发现价值的
+  下一步实验」收尾。图纸：全图 ≤2 主题色，所有交付图走 image-first 参照生成。
+- **2026-08-31 —— 制作质量层。** 一次中文冷启动实跑暴露盲区：内容对、
+  排版垮。本次上线：CJK 语言契约与专用 `ctexart` 模板（不再产出中英
+  杂交文档；已 xelatex 实编验证）、表格设计规范（禁拆半表、禁单元格裸
+  BibTeX key、禁打字机体 NA 铺表）、面向读者文本的流水线术语防火墙、
+  bib 字段卫生（DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」
+  维度（必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**（含与
+  汉字紧贴、题词数字开头的 key）。
+<details>
+<summary>更早的里程碑</summary>
+
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
-  行内列表排版规则。离线测试 32 项。
+  行内列表排版规则。
 - **2026-08-29 —— 首个公开样例交付物。** COF 光催化产氢综述，端到端实跑
   26 页：[`examples/survey_cof_her`](examples/survey_cof_her) —— 143 篇验证
   文献（整合率 100%、密度 51.2 次/千词）、通过排版 lint 的可编辑图、
@@ -37,10 +60,6 @@
   exhaustive 三档分层配额（完整综述 100+ 文献）；从 30 篇经典综述蒸馏出
   风格库；接入 [super_library](https://github.com/asimfish/super_library)
   作为写作语言权威。
-
-<details>
-<summary>更早的里程碑</summary>
-
 - **2026-08-28 —— 排版 lint v1。** 打印等效字号地板、形状感知的文字溢出
   检测、遮挡检查；lint 有错时 `render_figure` 拒绝渲染。
 - **2026-08-27 —— 首次完整竞赛实跑。** 37 篇文献综述 + 合成路线设计，
@@ -137,6 +156,10 @@ tools/check.sh --servers
 可选增强：`brew install --cask drawio`（.drawio 导出 png/pdf）、
 `.venv/bin/pip install -e '.[preview]'`（图纸自检出 PNG 预览）、
 Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器实时编辑）。
+出终稿 PDF 需要 TeX 发行版：英文综述 `pdflatex`/`xelatex` + `newtx` 即可；
+**中文综述必须 `xelatex` + `ctex` + Fandol 字库**（TeX Live 完整版自带，
+精简安装执行 `tlmgr install ctex fandol newtx`）。两份模板都只在 `svg.sty`
+存在时才加载它，缺包/缺 Inkscape 不会拖垮编译。
 
 ## 3. 🧩 内部构成
 
@@ -160,7 +183,7 @@ Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器
 | 层 | 内容 | 为什么 |
 |---|---|---|
 | `skills/` —— 9 个 SKILL.md | 宿主 LLM 执行的方法论：建分类法、claim 绑定写作、审稿判断 | 认知活交给最强的可用模型；skill 不带 API key、不内嵌 LLM SDK |
-| `server/` —— 4 个 MCP server、24 个工具 | 在线检索与本地全文搜索、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
+| `server/` —— 4 个 MCP server、25 个工具 | 在线检索与本地全文搜索、BibTeX 解析与作者比对、figspec 校验与双渲染、逆合成适配 | 确定性重活：可离线测试、跨宿主复用 |
 | `tools/` | `loopctl.py` 账本 CLI · `bib_guard.py` 引用闸门 · `tex_guard.py` 组稿闸门 · `bank_check.py` 支持库校验 · `parallel_run.sh` | 回环控制与硬闸门：纯本地、零 LLM |
 
 | MCP server | 工具 |
@@ -205,15 +228,22 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 
 | 阶段 | Agent | 出口闸门 |
 |---|---|---|
-| scoping | orchestrator + 你 | `scope_confirmed` |
+| scoping | orchestrator + 你 | `scope_confirmed` —— 子主题、边界、交付语言 |
 | lit_search | goai-lit-search | `lit_coverage` —— 全子主题覆盖 + 规模档位配额（正式综述 ≥100 篇） |
 | style_bank | goai-style-bank | `style_bank_ready` —— 30 篇经典综述风格卡 + 范图库 |
 | ref_gate | goai-ref-guard | `ref_integrity` —— 零 UNVERIFIED / MISMATCH |
 | taxonomy | goai-survey-writer | `taxonomy_ready` —— 每叶 ≥ 3 篇支撑 |
-| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全 |
-| writing | goai-survey-writer | `draft_complete` —— bib_guard PASS，全节完成 |
+| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全，含行文路线图 |
+| writing | goai-survey-writer | `draft_complete` —— bib_guard + tex_guard PASS，全节完成 |
 | ideas | goai-idea-forge | `ideas_reviewed` —— 对抗审 + 引用二次核查 |
-| review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major |
+| review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major，**必须带回执** |
+
+**「完成」由机器判定，不听 agent 自报。** `loopctl check-done` 只在以下条件
+全部成立时退出 0：上表九个闸门**全部已记录**（缺一个即该阶段从未执行——允许
+跳过，但必须显式记 `WARN`）、无 FAIL/PENDING、无 open blocker/major、
+`review_pass` 的回执指向真实存在且非占位的审稿 trace 文件。用自造名字记的
+闸门写入时即被警告；无回执的审稿 PASS 直接拒绝。产物指纹（`--inputs`）在
+上游文件变更时自动把过期闸门置回 PENDING。
 
 ## 5. 🎨 永远可编辑的图纸
 
@@ -382,7 +412,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 40+ 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 48 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 
@@ -396,8 +426,15 @@ figspec 校验（节点重叠与同义平行线检测）+ 排版 lint（印刷�
 形状感知文字溢出、标签遮挡）、SVG 与 mxGraph 渲染、**SVG →
 figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retro stub 与方案
 骨架、本地全文搜索/受限读取/公开子集导出、两步模型资产哈希、loopctl 账本全周期与并发安全（12 个并行写入者零丢失）、check-done
-语义（WARN 放行、minor 移交、产物指纹变更重置闸门、审稿回执）、bib_guard
-阻塞行为（未定义 key 与整合率）、tex_guard 组稿闸门、bank_check 支持库校验。
+语义（九个必需闸门全部落账、WARN 放行、minor 移交、产物指纹变更重置闸门、
+回执校验——trace 缺失/占位/事后删除均拒绝）、vendored 无机模型语法守卫、bib_guard
+阻塞行为（未定义 key 与整合率）与字段卫生告警、tex_guard 组稿闸门
+（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、bank_check 支持库校验。
+
+对照最初需求做的一次独立只读审计（证据与判定表见
+[docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md)）
+正是这两个回环协议漏洞和 vendored 模型 import 故障的发现来源——仓库有意
+保留审计痕迹。
 
 ## 12. 📐 设计笔记
 
@@ -422,6 +459,13 @@ trace 存档）——没人能审计的 PASS 等于没有 PASS。
 **为什么用账本而不是 agent 之间对话交接？**
 口头交接活不过并行支线、重试和会话重启。账本是唯一状态源：闸门、issue、日志
 是 agent 之间唯一的协议——每次运行可续跑，每个结论可审计。
+
+**为什么「完成」必须机械判定？**
+时间压力下的 LLM 编排者会把半截账本合理化成「已完成」——我们亲眼看到过：
+一次停在文献检索的运行交了一份 Markdown 报告，一个没有任何审稿 trace 的
+review PASS 被记进账本。写在 skill 里的规则两次都没拦住。所以终止判定是
+代码：必需闸门必须齐、跳过必须显式、回执必须指向真实文件、指纹必须仍然
+匹配。文字告诉 agent 什么叫好；只有代码能拒绝把一件事叫做完成。
 
 ## 13. ❓ 常见问题
 

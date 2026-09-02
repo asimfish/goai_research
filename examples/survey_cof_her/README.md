@@ -21,7 +21,7 @@ survey PDF out — with every citation verified and every figure still editable.
 | 图纸 | 2 张主图 × 四件套（figspec/SVG/drawio/PDF+PNG），全部通过排版 lint（字号地板/溢出/遮挡 0 error） |
 | 风格库 | 30 篇经典综述蒸馏的写作与图纸风格卡（`style_bank`） |
 | 预注册 idea | TpPa-1 mixed-linker D–A 掺杂路线：假设 → 匹配对照 → 量化闸门 G1–G4 → fallback（[idea_tppa1_route.md](idea_tppa1_route.md)） |
-| 闸门 | 12 个全 PASS，账本带产物指纹与审稿回执（[ledger.json](ledger.json)） |
+| 闸门 | 12 个全 PASS，账本带产物指纹（[ledger.json](ledger.json)）。注：该次运行早于「协议 gate 名 + 回执机械校验」上线，账本用的是当时 agent 自定的 gate 名（`ref_audit`/`review_round1` 等），review 回执为账本 detail 文字；现行 `loopctl check-done` 对这种账本会判缺必需 gate——这正是后来加严的原因 |
 
 ## What's here
 

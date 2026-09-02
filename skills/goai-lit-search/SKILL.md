@@ -51,6 +51,15 @@ comprehensive 档不足 100 篇时 coverage gate 不得记 PASS（确属新兴�
    英文；含缩写变体，如 "world model" / "dynamics model"）。逐组
    `search_papers`，sources 至少 `arxiv,openalex,semanticscholar`；
    系统性综述再加 `crossref,dblp`。结果全部 `save_to_library`。
+   **材料/实验科学主题的两条强制检索面**（不做完不得置 coverage gate）：
+   - **近邻/同型体系**：精确目标之外，必须专门检索相似体系——同型
+     结构（isostructural）、同家族化学（同阳离子族/同阴离子骨架）、
+     组分近邻（替位/掺杂变体）、可迁移工艺的兄弟体系。检索式写进
+     search_log 独立小节；产出直接支撑 Intro 的「近邻体系发现」小节。
+     材料主题几乎总有近邻体系，「精确文献少」不构成跳过理由。
+   - **相图与热力学数据**：`<体系组分> + (phase diagram | phase
+     equilibria | thermodynamic assessment | CALPHAD)` 至少 2 组检索式；
+     查无相图也要留下检索证据（写作侧要如实声明「相图未见报道」）。
 2. **滚雪球**：从库里挑该子主题 (a) 被引最高的 2 篇 (b) 最新的 2 篇
    (c) 已有综述 1 篇，对每篇 `snowball direction=both`；新命中入库。
    综述类种子的 references 是查全金矿，必须做。

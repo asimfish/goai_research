@@ -16,6 +16,30 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 只允许引用 `workspace/library/references.bib`（已过 ref_gate）里的 key。
 写作中发现需要库外文献 → 开 issue 请 lit_search 补检，**不许手写 bib 条目**。
 
+## 语言契约（scoping 定死，全程一致）
+
+交付语言在 scope.md 里显式记录：用户指定为准；未指定时跟随主题语言。
+语言决定模板与排版规范，**禁止中文正文套英文模板**（Abstract/Table 标签
+混排是杂交文档，tex_guard 会告警）：
+- 英文交付 → `templates/survey_main.tex`（article + newtx + pdflatex/xelatex）；
+- 中文交付 → `templates/survey_main_zh.tex`（ctexart + fandol 字库，
+  **必须 xelatex**），标签自动本地化（摘要/图/表/参考文献）。中文细则：
+  正文标点全角；中西文间隙交给 xeCJK，禁手工空格；段首加粗小标签用
+  「……：」或 `\paragraph{}`，禁英文式 run-in「标签。」；页眉短题用楷体。
+- 两种语言的参考文献均保持 natbib 数字制；正文语言与文献条目语言允许
+  不同（中文综述引英文文献是常态，不翻译条目）。
+
+## 术语防火墙（内部词汇不入正文）
+
+流水线内部词汇——gate/issue/ledger/loopctl、ref_gate、niche-balanced、
+comprehensive 档、bank、WARN 等——**禁止出现在题目/摘要/正文/表格/图注**
+里。读者面前只有学术语言：「检索截至 2026-08-31」而不是「ref_gate 后」。
+证据分级代号（如 D0/D1/N1/P1、strong/weak）如果确要作为论文的记号体系，
+必须在正文里正式定义（表格或术语节），排版用正体或小型大写，
+**不用 `\texttt`**。`\texttt` 只留给真正的代码、命令、文件名；
+缺失值/未报道一律用 —（em dash）或「未报道/not reported」，
+禁止打字机体 `NA` 铺表——tex_guard 对 `\texttt` 密度有告警线。
+
 ## 阶段零：风格与语料装载（可与文献检索并行）
 
 ### 0a 领域风格卡（来自 goai-style-bank）
@@ -65,10 +89,7 @@ bib_guard 的参数取值，在账本记 decision。
    与 motivation 摘要呈给用户确认或修改；确认前 `taxonomy_ready` 只能记
    PENDING，不得进入阶段二。用户明确不可达（全自动无人值守 run）时，
    账本记 `--detail "contribution 未经用户确认"`，并在最终汇报中如实声明。
-   确认后 `loopctl gate --name taxonomy_ready --status PASS`。通过非交互式
-   `codex exec` 执行裸主题，或上游已声明无人值守完成全流程时，必须把用户视为
-   阶段中不可达：采用候选贡献的推荐组合，账本明确记录“贡献未经用户逐项确认”，
-   将 `taxonomy_ready` 置为 PASS 并继续；不得输出选项题后退出。
+   确认后 `loopctl gate --name taxonomy_ready --status PASS`。
 
 ## 阶段二：引用支持库（citation support bank）
 
@@ -104,6 +125,25 @@ Intro → Background/Preliminaries → Taxonomy 总览（配主图） →
 per-branch 深入（每支一节，含对比表） → 讨论（趋势/矛盾/局限） →
 Open Problems（含 idea-forge 产出） → Conclusion。
 
+**骨架强制项**（蓝图缺任何一项即返工）：
+- **行文路线图（roadmap figure）**：Intro 末尾或 §2 开头必须配一张
+  本文组织结构图——各节回答什么问题、按什么顺序推进、图表落在哪节。
+  在 figure_plan.md 登记为标准图（顶会综述标配，读者导航用）。
+- **近邻/同型体系小节**：材料与实验科学主题的 Intro 必须有独立小节
+  （或 ≥2 段）专讲相似体系的已有发现——同型结构、同家族化学、可迁移
+  工艺——逐条带引用；这是精确目标文献稀少时读者最需要的证据地图。
+  写不出来 = lit_search 的近邻检索面没做够，开 issue 返工检索。
+- **既有实验结论合集**：结果部分先给「前人实验结论的系统合集」
+  （条件-结果对照表 + 逐条结论），再进入本文的分析与新贡献；
+  结论不允许散落在叙述里让读者自己拼。
+- **新方向 → 推荐实验**：Open Problems / Future Directions 不许停留在
+  「值得进一步研究」——每个方向必须落到可执行建议：推荐做什么合成
+  实验、采用什么工艺路线、用什么前驱体（消费 idea-forge 调用
+  goai-retro MCP 预测工具的产物，标注「模型预测，待实验验证」）。
+- **Conclusion 双段式**：(a) 主要结论按证据强度总结；(b) 「最有科学
+  发现价值的下一步实验」优先级清单（哪个实验能最快裁决当前最大的
+  不确定性），与 Open Problems 的方向一一呼应。
+
 **节标题词法**（顶刊综述口径，蓝图定标题时执行、final 复查）：
 - 2–6 词名词短语，用领域标准术语点名对象；方法论细节留给正文。
 - 禁三连并列标题（"A, B, and C" 式）；禁机关词堆叠——method /
@@ -137,6 +177,24 @@ Open Problems（含 idea-forge 产出） → Conclusion。
   内容；禁止每项以同一动词开头的平行复读（"Establish… Establish…
   Establish…"），改名词短语引导或并成一句；真正的步骤/协议才用
   编号列表，平行要素用 run-in 或 itemize；
+- **表格设计规范**（数据表是综述的门面，按数据形状设计而不是硬塞）：
+  - 一张逻辑表**禁止拆成上下两半共享行号**让读者自己拼——列太多时按
+    「主题分组拆成多张完整子表」（各自带表头与 caption）、转置、或
+    `landscape` 横排；正文表列数指导线 ≤7，超线必须重新设计；
+  - 单元格内容是**读者语言**：禁止出现裸 BibTeX key（tex_guard 直接
+    阻塞），来源一律 `\cite{key}` 或「作者 (年份) \cite{key}」；
+  - 缺失值统一 — 或「未报道」，禁止整表铺 `\texttt{NA}`；一行内
+    多字段全缺时合并为一格说明，不逐格复读；
+  - 长表（>1 页）用 `longtable` 并重复表头；窄列一律模板的 `P{}` 列型；
+  - 每张表交稿前自查：拿掉正文，单看此表 + caption 能否自解释。
+- **材料领域判读规则**（条件表与路线分类时执行，来源：领域专家意见）：
+  - 记录中出现 **Pt 坩埚 / Au 坩埚**（及 Ir/刚玉坩埚 + 高温慢冷组合）
+    基本可判定为熔体/助熔剂晶体生长路线，归类时不得混入普通固相烧结；
+    坩埚材质本身就是路线证据，条件表应保留该字段；
+  - 讨论合成窗口、相稳定性或新配方时必须核查**相图**：库内有相图
+    文献就引用并对照（组分点落在哪个相区、有无共晶/包晶陷阱）；
+    检索不到目标体系相图时明确写「该体系相图未见报道」，并把
+    「测定相图」列入实验建议——不许对相关系保持沉默。
 - 并行写作时只碰自己的节文件，公共文件（main.tex/bib）只由汇合者动。
 
 ### 学术语言与内部术语隔离
@@ -166,17 +224,22 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 
 ## 阶段五：组装与精修
 
-1. 用 `templates/survey_main.tex` 组装，`\input` 各节。模板内置排版
+1. 按语言契约选模板组装（英文 `templates/survey_main.tex`、中文
+   `templates/survey_main_zh.tex`），`\input` 各节。模板内置排版
    规范不许降级：Times 字体系（newtx，加载顺序 amsmath→newtxtext→
    newtxmath，禁 amssymb）、引用/交叉引用/URL 统一学术蓝
    （`colorlinks` + `citecolor=blue`）、caption 小号加粗标签、
-   `\arraystretch 1.18`、titlesec 紧凑节标题、fancyhdr 运行页眉、
+   `\arraystretch 1.18`、紧凑节标题、fancyhdr 运行页眉、
    参考文献前 `\clearpage`。表格定宽列一律用模板的 `P{宽}`
    （raggedright）列型，禁用裸 `p{宽}`——窄列两端对齐会产生
    justify 空洞，是"表格乱"的头号来源；正文含 Unicode 组合符/希腊
-   字母时用 xelatex 编译。组装时必须完成两处替换：页眉短题
-   （`TODO: Short Running Title`→论文短题，斜体）；主标题超一行时
+   字母时用 xelatex 编译（中文模板必须 xelatex）。组装时必须完成
+   两处替换：页眉短题（`TODO` 短题→论文短题）；主标题超一行时
    **手工断行成 2–3 行且行长均衡**，禁止让 LaTeX 自动折出孤词行。
+   组装同时做 **bib 字段卫生**（bib_guard 会告警）：条目 doi 与 url
+   同存时删 url 留 doi（长 URL 断行是参考文献区最难看的伤）；title
+   中化学式/多大写缩写（BaZn2Si2O7、COF、LLZO…）加 `{}` 保护，
+   防止 plainnat 压成 `bazn 2 si 2 o 7` 碎片。
 2. 一致性闸门（未定义 key＝阻塞；库内条目整合率 <90%＝阻塞——孤儿条目
    要么在正文找到落点，要么开 issue 交 lit_search 评估后移出库，
    不许留着充数）：
@@ -191,12 +254,28 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    `workspace/drafts/revision_log.md` 留一行。拿不准是否更好的修改，
    在 revision_log 保留原文并标 `[REVERT-CANDIDATE]`，交 review 轮裁决；
    精修后必须复跑一致性闸门，引用密度或整合率较精修前下降即回滚该处修改。
+   **语言自然度专项**（拗口是最常见的失败模式，两种语言都查）：
+   - 逐段做朗读测试：一口气读不顺、定语连环套、一句超过 40 词/60 字
+     的拆句重写；
+   - 英文稿禁中式英语（逐字直译的搭配、"research(es)" 滥用、名词化
+     堆叠 the utilization of…），动词优先、主语就近；
+   - 中文稿禁翻译腔（"被"字滥用、"进行了…的研究"、"对于…而言"空转、
+     欧化长定语），改短句与主动语态；
+   - 每节抽 2 段与 style_bank 写作卡的句式模式对照，偏离领域惯用
+     表达的改写；super_library lint 报告里的 wording 项逐条处理。
 4. 组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts` ——
-   检查 TODO 占位残留（模板的标题/作者/摘要必须已替换）、`\input` 与
-   图文件存在、`\ref` 无悬空、环境与花括号闭合。任一阻塞项不得记
-   `draft_complete`。有 latex 环境则再编译验证，编译告警逐条处理或在
-   revision_log 说明。另外，`academic_language_guard.py` 必须通过，确保
-   内部控制语言没有泄漏到正文、表格和图注。
+   阻塞项：TODO 占位残留（模板的标题/作者/摘要必须已替换）、`\input` 与
+   图文件存在、`\ref` 无悬空、环境与花括号闭合、**裸 BibTeX key 泄漏到
+   正文**（含与汉字紧贴的 key；确属同形词可在行尾注释
+   `% tex-guard: allow-key` 豁免）；告警项：`\texttt` 密度过高、中文稿
+   套英文模板。任一阻塞项不得记 `draft_complete`，告警项逐条处理或在
+   revision_log 说明原因。有 latex 环境则再编译验证（中文稿 xelatex；
+   图一律先 `drawio_export` 出 pdf 再 `\includegraphics`，不依赖
+   `\includesvg`），编译告警逐条处理；编译后 `pdftoppm` 抽首页、
+   一张表所在页、参考文献页各看一眼——标签语言、表格完整性、文献条目
+   有无被压小写的化学式，这三处是制作质量事故的高发区。
+   另外，`academic_language_guard.py` 必须通过，确保内部控制语言没有泄漏
+   到正文、表格和图注。
 5. `loopctl gate --name draft_complete --status PASS
    --inputs workspace/drafts/main.tex,workspace/library/references.bib`
    并交 review。

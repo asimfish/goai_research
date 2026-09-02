@@ -622,6 +622,31 @@ def run_loopctl(tmpdir, *args):
         capture_output=True, text=True, env=env)
 
 
+REQUIRED_GATES = ["scope_confirmed", "lit_coverage", "style_bank_ready",
+                  "ref_integrity", "taxonomy_ready", "figures_ready",
+                  "ideas_reviewed", "draft_complete", "review_pass"]
+
+
+def make_trace(tmpdir, name="r1.md", size=2000):
+    """落一份体量足够的审稿 trace（回执要求 trace 真实存在且非占位）。"""
+    d = tmpdir / "state" / "review_traces"
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / name
+    p.write_text("# review trace\n" + "audit line\n" * (size // 11))
+    return str(p)
+
+
+def pass_all_gates(tmpdir, *, except_for=()):
+    """把全部必需 gate 记成 PASS（review_pass 带合规回执），except_for 里的跳过。"""
+    trace = make_trace(tmpdir)
+    for g in REQUIRED_GATES:
+        if g in except_for:
+            continue
+        extra = ["--receipt", f"model=x;trace={trace}"] if g == "review_pass" else []
+        r = run_loopctl(tmpdir, "gate", "--name", g, "--status", "PASS", *extra)
+        assert r.returncode == 0, r.stderr
+
+
 def test_loopctl_full_cycle(tmp_path):
     r = run_loopctl(tmp_path, "init", "--topic", "test topic", "--max-rounds", "2")
     assert r.returncode == 0, r.stderr
@@ -639,6 +664,10 @@ def test_loopctl_full_cycle(tmp_path):
     assert run_loopctl(tmp_path, "check-done").returncode != 0  # open issue → 未完成
     assert run_loopctl(tmp_path, "issue", "close", "--id", "I1",
                        "--note", "fixed").returncode == 0
+    # 只记了 1 个 gate：其余必需 gate 缺席 → 仍未完成（账本停半路不许宣告 DONE）
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "missing_required_gates" in r.stdout
+    pass_all_gates(tmp_path)
     assert run_loopctl(tmp_path, "check-done").returncode == 0  # 全 PASS 无 open
 
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
@@ -656,15 +685,17 @@ def test_loopctl_full_cycle(tmp_path):
 
 def test_loopctl_check_done_semantics(tmp_path):
     run_loopctl(tmp_path, "init", "--topic", "t")
-    run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    pass_all_gates(tmp_path, except_for=("ideas_reviewed", "review_pass"))
     # WARN = 合规跳过，不阻塞
     run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed",
                 "--status", "WARN", "--detail", "skipped")
-    assert run_loopctl(tmp_path, "check-done").returncode == 0
     # PENDING 阻塞
     run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PENDING")
     assert run_loopctl(tmp_path, "check-done").returncode != 0
-    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
+    trace = make_trace(tmp_path)
+    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                "--receipt", f"model=x;trace={trace}")
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
     # open minor 不阻塞（移交 final 清理），blocker/major 阻塞
     run_loopctl(tmp_path, "issue", "add", "--severity", "minor", "--text", "typo")
     r = run_loopctl(tmp_path, "check-done")
@@ -673,10 +704,65 @@ def test_loopctl_check_done_semantics(tmp_path):
     assert run_loopctl(tmp_path, "check-done").returncode != 0
 
 
+def test_loopctl_check_done_requires_every_gate_recorded(tmp_path):
+    """审计发现的漏洞：只记 scope_confirmed 就 check-done 曾返回 DONE。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS")
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0
+    payload = json.loads(r.stdout)
+    assert set(payload["missing_required_gates"]) == set(REQUIRED_GATES) - {"scope_confirmed"}
+    # status 也要把缺席的必需 gate 点出来，编排者一眼看到还差哪些阶段
+    assert "未记录的必需 gate" in run_loopctl(tmp_path, "status").stdout
+    # 自造 gate 名（真实样例账本里出现过 ref_audit / review_round1）当场警告
+    r = run_loopctl(tmp_path, "gate", "--name", "ref_audit", "--status", "PASS")
+    assert r.returncode == 0 and "不是协议 gate 名" in r.stderr
+    # 静默跳过不行，显式 WARN 才算记录
+    pass_all_gates(tmp_path, except_for=("style_bank_ready",))
+    assert run_loopctl(tmp_path, "check-done").returncode != 0
+    run_loopctl(tmp_path, "gate", "--name", "style_bank_ready", "--status", "WARN",
+                "--detail", "浅层风格库")
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+
+
+def test_loopctl_review_pass_requires_real_receipt(tmp_path):
+    """审计发现的漏洞：review_pass 无回执记 PASS 曾被接受。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    # 无回执 → 命令拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
+    assert r.returncode != 0 and "回执" in r.stderr
+    # 回执指向不存在的 trace → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", "model=x;trace=/nonexistent/r1.md")
+    assert r.returncode != 0 and "不存在" in r.stderr
+    # 占位 trace（几十字节）→ 拒绝
+    stub = make_trace(tmp_path, "stub.md", size=20)
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", f"model=x;trace={stub}")
+    assert r.returncode != 0 and "占位" in r.stderr
+    # FAIL/PENDING 不需要回执（审稿没过当然没有放行回执）
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass",
+                       "--status", "FAIL").returncode == 0
+    # 合规回执 → 接受并入账
+    trace = make_trace(tmp_path)
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", f"model=gpt-x;trace={trace}")
+    assert r.returncode == 0, r.stderr
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    assert "trace" in ledger["gates"]["review_pass"]["receipt"]
+    # 事后 trace 被删 → check-done 再核时判无效
+    pass_all_gates(tmp_path, except_for=("review_pass",))
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    os.remove(trace)
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "invalid_receipts" in r.stdout
+
+
 def test_loopctl_stale_inputs_reset_gate(tmp_path):
     artifact = tmp_path / "refs.bib"
     artifact.write_text("v1")
     run_loopctl(tmp_path, "init", "--topic", "t")
+    pass_all_gates(tmp_path, except_for=("ref_integrity",))
     run_loopctl(tmp_path, "gate", "--name", "ref_integrity", "--status", "PASS",
                 "--inputs", str(artifact))
     assert run_loopctl(tmp_path, "check-done").returncode == 0
@@ -685,14 +771,6 @@ def test_loopctl_stale_inputs_reset_gate(tmp_path):
     assert r.returncode != 0 and "stale" in r.stdout
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
     assert ledger["gates"]["ref_integrity"]["status"] == "PENDING"
-
-
-def test_loopctl_gate_receipt_recorded(tmp_path):
-    run_loopctl(tmp_path, "init", "--topic", "t")
-    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
-                "--receipt", "model=x;trace=state/review_traces/r1.md")
-    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
-    assert "trace" in ledger["gates"]["review_pass"]["receipt"]
 
 
 def test_loopctl_concurrent_writes_no_loss(tmp_path):
@@ -749,6 +827,37 @@ def test_bib_guard_integration_rate_blocks(tmp_path):
     assert "整合率" in r.stdout
 
 
+def test_bib_guard_bib_hygiene_warns(tmp_path):
+    drafts = tmp_path / "drafts"
+    drafts.mkdir()
+    (drafts / "s1.tex").write_text(
+        r"A \cite{chem2024tio} and B \cite{plain2020ok}.")
+    bib = tmp_path / "refs.bib"
+    bib.write_text("""
+@article{chem2024tio,
+  title  = {Growth of BaZn2Si2O7 single crystals},
+  author = {Ann One},
+  year   = {2024},
+  doi    = {10.1000/x},
+  url    = {https://example.org/x},
+  journal = {J}
+}
+@article{plain2020ok,
+  title  = {A survey of {LLZO} interfaces},
+  author = {Bob Two},
+  year   = {2020},
+  doi    = {10.1000/y},
+  journal = {J}
+}
+""")
+    r = run_bib_guard(drafts, bib)
+    assert r.returncode == 0, r.stdout        # 卫生问题只告警不阻塞
+    assert "doi 与 url 同存" in r.stdout      # chem2024tio 冗余 url
+    assert "BaZn2Si2O7" in r.stdout           # 未保护化学式
+    hygiene = r.stdout.split("bib 字段卫生")[1]
+    assert "plain2020ok" not in hygiene       # 已保护 + 无冗余 → 不告警
+
+
 # ---------- tex_guard ----------
 
 def run_tex_guard(target):
@@ -790,6 +899,121 @@ def test_tex_guard_blocks_and_passes(tmp_path):
         "\\section{Intro}\\label{sec:intro}\nSee \\ref{sec:intro}.")
     r2 = run_tex_guard(good)
     assert r2.returncode == 0, r2.stdout
+
+
+def test_tex_guard_bibkey_leak_blocks(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    # 裸 key 出现在正文（含 \texttt 包裹）→ 阻塞；跨行 \cite 参数不误伤
+    (d / "main.tex").write_text("\n".join([
+        r"\begin{document}",
+        r"来源见 \texttt{lin1999phase} 的实验部分。",
+        r"合法引用 \cite{vaswani2017attention,",
+        r"  he2016deep} 不应误报。",
+        r"中文紧贴无空格：据zou2021crystal报道。",     # CJK 邻接，\b 抓不到
+        r"题首词数字开头：见 zhang20202d 的结果。",     # 年份后接数字
+        r"\end{document}",
+    ]))
+    r = run_tex_guard(d)
+    assert r.returncode != 0
+    for leaked in ("lin1999phase", "zou2021crystal", "zhang20202d"):
+        assert leaked in r.stdout, f"missed {leaked}\n{r.stdout}"
+    assert "he2016deep" not in r.stdout      # 跨行 cite 参数不是泄漏
+
+    # 全部 cite/ref 变体都是合法载体；行尾豁免标记生效
+    (d / "main.tex").write_text("\n".join([
+        r"\begin{document}",
+        r"合法引用 \cite{lin1999phase} 与 \citep{zou2021crystal}，",
+        r"\citealp{ab2020cd} \citet*{ef2021gh} \nocite{ij2022kl} \textcite{mn2023op}",
+        r"\pageref{sec:qr2024st} \hyperref[fig:uv2025wx]{图} \label{tab:yz2026ab}",
+        r"同形词豁免 model2020x 见注释。  % tex-guard: allow-key",
+        r"\end{document}",
+    ]))
+    r2 = run_tex_guard(d)
+    assert r2.returncode == 0, r2.stdout
+
+
+def test_tex_guard_texttt_density_warns(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    body = " ".join(r"\texttt{NA}" for _ in range(12))
+    (d / "main.tex").write_text(
+        "\\begin{document}\n" + body + "\n\\end{document}\n")
+    r = run_tex_guard(d)
+    assert r.returncode == 0, r.stdout       # 密度问题只告警不阻塞
+    assert "texttt" in r.stdout
+
+
+def test_tex_guard_cjk_english_template_warns(tmp_path):
+    d = tmp_path / "drafts"
+    d.mkdir()
+    zh_body = "本综述覆盖高温溶液法与固相路线的全部公开条件记录。" * 3
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r = run_tex_guard(d)
+    assert r.returncode == 0, r.stdout       # 告警不阻塞
+    assert "survey_main_zh" in r.stdout      # 建议改用中文模板
+
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt,fontset=fandol]{ctexart}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r2 = run_tex_guard(d)
+    assert "survey_main_zh" not in r2.stdout
+
+    # article + \usepackage{ctex} 同样是合法中文支持，不告警
+    (d / "main.tex").write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\usepackage[fontset=fandol]{ctex}",
+        r"\begin{document}", zh_body, r"\end{document}",
+    ]))
+    r3 = run_tex_guard(d)
+    assert "survey_main_zh" not in r3.stdout
+
+
+# ---------- vendored retro model: syntax guard ----------
+
+def test_vendor_retro_modules_compile():
+    """审计发现：chemistry.py 曾带缩进错误入库，装好 torch 后预测直接崩；
+    重依赖缺席时 retro 测试整体跳过，所以语法级损坏要用零依赖的编译检查兜底。"""
+    import glob
+    import py_compile
+    vendor_dir = os.path.join(ROOT, "vendor", "two_stage_retro")
+    files = sorted(glob.glob(os.path.join(vendor_dir, "*.py")))
+    assert len(files) >= 6, files
+    for fp in files:
+        py_compile.compile(fp, doraise=True)
+
+
+# ---------- templates ----------
+
+def test_survey_templates_contract():
+    """两份主模板的排版契约：语言分工、健壮性、可被 tex_guard 拦住未替换占位。"""
+    en = open(os.path.join(ROOT, "templates", "survey_main.tex"), encoding="utf-8").read()
+    zh = open(os.path.join(ROOT, "templates", "survey_main_zh.tex"), encoding="utf-8").read()
+    # 语言分工：英文 article，中文 ctexart（标签本地化）
+    assert r"\documentclass[11pt]{article}" in en
+    assert "{ctexart}" in zh and "fontset=fandol" in zh
+    for tpl in (en, zh):
+        # svg 包只在存在时加载——缺包/缺 inkscape 不得拖垮编译
+        assert r"\IfFileExists{svg.sty}{\usepackage{svg}}{}" in tpl
+        assert r"\usepackage{svg}" + "\n" not in tpl.replace(
+            r"\IfFileExists{svg.sty}{\usepackage{svg}}{}", "")
+        # 共同排版契约：学术蓝引用、P 列型、Times 字体链、参考文献前 clearpage
+        assert "citecolor=blue" in tpl
+        assert r"\newcolumntype{P}" in tpl
+        assert r"\usepackage{newtxtext}" in tpl and r"\usepackage{newtxmath}" in tpl
+        assert r"\usepackage{amssymb}" not in tpl
+        assert r"\clearpage" in tpl
+        # 占位符必须在（writer 替换）且能被 tex_guard 拦住
+        assert "TODO" in tpl
+    r = subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"),
+         os.path.join(ROOT, "templates", "survey_main_zh.tex")],
+        capture_output=True, text=True)
+    assert r.returncode != 0 and "占位残留" in r.stdout
 
 
 # ---------- bank_check ----------

@@ -1,0 +1,51 @@
+vendor/two_stage_retro/:
+total 384
+drwxr-xr-x@ 12 liyufeng  staff    384 Aug 31 20:16 .
+drwxr-xr-x@  4 liyufeng  staff    128 Aug 31 20:16 ..
+-rw-r--r--@  1 liyufeng  staff   1284 Aug 31 20:16 PROVENANCE.md
+-rw-r--r--@  1 liyufeng  staff    227 Aug 31 20:16 __init__.py
+drwxr-xr-x@  6 liyufeng  staff    192 Aug 31 20:16 checkpoints
+-rw-r--r--@  1 liyufeng  staff  15621 Aug 31 20:16 chemistry.py
+drwxr-xr-x@  7 liyufeng  staff    224 Aug 31 20:16 data
+-rw-r--r--@  1 liyufeng  staff   6494 Aug 31 20:16 data.py
+-rw-r--r--@  1 liyufeng  staff   1336 Aug 31 20:16 env.py
+-rw-r--r--@  1 liyufeng  staff   2386 Aug 31 20:16 metrics.py
+-rw-r--r--@  1 liyufeng  staff  72273 Aug 31 20:16 stage1.py
+-rw-r--r--@  1 liyufeng  staff  80667 Aug 31 20:16 stage2.py
+
+vendor/two_stage_retro/checkpoints/:
+total 15360
+drwxr-xr-x@  6 liyufeng  staff      192 Aug 31 20:16 .
+drwxr-xr-x@ 12 liyufeng  staff      384 Aug 31 20:16 ..
+-rw-r--r--@  1 liyufeng  staff  2745211 Aug 31 20:16 stage1_retriever.pt
+-rw-r--r--@  1 liyufeng  staff     5718 Aug 31 20:16 stage1_summary.json
+-rw-r--r--@  1 liyufeng  staff  5102401 Aug 31 20:16 stage2_reranker.pt
+-rw-r--r--@  1 liyufeng  staff     2980 Aug 31 20:16 stage2_summary.json
+
+vendor/two_stage_retro/data/:
+total 4504
+drwxr-xr-x@  7 liyufeng  staff      224 Aug 31 20:16 .
+drwxr-xr-x@ 12 liyufeng  staff      384 Aug 31 20:16 ..
+-rw-r--r--@  1 liyufeng  staff    42050 Aug 31 20:16 retro_charge.csv
+-rw-r--r--@  1 liyufeng  staff    41313 Aug 31 20:16 retro_deepseek_charge.csv
+-rw-r--r--@  1 liyufeng  staff   224024 Aug 31 20:16 retro_precursor_formula.csv
+-rw-r--r--@  1 liyufeng  staff    22500 Aug 31 20:16 retro_precursor_id.json
+-rw-r--r--@  1 liyufeng  staff  1965116 Aug 31 20:16 retro_split.csv
+vendor/__init__.py
+vendor/two_stage_retro/PROVENANCE.md
+vendor/two_stage_retro/__init__.py
+vendor/two_stage_retro/checkpoints/stage1_retriever.pt
+vendor/two_stage_retro/checkpoints/stage1_summary.json
+vendor/two_stage_retro/checkpoints/stage2_reranker.pt
+vendor/two_stage_retro/checkpoints/stage2_summary.json
+vendor/two_stage_retro/chemistry.py
+vendor/two_stage_retro/data.py
+vendor/two_stage_retro/data/retro_charge.csv
+vendor/two_stage_retro/data/retro_deepseek_charge.csv
+vendor/two_stage_retro/data/retro_precursor_formula.csv
+vendor/two_stage_retro/data/retro_precursor_id.json
+vendor/two_stage_retro/data/retro_split.csv
+vendor/two_stage_retro/env.py
+vendor/two_stage_retro/metrics.py
+vendor/two_stage_retro/stage1.py
+vendor/two_stage_retro/stage2.py
