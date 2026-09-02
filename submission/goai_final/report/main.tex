@@ -1,0 +1,130 @@
+% goai_research 综述主模板（单栏 article 版；投稿时换会议/期刊官方模板，
+% 各 section 文件可原样迁移）。
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{iftex}
+\ifXeTeX
+  \usepackage{fontspec}
+  \usepackage[AutoFakeSlant=true]{xeCJK}
+  % Tectonic 0.17.0's embedded xdvipdfmx crashes in create_font_alias() when
+  % the long condition matrix repeatedly selects faces from a CJK TTC.  Use
+  % the installed single-face fallback TTF so XDV-to-PDF remains deterministic.
+  \setCJKmainfont[AutoFakeBold=2.5]{Droid Sans Fallback}
+  \setCJKsansfont[AutoFakeBold=2.5]{Droid Sans Fallback}
+  % Droid covers Han glyphs but not curly quotes/dashes; use single-face TTF
+  % fallbacks for those punctuation characters without reintroducing a TTC.
+  \setCJKfallbackfamilyfont{\CJKrmdefault}[
+    Path=/usr/share/fonts/truetype/dejavu/,Extension=.ttf,
+    BoldFont=DejaVuSerif-Bold,ItalicFont=DejaVuSerif-Italic,
+    BoldItalicFont=DejaVuSerif-BoldItalic
+  ]{DejaVuSerif}
+  \setCJKfallbackfamilyfont{\CJKsfdefault}[
+    Path=/usr/share/fonts/truetype/dejavu/,Extension=.ttf,
+    BoldFont=DejaVuSans-Bold,ItalicFont=DejaVuSans-Oblique,
+    BoldItalicFont=DejaVuSans-BoldOblique
+  ]{DejaVuSans}
+  \xeCJKenablefallback
+  % 本文等宽环境只承载拉丁字母标记（如 NA），无需另设 CJK mono 字族。
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+\fi
+% Times 字体系（顶刊综述标准观感）。加载顺序硬规则：amsmath → newtxtext →
+% newtxmath；禁止再加载 amssymb（newtxmath 自带符号集，同载会 \Bbbk 冲突）
+\usepackage{amsmath}
+\usepackage{newtxtext}
+% The cached bundle does not ship the optical-size ntxsy5 physical font;
+% select newtxmath's supported non-optical symbol face at every math size.
+\usepackage[nonewtxmathopt]{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}        % 对比表
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{xurl}           % 长 DOI/URL 可在任意安全位置断行
+% 排版规范（paper-orchestra 风格）：引用/交叉引用/URL 统一学术蓝
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+% caption 统一：小号字体 + 加粗标签；表格行距放松
+\usepackage[font=small,labelfont=bf,labelsep=quad,skip=6pt]{caption}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\arraystretch}{1.18}
+% 定宽左对齐列：窄列禁用两端对齐，避免 justify 空洞（表格必须用 P 而非 p）
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+% 条件表的来源 key 使用可断行等宽样式；NA 保持普通 \texttt 语义。
+\let\templateTexttt\texttt
+\renewcommand{\texttt}[1]{%
+  \ifstrequal{#1}{NA}{\templateTexttt{#1}}{%
+    % Bibliography keys in source-location cells are rendered as a citation label,
+    % not exposed as internal identifiers in the manuscript.
+    \IfSubStr{#1}{19}{\textnormal{来源}}{%
+      \IfSubStr{#1}{20}{\textnormal{来源}}{\nolinkurl{#1}}%
+    }%
+  }%
+}
+% 期刊风紧凑节标题
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+% 紧凑列表（贡献 bullets 等）
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+% 运行页眉：斜体短题 + 页码
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$ 合成条件与迁移边界}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{13pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+% Float-only pages start at the text block top instead of vertically centering
+% a short continuation table in a large field of whitespace.
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 2fil}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+\emergencystretch=1.5em
+% 三张同源 SVG 已在组装阶段转换为紧裁切 PDF，正文无需 svg/shell-escape。
+\renewcommand{\refname}{参考文献}
+\hypersetup{
+  pdftitle={Ba5Y12Zn[O(SiO4)]8及结构近邻的合成条件：证据分级、路线矩阵与迁移边界},
+  pdfauthor={匿名综述工作组}
+}
+
+% 主标题手工均衡为两行，避免自动折行产生孤词。
+\title{$\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$及结构近邻的\\
+合成条件：证据分级、路线矩阵与迁移边界}
+\author{匿名综述工作组}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+非中心对称硅酸盐 $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ 已由高温溶液法获得并完成单晶结构解析，但其投料组成、批量成相区和独立复现仍缺少直接证据。本文围绕目标相、无 Zn 的四方 Ba--Y 硅酸盐谱系、Ba--Zn--Si--O 结构近邻及 Y--Si--O 工艺近邻，对已发表的组成、热史、容器、冷却和表征结果进行分级比较。现有实验显示，目标附近的成相行为同时受 Ba/Y/Si 比、Zn--Y--氧计量、助熔剂比例和冷却路径影响；单晶结构证据不能替代批量相纯度和实际组成分析。基于这些结果，本文提出四项优先工作：建立 $\mathrm{Ba_5Y_{12}ZnSi_8O_{40}}$ 附近的局部相图，检验 $\mathrm{Ba_5Y_{13-x}Zn_x[SiO_4]_8O_{8.5-x/2}}$ 的组成--结构关系，并行比较固相成相与高温溶液长晶，以及用 Mg/Co 类比区分尺寸差异。本地两步无机逆合成模型为 Zn、Mg、Co 目标分别推荐以 ZnO、MgO、Co$_3$O$_4$ 配合 BaCO$_3$、Y$_2$O$_3$ 和 SiO$_2$ 的首选原料集合；这些结果仅作为待验证的前驱体假设。最有利于科学发现的实验不是继续尝试孤立温度，而是将组成网格、相定量、单晶结构、实际化学计量和工艺记录组成可反馈的实验闭环。
+\end{abstract}
+
+\input{sections/00_introduction}
+\input{sections/00_review_method}
+\input{sections/01_phase_identity}
+\input{sections/02_evidence_distance}
+\input{sections/03_condition_matrix}
+\input{sections/04_prior_experimental_findings}
+\input{sections/04_neighbor_routes}
+\input{sections/05_validation_endpoints}
+\input{sections/06_failure_boundaries}
+\input{sections/08_future_directions}
+\input{sections/07_transferability_conclusion}
+
+% paper-orchestra 硬规则：参考文献前 flush 所有浮动体，防止图表漂进 References
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{../library/references}
+\end{document}

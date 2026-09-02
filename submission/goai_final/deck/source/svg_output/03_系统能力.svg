@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <g id="p03-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p03-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">系统把“生成像论文的结论”改为“保存证据与判定过程”</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p03-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">三层分离：认知交给宿主模型，确定性工作进 MCP server，<tspan fill="#C48A2B" font-weight="700">“完成”由代码判定</tspan>。</text>
+  </g>
+  <g id="p03-figure">
+    <rect x="72" y="200" width="700" height="389" fill="#FFFFFF" stroke="#D5DBE3" stroke-width="1"/>
+    <image href="../images/system_pipeline.png" x="72" y="200" width="700" height="389" preserveAspectRatio="xMidYMid meet"/>
+    <text x="72" y="622" font-size="18" fill="#5A6573">图：发现 → 生产（并行）→ 质量回环。由系统自身的 figspec 渲染器生成，同源输出 SVG 与 draw.io。</text>
+  </g>
+  <g id="p03-layer-cognitive">
+    <rect x="812" y="200" width="6" height="118" fill="#1F4D78"/>
+    <use data-icon="tabler-outline/hierarchy-2" x="836" y="204" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="874" y="226" font-size="24" font-weight="700" fill="#1F4D78">认知层 · 9 个 agent 技能</text>
+    <text x="836" y="258" font-size="18" fill="#1D1D1F">
+      <tspan x="836" dy="0">编排 / 检索 / 风格库 / 引用核验 / 分类法与写作 /</tspan>
+      <tspan x="836" dy="26">图纸 ×2 / 想法与方案 / 对抗审稿；纯 Markdown，</tspan>
+      <tspan x="836" dy="26">由 Codex 宿主执行，即提交的 Prompt 全集。</tspan>
+    </text>
+  </g>
+  <g id="p03-layer-deterministic">
+    <rect x="812" y="338" width="6" height="118" fill="#4F8A9E"/>
+    <use data-icon="tabler-outline/database" x="836" y="342" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="874" y="364" font-size="24" font-weight="700" fill="#1F4D78">确定性层 · 4 个 MCP server</text>
+    <text x="836" y="396" font-size="18" fill="#1D1D1F">
+      <tspan x="836" dy="0">litsearch（在线五源 + 本地库）· refcheck（三轴核验）</tspan>
+      <tspan x="836" dy="26">· figure（figspec → SVG + draw.io）· retro（两阶段</tspan>
+      <tspan x="836" dy="26">前驱体预测）；25 个工具全部可离线测试。</tspan>
+    </text>
+  </g>
+  <g id="p03-layer-control">
+    <rect x="812" y="476" width="6" height="118" fill="#C48A2B"/>
+    <use data-icon="tabler-outline/repeat" x="836" y="480" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="874" y="502" font-size="24" font-weight="700" fill="#1F4D78">控制层 · 账本驱动的回环</text>
+    <text x="836" y="534" font-size="18" fill="#1D1D1F">
+      <tspan x="836" dy="0">9 个出口闸门记录在 ledger.json；check-done 需全部</tspan>
+      <tspan x="836" dy="26">落账、无 FAIL、审稿 PASS 带真实回执；</tspan>
+      <tspan x="836" dy="26"><tspan fill="#C48A2B" font-weight="700">审稿人不改稿，执行者不自判</tspan>。</tspan>
+    </text>
+  </g>
+  <g id="p03-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">3 / 12</text>
+  </g>
+</svg>

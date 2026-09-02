@@ -1,0 +1,512 @@
+{
+  "title": "文献来源如何限定合成条件的可迁移范围",
+  "title_style": {
+    "font_size": 28,
+    "y": 40,
+    "color": "#183A4A",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1500,
+    "height": 900
+  },
+  "defaults": {
+    "font_size": 20,
+    "fill": "#FFFFFF",
+    "stroke": "#183A4A",
+    "edge_color": "#4B6471",
+    "edge_width": 2.2
+  },
+  "groups": [
+    {
+      "id": "sources",
+      "label": "",
+      "x": 30,
+      "y": 95,
+      "w": 340,
+      "h": 730,
+      "fill": "#F3F6F7",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    },
+    {
+      "id": "comparison",
+      "label": "",
+      "x": 395,
+      "y": 95,
+      "w": 700,
+      "h": 730,
+      "fill": "#F7F8F8",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    },
+    {
+      "id": "uses",
+      "label": "",
+      "x": 1120,
+      "y": 95,
+      "w": 350,
+      "h": 730,
+      "fill": "#F3F6F7",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    }
+  ],
+  "nodes": [
+    {
+      "id": "src_bar",
+      "label": "",
+      "x": 55,
+      "y": 130,
+      "w": 290,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "sources"
+    },
+    {
+      "id": "cmp_bar",
+      "label": "",
+      "x": 425,
+      "y": 130,
+      "w": 640,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "comparison"
+    },
+    {
+      "id": "use_bar",
+      "label": "",
+      "x": 1150,
+      "y": 130,
+      "w": 290,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "uses"
+    },
+    {
+      "id": "src_direct",
+      "label": "目标化合物直接报道",
+      "sublabel": "Ba₅Y₁₂Zn[O(SiO₄)]₈；仅 1 篇原始研究",
+      "x": 60,
+      "y": 160,
+      "w": 290,
+      "h": 108,
+      "shape": "rect",
+      "fill": "#FFF8EA",
+      "stroke": "#B67A21",
+      "stroke_width": 2.0,
+      "label_color": "#805718",
+      "sublabel_color": "#805718",
+      "group": "sources"
+    },
+    {
+      "id": "src_lineage",
+      "label": "同一 Ba–Y–Si–O 谱系",
+      "sublabel": "结构身份与相组成可比较",
+      "x": 60,
+      "y": 280,
+      "w": 290,
+      "h": 108,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "sources"
+    },
+    {
+      "id": "src_crystal",
+      "label": "晶体化学近邻",
+      "sublabel": "比较结构关系与相组成",
+      "x": 60,
+      "y": 400,
+      "w": 290,
+      "h": 108,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#587080",
+      "stroke_width": 1.7,
+      "label_color": "#3A5968",
+      "sublabel_color": "#61727B",
+      "group": "sources"
+    },
+    {
+      "id": "src_process",
+      "label": "工艺近邻",
+      "sublabel": "比较过程变量与表征方法",
+      "x": 60,
+      "y": 520,
+      "w": 290,
+      "h": 108,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#71818A",
+      "stroke_width": 1.6,
+      "label_color": "#52656F",
+      "sublabel_color": "#6C7980",
+      "group": "sources"
+    },
+    {
+      "id": "src_outside",
+      "label": "研究范围之外",
+      "sublabel": "不承担结构或配方结论",
+      "x": 60,
+      "y": 640,
+      "w": 290,
+      "h": 108,
+      "shape": "rect",
+      "fill": "#F0F1F1",
+      "stroke": "#8A9499",
+      "stroke_width": 1.6,
+      "dashed": true,
+      "label_color": "#626D73",
+      "sublabel_color": "#707A7F",
+      "group": "sources"
+    },
+    {
+      "id": "route",
+      "label": "合成路线对照",
+      "sublabel": "外加助熔｜自熔/熔体\n固相陶瓷｜机械化学\nCzochralski",
+      "x": 425,
+      "y": 255,
+      "w": 220,
+      "h": 300,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#244B61",
+      "stroke_width": 2.0,
+      "label_color": "#1E4154",
+      "sublabel_color": "#526770",
+      "group": "comparison"
+    },
+    {
+      "id": "validation",
+      "label": "互补表征",
+      "sublabel": "单晶/先进衍射\nPXRD/Rietveld\n成分与污染\n高温稳定性",
+      "x": 865,
+      "y": 255,
+      "w": 220,
+      "h": 300,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#244B61",
+      "stroke_width": 2.0,
+      "label_color": "#1E4154",
+      "sublabel_color": "#526770",
+      "group": "comparison"
+    },
+    {
+      "id": "warning",
+      "label": "近邻条件 ≠ 目标相已验证配方",
+      "sublabel": "具体数值不得无条件迁移",
+      "x": 425,
+      "y": 650,
+      "w": 640,
+      "h": 95,
+      "shape": "rect",
+      "fill": "#FFF8EA",
+      "stroke": "#B67A21",
+      "stroke_width": 1.8,
+      "label_color": "#805718",
+      "sublabel_color": "#805718",
+      "group": "comparison"
+    },
+    {
+      "id": "use_direct",
+      "label": "直接条件复现",
+      "sublabel": "只依据目标化合物原始研究",
+      "x": 1155,
+      "y": 160,
+      "w": 285,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFF8EA",
+      "stroke": "#B67A21",
+      "stroke_width": 2.0,
+      "label_color": "#805718",
+      "sublabel_color": "#805718",
+      "group": "uses"
+    },
+    {
+      "id": "use_lineage",
+      "label": "谱系内相图与结构比较",
+      "sublabel": "借鉴组成扫描与核验方法",
+      "x": 1155,
+      "y": 310,
+      "w": 285,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "uses"
+    },
+    {
+      "id": "use_methods",
+      "label": "方法与变量结构",
+      "sublabel": "不直接移用相关体系数值",
+      "x": 1155,
+      "y": 460,
+      "w": 285,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#587080",
+      "stroke_width": 1.7,
+      "label_color": "#3A5968",
+      "sublabel_color": "#61727B",
+      "group": "uses"
+    },
+    {
+      "id": "use_exclude",
+      "label": "排除出条件比较",
+      "sublabel": "仅说明研究边界",
+      "x": 1155,
+      "y": 650,
+      "w": 285,
+      "h": 100,
+      "shape": "rect",
+      "fill": "#F0F1F1",
+      "stroke": "#8A9499",
+      "stroke_width": 1.6,
+      "dashed": true,
+      "label_color": "#626D73",
+      "sublabel_color": "#707A7F",
+      "group": "uses"
+    }
+  ],
+  "edges": [
+    {
+      "id": "direct_route",
+      "from": "src_direct",
+      "to": "route",
+      "color": "#B67A21",
+      "width": 2.4,
+      "waypoints": [
+        [
+          390,
+          214
+        ],
+        [
+          390,
+          300
+        ],
+        [
+          425,
+          300
+        ]
+      ]
+    },
+    {
+      "id": "lineage_route",
+      "from": "src_lineage",
+      "to": "route",
+      "color": "#315A70",
+      "width": 2.0,
+      "waypoints": [
+        [
+          390,
+          334
+        ],
+        [
+          390,
+          350
+        ],
+        [
+          425,
+          350
+        ]
+      ]
+    },
+    {
+      "id": "crystal_route",
+      "from": "src_crystal",
+      "to": "route",
+      "color": "#587080",
+      "width": 1.9,
+      "waypoints": [
+        [
+          390,
+          454
+        ],
+        [
+          390,
+          400
+        ],
+        [
+          425,
+          400
+        ]
+      ]
+    },
+    {
+      "id": "process_route",
+      "from": "src_process",
+      "to": "route",
+      "color": "#71818A",
+      "width": 1.8,
+      "waypoints": [
+        [
+          390,
+          574
+        ],
+        [
+          390,
+          450
+        ],
+        [
+          425,
+          450
+        ]
+      ]
+    },
+    {
+      "id": "route_validation",
+      "from": "route",
+      "to": "validation",
+      "color": "#244B61",
+      "width": 3.4,
+      "label": "配比 · 温度—时间\n气氛 · 坩埚/助熔剂\n冷却",
+      "font_size": 17
+    },
+    {
+      "id": "validation_direct",
+      "from": "validation",
+      "to": "use_direct",
+      "color": "#B67A21",
+      "width": 2.2,
+      "waypoints": [
+        [
+          1120,
+          215
+        ],
+        [
+          1155,
+          215
+        ]
+      ]
+    },
+    {
+      "id": "validation_lineage",
+      "from": "validation",
+      "to": "use_lineage",
+      "color": "#315A70",
+      "width": 2.0,
+      "waypoints": [
+        [
+          1120,
+          365
+        ],
+        [
+          1155,
+          365
+        ]
+      ]
+    },
+    {
+      "id": "validation_methods",
+      "from": "validation",
+      "to": "use_methods",
+      "color": "#587080",
+      "width": 1.9,
+      "waypoints": [
+        [
+          1120,
+          515
+        ],
+        [
+          1155,
+          515
+        ]
+      ]
+    },
+    {
+      "id": "outside_exclude",
+      "from": "src_outside",
+      "to": "use_exclude",
+      "color": "#8A9499",
+      "width": 1.8,
+      "dashed": true,
+      "waypoints": [
+        [
+          380,
+          795
+        ],
+        [
+          1120,
+          795
+        ],
+        [
+          1120,
+          700
+        ],
+        [
+          1155,
+          700
+        ]
+      ],
+      "label": "排除",
+      "font_size": 17
+    }
+  ],
+  "texts": [
+    {
+      "id": "mainline",
+      "text": "证据来源 → 合成路线对照 → 互补表征 → 研究用途",
+      "x": 750,
+      "y": 78,
+      "font_size": 17,
+      "color": "#536873",
+      "bold": false,
+      "align": "center"
+    },
+    {
+      "id": "source_heading",
+      "text": "文献来源",
+      "x": 200,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "comparison_heading",
+      "text": "路线—变量—验证",
+      "x": 745,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "uses_heading",
+      "text": "研究用途",
+      "x": 1295,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    }
+  ]
+}

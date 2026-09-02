@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <g id="p11-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p11-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">干净环境一键冒烟 1–2 分钟；核心流程以闸门一致为复现判据</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p11-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">
+      <tspan x="72" dy="0">确定性部分（基准、渲染、闸门）<tspan fill="#C48A2B" font-weight="700">可逐位复现</tspan>；LLM 部分不可逐字复现，以 check-done 退出 0、</tspan>
+      <tspan x="72" dy="38">CITATION_AUDIT 全部 PASS、bib_guard 整合率 ≥ 90% 作为核心流程的复现判据。</tspan>
+    </text>
+  </g>
+  <g id="p11-commands">
+    <rect x="72" y="220" width="640" height="424" fill="#EEF2F6"/>
+    <text x="96" y="256" font-size="18" font-family='Consolas, "Courier New", monospace' fill="#1D1D1F">
+      <tspan x="96" dy="0" fill="#1F4D78" font-weight="700">$ bash install.sh --retro</tspan>
+      <tspan x="96" dy="30" fill="#1F4D78" font-weight="700">$ bash scripts/smoke_test.sh --with-retro</tspan>
+      <tspan x="96" dy="28">OK  python 3.10 · 4 MCP servers importable</tspan>
+      <tspan x="96" dy="28">OK  56 passed (offline tests, no network)</tspan>
+      <tspan x="96" dy="28">OK  lookup_local_doi -&gt; public corpus package</tspan>
+      <tspan x="96" dy="28">OK  100 claims / 219 citation calls / 51 verified keys</tspan>
+      <tspan x="96" dy="28">OK  figspec -&gt; svg + drawio</tspan>
+      <tspan x="96" dy="28" fill="#2E7D32" font-weight="700">SMOKE TEST PASSED</tspan>
+      <tspan x="96" dy="40" fill="#1F4D78" font-weight="700">$ .venv-retro/bin/python tools/eval_retro_benchmark.py</tspan>
+      <tspan x="96" dy="28">Combo@1 71.81 · Combo@20 89.21 · MRR 77.48  (bit-identical)</tspan>
+      <tspan x="96" dy="40" fill="#1F4D78" font-weight="700">$ bash scripts/reproduce_core.sh --topic "..."</tspan>
+      <tspan x="96" dy="28">Codex CLI 0.146.1 · gpt-5.6-sol · reasoning xhigh</tspan>
+    </text>
+    <text x="96" y="632" font-size="16" fill="#5A6573">冒烟测试 1–2 分钟无网络、无 LLM；基准重算 GPU 19 分钟；核心流程需 Codex 登录与网络</text>
+  </g>
+  <g id="p11-limitations">
+    <use data-icon="tabler-outline/alert-triangle" x="752" y="222" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
+    <text x="790" y="244" font-size="24" font-weight="700" fill="#1F4D78">已知限制（如实披露）</text>
+    <text x="752" y="286" font-size="18" fill="#1D1D1F">
+      <tspan x="752" dy="0"><tspan fill="#C48A2B" font-weight="700">1</tspan>  目标相仅 1 篇直接报道、无独立复现；</tspan>
+      <tspan x="752" dy="26">    报告不给出“已验证配方”，只给可迁移范围与实验方向</tspan>
+      <tspan x="752" dy="36"><tspan fill="#C48A2B" font-weight="700">2</tspan>  公开知识库只含被引文献中 21 / 51 篇全文，</tspan>
+      <tspan x="752" dy="26">    其余 30 篇以 DOI 提供；在线检索与核验不受影响</tspan>
+      <tspan x="752" dy="36"><tspan fill="#C48A2B" font-weight="700">3</tspan>  终审为同家族模型的冷启动复审（provisional）；</tspan>
+      <tspan x="752" dy="26">    跨模型审稿已支持，本次未启用</tspan>
+      <tspan x="752" dy="36"><tspan fill="#C48A2B" font-weight="700">4</tspan>  正式 PDF 含专家反馈驱动的修订，全部轨迹留痕；</tspan>
+      <tspan x="752" dy="26">    LLM 步骤不可逐字复现，复现判据见上</tspan>
+    </text>
+    <line x1="752" y1="540" x2="1208" y2="540" stroke="#D5DBE3" stroke-width="1"/>
+    <text x="752" y="574" font-size="18" fill="#1D1D1F">
+      <tspan x="752" dy="0"><tspan font-weight="700" fill="#1F4D78">7 组运行全部留痕</tspan>；正式结果取最后一个同时通过</tspan>
+      <tspan x="752" dy="26">全部机械闸门（引用、稿件、术语、终审）的版本，</tspan>
+      <tspan x="752" dy="26">不在多次运行间“挑最好的一次”。</tspan>
+    </text>
+  </g>
+  <g id="p11-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛 · docs/competition/SUBMISSION.md §3、§7</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">11 / 12</text>
+  </g>
+</svg>

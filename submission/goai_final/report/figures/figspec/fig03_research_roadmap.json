@@ -1,0 +1,392 @@
+{
+  "title": "从文献依据到可检验合成实验",
+  "title_style": {
+    "font_size": 28,
+    "y": 40,
+    "color": "#183A4A",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1500,
+    "height": 900
+  },
+  "defaults": {
+    "font_size": 20,
+    "fill": "#FFFFFF",
+    "stroke": "#183A4A",
+    "edge_color": "#536B77",
+    "edge_width": 2.4
+  },
+  "groups": [
+    {
+      "id": "pipeline",
+      "label": "",
+      "x": 30,
+      "y": 95,
+      "w": 1440,
+      "h": 435,
+      "fill": "#F3F6F7",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    },
+    {
+      "id": "questions",
+      "label": "",
+      "x": 30,
+      "y": 565,
+      "w": 1440,
+      "h": 285,
+      "fill": "#F7F8F8",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pipeline_bar",
+      "label": "",
+      "x": 55,
+      "y": 130,
+      "w": 1390,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "pipeline"
+    },
+    {
+      "id": "questions_bar",
+      "label": "",
+      "x": 55,
+      "y": 600,
+      "w": 1390,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "questions"
+    },
+    {
+      "id": "evidence",
+      "label": "文献依据",
+      "sublabel": "Ba–Y–Si–O 谱系\nBa–Zn–Si–O 结构近邻\nY–Si–O 工艺参照",
+      "x": 55,
+      "y": 180,
+      "w": 230,
+      "h": 240,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "pipeline"
+    },
+    {
+      "id": "hypothesis",
+      "label": "结构假设",
+      "sublabel": "局部组成网格\nZn–Y–氧计量耦合\n竞争相与玻璃区",
+      "x": 330,
+      "y": 180,
+      "w": 230,
+      "h": 240,
+      "shape": "rect",
+      "fill": "#FFFDF7",
+      "stroke": "#9A7436",
+      "stroke_width": 1.9,
+      "label_color": "#6D4D1E",
+      "sublabel_color": "#5C554A",
+      "group": "pipeline"
+    },
+    {
+      "id": "precursor",
+      "label": "模型筛选的前驱体",
+      "sublabel": "BaCO₃ + Y₂O₃ + SiO₂\nZnO / MgO / Co₃O₄\n模型排序，不等于实验验证",
+      "x": 605,
+      "y": 180,
+      "w": 250,
+      "h": 240,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#4D7165",
+      "stroke_width": 1.8,
+      "label_color": "#34584C",
+      "sublabel_color": "#52655E",
+      "group": "pipeline"
+    },
+    {
+      "id": "solid",
+      "label": "固相成相",
+      "sublabel": "分段煅烧 → 复磨 → 退火\n批量相区与相纯度",
+      "x": 910,
+      "y": 150,
+      "w": 240,
+      "h": 130,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "pipeline"
+    },
+    {
+      "id": "growth",
+      "label": "高温溶液长晶",
+      "sublabel": "助熔 → 保温 → 慢冷\n单晶结构与液相选择性",
+      "x": 910,
+      "y": 315,
+      "w": 240,
+      "h": 150,
+      "shape": "rect",
+      "fill": "#FFF8EA",
+      "stroke": "#B67A21",
+      "stroke_width": 2.0,
+      "label_color": "#805718",
+      "sublabel_color": "#805718",
+      "group": "pipeline"
+    },
+    {
+      "id": "validate",
+      "label": "结果反馈",
+      "sublabel": "PXRD / Rietveld\nSCXRD / 先进衍射\nEDS / EPMA / ICP\n高温相与冷却产物",
+      "x": 1195,
+      "y": 190,
+      "w": 240,
+      "h": 245,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 2.0,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "pipeline"
+    },
+    {
+      "id": "q1",
+      "label": "稳定相区还是液相选择性晶体？",
+      "sublabel": "区分批量相稳定性与长晶选择性",
+      "x": 100,
+      "y": 655,
+      "w": 360,
+      "h": 120,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#71818A",
+      "stroke_width": 1.6,
+      "label_color": "#3A4F59",
+      "sublabel_color": "#61727B",
+      "group": "questions"
+    },
+    {
+      "id": "q2",
+      "label": "Zn 是否进入无 Zn 谱系并与氧计量耦合？",
+      "sublabel": "检验掺入位置与电荷补偿关系",
+      "x": 570,
+      "y": 655,
+      "w": 360,
+      "h": 120,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#71818A",
+      "stroke_width": 1.6,
+      "label_color": "#3A4F59",
+      "sublabel_color": "#61727B",
+      "group": "questions"
+    },
+    {
+      "id": "q3",
+      "label": "实际组成与结构信号如何对应？",
+      "sublabel": "区分批量相组成与结构判定",
+      "x": 1040,
+      "y": 655,
+      "w": 360,
+      "h": 120,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#71818A",
+      "stroke_width": 1.6,
+      "label_color": "#3A4F59",
+      "sublabel_color": "#61727B",
+      "group": "questions"
+    }
+  ],
+  "edges": [
+    {
+      "id": "evidence_hypothesis",
+      "from": "evidence",
+      "to": "hypothesis",
+      "width": 2.6
+    },
+    {
+      "id": "hypothesis_precursor",
+      "from": "hypothesis",
+      "to": "precursor",
+      "width": 2.6
+    },
+    {
+      "id": "precursor_solid",
+      "from": "precursor",
+      "to": "solid",
+      "width": 2.4,
+      "waypoints": [
+        [
+          885,
+          300
+        ],
+        [
+          885,
+          215
+        ],
+        [
+          910,
+          215
+        ]
+      ]
+    },
+    {
+      "id": "precursor_growth",
+      "from": "precursor",
+      "to": "growth",
+      "color": "#B67A21",
+      "width": 2.4,
+      "waypoints": [
+        [
+          885,
+          300
+        ],
+        [
+          885,
+          390
+        ],
+        [
+          910,
+          390
+        ]
+      ]
+    },
+    {
+      "id": "solid_validate",
+      "from": "solid",
+      "to": "validate",
+      "width": 2.4,
+      "waypoints": [
+        [
+          1175,
+          215
+        ],
+        [
+          1175,
+          260
+        ],
+        [
+          1195,
+          260
+        ]
+      ]
+    },
+    {
+      "id": "growth_validate",
+      "from": "growth",
+      "to": "validate",
+      "color": "#B67A21",
+      "width": 2.4,
+      "waypoints": [
+        [
+          1175,
+          390
+        ],
+        [
+          1175,
+          365
+        ],
+        [
+          1195,
+          365
+        ]
+      ]
+    },
+    {
+      "id": "feedback",
+      "from": "validate",
+      "to": "hypothesis",
+      "label": "相组成与实际计量更新下一轮",
+      "font_size": 17,
+      "color": "#69777E",
+      "width": 2.0,
+      "arrow": "open",
+      "waypoints": [
+        [
+          1315,
+          500
+        ],
+        [
+          500,
+          500
+        ],
+        [
+          500,
+          420
+        ]
+      ]
+    }
+  ],
+  "texts": [
+    {
+      "id": "mainline",
+      "text": "文献依据 → 结构假设 → 前驱体 → 平行实验 → 结果反馈",
+      "x": 750,
+      "y": 78,
+      "font_size": 17,
+      "color": "#536873",
+      "bold": false,
+      "align": "center"
+    },
+    {
+      "id": "pipeline_heading",
+      "text": "文献依据到实验反馈",
+      "x": 750,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "parallel_label",
+      "text": "平行实验",
+      "x": 1030,
+      "y": 120,
+      "font_size": 18,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "questions_heading",
+      "text": "三类科学问题",
+      "x": 750,
+      "y": 590,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "foot",
+      "text": "每轮实验保留成功产物、竞争相、失重与负结果",
+      "x": 750,
+      "y": 825,
+      "font_size": 17,
+      "color": "#5F6B73",
+      "bold": false,
+      "align": "center"
+    }
+  ]
+}

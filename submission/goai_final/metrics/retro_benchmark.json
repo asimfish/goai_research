@@ -1,0 +1,60 @@
+{
+  "benchmark": "Retrieval-Retro year split (train/val <= 2017, test >= 2018), test split",
+  "n_test": 2558,
+  "subsample": null,
+  "parse_failures": 0,
+  "protocol": {
+    "top_m": 30,
+    "pool_cap": 15,
+    "set_sizes": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "hard_metal_filter": true,
+    "denominator": "full test set (targets whose exact set is not enumerated count as misses)"
+  },
+  "stage1_generator": {
+    "top_1_coverage": 70.64,
+    "top_3_coverage": 71.77,
+    "top_5_coverage": 80.34,
+    "top_10_coverage": 91.87,
+    "top_20_coverage": 95.78
+  },
+  "stage2_reranker": {
+    "combo_1": 71.81,
+    "combo_3": 82.29,
+    "combo_5": 84.71,
+    "combo_10": 87.37,
+    "combo_20": 89.21,
+    "combo_mrr": 77.48,
+    "gt_enumerated_rate": 95.74
+  },
+  "same_enumeration_product_control": {
+    "combo_1": 11.65,
+    "combo_3": 12.94,
+    "combo_5": 43.2,
+    "combo_10": 47.58,
+    "combo_20": 75.33,
+    "combo_mrr": 23.24
+  },
+  "reference": {
+    "paper": "RECIPE (NeurIPS 2026 submission): Retro test Combo@1 71.70+-0.10, Combo@20 89.82+-1.74, Combo MRR 77.43+-0.69 (3 seeds); Retrieval-Retro baseline Combo@1 60.40, Combo@20 69.00, MRR 63.29",
+    "vendored_checkpoint_summary": {
+      "stage1_top20": 95.78,
+      "stage2_combo1_full": 71.81,
+      "stage2_combo20_full": 89.21,
+      "stage2_mrr_full": 77.48
+    }
+  },
+  "provenance": {
+    "git_commit": "ed1b1988d2fc606da5167d36ad1e4efa02c44c00",
+    "device": "cuda:0",
+    "python": "3.11.12",
+    "stage1_checkpoint_sha256": "f302cb315a607eaf461281ef65585489eb814b1db7c5e41e56aaa9193965a53e",
+    "stage2_checkpoint_sha256": "373ee6bdaf562f4ee70b06e515d5b84a18db8c6dbd2d4e2fd7dea864272465de",
+    "split_csv_sha256": "38a5c24fd69673ed4bf1caae543d5cff176b46f06b54bb32476444fe2c9de110",
+    "elapsed_s": 1152.1
+  }
+}

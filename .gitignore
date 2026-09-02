@@ -32,3 +32,6 @@ configs/claude.mcp.json
 # 本地缓存
 .cache/
 *.jsonl.lock
+
+# submission archives built by scripts/package_submission.sh
+dist/

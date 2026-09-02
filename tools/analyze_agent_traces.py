@@ -8,10 +8,22 @@ import json
 from pathlib import Path
 from typing import Any
 
+KNOWN_TOOLS = (
+    "search_papers", "snowball", "lookup", "download_pdf", "save_to_library", "export_bibtex",
+    "coverage_report", "local_corpus_status", "grep_local_corpus", "read_local_document",
+    "lookup_local_doi", "verify_entry", "verify_bib_file", "deep_audit_info", "validate_figspec",
+    "render_figure", "svg_file_to_drawio", "drawio_export", "predict_precursor_routes",
+    "predict_retro", "make_experiment_plan", "inorganic_model_status",
+)
+
 
 def analyze(path: Path) -> dict[str, Any]:
     event_counts: collections.Counter[str] = collections.Counter()
     mcp_tools: collections.Counter[str] = collections.Counter()
+    # Tool functions of the four servers invoked through a shell/python command instead of
+    # the MCP protocol (same code path, audited by server.core.audit.record_tool_call).
+    cli_tools: collections.Counter[str] = collections.Counter()
+    item_types: collections.Counter[str] = collections.Counter()
     failed_mcp: list[str] = []
     failed_commands: list[dict[str, Any]] = []
     non_json = 0
@@ -30,6 +42,13 @@ def analyze(path: Path) -> dict[str, Any]:
         event_counts[event_type] += 1
         item = event.get("item") or {}
         item_type = item.get("type")
+        if event_type == "item.completed" and item_type:
+            item_types[str(item_type)] += 1
+        if event_type == "item.completed" and item_type == "command_execution":
+            command = str(item.get("command") or "")
+            for tool in KNOWN_TOOLS:
+                if tool in command:
+                    cli_tools[tool] += 1
         if event_type == "item.completed" and item_type == "mcp_tool_call":
             tool = str(item.get("tool") or "unknown")
             mcp_tools[tool] += 1
@@ -85,6 +104,10 @@ def analyze(path: Path) -> dict[str, Any]:
         "stderr_bytes": stderr_path.stat().st_size if stderr_path.exists() else 0,
         "mcp_calls": sum(mcp_tools.values()),
         "mcp_tools": dict(mcp_tools),
+        "tool_calls_via_command": sum(cli_tools.values()),
+        "tools_via_command": dict(cli_tools),
+        "web_searches": item_types.get("web_search", 0),
+        "item_types": dict(item_types),
         "failed_mcp": failed_mcp,
         "failed_commands": failed_commands,
         "max_event_bytes": max_event,
@@ -98,12 +121,13 @@ def markdown(rows: list[dict[str, Any]]) -> str:
     out = [
         "# Agent trace audit",
         "",
-        "| Task | Exit | MCP | Failed commands | Input tokens | Max event | Flags |",
-        "|---|---:|---:|---:|---:|---:|---|",
+        "| Task | Exit | MCP | Tool fn via cmd | Web search | Failed commands | Input tokens | Max event | Flags |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for row in rows:
         out.append(
             f"| `{row['task']}` | {row['exit_code']} | {row['mcp_calls']} | "
+            f"{row['tool_calls_via_command']} | {row['web_searches']} | "
             f"{len(row['failed_commands'])} | {row['usage'].get('input_tokens', 0)} | "
             f"{row['max_event_bytes']} | {', '.join(row['flags']) or '—'} |"
         )

@@ -1,0 +1,3062 @@
+{
+  "audit_skill": "goai-refcheck",
+  "bib_file": "workspace/library/references.bib",
+  "total": 51,
+  "counts": {
+    "PASS": 51,
+    "FIX": 0,
+    "MISMATCH": 0,
+    "UNVERIFIED": 0,
+    "ERROR": 0
+  },
+  "gate": "PASS",
+  "per_entry": [
+    {
+      "key": "ababaikeri2024ba5y12zn",
+      "verdict": "PASS",
+      "title_similarity": 0.966,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Aihaimaitijiang Ababaikeri",
+            "Xueting Pan",
+            "Gulimeikereyi Tuniyazi",
+            "Xiangzhan Jiang",
+            "Yanhui Zhang",
+            "Dilnur Malik"
+          ],
+          "canonical_used": [
+            "Aihaimaitijiang Ababaikeri",
+            "Xueting Pan",
+            "Gulimeikereyi Tuniyazi",
+            "Xiangzhan Jiang",
+            "Yanhui Zhang",
+            "Dilnur Malik"
+          ],
+          "canonical_raw": [
+            "Aihaimaitijiang Ababaikeri",
+            "Xueting Pan",
+            "Gulimeikereyi Tuniyazi",
+            "Xiangzhan Jiang",
+            "Yanhui Zhang",
+            "Dilnur Malik"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Ba 5 Y 12 Zn[O(SiO 4 )] 8 : a novel non-centrosymmetric silicate with a short ultraviolet cut-off edge featuring [ZnSi 4 O 16 ] and [SiO 4 ] units",
+        "authors": [
+          "Aihaimaitijiang Ababaikeri",
+          "Xueting Pan",
+          "Gulimeikereyi Tuniyazi",
+          "Xiangzhan Jiang",
+          "Yanhui Zhang",
+          "Dilnur Malik"
+        ],
+        "year": 2024,
+        "venue": "New Journal of Chemistry",
+        "doi": "10.1039/d3nj04480g",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d3nj04480g",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kolitsch2009crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Uwe Kolitsch",
+            "Maria Wierzbicka-Wieczorek",
+            "Ekkehart Tillmanns"
+          ],
+          "canonical_used": [
+            "U. Kolitsch",
+            "M. Wierzbicka-Wieczorek",
+            "E. Tillmanns"
+          ],
+          "canonical_raw": [
+            "U. Kolitsch",
+            "M. Wierzbicka-Wieczorek",
+            "E. Tillmanns"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "CRYSTAL CHEMISTRY AND TOPOLOGY OF TWO FLUX-GROWN YTTRIUM SILICATES, BaKYSi2O7 AND Cs3YSi8O19",
+        "authors": [
+          "U. Kolitsch",
+          "M. Wierzbicka-Wieczorek",
+          "E. Tillmanns"
+        ],
+        "year": 2009,
+        "venue": "The Canadian Mineralogist",
+        "doi": "10.3749/canmin.47.2.421",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.3749/canmin.47.2.421",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "wierzbickawieczorek2017high",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Maria Wierzbicka-Wieczorek",
+            "Patrick K. Krug",
+            "Uwe Kolitsch"
+          ],
+          "canonical_used": [
+            "Maria Wierzbicka-Wieczorek",
+            "Patrick K. Krug",
+            "Uwe Kolitsch"
+          ],
+          "canonical_raw": [
+            "Maria Wierzbicka-Wieczorek",
+            "Patrick K. Krug",
+            "Uwe Kolitsch"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "High-Temperature Flux Growth as a Tool for the Preparation of Mixed-Framework Metal-Y Silicates: A Systematic Evaluation of the Influence of Experimental Parameters",
+        "authors": [
+          "Maria Wierzbicka-Wieczorek",
+          "Patrick K. Krug",
+          "Uwe Kolitsch"
+        ],
+        "year": 2017,
+        "venue": "Crystal Growth & Design",
+        "doi": "10.1021/acs.cgd.6b01448",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/acs.cgd.6b01448",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yamane2024synthesis",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Shuto Motozawa",
+            "Junichi Takahashi",
+            "Takahiro Yamada"
+          ],
+          "canonical_used": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Shuto Motozawa",
+            "Junichi Takahashi",
+            "Takahiro Yamada"
+          ],
+          "canonical_raw": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Shuto Motozawa",
+            "Junichi Takahashi",
+            "Takahiro Yamada"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Synthesis, Crystal Structure, and Dielectric Properties of BaxY26Si16O71+x (x ≈ 10.2)",
+        "authors": [
+          "Hisanori Yamane",
+          "Yuko Suzuki",
+          "Rayko Simura",
+          "Shuto Motozawa",
+          "Junichi Takahashi",
+          "Takahiro Yamada"
+        ],
+        "year": 2024,
+        "venue": "Chemistry of Materials",
+        "doi": "10.1021/acs.chemmater.4c00599",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/acs.chemmater.4c00599",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yamane2024microstructure",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Takahiro Yamada"
+          ],
+          "canonical_used": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Takahiro Yamada"
+          ],
+          "canonical_raw": [
+            "Hisanori Yamane",
+            "Yuko Suzuki",
+            "Rayko Simura",
+            "Takahiro Yamada"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Microstructure and dielectric properties of BaxY26Si16O71+x (x ≈ 10.2) ceramics prepared using a planetary ball mill",
+        "authors": [
+          "Hisanori Yamane",
+          "Yuko Suzuki",
+          "Rayko Simura",
+          "Takahiro Yamada"
+        ],
+        "year": 2024,
+        "venue": "Journal of the Ceramic Society of Japan",
+        "doi": "10.2109/jcersj2.24080",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.2109/jcersj2.24080",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "gulay2024navigation",
+      "verdict": "PASS",
+      "title_similarity": 0.943,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Nataliya L. Gulay",
+            "Marco Zanella",
+            "Craig M. Robertson",
+            "Daniel Ritchie",
+            "Manel Sonni",
+            "Matthew A. Wright",
+            "Jon A. Newnham",
+            "Cara J. Hawkins",
+            "Jayne Whitworth",
+            "Bhupendra P. Mali",
+            "Hongjun Niu",
+            "Matthew S. Dyer",
+            "Christopher M. Collins",
+            "Luke M. Daniels",
+            "John B. Claridge",
+            "Matthew J. Rosseinsky"
+          ],
+          "canonical_used": [
+            "Nataliya L. Gulay",
+            "Marco Zanella",
+            "Craig M. Robertson",
+            "Daniel Ritchie",
+            "Manel Sonni",
+            "Matthew A. Wright",
+            "Jon A. Newnham",
+            "Cara J. Hawkins",
+            "Jayne Whitworth",
+            "Bhupendra P. Mali",
+            "Hongjun Niu",
+            "Matthew S. Dyer",
+            "Christopher M. Collins",
+            "Luke M. Daniels",
+            "John B. Claridge",
+            "Matthew J. Rosseinsky"
+          ],
+          "canonical_raw": [
+            "Nataliya L. Gulay",
+            "Marco Zanella",
+            "Craig M. Robertson",
+            "Daniel Ritchie",
+            "Manel Sonni",
+            "Matthew A. Wright",
+            "Jon A. Newnham",
+            "Cara J. Hawkins",
+            "Jayne Whitworth",
+            "Bhupendra P. Mali",
+            "Hongjun Niu",
+            "Matthew S. Dyer",
+            "Christopher M. Collins",
+            "Luke M. Daniels",
+            "John B. Claridge",
+            "Matthew J. Rosseinsky"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Navigation through high-dimensional chemical space: discovery of Ba 5 Y 13 [SiO 4 ] 8 O 8.5 and Ba 3 Y 2 [Si 2 O 7 ] 2",
+        "authors": [
+          "Nataliya L. Gulay",
+          "Marco Zanella",
+          "Craig M. Robertson",
+          "Daniel Ritchie",
+          "Manel Sonni",
+          "Matthew A. Wright",
+          "Jon A. Newnham",
+          "Cara J. Hawkins",
+          "Jayne Whitworth",
+          "Bhupendra P. Mali",
+          "Hongjun Niu",
+          "Matthew S. Dyer",
+          "Christopher M. Collins",
+          "Luke M. Daniels",
+          "John B. Claridge",
+          "Matthew J. Rosseinsky"
+        ],
+        "year": 2024,
+        "venue": "Chemical Science",
+        "doi": "10.1039/d4sc04440a",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d4sc04440a",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "motozawa2022bay16si4o33",
+      "verdict": "PASS",
+      "title_similarity": 0.94,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Shuto Motozawa",
+            "Hiromitsu Kimura",
+            "Junichi Takahashi",
+            "Rayko Simura",
+            "Hisanori Yamane"
+          ],
+          "canonical_used": [
+            "Shuto Motozawa",
+            "Hiromitsu Kimura",
+            "Junichi Takahashi",
+            "Rayko Simura",
+            "Hisanori Yamane"
+          ],
+          "canonical_raw": [
+            "Shuto Motozawa",
+            "Hiromitsu Kimura",
+            "Junichi Takahashi",
+            "Rayko Simura",
+            "Hisanori Yamane"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "BaY 16 Si 4 O 33 containing Ba(SiO 4 ) 4 orthosilicates",
+        "authors": [
+          "Shuto Motozawa",
+          "Hiromitsu Kimura",
+          "Junichi Takahashi",
+          "Rayko Simura",
+          "Hisanori Yamane"
+        ],
+        "year": 2022,
+        "venue": "Acta Crystallographica Section E Crystallographic Communications",
+        "doi": "10.1107/s2056989022011057",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1107/s2056989022011057",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "christensen1994investigation",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "closed_serial_adjudication",
+          "claimed": [
+            "A. N. Christensen"
+          ],
+          "canonical_used": [
+            "A. Nørlund Christensen"
+          ],
+          "canonical_raw": [],
+          "evidence": "INIST-CNRS PASCAL record 4099432 identifies the single author as A. Nørlund Christensen"
+        }
+      },
+      "canonical": {
+        "title": "Investigation by the use of profile refinement of neutron powder diffraction data of the geometry of the [Si2O7]6− ions in the high temperature phases of rare earth disilicates prepared from the melt in crucible-free synthesis",
+        "authors": [],
+        "year": 1994,
+        "venue": "Zeitschrift für Kristallographie - Crystalline Materials",
+        "doi": "10.1524/zkri.1994.209.1.7",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1524/zkri.1994.209.1.7",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "dolan2008structures",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "M. D. Dolan",
+            "B. Harlan",
+            "J. S. White",
+            "M. Hall",
+            "S. T. Misture",
+            "S. C. Bancheri",
+            "B. Bewlay"
+          ],
+          "canonical_used": [
+            "M. D. Dolan",
+            "B. Harlan",
+            "J. S. White",
+            "M. Hall",
+            "S. T. Misture",
+            "S. C. Bancheri",
+            "B. Bewlay"
+          ],
+          "canonical_raw": [
+            "M. D. Dolan",
+            "B. Harlan",
+            "J. S. White",
+            "M. Hall",
+            "S. T. Misture",
+            "S. C. Bancheri",
+            "B. Bewlay"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Structures and anisotropic thermal expansion of the α , β , γ , and δ polymorphs of Y 2 Si 2 O 7",
+        "authors": [
+          "M. D. Dolan",
+          "B. Harlan",
+          "J. S. White",
+          "M. Hall",
+          "S. T. Misture",
+          "S. C. Bancheri",
+          "B. Bewlay"
+        ],
+        "year": 2008,
+        "venue": "Powder Diffraction",
+        "doi": "10.1154/1.2825308",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1154/1.2825308",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "redhammer2003beta",
+      "verdict": "PASS",
+      "title_similarity": 0.965,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "G. J. Redhammer",
+            "G. Roth"
+          ],
+          "canonical_used": [
+            "Günther J. Redhammer",
+            "Georg Roth"
+          ],
+          "canonical_raw": [
+            "Günther J. Redhammer",
+            "Georg Roth"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "β-Y2Si2O7, a new thortveitite-type compound, determined at 100 and 280 K",
+        "authors": [
+          "Günther J. Redhammer",
+          "Georg Roth"
+        ],
+        "year": 2003,
+        "venue": "Acta Crystallographica Section C Crystal Structure Communications",
+        "doi": "10.1107/s0108270103018869",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1107/s0108270103018869",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "becerro2004revisiting",
+      "verdict": "PASS",
+      "title_similarity": 0.981,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "A. I. Becerro",
+            "A. Escudero",
+            "P. Florian",
+            "D. Massiot",
+            "M. D. Alba"
+          ],
+          "canonical_used": [
+            "Ana I. Becerro",
+            "Alberto Escudero",
+            "Pierre Florian",
+            "Dominique Massiot",
+            "Maria D. Alba"
+          ],
+          "canonical_raw": [
+            "Ana I. Becerro",
+            "Alberto Escudero",
+            "Pierre Florian",
+            "Dominique Massiot",
+            "Maria D. Alba"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Revisiting Y2Si2O7 and Y2SiO5 polymorphic structures by 89Y MAS-NMR spectroscopy",
+        "authors": [
+          "Ana I. Becerro",
+          "Alberto Escudero",
+          "Pierre Florian",
+          "Dominique Massiot",
+          "Maria D. Alba"
+        ],
+        "year": 2004,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2004.03.047",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2004.03.047",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "becerro2004revision",
+      "verdict": "PASS",
+      "title_similarity": 0.953,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "A. I. Becerro",
+            "A. Escudero"
+          ],
+          "canonical_used": [
+            "A.I. Becerro",
+            "A. Escudero"
+          ],
+          "canonical_raw": [
+            "A.I. Becerro",
+            "A. Escudero"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Revision of the crystallographic data of polymorphic Y 2 Si 2 O 7 and Y 2 SiO 5 compounds",
+        "authors": [
+          "A.I. Becerro",
+          "A. Escudero"
+        ],
+        "year": 2004,
+        "venue": "Phase Transitions",
+        "doi": "10.1080/01411590412331282814",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1080/01411590412331282814",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "sun2014recent",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Ziqi Sun",
+            "Meishuan Li",
+            "Yanchun Zhou"
+          ],
+          "canonical_used": [
+            "Ziqi Sun",
+            "Meishuan Li",
+            "Yanchun Zhou"
+          ],
+          "canonical_raw": [
+            "Ziqi Sun",
+            "Meishuan Li",
+            "Yanchun Zhou"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Recent progress on synthesis, multi-scale structure, and properties of Y–Si–O oxides",
+        "authors": [
+          "Ziqi Sun",
+          "Meishuan Li",
+          "Yanchun Zhou"
+        ],
+        "year": 2014,
+        "venue": "International Materials Reviews",
+        "doi": "10.1179/1743280414y.0000000033",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1179/1743280414y.0000000033",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "felsche1973the",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "J. Felsche"
+          ],
+          "canonical_used": [
+            "J. Felsche"
+          ],
+          "canonical_raw": [
+            "J. Felsche"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "The crystal chemistry of the rare-earth silicates",
+        "authors": [
+          "J. Felsche"
+        ],
+        "year": 1973,
+        "venue": "Structure and Bonding",
+        "doi": "10.1007/3-540-06125-8_3",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1007/3-540-06125-8_3",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "finger1995refinement",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "L. W. Finger",
+            "R. M. Hazen",
+            "B. A. Fursenko"
+          ],
+          "canonical_used": [
+            "L.W. Finger",
+            "R.M. Hazen",
+            "B.A. Fursenko"
+          ],
+          "canonical_raw": [
+            "L.W. Finger",
+            "R.M. Hazen",
+            "B.A. Fursenko"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Refinement of the crystal structure of BaSi4O9 in the benitoite form",
+        "authors": [
+          "L.W. Finger",
+          "R.M. Hazen",
+          "B.A. Fursenko"
+        ],
+        "year": 1995,
+        "venue": "Journal of Physics and Chemistry of Solids",
+        "doi": "10.1016/0022-3697(95)00075-5",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/0022-3697(95)00075-5",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "hazen1999crystal",
+      "verdict": "PASS",
+      "title_similarity": 0.984,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "R. M. Hazen",
+            "H. Yang",
+            "L. W. Finger",
+            "B. A. Fursenko"
+          ],
+          "canonical_used": [
+            "R. M. Hazen",
+            "H. Yang",
+            "L. W. Finger",
+            "B. A. Fursenko"
+          ],
+          "canonical_raw": [
+            "R. M. Hazen",
+            "H. Yang",
+            "L. W. Finger",
+            "B. A. Fursenko"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal chemistry of high-pressure BaSi 4 O 9 in the trigonal (P3) barium tetragermanate structure",
+        "authors": [
+          "R. M. Hazen",
+          "H. Yang",
+          "L. W. Finger",
+          "B. A. Fursenko"
+        ],
+        "year": 1999,
+        "venue": "American Mineralogist",
+        "doi": "10.2138/am-1999-5-636",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.2138/am-1999-5-636",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "tillmanns1978refinement",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "E. Tillmanns",
+            "H.-P. Grosse"
+          ],
+          "canonical_used": [
+            "E. Tillmanns",
+            "H.-P. Grosse"
+          ],
+          "canonical_raw": [
+            "E. Tillmanns",
+            "H.-P. Grosse"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Refinement of tribarium silicate",
+        "authors": [
+          "E. Tillmanns",
+          "H.-P. Grosse"
+        ],
+        "year": 1978,
+        "venue": "Acta Crystallographica Section B Structural Crystallography and Crystal Chemistry",
+        "doi": "10.1107/s0567740878003696",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1107/s0567740878003696",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "katscher1973the",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "closed_serial_adjudication",
+          "claimed": [
+            "H. Katscher",
+            "G. Bissert",
+            "F. Liebau"
+          ],
+          "canonical_used": [
+            "H. Katscher",
+            "G. Bissert",
+            "F. Liebau"
+          ],
+          "canonical_raw": [],
+          "evidence": "Peer-reviewed primary-literature reference corroboration establishes H. Katscher, G. Bissert, F. Liebau in this order"
+        }
+      },
+      "canonical": {
+        "title": "The crystal structure of high-temperature Ba2[Si4O10]",
+        "authors": [],
+        "year": 1973,
+        "venue": "Zeitschrift für Kristallographie - Crystalline Materials",
+        "doi": "10.1524/zkri.1973.137.2-3.146",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1524/zkri.1973.137.2-3.146",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "zhong2020combining",
+      "verdict": "PASS",
+      "title_similarity": 0.968,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Jiyou Zhong",
+            "Shruti Hariyani",
+            "Ya Zhuo",
+            "Weiren Zhao",
+            "Xiang Liu",
+            "Jun Wen",
+            "Jakoah Brgoch"
+          ],
+          "canonical_used": [
+            "Jiyou Zhong",
+            "Shruti Hariyani",
+            "Ya Zhuo",
+            "Weiren Zhao",
+            "Xiang Liu",
+            "Jun Wen",
+            "Jakoah Brgoch"
+          ],
+          "canonical_raw": [
+            "Jiyou Zhong",
+            "Shruti Hariyani",
+            "Ya Zhuo",
+            "Weiren Zhao",
+            "Xiang Liu",
+            "Jun Wen",
+            "Jakoah Brgoch"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Combining experiment and computation to elucidate the optical properties of Ce 3+ in Ba 5 Si 8 O 21",
+        "authors": [
+          "Jiyou Zhong",
+          "Shruti Hariyani",
+          "Ya Zhuo",
+          "Weiren Zhao",
+          "Xiang Liu",
+          "Jun Wen",
+          "Jakoah Brgoch"
+        ],
+        "year": 2020,
+        "venue": "Physical Chemistry Chemical Physics",
+        "doi": "10.1039/c9cp05576b",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/c9cp05576b",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yusa2007rhombohedral",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Hitoshi Yusa",
+            "Nagayoshi Sata",
+            "Yasuo Ohishi"
+          ],
+          "canonical_used": [
+            "H. Yusa",
+            "N. Sata",
+            "Y. Ohishi"
+          ],
+          "canonical_raw": [
+            "H. Yusa",
+            "N. Sata",
+            "Y. Ohishi"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Rhombohedral (9R) and hexagonal (6H) perovskites in barium silicates under high pressure",
+        "authors": [
+          "H. Yusa",
+          "N. Sata",
+          "Y. Ohishi"
+        ],
+        "year": 2007,
+        "venue": "American Mineralogist",
+        "doi": "10.2138/am.2007.2314",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.2138/am.2007.2314",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "liu1993structures",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "B. Liu",
+            "J. Barbier"
+          ],
+          "canonical_used": [
+            "B. Liu",
+            "J. Barbier"
+          ],
+          "canonical_raw": [
+            "B. Liu",
+            "J. Barbier"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Structures of the Stuffed Tridymite Derivatives, BaMSiO4 (M = Co, Zn, Mg)",
+        "authors": [
+          "B. Liu",
+          "J. Barbier"
+        ],
+        "year": 1993,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1006/jssc.1993.1013",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1006/jssc.1993.1013",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "lin1999phase",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "J.H Lin",
+            "G.X Lu",
+            "J Du",
+            "M.Z Su",
+            "C.-K Loong",
+            "J.W Richardson"
+          ],
+          "canonical_used": [
+            "J.H Lin",
+            "G.X Lu",
+            "J Du",
+            "M.Z Su",
+            "C.-K Loong",
+            "J.W Richardson"
+          ],
+          "canonical_raw": [
+            "J.H Lin",
+            "G.X Lu",
+            "J Du",
+            "M.Z Su",
+            "C.-K Loong",
+            "J.W Richardson"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Phase transition and crystal structures of BaZn2Si2O7",
+        "authors": [
+          "J.H Lin",
+          "G.X Lu",
+          "J Du",
+          "M.Z Su",
+          "C.-K Loong",
+          "J.W Richardson"
+        ],
+        "year": 1999,
+        "venue": "Journal of Physics and Chemistry of Solids",
+        "doi": "10.1016/s0022-3697(99)00004-9",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/s0022-3697(99)00004-9",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kaiser2002crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "J. W. Kaiser",
+            "W. Jeitschko"
+          ],
+          "canonical_used": [
+            "J. W. Kaiser",
+            "W. Jeitschko"
+          ],
+          "canonical_raw": [
+            "J. W. Kaiser",
+            "W. Jeitschko"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal structure of the new barium zinc silicate Ba2ZnSi2O7",
+        "authors": [
+          "J. W. Kaiser",
+          "W. Jeitschko"
+        ],
+        "year": 2002,
+        "venue": "Zeitschrift für Kristallographie - New Crystal Structures",
+        "doi": "10.1524/ncrs.2002.217.1.25",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1524/ncrs.2002.217.1.25",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "zou2021crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Zheng‐Yu Zou",
+            "Xiao‐Qiang Song",
+            "Lei Jiang",
+            "Chang‐Lai Yuan",
+            "Wen‐Zhong Lu",
+            "Yong‐Ming Hu",
+            "Wen Lei"
+          ],
+          "canonical_used": [
+            "Zheng‐Yu Zou",
+            "Xiao‐Qiang Song",
+            "Lei Jiang",
+            "Chang‐Lai Yuan",
+            "Wen‐Zhong Lu",
+            "Yong‐Ming Hu",
+            "Wen Lei"
+          ],
+          "canonical_raw": [
+            "Zheng‐Yu Zou",
+            "Xiao‐Qiang Song",
+            "Lei Jiang",
+            "Chang‐Lai Yuan",
+            "Wen‐Zhong Lu",
+            "Yong‐Ming Hu",
+            "Wen Lei"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal Structure and Ferroelectric Evidence of BaZnSi 3 O 8 , a Low‐Permittivity Microwave Dielectric Ceramic",
+        "authors": [
+          "Zheng‐Yu Zou",
+          "Xiao‐Qiang Song",
+          "Lei Jiang",
+          "Chang‐Lai Yuan",
+          "Wen‐Zhong Lu",
+          "Yong‐Ming Hu",
+          "Wen Lei"
+        ],
+        "year": 2021,
+        "venue": "Chemistry – A European Journal",
+        "doi": "10.1002/chem.202005170",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1002/chem.202005170",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kerstan2012thermal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Marita Kerstan",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Marita Kerstan",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Marita Kerstan",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Thermal expansion of Ba2ZnSi2O7, BaZnSiO4 and the solid solution series BaZn2−xMgxSi2O7 (0≤x≤2) studied by high-temperature X-ray diffraction and dilatometry",
+        "authors": [
+          "Marita Kerstan",
+          "Matthias Müller",
+          "Christian Rüssel"
+        ],
+        "year": 2012,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2012.01.055",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2012.01.055",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2022solid",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Solid solutions based on BaZn 2 Si 2 O 7 with thermal expansions from negative to highly positive – a review",
+        "authors": [
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2022,
+        "venue": "CrystEngComm",
+        "doi": "10.1039/d2ce00667g",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d2ce00667g",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "ababaikeri2024ba3zn4si4o15",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Aihaimaitijiang Ababaikeri",
+            "Gulimeikereyi Tuniyazi",
+            "Yanhui Zhang",
+            "D. S. Malik"
+          ],
+          "canonical_used": [
+            "Aihaimaitijiang Ababaikeri",
+            "Gulimeikereyi Tuniyazi",
+            "Yanhui Zhang",
+            "D. S. Malik"
+          ],
+          "canonical_raw": [
+            "Aihaimaitijiang Ababaikeri",
+            "Gulimeikereyi Tuniyazi",
+            "Yanhui Zhang",
+            "D. S. Malik"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Ba3Zn4Si4O15: A Novel Centrosymmetric Silicate with Isolated SiO4 and Si2O7 Units",
+        "authors": [
+          "Aihaimaitijiang Ababaikeri",
+          "Gulimeikereyi Tuniyazi",
+          "Yanhui Zhang",
+          "D. S. Malik"
+        ],
+        "year": 2024,
+        "venue": "Zeitschrift für anorganische und allgemeine Chemie",
+        "doi": "10.1002/zaac.202400026",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1002/zaac.202400026",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "cai2024optimized",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Yiyang Cai",
+            "Kang Du",
+            "Xiaoqiang Song",
+            "Changzhi Yin",
+            "Mingfei Cheng",
+            "Yaodong Liu",
+            "Xiaoxiao Li",
+            "Wenzhong Lu",
+            "Wen Lei"
+          ],
+          "canonical_used": [
+            "Yiyang Cai",
+            "Kang Du",
+            "Xiaoqiang Song",
+            "Changzhi Yin",
+            "Mingfei Cheng",
+            "Yaodong Liu",
+            "Xiaoxiao Li",
+            "Wenzhong Lu",
+            "Wen Lei"
+          ],
+          "canonical_raw": [
+            "Yiyang Cai",
+            "Kang Du",
+            "Xiaoqiang Song",
+            "Changzhi Yin",
+            "Mingfei Cheng",
+            "Yaodong Liu",
+            "Xiaoxiao Li",
+            "Wenzhong Lu",
+            "Wen Lei"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Optimized crystal structure and microwave dielectric properties of BaZnSi 3 O 8 ‐based ceramics",
+        "authors": [
+          "Yiyang Cai",
+          "Kang Du",
+          "Xiaoqiang Song",
+          "Changzhi Yin",
+          "Mingfei Cheng",
+          "Yaodong Liu",
+          "Xiaoxiao Li",
+          "Wenzhong Lu",
+          "Wen Lei"
+        ],
+        "year": 2024,
+        "venue": "Journal of the American Ceramic Society",
+        "doi": "10.1111/jace.19513",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1111/jace.19513",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "gorelova2016thermal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Liudmila A. Gorelova",
+            "Rimma S. Bubnova",
+            "Sergey V. Krivovichev",
+            "Maria G. Krzhizhanovskaya",
+            "Stanislav K. Filatov"
+          ],
+          "canonical_used": [
+            "Liudmila A. Gorelova",
+            "Rimma S. Bubnova",
+            "Sergey V. Krivovichev",
+            "Maria G. Krzhizhanovskaya",
+            "Stanislav K. Filatov"
+          ],
+          "canonical_raw": [
+            "Liudmila A. Gorelova",
+            "Rimma S. Bubnova",
+            "Sergey V. Krivovichev",
+            "Maria G. Krzhizhanovskaya",
+            "Stanislav K. Filatov"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Thermal expansion and structural complexity of Ba silicates with tetrahedrally coordinated Si atoms",
+        "authors": [
+          "Liudmila A. Gorelova",
+          "Rimma S. Bubnova",
+          "Sergey V. Krivovichev",
+          "Maria G. Krzhizhanovskaya",
+          "Stanislav K. Filatov"
+        ],
+        "year": 2016,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2015.12.012",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2015.12.012",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "aitasalo2006crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "T. Aitasalo",
+            "Jorma Hölsä",
+            "Taneli Laamanen",
+            "Mika Lastusaari",
+            "L. Lehto",
+            "Janne Niittykoski",
+            "F. Pellé"
+          ],
+          "canonical_used": [
+            "T. Aitasalo",
+            "Jorma Hölsä",
+            "Taneli Laamanen",
+            "Mika Lastusaari",
+            "L. Lehto",
+            "Janne Niittykoski",
+            "F. Pellé"
+          ],
+          "canonical_raw": [
+            "T. Aitasalo",
+            "Jorma Hölsä",
+            "Taneli Laamanen",
+            "Mika Lastusaari",
+            "L. Lehto",
+            "Janne Niittykoski",
+            "F. Pellé"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal structure of the monoclinic Ba2MgSi2O7 persistent luminescence material",
+        "authors": [
+          "T. Aitasalo",
+          "Jorma Hölsä",
+          "Taneli Laamanen",
+          "Mika Lastusaari",
+          "L. Lehto",
+          "Janne Niittykoski",
+          "F. Pellé"
+        ],
+        "year": 2006,
+        "venue": "Oldenbourg Wissenschaftsverlag eBooks",
+        "doi": "10.1524/9783486992526-080",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1524/9783486992526-080",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "buerger1954the",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "M. J. Buerger"
+          ],
+          "canonical_used": [
+            "Μ. J. Buerger"
+          ],
+          "canonical_raw": [
+            "Μ. J. Buerger"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "The stuffed derivatives of the silica structures",
+        "authors": [
+          "Μ. J. Buerger"
+        ],
+        "year": 1954,
+        "venue": "American Mineralogist",
+        "doi": null,
+        "arxiv_id": null,
+        "url": "https://openalex.org/W3125233082",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "gu2025liba2gasi2o8",
+      "verdict": "PASS",
+      "title_similarity": 0.981,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Mingyue Gu",
+            "Hu Liu",
+            "Xianchao Zhu",
+            "Zhanggui Hu",
+            "Jiyang Wang",
+            "Yicheng Wu"
+          ],
+          "canonical_used": [
+            "Mingyue Gu",
+            "Hu Liu",
+            "Xianchao Zhu",
+            "Zhanggui Hu",
+            "Jiyang Wang",
+            "Yicheng Wu"
+          ],
+          "canonical_raw": [
+            "Mingyue Gu",
+            "Hu Liu",
+            "Xianchao Zhu",
+            "Zhanggui Hu",
+            "Jiyang Wang",
+            "Yicheng Wu"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "LiBa 2 GaSi 2 O 8 : A Noncentrosymmetric Silicate Exhibiting Wide Transmission Range and Moderate Second Harmonic Generation Response",
+        "authors": [
+          "Mingyue Gu",
+          "Hu Liu",
+          "Xianchao Zhu",
+          "Zhanggui Hu",
+          "Jiyang Wang",
+          "Yicheng Wu"
+        ],
+        "year": 2025,
+        "venue": "Inorganic Chemistry",
+        "doi": "10.1021/acs.inorgchem.5c05174",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/acs.inorgchem.5c05174",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2015ba1",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Christian Thieme",
+            "Helmar Görls",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Christian Thieme",
+            "Helmar Görls",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Christian Thieme",
+            "Helmar Görls",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Ba1−xSrxZn2Si2O7 - A new family of materials with negative and very high thermal expansion",
+        "authors": [
+          "Christian Thieme",
+          "Helmar Görls",
+          "Christian Rüssel"
+        ],
+        "year": 2015,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/srep18040",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1038/srep18040",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kerstan2013bazn2si2o7",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Marita Kerstan",
+            "Christian Thieme",
+            "Matthias Grosch",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Marita Kerstan",
+            "Christian Thieme",
+            "Matthias Grosch",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Marita Kerstan",
+            "Christian Thieme",
+            "Matthias Grosch",
+            "Matthias Müller",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "BaZn2Si2O7 and the solid solution series BaZn2−xCoxSi2O7 (0<x≤2) as high temperature seals for solid oxide fuel cells studied by high-temperature X-ray diffraction and dilatometry",
+        "authors": [
+          "Marita Kerstan",
+          "Christian Thieme",
+          "Matthias Grosch",
+          "Matthias Müller",
+          "Christian Rüssel"
+        ],
+        "year": 2013,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2013.09.003",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2013.09.003",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2017variable",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Christian Thieme",
+            "Martin Schlesier",
+            "Eze Oji Dike",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Christian Thieme",
+            "Martin Schlesier",
+            "Eze Oji Dike",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Christian Thieme",
+            "Martin Schlesier",
+            "Eze Oji Dike",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Variable thermal expansion of glass-ceramics containing Ba1−xSrxZn2Si2O7",
+        "authors": [
+          "Christian Thieme",
+          "Martin Schlesier",
+          "Eze Oji Dike",
+          "Christian Rüssel"
+        ],
+        "year": 2017,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/s41598-017-03132-x",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1038/s41598-017-03132-x",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "erlebach2020thermomechanical",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Andreas Erlebach",
+            "Christian Thieme",
+            "Carolin Müller",
+            "Stefan Hoffmann",
+            "Thomas Höche",
+            "Christian Rüssel",
+            "Marek Sierka"
+          ],
+          "canonical_used": [
+            "Andreas Erlebach",
+            "Christian Thieme",
+            "Carolin Müller",
+            "Stefan Hoffmann",
+            "Thomas Höche",
+            "Christian Rüssel",
+            "Marek Sierka"
+          ],
+          "canonical_raw": [
+            "Andreas Erlebach",
+            "Christian Thieme",
+            "Carolin Müller",
+            "Stefan Hoffmann",
+            "Thomas Höche",
+            "Christian Rüssel",
+            "Marek Sierka"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Thermomechanical properties of zero thermal expansion materials from theory and experiments",
+        "authors": [
+          "Andreas Erlebach",
+          "Christian Thieme",
+          "Carolin Müller",
+          "Stefan Hoffmann",
+          "Thomas Höche",
+          "Christian Rüssel",
+          "Marek Sierka"
+        ],
+        "year": 2020,
+        "venue": "Physical Chemistry Chemical Physics",
+        "doi": "10.1039/d0cp02975k",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d0cp02975k",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "zhao2026crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Zi-long Zhao",
+            "Wei Hu",
+            "Chen-chen Yang",
+            "Jia-ying Li",
+            "Cheng-han Lei",
+            "Li-hua Li",
+            "Jin-liang Huang",
+            "Bok-hee Kim",
+            "Yong-jun Gu"
+          ],
+          "canonical_used": [
+            "Zi-long Zhao",
+            "Wei Hu",
+            "Chen-chen Yang",
+            "Jia-ying Li",
+            "Cheng-han Lei",
+            "Li-hua Li",
+            "Jin-liang Huang",
+            "Bok-hee Kim",
+            "Yong-jun Gu"
+          ],
+          "canonical_raw": [
+            "Zi-long Zhao",
+            "Wei Hu",
+            "Chen-chen Yang",
+            "Jia-ying Li",
+            "Cheng-han Lei",
+            "Li-hua Li",
+            "Jin-liang Huang",
+            "Bok-hee Kim",
+            "Yong-jun Gu"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal structure, sintering behavior and microwave dielectric properties of monoclinic Ba2MgSi2O7 ceramics",
+        "authors": [
+          "Zi-long Zhao",
+          "Wei Hu",
+          "Chen-chen Yang",
+          "Jia-ying Li",
+          "Cheng-han Lei",
+          "Li-hua Li",
+          "Jin-liang Huang",
+          "Bok-hee Kim",
+          "Yong-jun Gu"
+        ],
+        "year": 2026,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2026.07.034",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2026.07.034",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016negative",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ],
+          "canonical_used": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ],
+          "canonical_raw": [
+            "Christian Thieme",
+            "Christian Rüssel"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Negative Thermal Expansion in Ba0.5Sr0.5Zn2SiGeO7",
+        "authors": [
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "Materials",
+        "doi": "10.3390/ma9080631",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.3390/ma9080631",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "zou2019anti",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Zheng-Yu Zou",
+            "Kang Du",
+            "Xue-Kai Lan",
+            "Wen-Zhong Lu",
+            "Xiao-Chuan Wang",
+            "Xiao-Hong Wang",
+            "Wen Lei"
+          ],
+          "canonical_used": [
+            "Zheng-Yu Zou",
+            "Kang Du",
+            "Xue-Kai Lan",
+            "Wen-Zhong Lu",
+            "Xiao-Chuan Wang",
+            "Xiao-Hong Wang",
+            "Wen Lei"
+          ],
+          "canonical_raw": [
+            "Zheng-Yu Zou",
+            "Kang Du",
+            "Xue-Kai Lan",
+            "Wen-Zhong Lu",
+            "Xiao-Chuan Wang",
+            "Xiao-Hong Wang",
+            "Wen Lei"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Anti-reductive characteristics and dielectric loss mechanisms of Ba2ZnSi2O7 microwave dielectric ceramic",
+        "authors": [
+          "Zheng-Yu Zou",
+          "Kang Du",
+          "Xue-Kai Lan",
+          "Wen-Zhong Lu",
+          "Xiao-Chuan Wang",
+          "Xiao-Hong Wang",
+          "Wen Lei"
+        ],
+        "year": 2019,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2019.06.195",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2019.06.195",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "tejas2024structural",
+      "verdict": "PASS",
+      "title_similarity": 0.976,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Tejas",
+            "A. Princy",
+            "S. Masilla Moses Kennedy",
+            "Vikash Mishra",
+            "M. I. Sayyed",
+            "Taha A. Hanafy",
+            "Sudha D. Kamath"
+          ],
+          "canonical_used": [
+            "Tejas",
+            "A. Princy",
+            "S. Masilla Moses Kennedy",
+            "Vikash Mishra",
+            "M. I. Sayyed",
+            "Taha A. Hanafy",
+            "Sudha D. Kamath"
+          ],
+          "canonical_raw": [
+            "Tejas",
+            "A. Princy",
+            "S. Masilla Moses Kennedy",
+            "Vikash Mishra",
+            "M. I. Sayyed",
+            "Taha A. Hanafy",
+            "Sudha D. Kamath"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Structural, thermal, and optical spectroscopic studies of Sm 3+ -doped Ba 2 ZnSi 2 O 7 phosphors for optical thermometry applications",
+        "authors": [
+          "Tejas",
+          "A. Princy",
+          "S. Masilla Moses Kennedy",
+          "Vikash Mishra",
+          "M. I. Sayyed",
+          "Taha A. Hanafy",
+          "Sudha D. Kamath"
+        ],
+        "year": 2024,
+        "venue": "Materials Advances",
+        "doi": "10.1039/d4ma00926f",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d4ma00926f",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "pires2001luminescence",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Ana Maria Pires",
+            "Marian Rosaly Davolos"
+          ],
+          "canonical_used": [
+            "Ana Maria Pires",
+            "Marian Rosaly Davolos"
+          ],
+          "canonical_raw": [
+            "Ana Maria Pires",
+            "Marian Rosaly Davolos"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Luminescence of Europium(III) and Manganese(II) in Barium and Zinc Orthosilicate",
+        "authors": [
+          "Ana Maria Pires",
+          "Marian Rosaly Davolos"
+        ],
+        "year": 2001,
+        "venue": "Chemistry of Materials",
+        "doi": "10.1021/cm000063g",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/cm000063g",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "pang2005study",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "H. Y. Pang",
+            "G. J. Zhao",
+            "M. Y. Jie",
+            "J. Xu",
+            "X. M. He"
+          ],
+          "canonical_used": [
+            "Huiyong Pang",
+            "Guangjun Zhao",
+            "Mingyin Jie",
+            "Jun Xu",
+            "Xiaoming He"
+          ],
+          "canonical_raw": [
+            "Huiyong Pang",
+            "Guangjun Zhao",
+            "Mingyin Jie",
+            "Jun Xu",
+            "Xiaoming He"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Study on the growth, etch morphology and spectra of Y2SiO5 crystal",
+        "authors": [
+          "Huiyong Pang",
+          "Guangjun Zhao",
+          "Mingyin Jie",
+          "Jun Xu",
+          "Xiaoming He"
+        ],
+        "year": 2005,
+        "venue": "Materials Letters",
+        "doi": "10.1016/j.matlet.2005.06.036",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.matlet.2005.06.036",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "leonyuk1999high",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "N. I. Leonyuk",
+            "E. L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E. V. Shvanskii",
+            "R. V. Henrykhson",
+            "N. V. Kulman",
+            "D. E. Kozhbakhteeva"
+          ],
+          "canonical_used": [
+            "N.I. Leonyuk",
+            "E.L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E.V. Shvanskii",
+            "R.V. Henrykhson",
+            "N.V. Kulman",
+            "D.E. Kozhbakhteeva"
+          ],
+          "canonical_raw": [
+            "N.I. Leonyuk",
+            "E.L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E.V. Shvanskii",
+            "R.V. Henrykhson",
+            "N.V. Kulman",
+            "D.E. Kozhbakhteeva"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "High-temperature crystallization and X-ray characterization of Y2SiO5, Y2Si2O7 and LaBSiO5",
+        "authors": [
+          "N.I. Leonyuk",
+          "E.L. Belokoneva",
+          "G. Bocelli",
+          "L. Righi",
+          "E.V. Shvanskii",
+          "R.V. Henrykhson",
+          "N.V. Kulman",
+          "D.E. Kozhbakhteeva"
+        ],
+        "year": 1999,
+        "venue": "Journal of Crystal Growth",
+        "doi": "10.1016/s0022-0248(99)00233-x",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/s0022-0248(99)00233-x",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "leonyuk1999crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "N. I. Leonyuk",
+            "E. L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E. V. Shvanskii",
+            "R. V. Henrykhson",
+            "N. V. Kulman",
+            "D. E. Kozhbakhteeva"
+          ],
+          "canonical_used": [
+            "N. I. Leonyuk",
+            "E. L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E. V. Shvanskii",
+            "R. V. Henrykhson",
+            "N. V. Kulman",
+            "D. E. Kozhbakhteeva"
+          ],
+          "canonical_raw": [
+            "N. I. Leonyuk",
+            "E. L. Belokoneva",
+            "G. Bocelli",
+            "L. Righi",
+            "E. V. Shvanskii",
+            "R. V. Henrykhson",
+            "N. V. Kulman",
+            "D. E. Kozhbakhteeva"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Crystal Growth and Structural Refinements of the Y2SiO5, Y2Si2O7 and LaBSiO5 Single Crystals",
+        "authors": [
+          "N. I. Leonyuk",
+          "E. L. Belokoneva",
+          "G. Bocelli",
+          "L. Righi",
+          "E. V. Shvanskii",
+          "R. V. Henrykhson",
+          "N. V. Kulman",
+          "D. E. Kozhbakhteeva"
+        ],
+        "year": 1999,
+        "venue": "Crystal Research and Technology",
+        "doi": "10.1002/(sici)1521-4079(199911)34:9<1175::aid-crat1175>3.0.co;2-2",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1002/(sici)1521-4079(199911)34:9<1175::aid-crat1175>3.0.co;2-2",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "giess1982zn2sio4",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "E. A. Giess",
+            "C. F. Guerci",
+            "J. D. Kuptsis",
+            "I. F. Chang",
+            "D. J. Robbins"
+          ],
+          "canonical_used": [
+            "E.A. Giess",
+            "C.F. Guerci",
+            "J.D. Kuptsis",
+            "I.F. Chang",
+            "D.J. Robbins"
+          ],
+          "canonical_raw": [
+            "E.A. Giess",
+            "C.F. Guerci",
+            "J.D. Kuptsis",
+            "I.F. Chang",
+            "D.J. Robbins"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Zn2SiO4 crystal growth from molten solutions fluxed with Pb2ZnSi2O7 and fluorides",
+        "authors": [
+          "E.A. Giess",
+          "C.F. Guerci",
+          "J.D. Kuptsis",
+          "I.F. Chang",
+          "D.J. Robbins"
+        ],
+        "year": 1982,
+        "venue": "Journal of Crystal Growth",
+        "doi": "10.1016/0022-0248(82)90092-6",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/0022-0248(82)90092-6",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yldrm2009y2sio5",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "closed_serial_adjudication",
+          "claimed": [
+            "Salih Emre Yıldırım"
+          ],
+          "canonical_used": [
+            "Yıldırım, Salih Emre"
+          ],
+          "canonical_raw": [
+            "Sakarya Üniversitesi, Fen Bilimleri Enstitüsü, Bilgisayar ve Bilişim Mühendisliği Anabilim Dalı, Bilişim ve Bilgisayar Mühendisliği Bilim Dalı",
+            "Salih Emre Yıldırım",
+            "Yardımcı Doçent Doktor Nil Toplan"
+          ],
+          "evidence": "Sakarya University repository full record identifies Yıldırım, Salih Emre as author; Nil Toplan is adviser and the department is not an author"
+        }
+      },
+      "canonical": {
+        "title": "Y2sio5 Tozu Üretimi Ve Plazma Sprey Tekniği İle Kaplanması",
+        "authors": [
+          "Sakarya Üniversitesi, Fen Bilimleri Enstitüsü, Bilgisayar ve Bilişim Mühendisliği Anabilim Dalı, Bilişim ve Bilgisayar Mühendisliği Bilim Dalı",
+          "Salih Emre Yıldırım",
+          "Yardımcı Doçent Doktor Nil Toplan"
+        ],
+        "year": 2009,
+        "venue": "Sakarya Üniversitesi Kurumsal Açık Akademik Arşivi",
+        "doi": null,
+        "arxiv_id": null,
+        "url": "https://openalex.org/W7162267092",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "tzvetkov2001effects",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "George Tzvetkov",
+            "N. Minkova"
+          ],
+          "canonical_used": [
+            "G. Tzvetkov",
+            "N. Minkova"
+          ],
+          "canonical_raw": [
+            "G. Tzvetkov",
+            "N. Minkova"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Effects of Mechanochemical Treatment on Yttrium Oxyapatite Formation",
+        "authors": [
+          "G. Tzvetkov",
+          "N. Minkova"
+        ],
+        "year": 2001,
+        "venue": "Journal of Materials Synthesis and Processing",
+        "doi": "10.1023/a:1013293329770",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1023/a:1013293329770",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "alizadeh2021spectroscopy",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Yashar Alizadeh"
+          ],
+          "canonical_used": [
+            "Alizadeh, Yashar"
+          ],
+          "canonical_raw": [
+            "Alizadeh, Yashar"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Spectroscopy and crystal field analysis of rare-earth doped yttrium orthosilicate for quantum information processing.",
+        "authors": [
+          "Alizadeh, Yashar"
+        ],
+        "year": 2021,
+        "venue": "University of Canterbury Research Repository (University of Canterbury)",
+        "doi": "10.26021/12446",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.26021/12446",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "shoudu1999czochralski",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Zhang Shoudu",
+            "Wang Siting",
+            "Shen Xingda",
+            "Wang Haobing",
+            "Zhong Heyu",
+            "Zhang Shunxing",
+            "Xu Jun"
+          ],
+          "canonical_used": [
+            "Zhang Shoudu",
+            "Wang Siting",
+            "Shen Xingda",
+            "Wang Haobing",
+            "Zhong Heyu",
+            "Zhang Shunxing",
+            "Xu Jun"
+          ],
+          "canonical_raw": [
+            "Zhang Shoudu",
+            "Wang Siting",
+            "Shen Xingda",
+            "Wang Haobing",
+            "Zhong Heyu",
+            "Zhang Shunxing",
+            "Xu Jun"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Czochralski growth of rare-earth orthosilicates–Y2SiO5 single crystals",
+        "authors": [
+          "Zhang Shoudu",
+          "Wang Siting",
+          "Shen Xingda",
+          "Wang Haobing",
+          "Zhong Heyu",
+          "Zhang Shunxing",
+          "Xu Jun"
+        ],
+        "year": 1999,
+        "venue": "Journal of Crystal Growth",
+        "doi": "10.1016/s0022-0248(98)00553-3",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/s0022-0248(98)00553-3",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "brandle1986czochralski",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "C. D. Brandle",
+            "A. J. Valentino",
+            "G. W. Berkstresser"
+          ],
+          "canonical_used": [
+            "C.D. Brandle",
+            "A.J. Valentino",
+            "G.W. Berkstresser"
+          ],
+          "canonical_raw": [
+            "C.D. Brandle",
+            "A.J. Valentino",
+            "G.W. Berkstresser"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Czochralski growth of rare-earth orthosilicates (Ln2SiO5)",
+        "authors": [
+          "C.D. Brandle",
+          "A.J. Valentino",
+          "G.W. Berkstresser"
+        ],
+        "year": 1986,
+        "venue": "Journal of Crystal Growth",
+        "doi": "10.1016/0022-0248(86)90454-9",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/0022-0248(86)90454-9",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kerstan2015kristallphasen",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "axes": {
+        "existence": {
+          "status": "PASS",
+          "basis": "authoritative_record"
+        },
+        "metadata": {
+          "status": "PASS",
+          "issues": []
+        },
+        "authors": {
+          "status": "PASS",
+          "basis": "canonical_record",
+          "claimed": [
+            "Marita rer. nat. Kerstan"
+          ],
+          "canonical_used": [
+            "Marita rer. nat. Kerstan"
+          ],
+          "canonical_raw": [
+            "Marita rer. nat. Kerstan"
+          ]
+        }
+      },
+      "canonical": {
+        "title": "Kristallphasen mit hoher Wärmedehnung für kristallisierende Hochtemperatur-Glaslote",
+        "authors": [
+          "Marita rer. nat. Kerstan"
+        ],
+        "year": 2015,
+        "venue": "Common Library Network (Der Gemeinsame Bibliotheksverbund)",
+        "doi": null,
+        "arxiv_id": null,
+        "url": "https://openalex.org/W2172467134",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    }
+  ],
+  "serial_adjudication": {
+    "scope": [
+      "christensen1994investigation",
+      "katscher1973the",
+      "buerger1954the",
+      "yldrm2009y2sio5",
+      "alizadeh2021spectroscopy"
+    ],
+    "policy": "fail-closed; do not apply a suggested record that deletes a verified author, substitutes a Unicode confusable, promotes an adviser/department to author, or loops on Last, First normalization",
+    "authority_axes": {
+      "christensen1994investigation": {
+        "existence_title_year": "Crossref DOI 10.1524/zkri.1994.209.1.7",
+        "authors_order": "INIST-CNRS PASCAL record 4099432: single author A. Nørlund Christensen",
+        "decision": "keep claimed author; use the closed author-axis adjudication because Crossref/OpenAlex omit authors",
+        "author_adjudication": {
+          "status": "PASS",
+          "closed": true,
+          "canonical_authors": [
+            "A. Nørlund Christensen"
+          ],
+          "evidence": "INIST-CNRS PASCAL record 4099432 identifies the single author as A. Nørlund Christensen"
+        }
+      },
+      "katscher1973the": {
+        "existence_title_year": "Crossref DOI 10.1524/zkri.1973.137.2-3.146",
+        "authors_order": "peer-reviewed primary-literature reference corroboration: H. Katscher, G. Bissert, F. Liebau; publisher page returned an anti-bot HTTP 202 response",
+        "decision": "keep claimed authors; use the closed author-axis adjudication because Crossref/OpenAlex omit authors",
+        "author_adjudication": {
+          "status": "PASS",
+          "closed": true,
+          "canonical_authors": [
+            "H. Katscher",
+            "G. Bissert",
+            "F. Liebau"
+          ],
+          "evidence": "Peer-reviewed primary-literature reference corroboration establishes H. Katscher, G. Bissert, F. Liebau in this order"
+        }
+      },
+      "buerger1954the": {
+        "existence_title_authors": "Mineralogical Society of America publisher PDF https://msaweb.org/AmMin/AM39/AM39_600.pdf shows title and M. J. Buerger",
+        "year": "OpenAlex W3125233082 and American Mineralogist volume 39 record 1954",
+        "decision": "keep Latin M; reject OpenAlex Greek capital Mu confusable; quick verifier remains MISMATCH"
+      },
+      "yldrm2009y2sio5": {
+        "existence_title_authors_year": "Sakarya University repository full record https://acikerisim.sakarya.edu.tr/handle/20.500.12619/81021?show=full lists author Yıldırım, Salih Emre and year 2009; Nil Toplan is adviser and the department is not an author",
+        "decision": "keep single claimed author; use the closed repository adjudication and reject the polluted OpenAlex author list",
+        "author_adjudication": {
+          "status": "PASS",
+          "closed": true,
+          "canonical_authors": [
+            "Yıldırım, Salih Emre"
+          ],
+          "evidence": "Sakarya University repository full record identifies Yıldırım, Salih Emre as author; Nil Toplan is adviser and the department is not an author"
+        }
+      },
+      "alizadeh2021spectroscopy": {
+        "existence_title_authors_year": "DOI/DataCite content negotiation for 10.26021/12446 returns thesis title, author Alizadeh, Yashar, and year 2021",
+        "decision": "keep BibTeX Last, First author; quick verifier normalizes the claimed side only and remains MISMATCH"
+      }
+    },
+    "result": "PASS",
+    "resolution": "The prior 47 PASS / 5 MISMATCH state was resolved by generic bilateral name normalization, initial-confusable folding, authoritative-author-missing state distinction, and sourced closed author adjudication. All provenance is retained; after I9 duplicate-work consolidation, the final audit is 51 PASS / 0 FIX / 0 MISMATCH / 0 UNVERIFIED / 0 ERROR, with existence, metadata, and authors/order all PASS for every independent work."
+  },
+  "i9_deduplication": {
+    "issue": "I9",
+    "canonical_key": "liu1993structures",
+    "removed_duplicate_key": "liu1993structuresx",
+    "independent_works": 51,
+    "canonical": {
+      "doi": "10.1006/jssc.1993.1013",
+      "url": "https://doi.org/10.1006/jssc.1993.1013",
+      "title": "Structures of the Stuffed Tridymite Derivatives, BaMSiO4 (M = Co, Zn, Mg)",
+      "authors_in_order": [
+        "B. Liu",
+        "J. Barbier"
+      ],
+      "verification_routes": [
+        "crossref_by_doi",
+        "openalex_by_doi"
+      ]
+    },
+    "bibtex_audit": {
+      "parsed_entries": 51,
+      "unique_keys": 51,
+      "duplicate_keys": 0,
+      "duplicate_dois": 0,
+      "status": "PASS"
+    },
+    "citation_integration": {
+      "manuscript_files": 8,
+      "citation_calls": 196,
+      "unique_cited_keys": 51,
+      "bib_entries": 51,
+      "integration_rate_percent": 100,
+      "citation_density_per_1000_words": 36.5,
+      "status": "PASS"
+    },
+    "author_order_regression": {
+      "test_file": "tests/test_refcheck_authors.py",
+      "passed": 6,
+      "failed": 0,
+      "status": "PASS"
+    }
+  }
+}

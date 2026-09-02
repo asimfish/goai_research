@@ -1,76 +1,40 @@
 # GOAI材料方向复赛TODO
 
-更新时间：2026-08-29。优先级以“能否从原始输入复现主要科学结论”为准。
+更新时间：2026-09-03。提交截止 2026-09-03 18:00。评审入口见 `SUBMISSION.md`。
 
-## P0：提交前必须完成
+## 提交前最后步骤（人工）
 
-### A. 任务与证据（建议主责：高京）
+- [ ] 确认队伍名，运行 `bash scripts/package_submission.sh "<队伍名>"` 生成两个 zip（`dist/`）。
+- [ ] 打 tag `goai-final-2026-09-03` 并推送；`submission/goai_final/VERSION` 由打包脚本写入 commit。
+- [ ] 将 GitHub 仓库设为公开（最后一步）；若不能公开，改为上传 `dist/` 中的 release 压缩包并在报告中说明。
+- [ ] 官网上传两个 zip 与 PPT（`AI4R_MAT_<队伍名>_SAGE-Mat_非代码材料_PPT.pptx`），回下载校验 SHA-256。
+- [ ] 在复赛群确认"研究数据与证据包 / 运行与评测包"归入非代码类的口径（官方总览表与正文不一致）。
 
-- [ ] 固定正式主题为LLZO烧结与致密化，写入`competition/llzo/topic.md`和`scope.md`。
-- [ ] 确认综述贡献组合（建议`A+B+C`），并将现有单树taxonomy改为“工艺链＋组成/环境修饰面＋结构性能证据面”的分面框架。
-- [ ] 导入初赛已核验的LLZO文献清单、BibTeX、阅读卡片、Research Gap和Claim–Evidence映射。
-- [ ] 每条主要Claim记录DOI、原文文件、页/行定位、证据摘录和文件SHA256。
-- [ ] 生成公开子集：仅保留正式结果实际使用且允许分发的原始文献；其余文献不进入公开包。
-- [ ] 对不能公开PDF的文献仅保留DOI、官方链接和版权说明。
+## 已完成
 
-### B. 离线文献工具（建议主责：吕丁阳；数据复核：高京）
+### 任务与证据
+- [x] 正式主题：Ba5Y12Zn[O(SiO4)]8 及其结构近邻的合成条件（纯主题冷启动）；LLZO 作为初赛承诺的诊断案例保留。
+- [x] 51 篇文献三轴核验 PASS；`claim_evidence.jsonl` 100 条结论 → 219 次引用；36 条合成条件结论带原文页/节定位。
+- [x] 公开知识库：被引 51 篇中 21 篇全文导出为 `goai-compact-parquet-v1`（`tools/build_cited_corpus.py`），其余以 DOI 提供。
 
-- [x] 设计同一接口兼容私有NAS全库与公开裁剪子集。
-- [x] 实现流式ripgrep全文检索，达到结果上限立即停止，返回路径、行号和上下文。
-- [x] 实现命中文档受限读取，禁止读取配置语料根目录以外的文件。
-- [x] 在LLZO全库上完成检索冒烟测试并保存工具JSONL日志。
-- [x] 实现“选中文献→公开子集目录＋SHA256清单”的导出命令（`tools/export_corpus_subset.py`）。
+### 离线文献工具
+- [x] 私有 NAS 全库与公开精简包共用同一接口；流式检索、受限读取、DOI 查询、导出命令、`check.sh --corpus` 验证。
 
-### C. 无机逆合成（建议主责：李雨峰；模型/数据复核：高京）
+### 无机逆合成（RECIPE）
+- [x] 两个 checkpoint 固定并校验 SHA-256；`predict_precursor_routes` 接入想法环节；正式报告 3 次调用留痕。
+- [x] `tools/eval_retro_benchmark.py` 在 2,558 条留出反应上重算：Combo@1 71.81 / Combo@20 89.21 / MRR 77.48（与 checkpoint 汇总逐位一致）。
+- [x] 模型输出一律标注 `chemical_route_verified=false`，经文献补全与审稿复核后才进入正文。
 
-- [x] 只读盘点`InorganicRetroSynthesis/two_stage_retro_package`最新两步模型。
-- [x] 固定Stage-1 `seed20260504` checkpoint（SHA256 `f302cb...53e`）。
-- [x] 固定Stage-2 Combo@1最佳`no_mixture_pool seed20260504` checkpoint（SHA256 `373ee6...5de`）。
-- [x] 复制最小推理代码、词表、训练统计和checkpoint到本仓库；不修改原项目。
-- [x] 实现“目标化学式→Stage-1 Top-M→硬过滤→组合枚举→Stage-2重排→Top-5路线”。
-- [x] 用已知Retro测试样例和至少一个LLZO化学式完成真实checkpoint冒烟测试。
-- [ ] 把输出路线交给文献证据补全与Reviewer，不把模型结果表述为实验真值。
+### 评测与输出
+- [x] 人读 PDF（23 页）+ 机器读 `claim_evidence.jsonl` / `CITATION_AUDIT.json` / `retro_benchmark.json`。
+- [x] 全部输入配置、子任务提示词、账本、MCP 审计日志、异常与超时任务均保留在 `submission/goai_final/run/`。
 
-### D. 条件预测器（建议主责：高京）
-
-- [ ] 固定训练数据schema：目标物、前驱体、方法、温度、时间、气氛、操作步骤和来源DOI。
-- [ ] 按来源文档/DOI划分train/validation/test，完成泄漏检查。
-- [ ] 训练并冻结条件预测checkpoint，记录依赖、随机种子和SHA256。
-- [ ] 暴露`predict_conditions(target_formula, precursors, method)`工具。
-- [ ] 与Top-5前驱体路线组合，形成带条件的完整候选方案。
-
-### E. 评测与输出（建议共同负责）
-
-- [ ] 固定CEDER/Retro测试集和DOI隔离规则。
-- [ ] 复现Stage-1 Top-K、Stage-2 Combo@K/MRR及必要基线。
-- [ ] 条件预测报告温度误差、时间误差和类别字段F1/命中率。
-- [ ] 输出人读`final_report.pdf`和机器读`final_result.json`。
-- [ ] `final_result.json`中每条Claim、Gap和路线都绑定Evidence ID。
-- [ ] 保存全部输入配置、中间候选、模型原始输出、重排结果、异常和最终输出。
-- [ ] 将LLZO接口诊断升级为可证伪研究idea：补路线专属全文证据、对照、变量、量化阈值和失败判据；在化学负责人确认前保持`NOT FOR LAB USE`。
-
-### F. 复现与合规（建议主责：吕丁阳）
-
-- [x] Codex并行任务改为`--json`，每个实例保存JSONL轨迹和最终消息，并检查本轮产物非空及更新时间。
-- [ ] 分开保存`traces/development/`与`traces/runtime/`。
-- [x] 增加`.env.example`，不得提交API Key、Token或私有认证信息。
-- [ ] 增加`scripts/smoke_test.sh`和`scripts/reproduce_core.sh`。
-- [x] 修复干净环境安装：Python venv/uv兜底、测试依赖和retro可选依赖。
-- [ ] 发布前确认vendored模型代码、checkpoint和Retro派生数据的开源许可与署名方式。
-- [ ] 固定release/tag/commit hash，生成代码与模型文件SHA256清单。
-- [ ] 确认GitHub公开可访问；否则提供评审可下载的release压缩包。
-
-## P1：材料质量与答辩
-
-- [ ] Proposal升级为复赛报告，补真实结果、基线、消融、限制和证据链。
-- [ ] Agent系统说明并入报告方法部分及系统复现文档。
-- [ ] AI文献调研改造成研究数据与证据包，不再作为独立报告提交。
-- [ ] 制作PPT，前三页讲清科学问题、真实系统能力和关键量化结果。
-- [ ] 按官方要求拆分代码/非代码压缩包，并在根目录各放一份`MANIFEST.json`。
-- [ ] 在干净环境执行安装、冒烟、核心复现和随机Claim–Evidence抽查。
+### 复现与合规
+- [x] `scripts/smoke_test.sh`（干净环境 1–2 分钟）与 `scripts/reproduce_core.sh`（同一模型与推理强度重跑）。
+- [x] 构筑阶段（Codex 原生 rollout + 网关导出）与运行阶段轨迹分目录；密钥模式脱敏；Harness / 模型 / 推理强度声明。
+- [x] `.env.example`；包内无 API key / Token / 私有目录布局。
+- [x] 复赛报告 DOCX（官方模板六章加强版）与方案说明 PPT（12 页，ppt-master 生成，PPTX + PDF + 可编辑 SVG 源）。
 
 ## 暂不扩展
-
-- 不再新增同质化Agent角色；现有orchestrator、检索、写作、画图、idea和reviewer已经足够。
-- 不以“顶会综述篇幅”作为目标；优先保证引用正确、科学结论可追溯、模型真实、结果可复现。
-- 不把私有大语料整体上传；公开包只包含本次结论实际使用且许可允许的文献子集。
+- 不新增同质化 Agent 角色；不以"顶会综述篇幅"为目标；不上传私有大语料。
+- 条件预测器（温度 / 气氛）与跨模型审稿列为下一步，不在本次提交范围。

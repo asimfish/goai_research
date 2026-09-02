@@ -1,0 +1,492 @@
+{
+  "title": "路线—变量—验证：合成条件的统一比较",
+  "title_style": {
+    "font_size": 28,
+    "y": 40,
+    "color": "#183A4A",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1500,
+    "height": 860
+  },
+  "defaults": {
+    "font_size": 20,
+    "fill": "#FFFFFF",
+    "stroke": "#183A4A",
+    "edge_color": "#536B77",
+    "edge_width": 2.0
+  },
+  "groups": [
+    {
+      "id": "routes",
+      "label": "",
+      "x": 30,
+      "y": 95,
+      "w": 400,
+      "h": 690,
+      "fill": "#F3F6F7",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    },
+    {
+      "id": "recording",
+      "label": "",
+      "x": 460,
+      "y": 95,
+      "w": 520,
+      "h": 710,
+      "fill": "#F7F8F8",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    },
+    {
+      "id": "checks",
+      "label": "",
+      "x": 1010,
+      "y": 95,
+      "w": 460,
+      "h": 690,
+      "fill": "#F3F6F7",
+      "stroke": "#234456",
+      "stroke_width": 1.4,
+      "font_size": 20,
+      "label_color": "#183A4A",
+      "shadow": false
+    }
+  ],
+  "nodes": [
+    {
+      "id": "routes_bar",
+      "label": "",
+      "x": 55,
+      "y": 130,
+      "w": 350,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "routes"
+    },
+    {
+      "id": "record_bar",
+      "label": "",
+      "x": 485,
+      "y": 130,
+      "w": 470,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "recording"
+    },
+    {
+      "id": "checks_bar",
+      "label": "",
+      "x": 1035,
+      "y": 130,
+      "w": 410,
+      "h": 8,
+      "fill": "#D3DADF",
+      "stroke": "#D3DADF",
+      "stroke_width": 0.5,
+      "group": "checks"
+    },
+    {
+      "id": "flux",
+      "label": "外加助熔",
+      "sublabel": "溶解/保温 → 慢冷/分离",
+      "x": 60,
+      "y": 155,
+      "w": 340,
+      "h": 92,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "routes"
+    },
+    {
+      "id": "melt",
+      "label": "自熔/熔体",
+      "sublabel": "均化 → 自发成核 → 受控冷却",
+      "x": 60,
+      "y": 270,
+      "w": 340,
+      "h": 92,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "routes"
+    },
+    {
+      "id": "solid",
+      "label": "固相陶瓷",
+      "sublabel": "混合/压片 → 煅烧/复磨 → 烧结",
+      "x": 60,
+      "y": 385,
+      "w": 340,
+      "h": 92,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#315A70",
+      "stroke_width": 1.8,
+      "label_color": "#24475C",
+      "sublabel_color": "#536873",
+      "group": "routes"
+    },
+    {
+      "id": "mech",
+      "label": "机械化学预活化",
+      "sublabel": "高能研磨 → 活化 → 后续成相",
+      "x": 60,
+      "y": 500,
+      "w": 340,
+      "h": 92,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#587080",
+      "stroke_width": 1.7,
+      "label_color": "#3A5968",
+      "sublabel_color": "#61727B",
+      "group": "routes"
+    },
+    {
+      "id": "cz",
+      "label": "Czochralski",
+      "sublabel": "预烧/熔化 → 籽晶提拉 → 退火",
+      "x": 60,
+      "y": 615,
+      "w": 340,
+      "h": 92,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#71818A",
+      "stroke_width": 1.6,
+      "label_color": "#52656F",
+      "sublabel_color": "#6C7980",
+      "group": "routes"
+    },
+    {
+      "id": "record",
+      "label": "统一实验记录",
+      "sublabel": "抽取 → 规范化 → 跨路线对照\n配比与原料\n温度—时间与气氛\n坩埚、助熔/矿化剂\n冷却、生长、分离与失重",
+      "x": 600,
+      "y": 250,
+      "w": 360,
+      "h": 365,
+      "shape": "rect",
+      "fill": "#FFFDF7",
+      "stroke": "#9A7436",
+      "stroke_width": 2.0,
+      "label_color": "#6D4D1E",
+      "sublabel_color": "#5C554A",
+      "group": "recording"
+    },
+    {
+      "id": "boundary",
+      "label": "抽取框架 ≠ Ba₅Y₁₂Zn[O(SiO₄)]₈ 实验处方",
+      "sublabel": "各路线仅在相同实验项目下比较",
+      "x": 485,
+      "y": 680,
+      "w": 470,
+      "h": 100,
+      "shape": "rect",
+      "fill": "#FFF8EA",
+      "stroke": "#B67A21",
+      "stroke_width": 1.8,
+      "label_color": "#805718",
+      "sublabel_color": "#805718",
+      "font_size": 20,
+      "group": "recording"
+    },
+    {
+      "id": "scxrd",
+      "label": "单晶结构",
+      "sublabel": "结构身份与位点占据",
+      "x": 1050,
+      "y": 155,
+      "w": 380,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#4D7165",
+      "stroke_width": 1.8,
+      "label_color": "#34584C",
+      "sublabel_color": "#52655E",
+      "group": "checks"
+    },
+    {
+      "id": "pxrd",
+      "label": "PXRD / Rietveld",
+      "sublabel": "批量相纯与杂相",
+      "x": 1050,
+      "y": 295,
+      "w": 380,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#4D7165",
+      "stroke_width": 1.8,
+      "label_color": "#34584C",
+      "sublabel_color": "#52655E",
+      "group": "checks"
+    },
+    {
+      "id": "chem",
+      "label": "成分与污染",
+      "sublabel": "名义—局域—体平均",
+      "x": 1050,
+      "y": 435,
+      "w": 380,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#587080",
+      "stroke_width": 1.7,
+      "label_color": "#3A5968",
+      "sublabel_color": "#61727B",
+      "group": "checks"
+    },
+    {
+      "id": "thermal",
+      "label": "高温稳定性",
+      "sublabel": "原位高温 ≠ 冷却回收",
+      "x": 1050,
+      "y": 575,
+      "w": 380,
+      "h": 110,
+      "shape": "rect",
+      "fill": "#FFFFFF",
+      "stroke": "#587080",
+      "stroke_width": 1.7,
+      "label_color": "#3A5968",
+      "sublabel_color": "#61727B",
+      "group": "checks"
+    }
+  ],
+  "edges": [
+    {
+      "id": "flux_record",
+      "from": "flux",
+      "to": "record",
+      "label": "配比 · 温度",
+      "font_size": 17,
+      "waypoints": [
+        [
+          500,
+          201
+        ],
+        [
+          560,
+          201
+        ]
+      ]
+    },
+    {
+      "id": "melt_record",
+      "from": "melt",
+      "to": "record",
+      "label": "熔体 · 容器",
+      "font_size": 17,
+      "waypoints": [
+        [
+          500,
+          316
+        ],
+        [
+          560,
+          316
+        ]
+      ]
+    },
+    {
+      "id": "solid_record",
+      "from": "solid",
+      "to": "record",
+      "label": "混合 · 煅烧",
+      "font_size": 17,
+      "waypoints": [
+        [
+          500,
+          431
+        ],
+        [
+          560,
+          431
+        ]
+      ]
+    },
+    {
+      "id": "mech_record",
+      "from": "mech",
+      "to": "record",
+      "label": "研磨 · 污染",
+      "font_size": 17,
+      "waypoints": [
+        [
+          500,
+          546
+        ],
+        [
+          560,
+          546
+        ]
+      ]
+    },
+    {
+      "id": "cz_record",
+      "from": "cz",
+      "to": "record",
+      "label": "籽晶 · 退火",
+      "font_size": 17,
+      "waypoints": [
+        [
+          500,
+          661
+        ],
+        [
+          560,
+          661
+        ]
+      ]
+    },
+    {
+      "id": "record_scxrd",
+      "from": "record",
+      "to": "scxrd",
+      "label": "结构",
+      "font_size": 17,
+      "waypoints": [
+        [
+          1010,
+          442
+        ],
+        [
+          1010,
+          210
+        ],
+        [
+          1050,
+          210
+        ]
+      ]
+    },
+    {
+      "id": "record_pxrd",
+      "from": "record",
+      "to": "pxrd",
+      "label": "相组成",
+      "font_size": 17,
+      "waypoints": [
+        [
+          1010,
+          442
+        ],
+        [
+          1010,
+          350
+        ],
+        [
+          1050,
+          350
+        ]
+      ]
+    },
+    {
+      "id": "record_chem",
+      "from": "record",
+      "to": "chem",
+      "label": "成分",
+      "font_size": 17,
+      "waypoints": [
+        [
+          1010,
+          442
+        ],
+        [
+          1010,
+          490
+        ],
+        [
+          1050,
+          490
+        ]
+      ]
+    },
+    {
+      "id": "record_thermal",
+      "from": "record",
+      "to": "thermal",
+      "label": "高温",
+      "font_size": 17,
+      "waypoints": [
+        [
+          1010,
+          442
+        ],
+        [
+          1010,
+          630
+        ],
+        [
+          1050,
+          630
+        ]
+      ]
+    }
+  ],
+  "texts": [
+    {
+      "id": "mainline",
+      "text": "路线族 → 实验项目 → 表征方法",
+      "x": 750,
+      "y": 78,
+      "font_size": 17,
+      "color": "#536873",
+      "bold": false,
+      "align": "center"
+    },
+    {
+      "id": "routes_heading",
+      "text": "路线族",
+      "x": 230,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "record_heading",
+      "text": "实验项目",
+      "x": 720,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    },
+    {
+      "id": "checks_heading",
+      "text": "表征方法",
+      "x": 1240,
+      "y": 120,
+      "font_size": 20,
+      "color": "#183A4A",
+      "bold": true,
+      "align": "center"
+    }
+  ]
+}

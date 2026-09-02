@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+<defs><marker id="arrow-block" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker><marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker><filter id="goai-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#2A3B47" flood-opacity="0.28"/></filter></defs>
+<rect x="0" y="0" width="1500" height="900" fill="#FFFFFF"/>
+<text x="750.0" y="40.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" fill="#183A4A" font-weight="bold">文献来源如何限定合成条件的可迁移范围</text>
+<rect x="30" y="95" width="340" height="730" rx="10" fill="#F3F6F7" stroke="#234456" stroke-width="1.4"/>
+<rect x="395" y="95" width="700" height="730" rx="10" fill="#F7F8F8" stroke="#234456" stroke-width="1.4"/>
+<rect x="1120" y="95" width="350" height="730" rx="10" fill="#F3F6F7" stroke="#234456" stroke-width="1.4"/>
+<path d="M 350.0 214.0 L 390.0 214.0 L 390.0 300.0 L 425.0 300.0 L 425.0 300.0" fill="none" stroke="#B67A21" stroke-width="2.4" marker-end="url(#arrow-block)"/>
+<path d="M 350.0 334.0 L 390.0 334.0 L 390.0 350.0 L 425.0 350.0 L 425.0 350.0" fill="none" stroke="#315A70" stroke-width="2.0" marker-end="url(#arrow-block)"/>
+<path d="M 350.0 454.0 L 390.0 454.0 L 390.0 400.0 L 425.0 400.0 L 425.0 400.0" fill="none" stroke="#587080" stroke-width="1.9" marker-end="url(#arrow-block)"/>
+<path d="M 350.0 574.0 L 390.0 574.0 L 390.0 450.0 L 425.0 450.0 L 425.0 450.0" fill="none" stroke="#71818A" stroke-width="1.8" marker-end="url(#arrow-block)"/>
+<path d="M 645.0 405.0 L 865.0 405.0" fill="none" stroke="#244B61" stroke-width="3.4" marker-end="url(#arrow-block)"/>
+<rect x="670.76" y="371.0" width="168.48000000000002" height="68.0" fill="#FFFFFF" opacity="0.9"/>
+<text x="755.0" y="383.75" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">配比 · 温度—时间</text><text x="755.0" y="405.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">气氛 · 坩埚/助熔剂</text><text x="755.0" y="426.25" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">冷却</text>
+<path d="M 1085.0 260.9 L 1120.0 215.0 L 1155.0 215.0 L 1155.0 215.0" fill="none" stroke="#B67A21" stroke-width="2.2" marker-end="url(#arrow-block)"/>
+<path d="M 1085.0 374.7 L 1120.0 365.0 L 1155.0 365.0 L 1155.0 365.0" fill="none" stroke="#315A70" stroke-width="2.0" marker-end="url(#arrow-block)"/>
+<path d="M 1085.0 488.4 L 1120.0 515.0 L 1155.0 515.0 L 1155.0 515.0" fill="none" stroke="#587080" stroke-width="1.9" marker-end="url(#arrow-block)"/>
+<path d="M 298.6 748.0 L 380.0 795.0 L 1120.0 795.0 L 1120.0 700.0 L 1155.0 700.0 L 1155.0 700.0" fill="none" stroke="#8A9499" stroke-width="1.8" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
+<rect x="1099.0" y="734.75" width="42.0" height="25.5" fill="#FFFFFF" opacity="0.9"/>
+<text x="1120.0" y="747.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#8A9499">排除</text>
+<rect x="55" y="130" width="290" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
+<text x="200.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
+<rect x="425" y="130" width="640" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
+<text x="745.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
+<rect x="1150" y="130" width="290" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
+<text x="1295.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
+<rect x="60" y="160" width="290" height="108" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="2.0"/>
+<text x="205.0" y="200.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">目标化合物直接报道</text>
+<text x="205.0" y="229.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">Ba₅Y₁₂Zn[O(SiO₄)]₈；仅 1 篇原始研究</text>
+<rect x="60" y="280" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#315A70" stroke-width="1.8"/>
+<text x="205.0" y="320.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#24475C" font-weight="bold">同一 Ba–Y–Si–O 谱系</text>
+<text x="205.0" y="349.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#536873">结构身份与相组成可比较</text>
+<rect x="60" y="400" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#587080" stroke-width="1.7"/>
+<text x="205.0" y="440.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#3A5968" font-weight="bold">晶体化学近邻</text>
+<text x="205.0" y="469.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#61727B">比较结构关系与相组成</text>
+<rect x="60" y="520" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#71818A" stroke-width="1.6"/>
+<text x="205.0" y="560.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#52656F" font-weight="bold">工艺近邻</text>
+<text x="205.0" y="589.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#6C7980">比较过程变量与表征方法</text>
+<rect x="60" y="640" width="290" height="108" rx="0" fill="#F0F1F1" stroke="#8A9499" stroke-width="1.6" stroke-dasharray="6,4"/>
+<text x="205.0" y="680.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#626D73" font-weight="bold">研究范围之外</text>
+<text x="205.0" y="709.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#707A7F">不承担结构或配方结论</text>
+<rect x="425" y="255" width="220" height="300" rx="0" fill="#FFFFFF" stroke="#244B61" stroke-width="2.0"/>
+<text x="535.0" y="370.125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1E4154" font-weight="bold">合成路线对照</text>
+<text x="535.0" y="399.25" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">外加助熔｜自熔/熔体</text><text x="535.0" y="420.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">固相陶瓷｜机械化学</text><text x="535.0" y="441.75" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">Czochralski</text>
+<rect x="865" y="255" width="220" height="300" rx="0" fill="#FFFFFF" stroke="#244B61" stroke-width="2.0"/>
+<text x="975.0" y="359.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1E4154" font-weight="bold">互补表征</text>
+<text x="975.0" y="388.625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">单晶/先进衍射</text><text x="975.0" y="409.875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">PXRD/Rietveld</text><text x="975.0" y="431.125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">成分与污染</text><text x="975.0" y="452.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">高温稳定性</text>
+<rect x="425" y="650" width="640" height="95" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="1.8"/>
+<text x="745.0" y="683.875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">近邻条件 ≠ 目标相已验证配方</text>
+<text x="745.0" y="713.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">具体数值不得无条件迁移</text>
+<rect x="1155" y="160" width="285" height="110" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="2.0"/>
+<text x="1297.5" y="201.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">直接条件复现</text>
+<text x="1297.5" y="230.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">只依据目标化合物原始研究</text>
+<rect x="1155" y="310" width="285" height="110" rx="0" fill="#FFFFFF" stroke="#315A70" stroke-width="1.8"/>
+<text x="1297.5" y="351.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#24475C" font-weight="bold">谱系内相图与结构比较</text>
+<text x="1297.5" y="380.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#536873">借鉴组成扫描与核验方法</text>
+<rect x="1155" y="460" width="285" height="110" rx="0" fill="#FFFFFF" stroke="#587080" stroke-width="1.7"/>
+<text x="1297.5" y="501.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#3A5968" font-weight="bold">方法与变量结构</text>
+<text x="1297.5" y="530.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#61727B">不直接移用相关体系数值</text>
+<rect x="1155" y="650" width="285" height="100" rx="0" fill="#F0F1F1" stroke="#8A9499" stroke-width="1.6" stroke-dasharray="6,4"/>
+<text x="1297.5" y="686.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#626D73" font-weight="bold">排除出条件比较</text>
+<text x="1297.5" y="715.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#707A7F">仅说明研究边界</text>
+<text x="750" y="78.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#536873">证据来源 → 合成路线对照 → 互补表征 → 研究用途</text>
+<text x="200" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">文献来源</text>
+<text x="745" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">路线—变量—验证</text>
+<text x="1295" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">研究用途</text>
+</svg>

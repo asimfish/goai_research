@@ -25,8 +25,32 @@
 > The deterministic layer is 4 small MCP servers you can test offline. No framework,
 > no database, no daemon. Fork it, rewrite it, adapt it to your stack.
 
+## 🏁 GOAI 2026 Final-Round Submission (AI for Research · Materials)
+
+Reviewer entry point: [`docs/competition/SUBMISSION.md`](docs/competition/SUBMISSION.md) — where each of the six
+deliverables lives, model and harness declaration (Codex CLI 0.146.1 · gpt-5.6-sol · reasoning effort xhigh),
+all 7 runs with the selection rule for the formal result, data/licence boundaries, metric re-verification and a full
+traceability chain for one claim. The package itself is [`submission/goai_final/`](submission/goai_final/README.md):
+the 23-page formal report + LaTeX sources, the report DOCX, the slide deck, `claim_evidence.jsonl`
+(100 claims → 219 citations → 51 verified keys), the compact Parquet knowledge base of the cited full texts,
+Codex event streams of all 40 sub-agent tasks, the native development rollout, and the RECIPE two-stage model
+recomputed on 2,558 held-out reactions.
+
+```bash
+bash install.sh --retro                    # .venv + deps + MCP config
+bash scripts/smoke_test.sh --with-retro    # offline, no LLM, 1–2 min, ends with SMOKE TEST PASSED
+.venv-retro/bin/python tools/eval_retro_benchmark.py --device cuda:0 --out /tmp/retro   # bit-identical metrics
+bash scripts/reproduce_core.sh             # core reproduction: one topic line → survey PDF (Codex login, network, TeX)
+bash scripts/package_submission.sh "<team>"    # builds the two officially named zips
+```
+
 ## 📰 News
 
+- **2026-09-03 — Final-round submission package.** `submission/goai_final/` gathers the six deliverables;
+  new tools: `eval_retro_benchmark.py` (same inference path as the MCP tool; Retro test Combo@1 71.81 /
+  Combo@20 89.21 / MRR 77.48, bit-identical to the checkpoint summary), `build_cited_corpus.py`,
+  `build_claim_evidence.py`, `export_submission_bundle.py` (trace export with secret scrubbing),
+  `build_report_docx.py`, and `scripts/smoke_test.sh` / `reproduce_core.sh` / `package_submission.sh`.
 - **2026-09-02 — Aesthetics become a gate; text metrics become honest.** The
   figure lint gains a second layer that measures what reviewers mean by "looks
   messy": colour-family count (≤ 2 + accent, ≥ 4 is an error), rainbow lanes,

@@ -1,0 +1,59 @@
+{
+  "diagnostic_status": "BLOCKED_PENDING_HUMAN_SAFETY_AND_REVIEW",
+  "model_route_is_experimental_truth": false,
+  "provider_status": {
+    "molecular_provider": "stub",
+    "molecular_provider_scope": "molecular retrosynthesis only",
+    "molecular_provider_trusted": false,
+    "local_inorganic_provider": "local_two_stage_inorganic",
+    "local_inorganic_ready": true,
+    "separation_verified": true
+  },
+  "top1_route": {
+    "rank": 1,
+    "route_id": "two-stage-00fc573b05a3",
+    "provider": "local_two_stage_inorganic",
+    "model_output_verified": true,
+    "chemical_route_verified": false,
+    "target_formula": "Li7La3Zr2O12",
+    "precursors": [
+      {"id": 286, "formula": "ZrO2", "stage1_probability": 0.998853325843811},
+      {"id": 339, "formula": "La2O3", "stage1_probability": 0.917380690574646},
+      {"id": 200, "formula": "Li2CO3", "stage1_probability": 0.8280589580535889}
+    ],
+    "stage1_probability_product": 0.7587742209434509,
+    "stage2_score": 3.6003494262695312,
+    "route_probability_within_candidate_pool": 0.23012776672840118
+  },
+  "plan": {
+    "objective": "诊断 LLZO（Li7La3Zr2O12）Top-1 模型前驱体路线的实验可审查性；不执行实验",
+    "route_id": "two-stage-00fc573b05a3",
+    "provider": "local_two_stage_inorganic",
+    "provider_verified": true,
+    "model_output_verified": true,
+    "chemical_route_verified": false,
+    "steps": [
+      {
+        "step": 1,
+        "reaction": "candidate inorganic synthesis (conditions not predicted)",
+        "inputs": ["ZrO2", "La2O3", "Li2CO3"],
+        "conditions": null,
+        "conditions_status": "TODO",
+        "characterization": "待审建议：相组成、微结构与离子输运表征方案须由材料化学负责人结合经核验文献审定。",
+        "safety": "需材料化学负责人审核，NOT FOR LAB USE",
+        "citations_required": true
+      }
+    ],
+    "review_gates": [
+      "文献支持：每步条件至少 1 条真实引用（经 goai-refcheck 核验）",
+      "可行性：试剂可购/可制备，路线深度合理",
+      "安全性：安全字段完整，无高危未标注操作",
+      "新颖性：与检索到的已有工作明确区分"
+    ],
+    "warning": "Model-ranked precursor set only; conditions are unpredicted and the chemical route requires literature evidence, safety review, and human approval. NOT FOR LAB USE."
+  },
+  "raw_make_experiment_plan_conditions": "TODO: 温度/溶剂/催化剂/时长（由 agent 依文献填写并给出引用）",
+  "conditions": null,
+  "safety": "需材料化学负责人审核，NOT FOR LAB USE",
+  "failures": []
+}

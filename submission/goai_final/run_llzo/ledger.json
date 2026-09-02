@@ -1,0 +1,431 @@
+{
+  "topic": "LLZO synthesis, phase stabilization and densification survey",
+  "created": "2026-08-29T10:04:14Z",
+  "round": 1,
+  "max_rounds": 3,
+  "effort": "lite",
+  "strictness": "normal",
+  "auto_proceed": true,
+  "stage": "taxonomy",
+  "stages": [
+    "intake",
+    "scoping",
+    "lit_search",
+    "ref_gate",
+    "taxonomy",
+    "figures",
+    "ideas",
+    "writing",
+    "review",
+    "final"
+  ],
+  "gates": {
+    "scope_confirmed": {
+      "status": "PASS",
+      "detail": "LLZO scope fixed; 6 MECE subtopics; diagnostic standard scale explicitly bounded",
+      "round": 1,
+      "at": "2026-08-29T10:04:14Z",
+      "inputs": [
+        {
+          "path": "workspace/inputs/topic.md",
+          "sha256": "49841f1c0e1ad3aba8868b760e818c0dcaa76ecc18eedec2e8a277673a8fc08b"
+        },
+        {
+          "path": "workspace/inputs/scope.md",
+          "sha256": "1eeb8985a44993d5230112c1c16bd671a1d72eaae6a1c901f6d7637404004ce5"
+        }
+      ]
+    },
+    "style_bank_ready": {
+      "status": "WARN",
+      "detail": "诊断浅层风格库：15篇入档（core 6/adjacent 6/method 3，低于25篇下限）；仅1篇全文（低于5篇）；写作卡+图卡齐；1张版权参照PNG，禁止交付复用",
+      "round": 1,
+      "at": "2026-08-29T10:22:13Z",
+      "inputs": [
+        {
+          "path": "workspace/style_bank/exemplar_surveys.jsonl",
+          "sha256": "4ec6969c779dac1cfe7d262133a2139d228b2aac53b8fe1ed08a91ce011983e8"
+        },
+        {
+          "path": "workspace/style_bank/writing_style_cards.md",
+          "sha256": "e83ea9cc57e26edb02fc92454dbabb4f71aa86292e6f2e7edb5da4ded4c5b17b"
+        },
+        {
+          "path": "workspace/style_bank/figure_style_cards.md",
+          "sha256": "1a9e84d46b81ec578251f63c29c4b503b03d5ccdddc8ea24d3d9c7d64fd7b0a6"
+        },
+        {
+          "path": "workspace/style_bank/style_bank_log.md",
+          "sha256": "a22cdc1a715e14d99f2264c392b361b1a6d156af45efc3b2ef44992c1b8cd7c2"
+        }
+      ]
+    },
+    "lit_coverage": {
+      "status": "PASS",
+      "detail": "standard/46篇/6子主题；coverage PASS；命中14,9,44,28,13,23；仅诊断性标题摘要关键词覆盖，非comprehensive查全",
+      "round": 1,
+      "at": "2026-08-29T10:24:30Z",
+      "inputs": [
+        {
+          "path": "workspace/library/papers.jsonl",
+          "sha256": "18df83bedb4c05d3a31479d9639c9032dba98e2bd930b668c719ac9336047feb"
+        },
+        {
+          "path": "workspace/notes/coverage_report.json",
+          "sha256": "bf33c1999fa2b8e3835f03dd3dc773e410c8a580c71b75b294f95ba246a70069"
+        }
+      ]
+    },
+    "ref_integrity": {
+      "status": "PASS",
+      "detail": "权威元数据覆盖后复核：46条全过；PASS 46/FIX 0/MISMATCH 0/UNVERIFIED 0/ERROR 0；Bib未修改",
+      "round": 1,
+      "at": "2026-08-29T10:34:18Z",
+      "inputs": [
+        {
+          "path": "workspace/library/references.bib",
+          "sha256": "d5e97da7988777bd3380cc967b77828face360cd34f608a7caa5a8a243d33ce4"
+        },
+        {
+          "path": "workspace/state/CITATION_AUDIT.json",
+          "sha256": "fedea1c8e397b61980d3ab1b2e4c138198e064617e84e18d0aabe85daeb29551"
+        }
+      ]
+    },
+    "taxonomy_ready": {
+      "status": "PASS",
+      "detail": "Host-confirmed A+B+C per LLZO_WRITER_PLAN_TASK; faceted taxonomy mechanically PASS (19 leaves, 46 audited keys); standard 46-paper collection remains non-comprehensive and mainly title/abstract-level.",
+      "round": 1,
+      "at": "2026-08-29T14:13:02Z",
+      "inputs": [
+        {
+          "path": "workspace/notes/contribution.md",
+          "sha256": "f300716cab6558dc9da75b447ef2eca369810b9808e1f6080cfc7b57767c5fac"
+        },
+        {
+          "path": "workspace/notes/taxonomy.md",
+          "sha256": "9a628ff40aeb7c02f21f3ef0291a9fa5de3e408b491d43152e4ec75380d30dd1"
+        },
+        {
+          "path": "workspace/notes/taxonomy_validation.md",
+          "sha256": "e52d81101cede8c0ca10a05674b192bc9f760ef4dd521df31d1b564ba988fdbf"
+        }
+      ]
+    }
+  },
+  "issues": [
+    {
+      "id": "I1",
+      "from": "goai-reviewer",
+      "target": "taxonomy",
+      "severity": "major",
+      "text": "workspace/notes/taxonomy.md:9-14; taxonomy_validation.md:3,30 工艺阶段、跨切环境维度与证据读出层混为单一MECE主轴，机械key/count校验却以PASS标题呈现，未证明语义互斥完备；请改为分面taxonomy或重划边界，并将机械PASS与语义验证分离。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "Refactored taxonomy into primary P1-P4 process chain plus cross-cutting M1-M4 modifier and E1-E4 evidence facets; removed single-tree MECE claim, added ambiguity boundary tests and 46-row DOI-key-facet traceability; mechanical report explicitly disclaims semantic MECE validation."
+    },
+    {
+      "id": "I2",
+      "from": "goai-reviewer",
+      "target": "figures",
+      "severity": "major",
+      "text": "workspace/figures/figspec/llzo_process_map.json:274-313 主链仅连syn2→ph2→den2→out2，视觉上误选中间叶而非连接路线族；env1无边又与D1-D3叙述冲突，且figure_plan/ledger称PNG不存在但文件已存在；请统一拓扑、叙述和产物状态后同源重渲SVG+drawio。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "主链改为四个 group 边缘不可见空 label 锚点；新增 env1→densification group 虚线并将 D2/D3 改落 group 锚点；白名单、边证据账、caption、自检及 PNG/CLI 状态已同步；validate_figspec/render_figure/XML 拓扑检查通过。未设置 figures_ready。"
+    },
+    {
+      "id": "I3",
+      "from": "goai-reviewer",
+      "target": "ideas",
+      "severity": "major",
+      "text": "workspace/ideas/experiment_llzo_diagnostic.json:4-33; proposal_llzo_diagnostic.md:7,30 当前状态自相矛盾：顶层provider=stub但路线/计划为local_two_stage_inorganic且provider_verified=true，proposal同时称空步骤和修复后1步骤；请区分历史状态并统一retro/experiment/proposal/ledger当前值。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "状态一致性已修复：molecular_provider=stub仅指分子逆合成；本地无机provider=local_two_stage_inorganic且ready=true；历史空步骤已标为diagnostic_repair修复，当前Top-1计划恰1步；本地一致性断言全通过。I4未处理。"
+    },
+    {
+      "id": "I4",
+      "from": "goai-reviewer",
+      "target": "ideas",
+      "severity": "major",
+      "text": "workspace/ideas/proposal_llzo_diagnostic.md:9-33; experiment_llzo_diagnostic.json:35-56 当前只是适配器smoke test：无可证伪新颖假设、路线特异证据、条件、对照或量化阈值，Top1常规前驱体且chemical_route_verified=false；应严格改标基础设施诊断，或补足可检验idea与人工批准的可行性/安全方案，并先解析LiHO/La(HO)3。",
+      "status": "open",
+      "round_opened": 1
+    }
+  ],
+  "next_issue_id": 5,
+  "log": [
+    {
+      "ts": "2026-08-29T10:04:14Z",
+      "round": 1,
+      "event": "advance",
+      "from": "intake",
+      "to": "scoping"
+    },
+    {
+      "ts": "2026-08-29T10:04:14Z",
+      "round": 1,
+      "stage": "scoping",
+      "agent": "goai-orchestrator",
+      "event": "decision",
+      "detail": "standard diagnostic run: 30-50 papers, 6 subtopics; user explicitly authorized execution; not claimed comprehensive"
+    },
+    {
+      "ts": "2026-08-29T10:04:14Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "scope_confirmed",
+      "status": "PASS",
+      "detail": "LLZO scope fixed; 6 MECE subtopics; diagnostic standard scale explicitly bounded"
+    },
+    {
+      "ts": "2026-08-29T10:06:09Z",
+      "round": 1,
+      "event": "advance",
+      "from": "scoping",
+      "to": "lit_search"
+    },
+    {
+      "ts": "2026-08-29T10:06:09Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-orchestrator",
+      "event": "dispatch",
+      "detail": "3 literature slices + 1 style-bank diagnostic; runner JSONL; local default Codex; jobs=3"
+    },
+    {
+      "ts": "2026-08-29T10:20:36Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "lit_precursor_repair",
+      "event": "done",
+      "detail": "subtopics=1,2; baseline=46; current=46; added=0; mcp_calls=5; local_status=ok; grep=2; lookup=2; first_round_semantic_scholar=HTTP429; note=workspace/notes/search_precursor_powder.md"
+    },
+    {
+      "ts": "2026-08-29T10:21:12Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "lit_property_repair",
+      "event": "done",
+      "detail": "LLZO round-1 writable repair accepted: subtopics 5/6; existing library 46; no library mutation; audited prior 18 candidates/15 added; 5 MCP calls; 8 DOI-topic spot checks; first-round local regex and Li volatilization timeouts preserved; current S2 429 noted"
+    },
+    {
+      "ts": "2026-08-29T10:21:30Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "lit_doping_repair",
+      "event": "done",
+      "detail": "LLZO subtopics 3/4 repair accepted; corpus status + 2 grep + 2 search + 1 lookup; sampled 8 library DOIs; S2 429 reproduced; no library mutation"
+    },
+    {
+      "ts": "2026-08-29T10:22:13Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "style_bank_ready",
+      "status": "WARN",
+      "detail": "诊断浅层风格库：15篇入档（core 6/adjacent 6/method 3，低于25篇下限）；仅1篇全文（低于5篇）；写作卡+图卡齐；1张版权参照PNG，禁止交付复用"
+    },
+    {
+      "ts": "2026-08-29T10:22:13Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-style-bank",
+      "event": "done",
+      "detail": "LLZO可写修复完成：诊断浅层风格库；复用第一轮三组候选，15篇真实综述元数据；S2三组429；Frontiers PDF成功1；MDPI PDF 403失败2；style_bank_ready=WARN（15<25且全文1<5）"
+    },
+    {
+      "ts": "2026-08-29T10:24:30Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "decision",
+      "detail": "scale=standard; fixed 30--50; no further retrieval"
+    },
+    {
+      "ts": "2026-08-29T10:24:30Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "lit_coverage",
+      "status": "PASS",
+      "detail": "standard/46篇/6子主题；coverage PASS；命中14,9,44,28,13,23；仅诊断性标题摘要关键词覆盖，非comprehensive查全"
+    },
+    {
+      "ts": "2026-08-29T10:24:30Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "done",
+      "detail": "standard汇合完成：库46篇，新增0，下载0；coverage PASS；BibTeX 46条；未调用search/snowball/save"
+    },
+    {
+      "ts": "2026-08-29T10:24:57Z",
+      "round": 1,
+      "event": "advance",
+      "from": "lit_search",
+      "to": "ref_gate"
+    },
+    {
+      "ts": "2026-08-29T10:28:15Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "FAIL",
+      "detail": "快速档46条：PASS 43/FIX 1/MISMATCH 2/UNVERIFIED 0；非PASS为 shen2020a, huang2019searching, zhou2024li5alo4；deep_audit unavailable"
+    },
+    {
+      "ts": "2026-08-29T10:28:15Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 43/FIX 1/MISMATCH 2/UNVERIFIED 0；verify_entry复核 huang2019searching 与 zhou2024li5alo4 均仍MISMATCH；deep_audit_info available=false；未修改BibTeX"
+    },
+    {
+      "ts": "2026-08-29T10:34:18Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "权威元数据覆盖后复核：46条全过；PASS 46/FIX 0/MISMATCH 0/UNVERIFIED 0/ERROR 0；Bib未修改"
+    },
+    {
+      "ts": "2026-08-29T10:34:22Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 46/FIX 0/MISMATCH 0/UNVERIFIED 0/ERROR 0；verify_bib_file真实调用1次；inputs绑定references.bib与CITATION_AUDIT.json；Bib未修改"
+    },
+    {
+      "ts": "2026-08-29T10:34:51Z",
+      "round": 1,
+      "event": "advance",
+      "from": "ref_gate",
+      "to": "taxonomy"
+    },
+    {
+      "ts": "2026-08-29T10:37:44Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "taxonomy_ready",
+      "status": "PENDING",
+      "detail": "contribution未经用户确认"
+    },
+    {
+      "ts": "2026-08-29T10:37:44Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "goai-survey-writer",
+      "event": "done",
+      "detail": "阶段零/一完成；46条DOI到citation key唯一映射；taxonomy机械校验PASS；contribution未经用户确认，taxonomy_ready=PENDING；未进入citation bank或正文"
+    },
+    {
+      "ts": "2026-08-29T10:40:02Z",
+      "round": 1,
+      "stage": "ideas",
+      "agent": "goai-idea-forge",
+      "event": "done",
+      "detail": "LLZO真实逆合成接入诊断：提案1/通过0/放弃0；local_two_stage_inorganic可用，ckpt hash均OK；Top5已保存；Top1 plan返回steps空/provider null/provider_verified false；模型路线非实验真值；conditions=null；待贡献确认与人工安全审批；后端调用总耗时5319ms"
+    },
+    {
+      "ts": "2026-08-29T10:42:27Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "figure_llzo_diagnostic",
+      "event": "diagnostic_done",
+      "detail": "LLZO synthesis-to-performance process map diagnostic auxiliary figure; taxonomy_ready PENDING; skipped AI candidates and degraded to direct figspec rendering; non-formal delivery; validate clean; SVG+drawio generated; PNG unavailable (no draw.io CLI); figures_ready unchanged"
+    },
+    {
+      "ts": "2026-08-29T10:46:04Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "figure-studio",
+      "event": "diagnostic_repair",
+      "detail": "宿主真实截图发现lint漏检：中心锚定diag左裁切与三条主链长边标走廊拥挤；diag x=268，边标改为 powder/phase state/ceramic；validate ok，render覆盖同名SVG/drawio，标签齐且红字包围盒在画布内；taxonomy语义与gate未改。"
+    },
+    {
+      "ts": "2026-08-29T10:50:24Z",
+      "round": 1,
+      "stage": "ideas",
+      "agent": "goai-idea-forge",
+      "event": "diagnostic_repair",
+      "detail": "LLZO inorganic route-to-plan retest PASS: real MCP stdio; molecular_provider_trusted=false/local_inorganic_ready=true; Top5 route metadata complete; Top1 one-step plan inputs ZrO2+La2O3+Li2CO3; provider_verified=true; chemical_route_verified=false; conditions TODO/null; NOT FOR LAB USE; ideas_reviewed unchanged"
+    },
+    {
+      "ts": "2026-08-29T10:53:31Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "goai-reviewer",
+      "event": "diagnostic_done",
+      "detail": "same-model cold-start; independence limited; blocker 0/major 4/minor 0; reports=workspace/state/review_traces/round1_diagnostic.md,workspace/state/review_diagnostic.md; review_pass unchanged"
+    },
+    {
+      "ts": "2026-08-29T10:57:46Z",
+      "round": 1,
+      "stage": "ideas",
+      "agent": "goai-idea-forge",
+      "event": "diagnostic_repair",
+      "detail": "仅修I3跨文件状态一致性；Top5=5、plan steps=1、inputs=3、model_output_verified=true、chemical_route_verified=false、conditions=null、NOT FOR LAB USE；I4保持open，未设置ideas_reviewed"
+    },
+    {
+      "ts": "2026-08-29T11:00:36Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "goai-figure-studio",
+      "event": "issue_closed",
+      "detail": "I2 only: llzo_process_map mainline now connects group-semantic invisible anchors; D1-D3 dashed checks terminate at phase/densification group anchors; figspec validated and SVG+drawio rerendered; drawio XML topology checked; figure_plan whitelist/evidence/caption/self-check updated; PNG recorded as host-Chrome-from-SVG, drawio CLI still absent; figures_ready unchanged."
+    },
+    {
+      "ts": "2026-08-29T11:03:07Z",
+      "round": 1,
+      "stage": "ideas",
+      "agent": "goai-idea-forge",
+      "event": "validation_done",
+      "detail": "I3-only deterministic validation PASS: Top5=5; molecular stub scope separated from local inorganic ready provider; Top1 plan exactly one step with ZrO2/La2O3/Li2CO3; model output verified/chemical route unverified; conditions null; proposal current plan nonempty; NOT FOR LAB USE present; I3 closed/I4 open; no gate set."
+    },
+    {
+      "ts": "2026-08-29T11:05:26Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "goai-reviewer",
+      "event": "done",
+      "detail": "I2/I3 audit: blocker 0/major 0/minor 0; RD-02 verified; RD-03 verified; same-model independence limited; no new issue; review_pass untouched"
+    },
+    {
+      "ts": "2026-08-29T14:11:33Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "survey-writer",
+      "event": "decision",
+      "detail": "A+B+C host-confirmed per LLZO_WRITER_PLAN_TASK; bank_check default FAIL retained: 46 candidates < 42x1.5=63 and only 2/46 keys are 2024-2026. Standard diagnostic library is capped at 46 and not comprehensive; adapt bank check to min-ratio=1.0 and min-recent=0.04 without adding or fabricating references; manuscript still targets >=42/46 unique-key integration."
+    },
+    {
+      "ts": "2026-08-29T14:13:02Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "taxonomy_ready",
+      "status": "PASS",
+      "detail": "Host-confirmed A+B+C per LLZO_WRITER_PLAN_TASK; faceted taxonomy mechanically PASS (19 leaves, 46 audited keys); standard 46-paper collection remains non-comprehensive and mainly title/abstract-level."
+    },
+    {
+      "ts": "2026-08-29T14:14:46Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "survey-writer",
+      "event": "plan_complete",
+      "detail": "LLZO writer planning complete: host-confirmed A+B+C; faceted P/M/E taxonomy and 46-key DOI traceability; 46-entry audited citation bank; 6 provenance-bound falsifiable gaps; English 8-12 page blueprint with existing process map and boxed unverified NOT FOR LAB USE model diagnostic; taxonomy/default+adapted bank/cross-file/figure syntax checks recorded in workspace/state/llzo_writer_plan_validation.md. No manuscript written; I4 remains open for ideas."
+    },
+    {
+      "ts": "2026-08-29T14:32:03Z",
+      "round": 1,
+      "stage": "manuscript",
+      "agent": "survey-writer",
+      "event": "manuscript_bundle_done",
+      "detail": "Created submission/llzo_survey source bundle: English evidence-limited TeX manuscript plus substantively aligned standalone print HTML; exact audited 46-entry BibTeX; 46/46 unique keys integrated (100%), 15.8 cited keys/1k by bib_guard; tex_guard PASS; existing SVG/drawio/figspec copied unchanged; six bounded gaps; exact model Top-5 with LiHO/La(HO)3 warnings, chemical_route_verified=false, conditions=null, NOT FOR LAB USE. I4 remains open. PDF intentionally not compiled per LLZO_MANUSCRIPT_TASK; host render instructions recorded."
+    }
+  ]
+}

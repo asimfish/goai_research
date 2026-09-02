@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <defs>
+    <marker id="arrowChain" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1F4D78"/>
+    </marker>
+  </defs>
+  <g id="p10-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p10-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">每条结论可追溯：代码版本、配置、数据、轨迹、结果文件</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p10-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">报告中 <tspan fill="#C48A2B" font-weight="700">100 条结论、3 张图、每条前驱体预测</tspan>都能沿同一条链回到提交包中的具体文件。</text>
+  </g>
+  <g id="p10-chain">
+    <rect x="72" y="212" width="200" height="86" fill="#F3F5F8"/>
+    <rect x="72" y="212" width="200" height="4" fill="#1F4D78"/>
+    <text x="88" y="248" font-size="24" font-weight="700" fill="#1F4D78">代码版本</text>
+    <text x="88" y="276" font-size="16" fill="#5A6573">tag goai-final-2026-09-03</text>
+    <line x1="274" y1="255" x2="302" y2="255" stroke="#1F4D78" stroke-width="2" marker-end="url(#arrowChain)"/>
+    <rect x="306" y="212" width="200" height="86" fill="#F3F5F8"/>
+    <rect x="306" y="212" width="200" height="4" fill="#1F4D78"/>
+    <text x="322" y="248" font-size="24" font-weight="700" fill="#1F4D78">配置</text>
+    <text x="322" y="276" font-size="16" fill="#5A6573">topic.md · scope.md</text>
+    <line x1="508" y1="255" x2="536" y2="255" stroke="#1F4D78" stroke-width="2" marker-end="url(#arrowChain)"/>
+    <rect x="540" y="212" width="200" height="86" fill="#F3F5F8"/>
+    <rect x="540" y="212" width="200" height="4" fill="#1F4D78"/>
+    <text x="556" y="248" font-size="24" font-weight="700" fill="#1F4D78">数据</text>
+    <text x="556" y="276" font-size="16" fill="#5A6573">bib · 核验记录 · 知识库</text>
+    <line x1="742" y1="255" x2="770" y2="255" stroke="#1F4D78" stroke-width="2" marker-end="url(#arrowChain)"/>
+    <rect x="774" y="212" width="200" height="86" fill="#F3F5F8"/>
+    <rect x="774" y="212" width="200" height="4" fill="#1F4D78"/>
+    <text x="790" y="248" font-size="24" font-weight="700" fill="#1F4D78">日志 / 轨迹</text>
+    <text x="790" y="276" font-size="16" fill="#5A6573">轨迹 jsonl · ledger</text>
+    <line x1="976" y1="255" x2="1004" y2="255" stroke="#1F4D78" stroke-width="2" marker-end="url(#arrowChain)"/>
+    <rect x="1008" y="212" width="200" height="86" fill="#1F4D78"/>
+    <text x="1024" y="248" font-size="24" font-weight="700" fill="#FFFFFF">结果文件</text>
+    <text x="1024" y="276" font-size="16" fill="#FFFFFF" fill-opacity="0.85">sections/*.tex → PDF</text>
+  </g>
+  <g id="p10-example">
+    <rect x="72" y="322" width="1136" height="176" fill="#FFFFFF" stroke="#D5DBE3" stroke-width="1"/>
+    <rect x="72" y="322" width="6" height="176" fill="#C48A2B"/>
+    <text x="100" y="354" font-size="18" fill="#5A6573">示例 · claim_evidence.jsonl 第 C012 条</text>
+    <text x="100" y="388" font-size="24" fill="#1D1D1F">“该文采用开放体系高温溶液法，并以单晶 X 射线衍射鉴定晶体。”</text>
+    <text x="100" y="424" font-size="18" fill="#1D1D1F">
+      <tspan x="100" dy="0">引用键 ababaikeri2024ba5y12zn · DOI 10.1039/D3NJ04480G · refcheck 三轴 <tspan fill="#2E7D32" font-weight="700">PASS</tspan> · 支持强度 strong</tspan>
+      <tspan x="100" dy="28">写作任务 write_identity_evidence（tasks_write_sections.tsv）→ parallel/20260901_003133_1289042/write_identity_evidence.jsonl</tspan>
+      <tspan x="100" dy="28">→ sections/01_phase_identity.tex → 正式 PDF 第 1 章“目标相出处”</tspan>
+    </text>
+  </g>
+  <g id="p10-stats-run">
+    <text x="72" y="540" font-size="24" font-weight="700" fill="#1F4D78">运行统计</text>
+    <text x="72" y="572" font-size="18" fill="#1D1D1F">
+      <tspan x="72" dy="0">40 个子任务 / 29 批 · 7,084 万输入 token</tspan>
+      <tspan x="72" dy="26">224 次工具函数调用 · 205 次网页搜索</tspan>
+      <tspan x="72" dy="26">134 条服务端审计的全文库与预测调用</tspan>
+    </text>
+  </g>
+  <g id="p10-stats-traces">
+    <text x="460" y="540" font-size="24" font-weight="700" fill="#1F4D78">Agent 轨迹（分目录）</text>
+    <text x="460" y="572" font-size="18" fill="#1D1D1F">
+      <tspan x="460" dy="0">构筑：原生 rollout 43 轮 + 网关 3,399 条</tspan>
+      <tspan x="460" dy="26">运行：40 个子任务 JSONL + 51 个原生会话</tspan>
+      <tspan x="460" dy="26">Harness：Codex CLI 0.146.1 · gpt-5.6-sol · xhigh</tspan>
+    </text>
+  </g>
+  <g id="p10-stats-data">
+    <text x="900" y="540" font-size="24" font-weight="700" fill="#1F4D78">数据边界</text>
+    <text x="900" y="572" font-size="18" fill="#1D1D1F">
+      <tspan x="900" dy="0">私有全文库（约 3,760 万篇）不公开</tspan>
+      <tspan x="900" dy="26">被引 51 篇中 21 篇全文进公开知识库</tspan>
+      <tspan x="900" dy="26">其余 30 篇以 DOI + 官方链接提供</tspan>
+    </text>
+  </g>
+  <g id="p10-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GoAI Research · GOAI 2026 复赛 · docs/competition/SUBMISSION.md §6</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">10 / 12</text>
+  </g>
+</svg>

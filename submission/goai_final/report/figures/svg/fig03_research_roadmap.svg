@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<linearGradient id="phase" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5F8F8"/><stop offset="1" stop-color="#DCE9EA"/></linearGradient>
+<linearGradient id="amber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4D9A3"/><stop offset="1" stop-color="#C88929"/></linearGradient>
+<linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BCD6D5"/><stop offset="1" stop-color="#477C80"/></linearGradient>
+<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset dy="5" result="off"/><feComponentTransfer><feFuncA type="linear" slope=".17"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#607E88"/></marker>
+<marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#B8791E"/></marker>
+</defs>
+<rect width="1600" height="900" fill="#FFFFFF"/>
+<text x="800" y="44" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="31px" font-weight="700" fill="#183A4A">从组成空间到可检验合成</text>
+<text x="800" y="78" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#657C86">Ba–Y–Si–O 近邻  ·  候选前驱体  ·  批量相区与单晶结构  ·  结果反馈</text>
+<text x="225" y="128" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="21px" font-weight="700" fill="#183A4A">组成空间</text>
+<path d="M 80 490 L 225 175 L 370 490 Z" fill="url(#phase)" stroke="#6C8994" stroke-width="2.0" opacity="1.0"/>
+<path d="M 112 455 C 145 398 175 350 224 250 C 266 344 307 395 340 455" fill="none" stroke="#B8CDD0" stroke-width="1.5" opacity="0.9"/>
+<path d="M 130 461 C 167 401 189 365 224 295 C 259 365 287 401 322 461" fill="none" stroke="#B8CDD0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 152 466 C 180 422 203 390 224 340 C 250 391 268 423 296 466" fill="none" stroke="#B8CDD0" stroke-width="1.1" opacity="0.8"/>
+<polygon points="207,398 225,347 245,386 231,431" fill="#D59729" stroke="#A86C18" stroke-width="1.4" opacity="0.82"/>
+<circle cx="225" cy="383" r="7" fill="#B8791E" stroke="#805317" stroke-width="1.2" opacity="1.0"/>
+<text x="225" y="525" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#516A75">Ba–Y–Si–O / Ba–Zn–Si–O / Y–Si–O</text>
+<text x="225" y="550" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="600" fill="#A86C18">局部候选区与竞争相</text>
+<text x="85" y="500" text-anchor="start" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Ba</text>
+<text x="355" y="500" text-anchor="end" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Y</text>
+<text x="225" y="184" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Zn</text>
+<polygon points="121,294 144.92000000000002,332.48 97.08,332.48" fill="#9FB8C4" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="121,294 144.92000000000002,332.48 121,340.28" fill="#9FB8C4" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="121,294 121,340.28 97.08,332.48" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="121" cy="294" r="2.86" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="144.92000000000002" cy="332.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="97.08" cy="332.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="326,289 349.92,327.48 302.08,327.48" fill="#9FB8C4" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="326,289 349.92,327.48 326,335.28" fill="#9FB8C4" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="326,289 326,335.28 302.08,327.48" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="326" cy="289" r="2.86" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="349.92" cy="327.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="302.08" cy="327.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<path d="M 372 374 C 442 337 494 300 552 263" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.9"/>
+<path d="M 542 252 L 565 258 L 548 273 Z" fill="#7895A0"/>
+<text x="800" y="126" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="22px" font-weight="700" fill="#183A4A">候选晶相</text>
+<text x="800" y="151" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">结构模型待实验确认</text>
+<g filter="url(#soft)">
+<polygon points="650,181 699.68,260.92 600.32,260.92" fill="#5A9797" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="650,181 699.68,260.92 650,277.12" fill="#5A9797" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="650,181 650,277.12 600.32,260.92" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="650" cy="181" r="5.94" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="699.68" cy="260.92" r="5.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="600.32" cy="260.92" r="5.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="755,158 812.04,249.76 697.96,249.76" fill="#6CA4A2" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="755,158 812.04,249.76 755,268.36" fill="#6CA4A2" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="755,158 755,268.36 697.96,249.76" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="755" cy="158" r="6.82" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="812.04" cy="249.76" r="6.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="697.96" cy="249.76" r="6.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="866,185 913.84,261.96 818.16,261.96" fill="#4E8587" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="866,185 913.84,261.96 866,277.56" fill="#4E8587" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="866,185 866,277.56 818.16,261.96" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="866" cy="185" r="5.72" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="913.84" cy="261.96" r="5.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="818.16" cy="261.96" r="5.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="700,265 759.8,361.2 640.2,361.2" fill="#4E8587" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="700,265 759.8,361.2 700,380.7" fill="#4E8587" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="700,265 700,380.7 640.2,361.2" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="700" cy="265" r="7.15" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="759.8" cy="361.2" r="6.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="640.2" cy="361.2" r="6.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="812,264 865.36,349.84 758.64,349.84" fill="#72AAA6" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="812,264 865.36,349.84 812,367.24" fill="#72AAA6" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="812,264 812,367.24 758.64,349.84" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="812" cy="264" r="6.38" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="865.36" cy="349.84" r="5.800000000000001" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="758.64" cy="349.84" r="5.800000000000001" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="925,271 983.88,365.72 866.12,365.72" fill="#5A9797" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="925,271 983.88,365.72 925,384.92" fill="#5A9797" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="925,271 925,384.92 866.12,365.72" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="925" cy="271" r="7.04" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="983.88" cy="365.72" r="6.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="866.12" cy="365.72" r="6.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="760,370 810.6,451.4 709.4,451.4" fill="#72AAA6" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="760,370 810.6,451.4 760,467.9" fill="#72AAA6" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="760,370 760,467.9 709.4,451.4" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="760" cy="370" r="6.05" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="810.6" cy="451.4" r="5.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="709.4" cy="451.4" r="5.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<polygon points="870,365 925.2,453.8 814.8,453.8" fill="#4C8186" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="870,365 925.2,453.8 870,471.8" fill="#4C8186" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="870,365 870,471.8 814.8,453.8" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="870" cy="365" r="6.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="925.2" cy="453.8" r="6.0" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="814.8" cy="453.8" r="6.0" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
+<line x1="650" y1="235" x2="755" y2="220" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="755" y1="220" x2="866" y2="237" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="700" y1="330" x2="812" y2="322" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="812" y1="322" x2="925" y2="335" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="700" y1="330" x2="760" y2="425" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="812" y1="322" x2="870" y2="425" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="755" y1="220" x2="700" y2="330" stroke="#6F8A91" stroke-width="1.5"/>
+<line x1="866" y1="237" x2="925" y2="335" stroke="#6F8A91" stroke-width="1.5"/>
+<circle cx="676" cy="275" r="17" fill="#B1C89E" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+<circle cx="838" cy="270" r="15" fill="#AABF95" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+<circle cx="968" cy="280" r="18" fill="#B1C89E" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+<circle cx="760" cy="370" r="14" fill="#B8A5C6" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+<circle cx="895" cy="380" r="16" fill="#AABF95" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+<circle cx="690" cy="407" r="12" fill="#B8A5C6" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
+</g>
+<path d="M 548 600 C 630 569 676 534 717 486" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.85"/>
+<path d="M 708 494 L 719 470 L 731 493 Z" fill="#7895A0"/>
+<path d="M 1020 470 C 1084 500 1117 534 1165 582" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.85"/>
+<path d="M 1155 574 L 1180 588 L 1158 598 Z" fill="#7895A0"/>
+<text x="200" y="625" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="19px" font-weight="700" fill="#183A4A">固相成相</text>
+<circle cx="72" cy="690" r="20" fill="#91A3A8" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="108" cy="684" r="17" fill="#B4A8C2" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="141" cy="699" r="18" fill="#A9B999" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="174" cy="686" r="16" fill="#D6C8B0" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<text x="123" y="730" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">前驱体粉体</text>
+<path d="M 215 681 Q 258 661 299 681 L 288 741 Q 258 760 226 741 Z" fill="#E9ECEA" stroke="#71828A" stroke-width="1.5"/>
+<path d="M 230 675 Q 258 692 287 675" fill="none" stroke="#71828A" stroke-width="1.4"/>
+<path d="M 270 654 L 300 620" stroke="#8B9AA0" stroke-width="9" stroke-linecap="round"/>
+<path d="M 300 620 L 309 611" stroke="#D3D8D7" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="349" cy="705" rx="28" ry="11" fill="#D8D1C6" stroke="#77868D" stroke-width="1.4"/>
+<rect x="326" y="705" width="46" height="20" fill="#C7BEB0" stroke="#77868D" stroke-width="1.4"/>
+<path d="M 399 677 Q 399 656 418 646 L 500 646 Q 519 656 519 677 L 519 741 L 399 741 Z" fill="#DCE0DF" stroke="#647982" stroke-width="1.7"/>
+<rect x="421" y="671" width="76" height="48" rx="23" fill="#6B7477" stroke="#404A4C" stroke-width="1.4"/>
+<rect x="435" y="680" width="48" height="31" rx="13" fill="#D8902B" opacity=".9"/>
+<rect x="447" y="691" width="24" height="12" rx="4" fill="#F5D39A"/>
+<text x="457" y="770" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">混合 · 压片 · 热处理</text>
+<path d="M 520 700 C 566 700 590 682 622 654" fill="none" stroke="#7895A0" stroke-width="2.0" opacity="0.8"/>
+<path d="M 612 644 L 636 647 L 620 665 Z" fill="#7895A0"/>
+<text x="650" y="625" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="19px" font-weight="700" fill="#805718">高温溶液长晶</text>
+<path d="M 574 683 L 714 683 L 691 758 Q 646 778 597 758 Z" fill="#D8DDDB" stroke="#687D83" stroke-width="1.6"/>
+<path d="M 594 704 Q 646 682 696 704 L 686 752 Q 645 766 604 752 Z" fill="url(#amber)" opacity=".88"/>
+<ellipse cx="646" cy="704" rx="51" ry="17" fill="#E5AF58" opacity=".72"/>
+<path d="M 744 760 L 744 679 Q 744 663 760 658 L 833 658 Q 849 663 849 679 L 849 760 Z" fill="#F1F2F0" stroke="#687D83" stroke-width="1.5"/>
+<ellipse cx="796" cy="679" rx="53" ry="16" fill="#E6A743" opacity=".85"/>
+<path d="M 768 732 L 796 659 L 823 732 L 796 759 Z" fill="#EBC27E" stroke="#A06C1D" stroke-width="1.4" opacity=".9"/>
+<path d="M 796 659 L 823 732 L 796 719 L 768 732 Z" fill="#F4DCA9" stroke="#A06C1D" stroke-width="1.1" opacity=".9"/>
+<text x="710" y="797" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#805718">熔体 · 保温 · 慢冷</text>
+<path d="M 852 696 C 898 696 927 686 963 661" fill="none" stroke="#B8791E" stroke-width="2.2" opacity="0.9"/>
+<path d="M 955 651 L 978 651 L 963 671 Z" fill="#B8791E"/>
+<text x="1350" y="126" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="21px" font-weight="700" fill="#183A4A">互补表征</text>
+<line x1="1168" y1="280" x2="1518" y2="280" stroke="#A5B3B8" stroke-width="1.2"/>
+<line x1="1168" y1="177" x2="1168" y2="280" stroke="#A5B3B8" stroke-width="1.2"/>
+<path d="M 1170 278 L 1190 278 L 1197 263 L 1203 278 L 1222 278 L 1230 220 L 1235 278 L 1258 278 L 1264 245 L 1269 278 L 1290 278 L 1299 188 L 1305 278 L 1328 278 L 1336 234 L 1341 278 L 1361 278 L 1370 205 L 1376 278 L 1397 278 L 1405 174 L 1410 278 L 1431 278 L 1440 228 L 1445 278 L 1465 278 L 1474 197 L 1480 278 L 1500 278 L 1514 260" fill="none" stroke="#2C5871" stroke-width="2.2" opacity="1.0"/>
+<text x="1345" y="307" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">粉末衍射 · 批量相组成</text>
+<g fill="none" stroke="#527789" stroke-width="1.5"><path d="M 1186 425 L 1280 390 L 1370 420 L 1274 456 Z"/><path d="M 1186 425 L 1186 510 L 1274 545 L 1274 456 Z"/><path d="M 1274 456 L 1370 420 L 1370 507 L 1274 545 Z"/><path d="M 1280 390 L 1280 477 L 1370 507"/><path d="M 1186 510 L 1280 477 L 1280 390"/></g>
+<circle cx="1186" cy="425" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1280" cy="390" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1370" cy="420" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1274" cy="545" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<text x="1350" y="574" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">单晶衍射 · 结构身份</text>
+<line x1="1190" y1="674" x2="1505" y2="674" stroke="#A5B3B8" stroke-width="1.2"/>
+<rect x="1190" y="632" width="315" height="13" rx="6" fill="#D9E2E2"/>
+<rect x="1302" y="632" width="93" height="13" rx="6" fill="#E1B561"/>
+<line x1="1215" y1="670" x2="1215" y2="688" stroke="#8298A0" stroke-width="1.2"/>
+<line x1="1302" y1="670" x2="1302" y2="688" stroke="#8298A0" stroke-width="1.2"/>
+<line x1="1395" y1="670" x2="1395" y2="688" stroke="#8298A0" stroke-width="1.2"/>
+<line x1="1488" y1="670" x2="1488" y2="688" stroke="#8298A0" stroke-width="1.2"/>
+<circle cx="1265" cy="674" r="6" fill="#4E7880" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1355" cy="674" r="7" fill="#B8791E" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1420" cy="674" r="6" fill="#4E7880" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<circle cx="1470" cy="674" r="6" fill="#A4B2B4" stroke="none" stroke-width="1.0" opacity="1.0"/>
+<text x="1350" y="716" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">EDS / EPMA · 实际化学计量</text>
+<path d="M 1490 744 C 1360 820 1160 820 1010 750" fill="none" stroke="#8299A1" stroke-width="1.8" opacity="0.75" stroke-dasharray="6 7"/>
+<path d="M 1022 740 L 1000 748 L 1018 761 Z" fill="#8299A1"/>
+<text x="1348" y="813" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">结果反馈至下一轮组成与工艺</text>
+<line x1="80" y1="850" x2="1520" y2="850" stroke="#D5DEE0" stroke-width="1.0"/>
+<text x="800" y="872" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#526A75">核心判据：批量相区、单晶结构与实际化学计量必须相互支持</text>
+</svg>

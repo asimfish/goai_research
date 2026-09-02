@@ -1,0 +1,602 @@
+{
+  "trace_root": "workspace/state/parallel",
+  "tasks": [
+    {
+      "task": "lit_additive_property",
+      "trace": "workspace/state/parallel/20260829_180609_2269638/lit_additive_property.jsonl",
+      "bytes": 938,
+      "events": 4,
+      "non_json_lines": 1,
+      "exit_code": 0,
+      "final_bytes": 1023,
+      "stderr_bytes": 0,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 465,
+      "max_command_output_bytes": 0,
+      "usage": {},
+      "flags": [
+        "NON_JSON_LINES"
+      ]
+    },
+    {
+      "task": "lit_doping_sintering",
+      "trace": "workspace/state/parallel/20260829_180609_2269638/lit_doping_sintering.jsonl",
+      "bytes": 5776,
+      "events": 6,
+      "non_json_lines": 1,
+      "exit_code": 0,
+      "final_bytes": 1059,
+      "stderr_bytes": 0,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 4400,
+      "max_command_output_bytes": 3910,
+      "usage": {},
+      "flags": [
+        "NON_JSON_LINES"
+      ]
+    },
+    {
+      "task": "lit_precursor_powder",
+      "trace": "workspace/state/parallel/20260829_180609_2269638/lit_precursor_powder.jsonl",
+      "bytes": 868,
+      "events": 4,
+      "non_json_lines": 1,
+      "exit_code": 0,
+      "final_bytes": 769,
+      "stderr_bytes": 0,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 396,
+      "max_command_output_bytes": 0,
+      "usage": {},
+      "flags": [
+        "NON_JSON_LINES"
+      ]
+    },
+    {
+      "task": "style_llzo",
+      "trace": "workspace/state/parallel/20260829_180609_2269638/style_llzo.jsonl",
+      "bytes": 362893,
+      "events": 31,
+      "non_json_lines": 1,
+      "exit_code": 0,
+      "final_bytes": 1561,
+      "stderr_bytes": 0,
+      "mcp_calls": 9,
+      "mcp_tools": {
+        "search_papers": 6,
+        "download_pdf": 3
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 70745,
+      "max_command_output_bytes": 6780,
+      "usage": {
+        "input_tokens": 345955,
+        "cached_input_tokens": 307200,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2639,
+        "reasoning_output_tokens": 645
+      },
+      "flags": [
+        "NON_JSON_LINES",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "lit_doping_repair",
+      "trace": "workspace/state/parallel/20260829_181830_2325339/lit_doping_repair.jsonl",
+      "bytes": 191635,
+      "events": 29,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 644,
+      "stderr_bytes": 39,
+      "mcp_calls": 6,
+      "mcp_tools": {
+        "local_corpus_status": 1,
+        "grep_local_corpus": 2,
+        "search_papers": 2,
+        "lookup": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 63548,
+      "max_command_output_bytes": 60474,
+      "usage": {
+        "input_tokens": 708103,
+        "cached_input_tokens": 622336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4402,
+        "reasoning_output_tokens": 636
+      },
+      "flags": [
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "lit_precursor_repair",
+      "trace": "workspace/state/parallel/20260829_181830_2325339/lit_precursor_repair.jsonl",
+      "bytes": 132835,
+      "events": 29,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 598,
+      "stderr_bytes": 39,
+      "mcp_calls": 5,
+      "mcp_tools": {
+        "local_corpus_status": 1,
+        "grep_local_corpus": 2,
+        "lookup": 2
+      },
+      "failed_mcp": [],
+      "failed_commands": [
+        {
+          "line": 5,
+          "exit_code": 2,
+          "command": "/bin/bash -lc \"python3 tools/loopctl.py status && sed -n '1,240p' skills/goai-lit-search/SKILL.md && printf '\\\\n--- topic.md ---\\\\n' && sed -n '1,220p' topic.md && printf '\\\\n--- scope.md ---\\\\n' && sed -n '1,260p' scope.md && printf '\\\\n--"
+        }
+      ],
+      "max_event_bytes": 62679,
+      "max_command_output_bytes": 59793,
+      "usage": {
+        "input_tokens": 340783,
+        "cached_input_tokens": 274688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3885,
+        "reasoning_output_tokens": 490
+      },
+      "flags": [
+        "COMMAND_FAILURE",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "lit_property_repair",
+      "trace": "workspace/state/parallel/20260829_181830_2325339/lit_property_repair.jsonl",
+      "bytes": 179432,
+      "events": 41,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 668,
+      "stderr_bytes": 39,
+      "mcp_calls": 5,
+      "mcp_tools": {
+        "local_corpus_status": 1,
+        "grep_local_corpus": 2,
+        "search_papers": 2
+      },
+      "failed_mcp": [],
+      "failed_commands": [
+        {
+          "line": 5,
+          "exit_code": 2,
+          "command": "/bin/bash -lc \"python3 tools/loopctl.py status && sed -n '1,240p' skills/goai-lit-search/SKILL.md && printf '\\\\n--- topic.md ---\\\\n' && sed -n '1,220p' topic.md && printf '\\\\n--- scope.md ---\\\\n' && sed -n '1,260p' scope.md\""
+        },
+        {
+          "line": 29,
+          "exit_code": 4,
+          "command": "/bin/bash -lc \"jq -r 'select(.type==\\\"item.completed\\\" and .item.type==\\\"agent_message\\\") | .item.text' workspace/state/parallel/20260829_180609_2269638/lit_additive_property.jsonl\""
+        }
+      ],
+      "max_event_bytes": 58569,
+      "max_command_output_bytes": 55775,
+      "usage": {
+        "input_tokens": 729110,
+        "cached_input_tokens": 664832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5731,
+        "reasoning_output_tokens": 735
+      },
+      "flags": [
+        "COMMAND_FAILURE",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "style_llzo_repair",
+      "trace": "workspace/state/parallel/20260829_181830_2325339/style_llzo_repair.jsonl",
+      "bytes": 1225504,
+      "events": 40,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 1160,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 1102172,
+      "max_command_output_bytes": 1048607,
+      "usage": {
+        "input_tokens": 789970,
+        "cached_input_tokens": 695296,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10544,
+        "reasoning_output_tokens": 741
+      },
+      "flags": [
+        "OVERSIZED_EVENT",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "lit_gather",
+      "trace": "workspace/state/parallel/20260829_182252_2344486/lit_gather.jsonl",
+      "bytes": 44573,
+      "events": 26,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 726,
+      "stderr_bytes": 39,
+      "mcp_calls": 2,
+      "mcp_tools": {
+        "coverage_report": 1,
+        "export_bibtex": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 10647,
+      "max_command_output_bytes": 10204,
+      "usage": {
+        "input_tokens": 221430,
+        "cached_input_tokens": 198400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4265,
+        "reasoning_output_tokens": 303
+      },
+      "flags": []
+    },
+    {
+      "task": "ref_guard_llzo",
+      "trace": "workspace/state/parallel/20260829_182502_2351994/ref_guard_llzo.jsonl",
+      "bytes": 33058,
+      "events": 31,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 738,
+      "stderr_bytes": 39,
+      "mcp_calls": 4,
+      "mcp_tools": {
+        "verify_bib_file": 1,
+        "deep_audit_info": 1,
+        "verify_entry": 2
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 5223,
+      "max_command_output_bytes": 4851,
+      "usage": {
+        "input_tokens": 301524,
+        "cached_input_tokens": 263424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4146,
+        "reasoning_output_tokens": 339
+      },
+      "flags": [
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "ref_guard_rerun",
+      "trace": "workspace/state/parallel/20260829_183215_2375296/ref_guard_rerun.jsonl",
+      "bytes": 16611,
+      "events": 28,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 503,
+      "stderr_bytes": 39,
+      "mcp_calls": 1,
+      "mcp_tools": {
+        "verify_bib_file": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 4502,
+      "max_command_output_bytes": 4173,
+      "usage": {
+        "input_tokens": 247422,
+        "cached_input_tokens": 224000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1935,
+        "reasoning_output_tokens": 200
+      },
+      "flags": []
+    },
+    {
+      "task": "writer_taxonomy_llzo",
+      "trace": "workspace/state/parallel/20260829_183457_2384770/writer_taxonomy_llzo.jsonl",
+      "bytes": 68708,
+      "events": 23,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 938,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 21332,
+      "max_command_output_bytes": 20076,
+      "usage": {
+        "input_tokens": 239090,
+        "cached_input_tokens": 203776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8576,
+        "reasoning_output_tokens": 539
+      },
+      "flags": []
+    },
+    {
+      "task": "figure_llzo_diagnostic",
+      "trace": "workspace/state/parallel/20260829_183832_2395867/figure_llzo_diagnostic.jsonl",
+      "bytes": 115582,
+      "events": 48,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 943,
+      "stderr_bytes": 39,
+      "mcp_calls": 6,
+      "mcp_tools": {
+        "figspec_schema": 1,
+        "validate_figspec": 3,
+        "render_figure": 1,
+        "drawio_export": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 13383,
+      "max_command_output_bytes": 12891,
+      "usage": {
+        "input_tokens": 577525,
+        "cached_input_tokens": 539136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10699,
+        "reasoning_output_tokens": 536
+      },
+      "flags": [
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "idea_llzo_diagnostic",
+      "trace": "workspace/state/parallel/20260829_183832_2395867/idea_llzo_diagnostic.jsonl",
+      "bytes": 51028,
+      "events": 31,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 1613,
+      "stderr_bytes": 39,
+      "mcp_calls": 4,
+      "mcp_tools": {
+        "provider_status": 1,
+        "inorganic_model_status": 1,
+        "predict_precursor_routes": 1,
+        "make_experiment_plan": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 11712,
+      "max_command_output_bytes": 10232,
+      "usage": {
+        "input_tokens": 268088,
+        "cached_input_tokens": 238080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4208,
+        "reasoning_output_tokens": 462
+      },
+      "flags": []
+    },
+    {
+      "task": "figure_llzo_visual_repair",
+      "trace": "workspace/state/parallel/20260829_184400_2413528/figure_llzo_visual_repair.jsonl",
+      "bytes": 112424,
+      "events": 47,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 858,
+      "stderr_bytes": 39,
+      "mcp_calls": 4,
+      "mcp_tools": {
+        "validate_figspec": 2,
+        "render_figure": 2
+      },
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 13383,
+      "max_command_output_bytes": 12891,
+      "usage": {
+        "input_tokens": 435439,
+        "cached_input_tokens": 388864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5257,
+        "reasoning_output_tokens": 880
+      },
+      "flags": [
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "idea_llzo_plan_repair",
+      "trace": "workspace/state/parallel/20260829_184542_2420024/idea_llzo_plan_repair.jsonl",
+      "bytes": 83452,
+      "events": 44,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 893,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [
+        {
+          "line": 16,
+          "exit_code": 1,
+          "command": "/bin/bash -lc \".venv/bin/python -c 'import json; from server.retro_server import provider_status,inorganic_model_status,predict_precursor_routes,make_experiment_plan; s=json.loads(provider_status()); i=json.loads(inorganic_model_status()); "
+        },
+        {
+          "line": 21,
+          "exit_code": 1,
+          "command": "/bin/bash -lc \"python3 -c 'import torch,numpy,pandas,pymatgen; print(\\\"deps_ok\\\")'\npython3 -c 'import json; from server.retro_server import provider_status,predict_precursor_routes,make_experiment_plan; s=json.loads(provider_status()); r=js"
+        }
+      ],
+      "max_event_bytes": 14945,
+      "max_command_output_bytes": 13357,
+      "usage": {
+        "input_tokens": 665324,
+        "cached_input_tokens": 608768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8685,
+        "reasoning_output_tokens": 1036
+      },
+      "flags": [
+        "COMMAND_FAILURE",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "reviewer_llzo_diagnostic",
+      "trace": "workspace/state/parallel/20260829_185104_2436894/reviewer_llzo_diagnostic.jsonl",
+      "bytes": 107741,
+      "events": 29,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 875,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 24098,
+      "max_command_output_bytes": 23385,
+      "usage": {
+        "input_tokens": 452451,
+        "cached_input_tokens": 405120,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6568,
+        "reasoning_output_tokens": 1299
+      },
+      "flags": [
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "figure_issue_i2",
+      "trace": "workspace/state/parallel/20260829_185653_2453932/figure_issue_i2.jsonl",
+      "bytes": 174679,
+      "events": 49,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 1125,
+      "stderr_bytes": 39,
+      "mcp_calls": 3,
+      "mcp_tools": {
+        "validate_figspec": 2,
+        "render_figure": 1
+      },
+      "failed_mcp": [],
+      "failed_commands": [
+        {
+          "line": 10,
+          "exit_code": 3,
+          "command": "/bin/bash -lc \"sed -n '1,140p' workspace/notes/figure_plan.md; jq '{canvas,defaults,groups,nodes:[.nodes[]|{id,label,group,x,y,w,h,fill,stroke}],edges}' workspace/figures/figspec/llzo_process_map.json\""
+        }
+      ],
+      "max_event_bytes": 13934,
+      "max_command_output_bytes": 13438,
+      "usage": {
+        "input_tokens": 612312,
+        "cached_input_tokens": 571648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9933,
+        "reasoning_output_tokens": 2097
+      },
+      "flags": [
+        "COMMAND_FAILURE",
+        "HIGH_INPUT_TOKENS"
+      ]
+    },
+    {
+      "task": "idea_issue_i3",
+      "trace": "workspace/state/parallel/20260829_185653_2453932/idea_issue_i3.jsonl",
+      "bytes": 43229,
+      "events": 20,
+      "non_json_lines": 0,
+      "exit_code": 3,
+      "final_bytes": 548,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 14277,
+      "max_command_output_bytes": 12866,
+      "usage": {
+        "input_tokens": 158270,
+        "cached_input_tokens": 127232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2211,
+        "reasoning_output_tokens": 164
+      },
+      "flags": [
+        "NONZERO_EXIT"
+      ]
+    },
+    {
+      "task": "idea_i3_validation",
+      "trace": "workspace/state/parallel/20260829_190152_2468878/idea_i3_validation.jsonl",
+      "bytes": 205608,
+      "events": 19,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 349,
+      "stderr_bytes": 39,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 166087,
+      "max_command_output_bytes": 156366,
+      "usage": {
+        "input_tokens": 210528,
+        "cached_input_tokens": 178432,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3137,
+        "reasoning_output_tokens": 221
+      },
+      "flags": []
+    },
+    {
+      "task": "reviewer_i2_i3_recheck",
+      "trace": "workspace/state/parallel/20260829_190334_2474030/reviewer_i2_i3_recheck.jsonl",
+      "bytes": 15719,
+      "events": 19,
+      "non_json_lines": 0,
+      "exit_code": 0,
+      "final_bytes": 445,
+      "stderr_bytes": 140,
+      "mcp_calls": 0,
+      "mcp_tools": {},
+      "failed_mcp": [],
+      "failed_commands": [],
+      "max_event_bytes": 7231,
+      "max_command_output_bytes": 6832,
+      "usage": {
+        "input_tokens": 188871,
+        "cached_input_tokens": 165376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1226,
+        "reasoning_output_tokens": 79
+      },
+      "flags": []
+    }
+  ]
+}
