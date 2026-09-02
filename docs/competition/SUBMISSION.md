@@ -141,6 +141,8 @@ bash scripts/smoke_test.sh --with-retro # 无网络、无 LLM：约 1–2 分钟
 
 冒烟测试通过时依次打印 `OK`：Python ≥ 3.10；4 个 MCP server 可导入；56 项离线测试通过；公开知识库可被 `lookup_local_doi` 命中；结论—证据链 100 条 / 51 键全部核验；figspec 渲染出 SVG 与 draw.io；（`--with-retro`）两步模型在 20 条留出目标上完成预测。最后一行 `SMOKE TEST PASSED`。
 
+干净环境实测（2026-09-03，本地克隆）：`bash install.sh` 13 秒，`bash scripts/smoke_test.sh` 5 秒全部通过。`--retro` 额外安装 `torch<2.8`（默认拉取 CUDA 12 wheel，约 2.5 GB），下载时长取决于网络；只做 CPU 复核时可先 `pip install torch --index-url https://download.pytorch.org/whl/cpu` 再运行 `install.sh --retro`。
+
 ```bash
 # 完整指标复算（GPU 约 20 分钟 / CPU 约 2 小时）
 .venv-retro/bin/python tools/eval_retro_benchmark.py --device cuda:0 --out /tmp/retro_check
