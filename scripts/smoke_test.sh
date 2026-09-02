@@ -64,10 +64,10 @@ print(f"OK  figspec -> svg ({len(svg)} bytes) + drawio ({len(drawio)} bytes)")
 PY
 
 if [[ $WITH_RETRO == 1 ]]; then
-  step "optional: two-stage precursor model on 20 held-out Retro test targets (CPU)"
+  step "optional: two-stage precursor model dry run (load both checkpoints, predict Li7La3Zr2O12 on CPU)"
   PY=.venv-retro/bin/python; [[ -x $PY ]] || PY=.venv/bin/python
-  $PY tools/eval_retro_benchmark.py --limit 20 --device cpu --out /tmp/goai_retro_smoke | tail -4
-  ok "retro model predicts; full-test-set numbers are in submission/goai_final/metrics/retro_benchmark.json"
+  $PY tools/retro_dry_run.py Li7La3Zr2O12 --device cpu | tail -9
+  ok "retro model loads and predicts (reference metrics: vendor/two_stage_retro/checkpoints/*_summary.json)"
 fi
 
 printf '\nSMOKE TEST PASSED\n'

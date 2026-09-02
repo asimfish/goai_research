@@ -130,7 +130,7 @@ Catalog read: 76 templates
 | ---- | -------- | ---- | ------------------------ | ----- |
 | P05 | pipeline_with_stages | templates/charts/pipeline_with_stages.svg | "Pick for 3-5 horizontal pipeline stages, each = title + 1-line description + output artifact, connected by arrows (data pipelines, ETL, build pipelines)." | RECIPE 三阶段（候选生成 → 过滤枚举 → 集合重排）+ MCP 输出产物 |
 | P06 | kpi_cards | templates/charts/kpi_cards.svg | "Pick for 4-8 standalone numeric metrics shown as overview cards (2x2 or 1x4) — exec summary opener, dashboard headline, quarterly recap, results-at-a-glance." | 正式案例四个关键数字（51/51、100 条、219 次、23 页） |
-| P09 | grouped_bar_chart | templates/charts/grouped_bar_chart.svg | "Pick for 2-4 series side-by-side across the same categories (e.g. YoY/QoQ)." | Retrieval-Retro vs RECIPE（本仓库重算）在 Combo@1 / Combo@5 / Combo@20 / Combo MRR 四类指标上的对照 |
+| P09 | grouped_bar_chart | templates/charts/grouped_bar_chart.svg | "Pick for 2-4 series side-by-side across the same categories (e.g. YoY/QoQ)." | Retrieval-Retro vs RECIPE（checkpoint 评测汇总）在 Combo@1 / Combo@5 / Combo@20 / Combo MRR 四类指标上的对照 |
 
 Runners-up considered:
 - numbered_steps | rejected for P05: 每个阶段都有明确输出产物（候选池 / 4,928 个集合 / Top-K 排序），pipeline_with_stages 更贴合
@@ -246,14 +246,14 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 
 #### Slide 09 - 基准指标
 - **Layout**: 左 2/3 分组柱状图，右 1/3 解读 + 一致性说明
-- **Title**: RECIPE 在 2,558 条留出反应上重算：Combo@1 71.81，比 Retrieval-Retro 高 11.4 点
-- **Core message**: 用与 MCP 工具完全相同的推理代码重算，结果与 checkpoint 自带汇总逐位一致、落在论文三种子区间内。
-- **Visualization**: grouped_bar_chart（两系列：Retrieval-Retro / RECIPE 本仓库重算；类别：Combo@1、Combo@5、Combo@20、Combo MRR；值 60.40/66.22/69.00/63.29 vs 71.81/84.71/89.21/77.48）
+- **Title**: 留出测试集 Combo@1 71.81，比 Retrieval-Retro 高 11.4 点
+- **Core message**: 指标来自随 checkpoint 提交的源包评测汇总，落在论文三种子区间内；逆合成部分只交 checkpoint、最小加载/预测代码与原料库，CPU dry run 保证可加载可预测。
+- **Visualization**: grouped_bar_chart（两系列：Retrieval-Retro / RECIPE checkpoint 评测汇总；类别：Combo@1、Combo@5、Combo@20、Combo MRR；值 60.40/66.22/69.00/63.29 vs 71.81/84.71/89.21/77.48）
 - **Content**:
   - Stage 1 Top-20 覆盖 95.78（基线 92.96）
   - 论文三种子均值：71.70 ± 0.10 / 84.52 ± 1.48 / 89.82 ± 1.74 / 77.43 ± 0.69
   - 同枚举 product 对照仅 Combo@1 11.65 / MRR 23.24 → 增益来自学习到的集合级排序，而非枚举或过滤
-  - 来源：submission/goai_final/metrics/retro_benchmark.json（GPU 19 分钟，逐目标名次在 per_target.jsonl）
+  - 来源：vendor/two_stage_retro/checkpoints/stage1_summary.json、stage2_summary.json；dry run：tools/retro_dry_run.py
 
 ### Part 4: 复现与开源
 
@@ -270,10 +270,10 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 #### Slide 11 - 复现情况与限制
 - **Layout**: 左栏命令与预期输出（等宽字体），右栏已知限制四条
 - **Title**: 干净环境一键冒烟 1–2 分钟；核心流程以闸门一致为复现判据
-- **Core message**: 确定性部分可逐位复现（基准、渲染、闸门）；LLM 部分不可逐字复现，以 check-done 退出 0、CITATION_AUDIT 全 PASS、整合率 ≥ 90% 为判据。
+- **Core message**: 确定性部分（模型 dry run、渲染、闸门）在干净环境稳定通过；LLM 部分不可逐字复现，以 check-done 退出 0、CITATION_AUDIT 全 PASS、整合率 ≥ 90% 为判据。
 - **Content**:
   - `bash install.sh --retro` → `bash scripts/smoke_test.sh --with-retro` → `SMOKE TEST PASSED`（56 项离线测试、4 个 MCP server、公开知识库、结论—证据链、figspec 渲染）
-  - `tools/eval_retro_benchmark.py --device cuda:0` → 逐位一致的基准 JSON
+  - `tools/retro_dry_run.py Li7La3Zr2O12` → 校验 checkpoint、CPU 预测 Top-5，RETRO DRY RUN PASSED
   - `bash scripts/reproduce_core.sh --topic "…"` → Codex CLI 0.146.1 · gpt-5.6-sol · reasoning xhigh，同一主题重跑整条流水线
   - 限制：目标相仅 1 篇直接报道，无"已验证配方" · 公开知识库覆盖 21/51 全文 · 终审为同家族模型冷启动复审 · 正式 PDF 含有记录的专家反馈修订
 

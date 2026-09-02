@@ -30,12 +30,12 @@
 指标复核、一条结论的完整追溯链。正式提交包在 [`submission/goai_final/`](submission/goai_final/README.md)：
 23 页正式报告 + LaTeX 源、复赛报告 DOCX、方案说明 PPT、`claim_evidence.jsonl`（100 条结论 → 219 次引用 → 51 个核验键）、
 被引文献全文精简知识库（`goai-compact-parquet-v1`）、40 个子任务的 Codex 事件流、构筑阶段原生 rollout、
-RECIPE 两阶段模型在 2,558 条留出反应上的重算指标。
+RECIPE 两阶段模型 checkpoint 及其评测汇总。
 
 ```bash
 bash install.sh --retro                    # 安装（.venv + 依赖 + MCP 配置）
 bash scripts/smoke_test.sh --with-retro    # 冒烟：无网络、无 LLM，1–2 分钟，末行 SMOKE TEST PASSED
-.venv-retro/bin/python tools/eval_retro_benchmark.py --device cuda:0 --out /tmp/retro   # 指标逐位复算
+.venv/bin/python tools/retro_dry_run.py       # 前驱体模型 dry run：校验 checkpoint 并在 CPU 上预测
 bash scripts/reproduce_core.sh             # 核心复现：一行主题 → 综述 PDF（需 Codex 登录、网络、TeX）
 bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个 zip
 ```
@@ -43,8 +43,8 @@ bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个
 ## 📰 动态
 
 - **2026-09-03 —— 复赛提交包。** `submission/goai_final/` 汇齐六项交付物；新增
-  `tools/eval_retro_benchmark.py`（与 MCP 工具同一推理路径重算 Retro 测试集：Combo@1 71.81 /
-  Combo@20 89.21 / MRR 77.48，与 checkpoint 汇总逐位一致）、`tools/build_cited_corpus.py`
+  `tools/retro_dry_run.py`（最小加载 + 预测 dry run；逆合成部分只交 checkpoint、最小推理代码与原料库，
+  指标以随 checkpoint 提交的评测汇总为准）、`tools/build_cited_corpus.py`
   （仅导出被引文献全文为精简 Parquet）、`tools/build_claim_evidence.py`（结论—证据映射）、
   `tools/export_submission_bundle.py`（运行/构筑轨迹受控导出 + 密钥脱敏）、`tools/build_report_docx.py`
   （官方模板灌装）、`scripts/smoke_test.sh` / `scripts/reproduce_core.sh` / `scripts/package_submission.sh`。

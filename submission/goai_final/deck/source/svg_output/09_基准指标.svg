@@ -3,20 +3,20 @@
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
   <g id="p09-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">留出测试集重算：Combo@1 71.81，比 Retrieval-Retro 高 11.4 点</text>
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">留出测试集 Combo@1 71.81，比 Retrieval-Retro 高 11.4 点</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
   <g id="p09-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
-      <tspan x="72" dy="0">用与 MCP 工具<tspan fill="#C48A2B" font-weight="700">完全相同的推理代码</tspan>在 2,558 条留出反应上重算，结果与 checkpoint</tspan>
-      <tspan x="72" dy="38">自带汇总<tspan fill="#C48A2B" font-weight="700">逐位一致</tspan>，并落在论文三种子均值的误差区间内。</tspan>
+      <tspan x="72" dy="0">指标来自随 checkpoint 提交的源包评测汇总（2,558 条留出反应），落在论文三种子区间内；</tspan>
+      <tspan x="72" dy="38">逆合成部分只交 checkpoint、最小加载/预测代码与原料库，<tspan fill="#C48A2B" font-weight="700">CPU dry run 保证模型可加载、可预测</tspan>。</tspan>
     </text>
   </g>
   <g id="p09-legend">
     <rect x="140" y="220" width="16" height="16" fill="#8A94A0"/>
     <text x="166" y="233" font-size="16" fill="#5A6573">Retrieval-Retro（先前最优基线）</text>
     <rect x="420" y="220" width="16" height="16" fill="#1F4D78"/>
-    <text x="446" y="233" font-size="16" fill="#5A6573">RECIPE 两阶段模型（本仓库重算，单种子 20260504）</text>
+    <text x="446" y="233" font-size="16" fill="#5A6573">RECIPE（checkpoint 评测汇总，种子 20260504）</text>
   </g>
   <g id="p09-chart" data-pptx-native="chart">
     <metadata data-pptx-native="chart">
@@ -30,7 +30,7 @@
         "categories": ["Combo@1", "Combo@5", "Combo@20", "Combo MRR"],
         "series": [
           {"name": "Retrieval-Retro", "values": [60.40, 66.22, 69.00, 63.29]},
-          {"name": "RECIPE (recomputed)", "values": [71.81, 84.71, 89.21, 77.48]}
+          {"name": "RECIPE (checkpoint summary)", "values": [71.81, 84.71, 89.21, 77.48]}
         ],
         "data_labels": {"number_format": "0.00", "font_size": 16},
         "style": {"colors": ["#8A94A0", "#1F4D78"], "font_family": "Microsoft YaHei"}
@@ -88,9 +88,9 @@
       <tspan x="864" dy="26">   而非候选枚举或过滤本身</tspan>
     </text>
     <text x="864" y="592" font-size="16" fill="#5A6573">
-      <tspan x="864" dy="0">eval_retro_benchmark.py · GPU 19 分钟</tspan>
-      <tspan x="864" dy="24">metrics/retro_benchmark.json</tspan>
-      <tspan x="864" dy="24">逐目标名次：…per_target.jsonl</tspan>
+      <tspan x="864" dy="0">来源：vendor/two_stage_retro/checkpoints/</tspan>
+      <tspan x="864" dy="24">stage1_summary.json · stage2_summary.json</tspan>
+      <tspan x="864" dy="24">dry run：tools/retro_dry_run.py（CPU 数秒）</tspan>
     </text>
   </g>
   <g id="p09-footer">

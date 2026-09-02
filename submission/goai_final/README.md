@@ -14,7 +14,7 @@ run_llzo/          次要案例（LLZO 诊断轮）：账本、MCP 日志、子�
 traces/            development/  构筑阶段 Agent 轨迹（Codex 原生 rollout + 网关消息导出）
                    runtime_native_sessions/  codex exec 子任务的原生 rollout（08-29 LLZO、08-31 BYZSO 首轮）
                    codex_sessions_index.json
-metrics/           retro_benchmark.json（2,558 条留出测试集重算）、agent_trace_stats_*.md/json
+metrics/           agent_trace_stats_*.md/json（前驱体模型指标见 vendor/two_stage_retro/checkpoints/*_summary.json）
 MANIFEST.sha256    包内每个文件的 SHA-256
 VERSION            生成本包的 git commit
 ```
@@ -27,5 +27,5 @@ VERSION            生成本包的 git commit
 .venv/bin/python tools/build_cited_corpus.py --bib submission/goai_final/report/references.bib \
     --out submission/goai_final/evidence/corpus_release       # 需要 GOAI_LOCAL_CORPUS_* 指向私有库
 .venv/bin/python tools/build_claim_evidence.py --bundle submission/goai_final
-.venv-retro/bin/python tools/eval_retro_benchmark.py --device cuda:0 --out submission/goai_final/metrics/retro_benchmark
+.venv/bin/python tools/retro_dry_run.py Li7La3Zr2O12      # 前驱体模型 dry run（CPU）
 ```

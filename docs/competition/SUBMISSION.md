@@ -16,7 +16,7 @@
 | 代码 1 | 系统复现包 | 全部源代码 `server/`（4 个 MCP server、25 个工具）、`skills/`（9 个 agent 的全部 Prompt）、`AGENTS.md`、`tools/`、`vendor/two_stage_retro/`（预测模型代码 + checkpoint）、`configs/*.example`、`.env.example`、`pyproject.toml` + `uv.lock`（依赖版本）、`docs/competition/TASK_PROMPT.md`；构筑阶段 Agent 轨迹 `submission/goai_final/traces/development/` |
 | 代码 2 | 研究数据与证据包 | `submission/goai_final/evidence/`：`references.bib`（51 条）、`papers.jsonl`（63 条候选）、`claim_evidence.jsonl`（100 条结论 → 219 次引用）、`CITATION_AUDIT.json`（逐条核验）、`notes/condition_source_trace.md`（合成条件单元格 → 原文页/节）、`corpus_release/`（被引文献全文的精简 Parquet 知识库 + 构建脚本 `tools/build_cited_corpus.py`） |
 | 代码 3 | 运行与评测包 | `submission/goai_final/run/`：输入 `inputs/topic.md`、子任务提示词 `tasks/*.tsv`、账本 `ledger.json`、MCP 审计日志 `tool_calls.jsonl`、审稿 trace、Codex 事件流 `traces/runtime/parallel/<batch>/<task>.jsonl`（40 个子任务）、`traces/runtime/orchestrator/`、`RUN_MANIFEST.json`；次要案例 `submission/goai_final/run_llzo/`；原生 Codex 会话 `submission/goai_final/traces/runtime_native_sessions/` |
-| 代码 4 | 指标与分析代码 | `tools/eval_retro_benchmark.py`（前驱体预测基准复现）、`tools/build_claim_evidence.py`（引用—证据链与核验率）、`tools/analyze_agent_traces.py`（轨迹统计）、`tools/bib_guard.py` / `tools/tex_guard.py` / `tools/academic_language_guard.py`（稿件闸门）；结果 `submission/goai_final/metrics/` |
+| 代码 4 | 指标与分析代码 | `tools/build_claim_evidence.py`（引用—证据链与核验率）、`tools/analyze_agent_traces.py`（轨迹统计）、`tools/bib_guard.py` / `tools/tex_guard.py` / `tools/academic_language_guard.py`（稿件闸门）；结果 `submission/goai_final/metrics/`。逆合成部分按最小交付：两个 checkpoint + 最小加载/预测代码（`server/core/inorganic_retro.py`、`vendor/two_stage_retro/`）+ 必备原料库；其基准指标以随 checkpoint 提交的源包评测汇总（`vendor/two_stage_retro/checkpoints/*_summary.json`）为准，不另附评测脚本；`tools/retro_dry_run.py` 保证模型可加载、可预测 |
 | 代码 5 | README + 一键命令 | `README.md` / `README_CN.md`、本文件、`scripts/smoke_test.sh`、`scripts/reproduce_core.sh`、`install.sh` |
 
 `submission/goai_final/MANIFEST.sha256` 列出提交包内每个文件的 SHA-256。
@@ -74,7 +74,7 @@
 | 私有全文库 | 团队自建 Markdown 化全文库（约 3.76 千万篇，1990s–2021），DuckDB/Parquet 分片 + SQLite DOI 索引 | **不公开**（版权） | `grep_local_corpus` / `lookup_local_doi` 在公开环境只能命中下方精简包中的 21 篇；在线检索与核验（Crossref/OpenAlex/arXiv）不受影响 |
 | 被引文献精简知识库 | `evidence/corpus_release/corpus.parquet`（`goai-compact-parquet-v1`）：正式报告 51 条参考文献中，私有库内有全文的 **21 篇** Markdown 全文；其余 30 篇（多为 2022–2026 年发表或不在库中）以 DOI + 官方链接形式列于 `cited_references_index.json` | 全文仅供评审复现使用，出版社版权保留，不得二次分发（`license` 字段已写明） | 构建脚本 `tools/build_cited_corpus.py`；`corpus_manifest.json` 含每篇 SHA-256；`tools/check.sh --corpus` 可验证 |
 | 文献元数据与摘要 | `evidence/papers.jsonl`（63 条候选，来自 Crossref/OpenAlex/arXiv/S2） | 公开 API 元数据 | 完整提交 |
-| 前驱体预测训练数据 | Retrieval-Retro 年份切分基准（源自 Ceder 文本挖掘合成数据集）：24,034 训练 / 1,842 验证 / 2,558 测试；`vendor/two_stage_retro/data/retro_split.csv` | 随源基准公开；本仓库只含推理所需最小数据与两份 checkpoint | 测试集与 checkpoint 完整提交，指标可独立重算（§5） |
+| 前驱体预测原料库 | Retrieval-Retro 年份切分基准（源自 Ceder 文本挖掘合成数据集）：24,034 训练 / 1,842 验证 / 2,558 测试；`vendor/two_stage_retro/data/`（前驱体词表与化学式、电荷表、`retro_split.csv` 用于化学先验的共现统计） | 随源基准公开；本仓库只含推理所需最小数据与两份 checkpoint | 推理所需原料库完整提交；指标以随 checkpoint 提交的评测汇总为准（§5.1） |
 | 风格库 | 30 篇经典综述的写作/画图风格卡（`style_bank`） | 风格卡为派生文本；原文 PDF 不分发 | 不影响闸门判定 |
 | 模拟语料 | `examples/demo_corpus/`（3 条 CC0 合成文本，`citable=false`） | CC0 | 用于无私有数据时验证工具链 |
 
@@ -94,17 +94,17 @@
 
 在综述流水线中，`goai-idea-forge` 对每个研究方向调用一次该工具，结果只能以"模型候选、待实验验证"（`chemical_route_verified=false`）写入正文，并保留 `stage1_probability`、`stage2_score` 与候选池内概率供审稿人核对；正式报告中对 Zn / Mg / Co 三个目标各调用一次（`run/ideas/precursor_predictions.md`，原始请求与返回在 `run/tool_calls.jsonl`）。
 
-指标复核脚本 `tools/eval_retro_benchmark.py` 用**与 MCP 工具完全相同的推理代码**在 2,558 条留出测试反应上重算：
+逆合成部分按**最小交付**提交：两个 checkpoint（SHA-256 见 `vendor/two_stage_retro/PROVENANCE.md`）、最小加载与预测代码、必备原料库（前驱体词表与化学式、电荷表、用于化学先验的训练集共现统计），不另附评测脚本。基准指标以随 checkpoint 提交的源包评测汇总（`checkpoints/stage1_summary.json`、`stage2_summary.json`，单种子 20260504，Retro 测试集 2,558 条，全分母）为准：
 
-| 指标（Retro 测试集，全分母） | 本仓库重算 | checkpoint 自带汇总 | 论文 3 种子均值 | Retrieval-Retro 基线 |
-|---|---:|---:|---:|---:|
-| Stage 1 Top-20 前驱体覆盖 | 95.78 | 95.78 | 95.93 ± 0.18 | 92.96 |
-| Combo@1（精确集合命中） | 71.81 | 71.81 | 71.70 ± 0.10 | 60.40 |
-| Combo@20 | 89.21 | 89.21 | 89.82 ± 1.74 | 69.00 |
-| Combo MRR | 77.48 | 77.48 | 77.43 ± 0.69 | 63.29 |
-| 同枚举 product 对照 Combo@1 / MRR | 11.65 / 23.24 | 11.65 / 23.24 | 11.65 / 23.24 | — |
+| 指标（Retro 测试集，全分母） | checkpoint 评测汇总 | 论文 3 种子均值 | Retrieval-Retro 基线 |
+|---|---:|---:|---:|
+| Stage 1 Top-20 前驱体覆盖 | 95.78 | 95.93 ± 0.18 | 92.96 |
+| Combo@1（精确集合命中） | 71.81 | 71.70 ± 0.10 | 60.40 |
+| Combo@20 | 89.21 | 89.82 ± 1.74 | 69.00 |
+| Combo MRR | 77.48 | 77.43 ± 0.69 | 63.29 |
+| 同枚举 product 对照 Combo@1 / MRR | 11.65 / 23.24 | 11.65 / 23.24 | — |
 
-重算与 checkpoint 自带汇总逐位一致（单种子 20260504），并落在论文报告的三种子区间内；逐目标结果（真值集合在重排列表中的名次）在 `metrics/retro_benchmark.per_target.jsonl`。
+包内模型的可用性由 `tools/retro_dry_run.py` 保证：它沿与 MCP 工具完全相同的推理路径校验两个 checkpoint 的 SHA-256、从原料库构建化学先验、在 CPU 上对目标式完成 Top-K 预测（首个目标约 3–7 秒），`scripts/smoke_test.sh --with-retro` 会自动执行。干净环境实测 Li7La3Zr2O12 → Top-1 `ZrO2 + La2O3 + Li2CO3`，与正式运行中的记录一致。
 
 ### 5.2 文献与引用完整性
 
@@ -141,13 +141,11 @@ bash scripts/smoke_test.sh --with-retro # 无网络、无 LLM：约 1–2 分钟
 
 冒烟测试通过时依次打印 `OK`：Python ≥ 3.10；4 个 MCP server 可导入；56 项离线测试通过；公开知识库可被 `lookup_local_doi` 命中；结论—证据链 100 条 / 51 键全部核验；figspec 渲染出 SVG 与 draw.io；（`--with-retro`）两步模型在 20 条留出目标上完成预测。最后一行 `SMOKE TEST PASSED`。
 
-干净环境实测（2026-09-03，本地克隆）：`bash install.sh` 13 秒，`bash scripts/smoke_test.sh` 5 秒全部通过。`--retro` 额外安装 `torch<2.8`（默认拉取 CUDA 12 wheel，约 2.5 GB），下载时长取决于网络；只做 CPU 复核时可先 `pip install torch --index-url https://download.pytorch.org/whl/cpu` 再运行 `install.sh --retro`。
+干净环境实测（2026-09-03，本地克隆）：`bash install.sh` 13 秒，`bash scripts/smoke_test.sh` 5 秒全部通过；`bash install.sh --retro` 约 10 分钟（torch 默认从 CPU 轮子源安装，168 MB；GPU 用户设 `GOAI_TORCH_INDEX=https://download.pytorch.org/whl/cu128`），`bash scripts/smoke_test.sh --with-retro` 13 秒，dry run 通过。
 
 ```bash
-# 完整指标复算（GPU 约 20 分钟 / CPU 约 2 小时）
-.venv-retro/bin/python tools/eval_retro_benchmark.py --device cuda:0 --out /tmp/retro_check
-diff <(python3 -c 'import json;print(json.load(open("/tmp/retro_check.json"))["stage2_reranker"])') \
-     <(python3 -c 'import json;print(json.load(open("submission/goai_final/metrics/retro_benchmark.json"))["stage2_reranker"])')
+# 前驱体预测模型 dry run（CPU，数秒；--json 输出完整工具返回）
+.venv/bin/python tools/retro_dry_run.py Li7La3Zr2O12 Ba5Y12ZnSi8O40
 
 # 核心流程复现：一行主题 → 综述 PDF（需 Codex CLI 登录、网络、TeX；数小时，token 量见 §5.3）
 bash scripts/reproduce_core.sh                      # 默认正式主题，使用公开精简知识库
@@ -156,7 +154,7 @@ bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结�
 
 核心复现的判定标准不是逐字相同的 PDF（LLM 不可逐字复现），而是：`loopctl check-done` 退出 0；`CITATION_AUDIT.md` 中全部条目 PASS；`bib_guard` 整合率 ≥ 90%；产出 `main.pdf`、`references.bib`、`figures/{svg,drawio}`、逐子任务 JSONL 轨迹与 `tool_calls.jsonl`。
 
-算力与成本：确定性组件仅需 CPU（前驱体预测单次查询秒级；全测试集 GPU 19 分钟）；LLM 调用量以正式运行为参考（§5.3）。
+算力与成本：确定性组件仅需 CPU（前驱体预测单次查询秒级）；LLM 调用量以正式运行为参考（§5.3）。
 
 ---
 

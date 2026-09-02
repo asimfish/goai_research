@@ -22,11 +22,11 @@
 
 ### 无机逆合成（RECIPE）
 - [x] 两个 checkpoint 固定并校验 SHA-256；`predict_precursor_routes` 接入想法环节；正式报告 3 次调用留痕。
-- [x] `tools/eval_retro_benchmark.py` 在 2,558 条留出反应上重算：Combo@1 71.81 / Combo@20 89.21 / MRR 77.48（与 checkpoint 汇总逐位一致）。
+- [x] 最小交付：两个 checkpoint + 最小加载/预测代码 + 必备原料库；指标以随 checkpoint 提交的评测汇总为准（Combo@1 71.81 / Combo@20 89.21 / MRR 77.48）；`tools/retro_dry_run.py` 在干净环境 CPU 上通过。
 - [x] 模型输出一律标注 `chemical_route_verified=false`，经文献补全与审稿复核后才进入正文。
 
 ### 评测与输出
-- [x] 人读 PDF（23 页）+ 机器读 `claim_evidence.jsonl` / `CITATION_AUDIT.json` / `retro_benchmark.json`。
+- [x] 人读 PDF（23 页）+ 机器读 `claim_evidence.jsonl` / `CITATION_AUDIT.json`。
 - [x] 全部输入配置、子任务提示词、账本、MCP 审计日志、异常与超时任务均保留在 `submission/goai_final/run/`。
 
 ### 复现与合规
