@@ -405,12 +405,14 @@ def test_aesthetics_edges_canvas_and_hierarchy():
                        _node("c", 420, 60, stroke_width=2.4)]}
     w = _aes(tiers)["warnings"]
     assert any("描边粗细" in x for x in w) and any("标题" in x and "最大" in x for x in w), w
-    # 仓库样例图与正式报告图：美学项不得产生 error（历史告警允许，但不能被新规则挡住出图）
-    for p in ("examples/pipeline.figspec.json",
-              "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig01_evidence_synthesis_map.json",
-              "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig02_route_variable_matrix.json",
-              "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig03_research_roadmap.json",
-              "submission/03_运行与评测包/LLZO诊断轮/最终输出/figures/figspec/llzo_process_map.json"):
+    # 仓库样例图与正式报告图：美学项不得产生 error（历史告警允许，但不能被新规则挡住出图）。
+    # 报告图源随 submission/ 提供；在只含代码快照的归档里可能不存在，届时只检查样例图。
+    report_figs = ("submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig01_evidence_synthesis_map.json",
+                   "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig02_route_variable_matrix.json",
+                   "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig03_research_roadmap.json",
+                   "submission/03_运行与评测包/LLZO诊断轮/最终输出/figures/figspec/llzo_process_map.json")
+    specs = ["examples/pipeline.figspec.json"] + [p for p in report_figs if os.path.exists(os.path.join(ROOT, p))]
+    for p in specs:
         with open(os.path.join(ROOT, p), encoding="utf-8") as f:
             assert _aes(json.load(f))["errors"] == [], p
 

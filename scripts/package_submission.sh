@@ -63,12 +63,25 @@ cp "$SUB/README.md" "$SUB/VERSION" "$SUB/MANIFEST.sha256" "$CD/"
 # the large run/trace/deck folders live in their own numbered folders instead.
 rsync -a \
   --exclude '.git/' --exclude 'dist/' --exclude '.venv/' --exclude '.venv-retro/' \
-  --exclude 'workspace/' --exclude 'workspace_repro_*/' --exclude 'workspace_runs/' \
+  --exclude 'workspace/' --exclude 'workspace_live/' --exclude 'workspace_repro_*/' --exclude 'workspace_runs/' \
   --exclude '__pycache__/' --exclude '*.pyc' --exclude '.pytest_cache/' --exclude '.cache/' \
-  --exclude '*.egg-info/' \
+  --exclude '*.egg-info/' --exclude '*.jsonl.lock' \
   --exclude 'submission/03_运行与评测包/' --exclude 'submission/方案说明PPT/' --exclude 'submission/复赛报告/' \
   --exclude 'submission/01_系统复现包/构筑阶段轨迹/' \
   ./ "$CD/01_系统复现包/goai_research/"
+cat > "$CD/01_系统复现包/goai_research/submission/PACKAGE_NOTE.md" <<'NOTE'
+# 归档说明
+
+本目录是代码材料压缩包内的仓库快照。为避免重复打包，以下内容没有放在这里，
+而是位于压缩包根目录（与 `goai_research/` 平级）：
+
+- `submission/01_系统复现包/构筑阶段轨迹/` → 压缩包根 `01_系统复现包/构筑阶段轨迹/`
+- `submission/03_运行与评测包/` → 压缩包根 `03_运行与评测包/`
+- `submission/方案说明PPT/`、`submission/复赛报告/` → 非代码材料压缩包
+
+GitHub 仓库 <https://github.com/asimfish/goai_research> 中这些目录均在原位；
+`docs/competition/SUBMISSION.md` 里的路径以仓库布局为准。
+NOTE
 cp -a "$SUB/01_系统复现包/构筑阶段轨迹"        "$CD/01_系统复现包/构筑阶段轨迹"
 cp    "$SUB/01_系统复现包/codex_sessions_index.json" "$SUB/01_系统复现包/README.md" "$CD/01_系统复现包/"
 cp -a "$SUB/02_研究数据与证据包"  "$CD/02_研究数据与证据包"
