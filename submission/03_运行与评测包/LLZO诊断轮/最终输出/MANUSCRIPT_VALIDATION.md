@@ -1,6 +1,21 @@
 # LLZO manuscript validation
 
-## Deliverable status
+## Deliverable status (rebuilt 2026-09-03 with TeX)
+
+`main.pdf` is now a genuine TeX build of `main.tex` (xelatex → bibtex → xelatex ×2,
+Producer `MiKTeX-dvipdfmx`, 16 pages, 151003 bytes, SHA256 `47b9555e0a4f49a5c45f8f6ff4014a53cb68e145e378868f09b0f8e983f8f8ad`), replacing the
+2026-08-29 headless-Chrome render that had no abstract block, no numbered headings,
+system fonts and black citations. Gates passed on the shipped sources:
+`tex_guard` PASS (0 blocking), `bib_guard` PASS (46/46 keys integrated, 15.7 cites per
+1,000 words, 0 field-hygiene warnings after `tools/bib_polish.py`),
+`academic_language_guard` PASS, `tools/pdf_guard.py` PASS (TeX producer, NewTX/TeX Gyre
+Termes fonts, fresh against sources, Abstract block, numbered headings).
+Changes made for the rebuild: figure embedded from `figures/pdf/llzo_process_map.pdf`
+(exported from the same `.drawio`) instead of `\includesvg`; bibliography titles brace-
+protected and redundant `url` fields dropped (`bib_polish`); prose slashes made breakable
+(`tex_polish`), which removed all Overfull boxes. Scientific content unchanged.
+
+## Historical record (superseded)
 
 The source bundle and host-rendered PDF are complete. The primary deliverable is
 `final_report.pdf`; `main.pdf` and `LLZO_Synthesis_Survey.pdf` are byte-identical

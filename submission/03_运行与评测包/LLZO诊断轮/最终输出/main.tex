@@ -34,7 +34,7 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
 \emergencystretch=1.5em
-\usepackage{svg}
+\IfFileExists{svg.sty}{\usepackage{svg}}{}
 
 \definecolor{warningred}{HTML}{A61B1B}
 \definecolor{warningbg}{HTML}{FFF4F4}
