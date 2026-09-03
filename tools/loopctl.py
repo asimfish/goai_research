@@ -24,7 +24,10 @@
 gate 状态语义：
   PASS    通过；PASS 前建议带 --inputs 记录产物指纹；review_pass 记 PASS
           **必须**带 --receipt "model=<审稿模型>;trace=<存档路径>"，且 trace 文件
-          存在且非占位（无回执/空 trace 的审稿等于没审，命令直接拒绝）
+          存在且非占位（无回执/空 trace 的审稿等于没审，命令直接拒绝）；
+          draft_complete 记 PASS **必须**在 --inputs 里给出终稿 PDF 并通过
+          tools/pdf_guard.py（只能是 TeX 从模板编译的产物；环境缺 TeX 就记 FAIL，
+          禁止用 groff/HTML→Chrome 等回退渲染器冒充）
   FAIL    未通过，阻塞 check-done
   WARN    合规跳过/带保留通过（如 ideas 支线跳过），不阻塞 check-done
   PENDING 待复审（级联失效重置用），阻塞 check-done
@@ -55,6 +58,34 @@ REQUIRED_GATES = ["scope_confirmed", "lit_coverage", "style_bank_ready",
 RECEIPT_GATES = {"review_pass"}
 # 回执 trace 的最小体量：完整的审稿提问+回复不可能低于此，低于即视为占位文件
 RECEIPT_TRACE_MIN_BYTES = 512
+# 记 PASS 必须在 --inputs 里给出终稿 PDF 且通过 tools/pdf_guard.py 的闸门：
+# PDF 只能由 TeX 从模板编译；实跑中出现过 groff/HTML→Chrome 渲染的 PDF 被记 PASS
+PDF_GATES = {"draft_complete"}
+
+
+def _pdf_guard_problem(inputs: list[str]) -> str | None:
+    """draft_complete PASS 的 PDF 来源校验；合规返回 None。"""
+    pdfs = [p for p in inputs if p.lower().endswith(".pdf")]
+    if not pdfs:
+        return ("draft_complete 记 PASS 必须在 --inputs 里给出终稿 PDF（如 workspace/drafts/main.pdf）；"
+                "环境缺 TeX 无法编译时该 gate 只能记 FAIL 并如实汇报『PDF 未编译』")
+    tex = next((p for p in inputs if p.lower().endswith(".tex")), None)
+    bib = next((p for p in inputs if p.lower().endswith(".bib")), None)
+    guard = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pdf_guard.py")
+    cmd = [sys.executable, guard, pdfs[0]]
+    if tex:
+        cmd += ["--tex", tex]
+    if bib:
+        cmd += ["--bib", bib]
+    try:
+        import subprocess
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return f"pdf_guard 无法执行: {exc}"
+    if r.returncode == 0:
+        return None
+    tail = "\n".join((r.stdout + r.stderr).strip().splitlines()[-8:])
+    return f"pdf_guard 未通过（PDF 不是 TeX 从模板编译的产物，或陈旧/缺摘要/缺编号）:\n{tail}"
 
 
 def _parse_receipt(raw: str) -> dict[str, str]:
@@ -203,6 +234,10 @@ def cmd_gate(args) -> None:
         problem = _receipt_problem(args.receipt)
         if problem:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
+    if args.name in PDF_GATES and args.status == "PASS":
+        problem = _pdf_guard_problem([p.strip() for p in (args.inputs or "").split(",") if p.strip()])
+        if problem:
+            sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     if args.name not in REQUIRED_GATES:
         # 自造 gate 名（ref_audit / review_round1 …）不计入必需集，账本会
         # 「看起来全 PASS」却过不了 check-done——当场提醒，别等收尾才发现
@@ -317,6 +352,13 @@ def cmd_check_done(_args) -> None:
         g = lg["gates"].get(name)
         if g and g["status"] == "PASS":
             problem = _receipt_problem(g.get("receipt", ""))
+            if problem:
+                bad_receipts[name] = problem
+    # 终稿 PDF 再核一遍：账本可能被非本工具写入，PDF 也可能被事后替换
+    for name in PDF_GATES:
+        g = lg["gates"].get(name)
+        if g and g["status"] == "PASS":
+            problem = _pdf_guard_problem([fp["path"] for fp in g.get("inputs", [])])
             if problem:
                 bad_receipts[name] = problem
     if not blocking_issues and not failing and not missing and not bad_receipts:

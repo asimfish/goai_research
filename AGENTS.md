@@ -75,7 +75,8 @@
     终报明写「PDF 未编译」。**禁止**用 groff/Ghostscript、HTML→Chrome、Word、
     pandoc 等回退渲染器生成 PDF 冒充终稿（实跑中发生过：摘要/编号/公式/表格/
     蓝色引用全部走样而账本记 PASS）。编译后必须过 `tools/pdf_guard.py`
-    （Producer/字体/时效/摘要/编号五项），不过不得置 `draft_complete`。
+    （Producer/字体/时效/摘要/编号五项）——`loopctl gate draft_complete PASS` 会自动
+    调用它，不带 PDF 或不过闸直接拒绝；`check-done` 再核一遍。
 
 ## 环境速查
 
