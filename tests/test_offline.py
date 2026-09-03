@@ -1277,6 +1277,33 @@ def test_pdf_guard_rejects_non_tex_pdf(tmp_path):
     assert "陈旧产物" in r2.stdout
 
 
+def test_no_fallback_pdf_renderer_in_repo():
+    """绊线：任何把稿件渲染成 PDF 的非 TeX 路径（无头 Chrome --print-to-pdf、groff、
+    wkhtmltopdf、weasyprint…）都不得作为工具存在于仓库——实跑中它被提交过一次，
+    产出的「PDF」让账本记了 PASS。守卫脚本自身提到这些词属于说明文字，按文件名排除。"""
+    import glob
+    import re
+    pattern = re.compile(r"--print-to-pdf|--headless|\bgroff\b|wkhtmltopdf|weasyprint|"
+                         r"chromium.*pdf|pdfkit|puppeteer", re.I)
+    allowed = {"pdf_guard.py", "preflight.py", "loopctl.py", "test_offline.py"}
+    hits = []
+    for folder in ("tools", "scripts", "server", "skills"):
+        for fp in glob.glob(os.path.join(ROOT, folder, "**", "*"), recursive=True):
+            if not os.path.isfile(fp) or os.path.basename(fp) in allowed:
+                continue
+            if not fp.endswith((".py", ".sh", ".md")):
+                continue
+            try:
+                text = open(fp, encoding="utf-8", errors="ignore").read()
+            except OSError:
+                continue
+            for i, line in enumerate(text.splitlines(), 1):
+                if pattern.search(line) and "禁止" not in line and "banned" not in line.lower() \
+                        and "不得" not in line and "fail" not in line.lower():
+                    hits.append(f"{os.path.relpath(fp, ROOT)}:{i}: {line.strip()[:80]}")
+    assert not hits, "发现疑似回退 PDF 渲染器，终稿 PDF 只能由 TeX 从模板编译:\n" + "\n".join(hits)
+
+
 def test_preflight_tex_check_reports_shape():
     """--tex 预检返回可判定的结构：引擎、宏包、CJK、缺失清单；缺失时给 fail-closed 提示。"""
     from tools import preflight
