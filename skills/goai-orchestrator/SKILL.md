@@ -135,6 +135,8 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
      （缺席 = 阶段没跑，直接不放行；跳过要显式 WARN；自造名如
      `ref_audit`/`review_round1` 会被警告且不计入），`review_pass` 的
      PASS 必须带真实存在、非占位的 trace 回执，否则 `gate` 命令拒绝。
+     `draft_complete` 的 PASS 必须在 `--inputs` 带终稿 PDF 且过 pdf_guard，
+     否则 `gate` 命令拒绝——回退渲染器的 PDF 在这里就会被挡住。
    - 达到 max_rounds → 停止，如实汇报未收敛项，绝不谎报完成
 7. **final 交付物**：`workspace/drafts/`（tex+pdf）、`workspace/library/references.bib`、
    `workspace/figures/{svg,drawio}/`、`workspace/state/CITATION_AUDIT.md`、

@@ -53,7 +53,10 @@ orchestrator 负责按此把受影响闸门重置为 PENDING（`gate --status PE
      账本停在半路不得宣告完成；跳过必须显式记 WARN；自造 gate 名不计入；
      (b) 无 open blocker/major；(c) `review_pass` 的回执 trace 文件真实存在
      且非占位（`gate` 命令对无回执/空 trace 的 PASS 直接拒绝，check-done
-     再核一遍防事后删档）。
+     再核一遍防事后删档）；(d) `draft_complete` 的 `--inputs` 里有终稿 PDF 且
+     `tools/pdf_guard.py` 通过——PDF 只能是 TeX 从模板编译的产物，groff /
+     HTML→Chrome 等回退渲染器的输出在 `gate` 时即被拒绝，check-done 再核一遍
+     防事后替换；环境缺 TeX 时该 gate 只能记 FAIL，运行如实以「PDF 未编译」收尾。
   2. 达 `--max-rounds`（默认 5）→ 强制收敛：带着未清 minor 交付 + 遗留清单；
   3. 同一 issue 三轮未收敛 → 升级人类决策，暂停该链路。
 - **反空转**（阶梯执行，不允许原地换个说法重试）：任何 agent 连续两次

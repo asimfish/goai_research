@@ -814,13 +814,46 @@ def make_trace(tmpdir, name="r1.md", size=2000):
     return str(p)
 
 
+def make_tex_like_pdf(path, producer="xdvipdfmx (20240305)", creator="LaTeX with hyperref",
+                     font="TeXGyreTermes-Regular", text=("Abstract", "1 Introduction")):
+    """手写一个 pdf_guard 可判定的最小 PDF：Producer/字体名/首页文字均可控，
+    不依赖 TeX；用于账本闸门测试（draft_complete PASS 要求 PDF 过 pdf_guard）。"""
+    lines = "".join(f"({t}) Tj 0 -20 Td " for t in text)
+    content = f"BT /F1 12 Tf 72 720 Td {lines}ET".encode()
+    objs = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+        b"<< /Length " + str(len(content)).encode() + b" >>\nstream\n" + content + b"\nendstream",
+        f"<< /Type /Font /Subtype /Type1 /BaseFont /{font} >>".encode(),
+        f"<< /Producer ({producer}) /Creator ({creator}) /Title (Fixture) >>".encode(),
+    ]
+    out = b"%PDF-1.4\n"; offsets = []
+    for i, body in enumerate(objs, 1):
+        offsets.append(len(out)); out += f"{i} 0 obj\n".encode() + body + b"\nendobj\n"
+    xref = len(out)
+    out += f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode()
+    out += b"".join(f"{o:010d} 00000 n \n".encode() for o in offsets)
+    out += f"trailer\n<< /Size {len(objs) + 1} /Root 1 0 R /Info 6 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+    path = str(path); os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(out)
+    return path
+
+
 def pass_all_gates(tmpdir, *, except_for=()):
-    """把全部必需 gate 记成 PASS（review_pass 带合规回执），except_for 里的跳过。"""
+    """把全部必需 gate 记成 PASS（review_pass 带合规回执，draft_complete 带过闸的 PDF），
+    except_for 里的跳过。"""
     trace = make_trace(tmpdir)
+    pdf = make_tex_like_pdf(tmpdir / "drafts" / "main.pdf")
     for g in REQUIRED_GATES:
         if g in except_for:
             continue
-        extra = ["--receipt", f"model=x;trace={trace}"] if g == "review_pass" else []
+        extra = []
+        if g == "review_pass":
+            extra = ["--receipt", f"model=x;trace={trace}"]
+        elif g == "draft_complete":
+            extra = ["--inputs", pdf]
         r = run_loopctl(tmpdir, "gate", "--name", g, "--status", "PASS", *extra)
         assert r.returncode == 0, r.stderr
 
@@ -932,6 +965,34 @@ def test_loopctl_review_pass_requires_real_receipt(tmp_path):
     pass_all_gates(tmp_path, except_for=("review_pass",))
     assert run_loopctl(tmp_path, "check-done").returncode == 0
     os.remove(trace)
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "invalid_receipts" in r.stdout
+
+
+def test_loopctl_draft_complete_requires_tex_built_pdf(tmp_path):
+    """实跑失效：测试机无 TeX，writer 用 HTML→Chrome 渲染 PDF，账本记 draft_complete PASS。
+    现在：PASS 必须带 PDF 且 pdf_guard 通过；Chrome/groff 产物、缺 PDF 一律拒绝。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    # 无 PDF → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS")
+    assert r.returncode != 0 and "终稿 PDF" in r.stderr
+    # Chrome 渲染的 PDF → 拒绝并点名 pdf_guard
+    fake = make_tex_like_pdf(tmp_path / "drafts" / "main.pdf",
+                             producer="Skia/PDF m142", creator="HeadlessChrome/142.0",
+                             font="DejaVuSerif", text=("Ba-Y-Zn-Si-O silicates occupy", "1. Introduction"))
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", fake)
+    assert r.returncode != 0 and "pdf_guard 未通过" in r.stderr, r.stderr
+    # FAIL 不需要 PDF（缺 TeX 时的正确记法）
+    assert run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "FAIL",
+                       "--detail", "环境缺 TeX，PDF 未编译").returncode == 0
+    # TeX 产物 → 接受；事后被 Chrome 版替换 → check-done 再核判无效
+    good = make_tex_like_pdf(tmp_path / "drafts" / "main.pdf")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", good)
+    assert r.returncode == 0, r.stderr
+    pass_all_gates(tmp_path, except_for=("draft_complete",))
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    make_tex_like_pdf(tmp_path / "drafts" / "main.pdf", producer="Skia/PDF m142",
+                      creator="HeadlessChrome", font="ArialMT", text=("x", "y"))
     r = run_loopctl(tmp_path, "check-done")
     assert r.returncode != 0 and "invalid_receipts" in r.stdout
 
