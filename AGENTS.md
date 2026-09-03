@@ -69,14 +69,23 @@
     拒绝；其余美学告警（近失对齐、尺寸漂移、间距、连线穿节点、描边档数…）
     要么改 figspec 消掉，要么在 figure_plan.md 逐条写明保留理由，否则不得置
     `figures_ready`。
+15. **PDF 只能由 TeX 从模板编译，缺环境就 fail-closed**：开工先
+    `tools/check.sh --tex`；没有 xelatex/pdflatex 或模板宏包时，`draft_complete`
+    记 FAIL + issue「环境缺 TeX」，交付 main.tex + references.bib + figures 并在
+    终报明写「PDF 未编译」。**禁止**用 groff/Ghostscript、HTML→Chrome、Word、
+    pandoc 等回退渲染器生成 PDF 冒充终稿（实跑中发生过：摘要/编号/公式/表格/
+    蓝色引用全部走样而账本记 PASS）。编译后必须过 `tools/pdf_guard.py`
+    （Producer/字体/时效/摘要/编号五项），不过不得置 `draft_complete`。
 
 ## 环境速查
 
 - venv：`.venv/bin/python`（install.sh 建）；所有验证均使用它，不用系统
-  `python3`。统一预检：`tools/check.sh --servers`，另可加 `--corpus`/`--retro`。
+  `python3`。统一预检：`tools/check.sh --servers`，另可加 `--corpus`/`--retro`/
+  `--tex`（TeX 工具链与模板宏包，进入 writing 前必跑）。
 - 离线测试：`.venv/bin/python -m pytest tests/ -q`。
 - 引用一致性闸门：`python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`；
-  组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts`。
+  组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts`；
+  终稿 PDF 来源闸门：`python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`。
 - 并行派活：`bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`；
   TSV 第三列填预期产物，第四列填前序依赖。超时但产物验收通过时保留
   `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。

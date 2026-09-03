@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-61%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -52,6 +52,14 @@ bash scripts/package_submission.sh "<team>"    # builds the two officially named
   checkpoint summaries), `build_cited_corpus.py`,
   `build_claim_evidence.py`, `export_submission_bundle.py` (trace export with secret scrubbing),
   `build_report_docx.py`, and `scripts/smoke_test.sh` / `reproduce_core.sh` / `package_submission.sh`.
+- **2026-09-03 — PDF provenance gate.** A cold-start host without TeX let writers
+  "render" manuscripts via groff and headless Chrome; the ledger said PASS while
+  the PDF had no abstract block, no numbered headings and black citations. Now
+  `tools/check.sh --tex` preflights the toolchain, `tools/pdf_guard.py` refuses
+  any PDF whose Producer, fonts, freshness, abstract block or heading numbers do
+  not match a TeX build of the template, and missing TeX fails closed (deliver
+  sources, say so) instead of improvising. Citation dumping (dozens of keys in
+  one `\cite`) is banned by rule. 61 offline tests.
 - **2026-09-02 — Aesthetics become a gate; text metrics become honest.** The
   figure lint gains a second layer that measures what reviewers mean by "looks
   messy": colour-family count (≤ 2 + accent, ≥ 4 is an error), rainbow lanes,
@@ -63,6 +71,10 @@ bash scripts/package_submission.sh "<team>"    # builds the two officially named
   let caps-heavy bold chips overflow in draw.io while the lint said "fits".
   draw.io output carries explicit `<br/>` breaks so it renders exactly the
   lines the lint measured. Sample figures re-laid-out to zero warnings. 54 tests.
+
+<details>
+<summary>Earlier milestones</summary>
+
 - **2026-09-02 — Independent audit closes two loop-protocol holes.** A
   read-only audit against the original spec found that `check-done` could
   declare DONE with a single recorded gate (the exact shape of a pipeline that
@@ -82,6 +94,16 @@ bash scripts/package_submission.sh "<team>"    # builds the two officially named
   retro MCP tool, marked "model prediction, pending validation"; conclusions
   end with the highest-discovery-value next experiments. Figures: ≤2 theme
   colors, image-first reference generation for every delivered figure.
+- **2026-08-31 — Production-quality layer.** A cold-start run in Chinese
+  exposed a blind spot: correct content, degraded typesetting. Now shipped —
+  a CJK language contract with a dedicated `ctexart` template (no more
+  hybrid EN/CN documents; compile-verified with xelatex), table design rules
+  (no split half-tables, no raw BibTeX keys in cells, no typewriter `NA`
+  dumps), a pipeline-jargon firewall for reader-facing text, bib field
+  hygiene (DOI/URL redundancy, brace protection for chemical formulas), and
+  a "production quality" review dimension that requires page-by-page PDF
+  inspection. `tex_guard` now **blocks** bare-bibkey leaks — CJK-adjacent
+  and digit-leading keys included.
 - **2026-08-30 — Typography hard gate v2.** Node titles render **bold by
   default**, font floors raised to 4.5 pt print-equivalent, and a new hierarchy
   lint flags group labels smaller than their member nodes. The writer skill
@@ -379,6 +401,13 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
    dangling `\ref`, unclosed environments, and **bare BibTeX keys leaking into
    reader-visible text** all block assembly; typewriter-font (`\texttt`)
    overuse and a Chinese manuscript on the English template warn.
+   `pdf_guard.py` — the delivered PDF must come from a TeX engine (Producer /
+   Creator), embed the template font family, be newer than its sources, carry an
+   Abstract block on page 1 and numbered top-level headings. A Chrome-, groff- or
+   Word-rendered "PDF" fails on sight. `tools/check.sh --tex` preflights the
+   toolchain before writing starts; if TeX is missing the pipeline **fails closed**
+   — it delivers `main.tex` + bib + figures and says "PDF not compiled" instead of
+   improvising a renderer.
 5. **Context check** (reviewer): samples claim–citation pairs and verifies the cited
    paper actually supports the claim — the most diagnostic and most-missed check.
 
@@ -489,7 +518,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 54 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 61 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 
@@ -510,7 +539,9 @@ minor deferral, stale-input fingerprint reset, receipt validation — missing /
 stub / deleted trace files are rejected), bib_guard blocking (undefined keys +
 integration rate) and field-hygiene warnings, tex_guard assembly gate
 (including bibkey-leak blocking, `\texttt` density and CJK-template-mismatch
-warnings), template contract, and bank_check validation.
+warnings), pdf_guard provenance gate (real xelatex sample passes, a
+Chrome-rendered PDF fails), TeX preflight shape, template contract, and
+bank_check validation.
 
 An independent read-only audit against the original specification (evidence and
 verdict table in [docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md))

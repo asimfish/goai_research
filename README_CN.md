@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-61%20offline%20%2B%20100%20live-brightgreen.svg)](tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](skills/)
 
@@ -48,6 +48,12 @@ bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个
   （仅导出被引文献全文为精简 Parquet）、`tools/build_claim_evidence.py`（结论—证据映射）、
   `tools/export_submission_bundle.py`（运行/构筑轨迹受控导出 + 密钥脱敏）、`tools/build_report_docx.py`
   （官方模板灌装）、`scripts/smoke_test.sh` / `scripts/reproduce_core.sh` / `scripts/package_submission.sh`。
+- **2026-09-03 —— PDF 来源闸门。** 一台没装 TeX 的冷启动测试机上，writer 用
+  groff 和无头 Chrome「渲染」出了论文，账本记 PASS，PDF 却没有摘要块、没有编号
+  标题、引用不是蓝色。现在 `tools/check.sh --tex` 先预检工具链，`tools/pdf_guard.py`
+  对 Producer、字体、时效、摘要块、编号标题五项不符合模板 TeX 编译特征的 PDF
+  一律拒绝；缺 TeX 时 fail-closed（交付源码并如实声明），不许临场发明渲染器。
+  规则层禁止「引用倾倒」（一处 `\cite` 堆几十个 key）。离线测试 61 项。
 - **2026-09-02 —— 美感成为闸门，文字度量变得诚实。** 图纸 lint 新增第二层，
   把审稿人说的「有点乱」变成可测量指标：色系数（≤2 主题色 + 1 强调色，≥4 直接
   error）、彩虹泳道、近失对齐、兄弟尺寸漂移、间距过密、连线穿节点、交叉数、
@@ -56,6 +62,10 @@ bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个
   过去均一 0.61em 的估算让大写密集的粗体芯片在 draw.io 里溢出，而 lint 还说
   「放得下」；draw.io 输出改带显式 `<br/>`，渲染的行与 lint 度量的完全一致。
   样例图重排到零告警。离线测试 54 项。
+
+<details>
+<summary>更早的里程碑</summary>
+
 - **2026-09-02 —— 独立审计补上两个回环协议漏洞。** 对照最初需求做的只读
   审计发现：`check-done` 只记一个 gate 就能宣告 DONE（恰是停在文献检索的
   那种账本形态），`review_pass` 无回执也能记 PASS。现已机械化：9 个必需
@@ -69,6 +79,13 @@ bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个
   合集；每个新方向必须落到具体合成建议——工艺路线名 + 来自 retro MCP 的
   前驱体候选（标注「模型预测，待实验验证」）；结论以「最有科学发现价值的
   下一步实验」收尾。图纸：全图 ≤2 主题色，所有交付图走 image-first 参照生成。
+- **2026-08-31 —— 制作质量层。** 一次中文冷启动实跑暴露盲区：内容对、
+  排版垮。本次上线：CJK 语言契约与专用 `ctexart` 模板（不再产出中英
+  杂交文档；已 xelatex 实编验证）、表格设计规范（禁拆半表、禁单元格裸
+  BibTeX key、禁打字机体 NA 铺表）、面向读者文本的流水线术语防火墙、
+  bib 字段卫生（DOI/URL 冗余、化学式花括号保护）、审稿新增「制作质量」
+  维度（必须逐页翻 PDF）。`tex_guard` 对裸 key 泄漏直接**阻塞**（含与
+  汉字紧贴、题词数字开头的 key）。
 - **2026-08-30 —— 排版硬闸门 v2。** 节点主标**默认加粗**，字号地板提高到
   4.5 pt 打印等效，新增层级 lint（组标签小于成员节点主标即告警）。写作 skill
   新增节标题词法规范（名词短语、禁「A、B 与 C」式三段并列标题）与顶会级
@@ -442,7 +459,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 54 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 61 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 
@@ -459,7 +476,8 @@ figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retr
 语义（九个必需闸门全部落账、WARN 放行、minor 移交、产物指纹变更重置闸门、
 回执校验——trace 缺失/占位/事后删除均拒绝）、vendored 无机模型语法守卫、bib_guard
 阻塞行为（未定义 key 与整合率）与字段卫生告警、tex_guard 组稿闸门
-（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、bank_check 支持库校验。
+（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、pdf_guard 来源闸门
+（真实 xelatex 样例通过、Chrome 渲染的 PDF 被拒）、TeX 预检结构、bank_check 支持库校验。
 
 对照最初需求做的一次独立只读审计（证据与判定表见
 [docs/audits/2026-09-02_spec_audit/](docs/audits/2026-09-02_spec_audit/REPORT.md)）
