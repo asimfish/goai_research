@@ -86,7 +86,9 @@
 - 离线测试：`.venv/bin/python -m pytest tests/ -q`。
 - 引用一致性闸门：`python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`；
   组稿完整性闸门：`python3 tools/tex_guard.py workspace/drafts`；
-  终稿 PDF 来源闸门：`python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`。
+  终稿 PDF 来源闸门：`python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`；
+  排版修补：`tools/bib_polish.py <bib> --write`（bib 卫生）、`tools/tex_polish.py <drafts> --write`（可断斜杠/路径归一）；
+  一键编译 + 闸门：`bash scripts/build_tex.sh workspace/drafts`（无 TeX 即 fail-closed 退出）。
 - 并行派活：`bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`；
   TSV 第三列填预期产物，第四列填前序依赖。超时但产物验收通过时保留
   `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。

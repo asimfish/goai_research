@@ -79,11 +79,17 @@ def check(pdf: str, tex: str | None, bib: str | None, min_pages: int) -> tuple[l
     font_names = [ln.split()[0] for ln in fonts.splitlines()[2:] if ln.strip()]
     meta["fonts"] = font_names[:12]
     if font_names:
-        if not any(TEMPLATE_FONTS.search(f) for f in font_names):
+        has_template = any(TEMPLATE_FONTS.search(f) for f in font_names)
+        fakes = sorted({f for f in font_names if FAKE_FONTS.search(f)})
+        if not has_template:
             blocking.append(f"未发现模板字体族（NewTX/TeX Gyre Termes/Fandol/CM）: {font_names[:6]}")
-        fakes = [f for f in font_names if FAKE_FONTS.search(f)]
-        if fakes:
-            blocking.append(f"出现非模板正文字体 {sorted(set(fakes))[:6]}（HTML/Office 渲染的典型痕迹）")
+            if fakes:
+                blocking.append(f"出现非模板正文字体 {fakes[:6]}（HTML/Office 渲染的典型痕迹）")
+        elif fakes:
+            # 真 TeX 产物里的 DejaVu/Arial 通常是 fontspec 对个别字形（下标数字、箭头）的
+            # 回退，不是伪造信号；提醒补 \setmainfont 的 fallback 或改用模板字体覆盖的写法
+            warnings.append(f"模板字体之外出现回退字体 {fakes[:4]}——个别字形（下标/箭头/CJK）落到系统字体，"
+                            "建议在 figspec/正文里改用模板字体覆盖的记法或配置 fontspec 回退链")
 
     for src in (tex, bib):
         if src and os.path.isfile(src) and os.path.getmtime(src) > os.path.getmtime(pdf) + 1:

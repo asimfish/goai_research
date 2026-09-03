@@ -28,6 +28,23 @@ else
 fi
 git describe --tags --exact-match 2>/dev/null >> $SUB/VERSION || true
 
+# Fail closed before packaging: every manuscript PDF that ships in 运行与评测包 must be a
+# TeX build of its sources (tools/pdf_guard.py). A non-TeX render (browser/office
+# printing), a stale PDF, or a PDF without an abstract block / numbered headings fails
+# packaging here rather than reaching the judges. Figure PDFs and slide decks are not
+# manuscripts and are skipped.
+PDF_FAIL=0
+while IFS= read -r -d '' pdf; do
+  case "$pdf" in */figures/*|*/figspec/*|*PPT*|*方案说明*) continue ;; esac
+  dir="$(dirname "$pdf")"; base="$(basename "$pdf" .pdf)"
+  tex=""; [[ -f "$dir/$base.tex" ]] && tex="$dir/$base.tex"
+  bib=""; [[ -f "$dir/references.bib" ]] && bib="$dir/references.bib"
+  if ! .venv/bin/python tools/pdf_guard.py "$pdf" ${tex:+--tex "$tex"} ${bib:+--bib "$bib"} >/tmp/pdf_guard_pkg.log 2>&1; then
+    echo "PDF 未通过 pdf_guard，拒绝打包: $pdf" >&2; tail -8 /tmp/pdf_guard_pkg.log >&2; PDF_FAIL=1
+  fi
+done < <(find "$SUB/03_运行与评测包" -type f -name '*.pdf' -print0)
+[[ "$PDF_FAIL" -eq 0 ]] || { echo "存在非 TeX/陈旧/缺摘要的稿件 PDF，先按 scripts/build_tex.sh 重编再打包。" >&2; exit 3; }
+
 # Fail closed before packaging: scrub secrets/private paths, normalize every
 # JSONL stream, validate all structured files, refresh MANIFEST.sha256.
 .venv/bin/python tools/export_submission_bundle.py --sanitize-only --out "$SUB"

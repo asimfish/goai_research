@@ -241,10 +241,14 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    字母时用 xelatex 编译（中文模板必须 xelatex）。组装时必须完成
    两处替换：页眉短题（`TODO` 短题→论文短题）；主标题超一行时
    **手工断行成 2–3 行且行长均衡**，禁止让 LaTeX 自动折出孤词行。
-   组装同时做 **bib 字段卫生**（bib_guard 会告警）：条目 doi 与 url
-   同存时删 url 留 doi（长 URL 断行是参考文献区最难看的伤）；title
-   中化学式/多大写缩写（BaZn2Si2O7、COF、LLZO…）加 `{}` 保护，
-   防止 plainnat 压成 `bazn 2 si 2 o 7` 碎片。
+   组装同时做 **bib 字段卫生**：直接跑 `python3 tools/bib_polish.py
+   workspace/library/references.bib --write`（确定性修复：doi 在则删 url、
+   化学式/缩写/元素前缀加 `{}` 保护、拆散的「Li 7 La 3」合并、裸 `&` 转义），
+   再跑 bib_guard 确认卫生告警清零；然后 `python3 tools/tex_polish.py
+   workspace/drafts --write`（正文斜杠改可断 `\slash`——「phase/density/transport」
+   这类连词是 Overfull 头号来源；`\bibliography` 路径归一；直接引用 SVG 会被点名）。
+   编译统一用 `bash scripts/build_tex.sh workspace/drafts`（干净构建 xelatex→bibtex→
+   xelatex×2 并自动跑 pdf_guard；无 TeX 时直接 fail-closed 退出）。
 2. 一致性闸门（未定义 key＝阻塞；库内条目整合率 <90%＝阻塞——孤儿条目
    要么在正文找到落点，要么开 issue 交 lit_search 评估后移出库，
    不许留着充数）：

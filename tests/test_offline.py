@@ -1316,6 +1316,61 @@ def test_preflight_tex_check_reports_shape():
         assert result["hint"] and "禁止" in result["hint"]
 
 
+# ---------- bib_polish / tex_polish：确定性排版修补 ----------
+
+def test_bib_polish_fixes_hygiene_without_touching_meaning(tmp_path):
+    from tools.bib_polish import polish, _protect_title
+    bib = tmp_path / "refs.bib"
+    bib.write_text("""
+@article{a2024x,
+  title = {Native Defects in Li 7 La 3 Zr 2 O 12 and Al-substituted LLZO with AlN & TiO2},
+  author = {Ann One}, year = {2024}, journal = {J},
+  doi = {10.1000/x}, url = {https://www.semanticscholar.org/paper/abc}
+}
+@article{b2020y,
+  title = {Already {Li7La3Zr2O12} protected},
+  author = {Bob Two}, year = {2020}, journal = {J}, url = {https://arxiv.org/abs/1}
+}
+""", encoding="utf-8")
+    out, changes = polish(bib.read_text(encoding="utf-8"))
+    assert "url" not in out.split("@article{b2020y")[0]          # a2024x 的 url 被删（已有 doi）
+    assert "https://arxiv.org/abs/1" in out                       # 无 doi 的条目保留 url
+    assert "{Li7La3Zr2O12}" in out and "{Al}-substituted" in out and "{LLZO}" in out
+    assert "{AlN}" in out and "{TiO2}" in out and r"\&" in out
+    assert out.count("{Li7La3Zr2O12}") == 2 and "{{Li7La3Zr2O12}}" not in out   # 已保护的不重复包裹
+    # 幂等：再跑一遍无变化
+    out2, changes2 = polish(out)
+    assert changes2 == [] and out2 == out
+    # 不误伤：年份、普通词、单元素词
+    assert _protect_title("A review in 2021 of In and As deposition") == "A review in 2021 of In and As deposition"
+
+
+def test_tex_polish_slash_and_bibliography_path(tmp_path):
+    from tools.tex_polish import polish_dir
+    d = tmp_path / "drafts"; (d / "sections").mkdir(parents=True)
+    (d / "references.bib").write_text("@article{k,title={T},author={A},year={2020}}")
+    (d / "main.tex").write_text("\n".join([
+        r"\usepackage{svg}",
+        r"\includegraphics[width=\linewidth]{../figures/svg/roadmap.svg}",
+        r"\bibliography{../library/references}",
+    ]))
+    (d / "sections" / "01.tex").write_text("\n".join([
+        r"The phase/density/transport chain \cite{k} and input/output.",
+        r"\url{https://example.org/a/b} stays; \href{https://x.org/a/b}{link} stays.",
+        r"% a/comment stays",
+        r"see \ref{sec:a/b} and \label{tab:x/y}",
+    ]))
+    changes = polish_dir(str(d), write=True)
+    s = (d / "sections" / "01.tex").read_text()
+    assert r"phase\slash density\slash transport" in s and r"input\slash output" in s
+    assert "https://example.org/a/b" in s and "https://x.org/a/b" in s and "% a/comment" in s
+    assert r"\ref{sec:a/b}" in s and r"\label{tab:x/y}" in s
+    m = (d / "main.tex").read_text()
+    assert r"\bibliography{references}" in m
+    assert r"\IfFileExists{svg.sty}{\usepackage{svg}}{}" in m
+    assert any("SVG" in c for c in changes)                      # 直接引用 SVG 被点名
+
+
 # ---------- vendored retro model: syntax guard ----------
 
 def test_vendor_retro_modules_compile():

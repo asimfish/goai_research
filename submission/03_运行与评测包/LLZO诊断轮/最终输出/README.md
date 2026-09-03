@@ -13,6 +13,10 @@ are identified in the manuscript as doctoral researchers.
 
 ## PDF status
 
+> **Rebuilt 2026-09-03**: `main.pdf` is now compiled from `main.tex` with xelatex (16 pages, SHA256 `47b9555e0a4f49a5c45f8f6ff4014a53cb68e145e378868f09b0f8e983f8f8ad`) and passes `tools/pdf_guard.py`; the earlier headless-Chrome render is superseded. Details in `MANUSCRIPT_VALIDATION.md`.
+
+### Historical note (2026-08-29 render)
+
 The host rendered and visually inspected the manuscript on 2026-08-29:
 
 - `final_report.pdf` — official submission filename;
