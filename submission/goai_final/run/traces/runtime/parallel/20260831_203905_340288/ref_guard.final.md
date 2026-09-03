@@ -8,6 +8,6 @@
 
 产物均已验证非空：
 
-- [references.bib](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/references.bib)
-- [CITATION_AUDIT.json](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.json)
-- [CITATION_AUDIT.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.md)
+- [references.bib](<HOME>
+- [CITATION_AUDIT.json](<HOME>
+- [CITATION_AUDIT.md](<HOME>

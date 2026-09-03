@@ -1,0 +1,38 @@
+\section{Structure--Conductivity Relations and Measurement Comparability}
+\label{sec:transport}
+
+LLZO transport is a hierarchy of local hopping, grain interiors, grain boundaries and electrode interfaces. A high total conductivity can arise from a genuinely mobile bulk phase, from a low-resistance boundary network, or from an impedance fit that assigns a contact contribution to the electrolyte. Atomistic--mesoscale calculations and grain-boundary measurements both show why the same nominal composition can yield different resistance partitions \cite{heo2021microstructural,gao2021revealing,kulkarni2025machine}.
+
+The mechanistic vocabulary is supported by direct diffusion, structural and modeling studies. Lithium self-diffusion NMR, garnet transport calculations, Raman-informed molecular dynamics and machine-learning-assisted trajectories probe different time and length scales, so agreement among them is stronger than any single descriptor alone \cite{kuhn2011li,kozinsky2015effects,wang2015design,miyagawa2026raman,burov2026machine,jin2023garnet}. Measurements on Ta garnets and phosphate ceramics reinforce the need to distinguish local mobility from the resistance of a complete microstructure \cite{ahmad2015concentration,mariappan2011correlation,aono1993the}.
+
+\subsection{What can be compared directly?}
+
+Direct comparison is defensible when composition and phase state, relative density, temperature, sample thickness, electrode area, electrode type and fitting circuit are matched. A qualitative comparison is still useful when one of these items is missing, but the text should say which item limits inference. Surface conditioning, air exposure and proton exchange are particularly important because they can change the near-surface chemistry without changing the bulk diffraction pattern \cite{grissa2020impact,rosen2021controlling,uhlenbruck2018reactions}.
+
+Electrochemical-impedance reviews and critical-current studies make the protocol dependence explicit: equivalent-circuit choice, pressure, electrode preparation and the failure criterion can reorder apparent performance even for identical pellets \cite{vadhva2021electrochemical,lu2021critical,klimpel2023standardizing,sarkar2022critical}. Data-driven property prediction is most useful when it is paired with these specimen-level descriptors, rather than when a model is trained on unqualified conductivity numbers \cite{li2024machine,yang2022ionic,xie2024high,bai2025understanding}.
+
+\begin{table}[t]
+\centering
+\caption{Minimum reporting set for a cross-paper conductivity comparison.}
+\label{tab:comparability}
+\begin{tabular}{P{0.22\linewidth}P{0.28\linewidth}P{0.27\linewidth}P{0.15\linewidth}}
+\toprule
+Measurement item & Why it changes the result & Preferred report & If missing \\
+\midrule
+Phase and composition & Lithium occupancy and secondary phases alter carriers and blocking regions & Rietveld phase fraction, dopant amount and retained Li & Qualitative only \cite{anderson2024comprehensive,li2026structure} \\
+Density and microstructure & Pores and boundaries add tortuosity and resistance & Relative density, open porosity, grain size and boundary description & Do not rank routes \cite{heo2021microstructural,gao2021revealing} \\
+Temperature and geometry & Conductivity and apparent activation energy depend on both & Temperature sweep, thickness, area and pressure & Values remain condition-specific \cite{grissa2020impact,ilina2023recent} \\
+Equivalent circuit and electrodes & Bulk, boundary and contact terms can be interchanged by fitting choice & Circuit, frequency range, electrode and residuals & Report total response only \cite{klimpel2023standardizing,zhao2024review} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Transport descriptors}
+
+The most useful bridge between structure and transport is a set of descriptors that can be measured on the same specimen: phase fraction, retained lithium, relative density, grain-size distribution, boundary composition or thickness, and the separated bulk and boundary resistances. Raman signatures and molecular-dynamics calculations can test whether a change in the vibrational spectrum is consistent with a change in lithium dynamics, but they should not be used to replace an electrochemical measurement \cite{miyagawa2026raman,kulkarni2025machine,ilina2023recent}.
+
+Critical-current-density (CCD) data require an additional protocol. Current density depends on electrode area, stack pressure, temperature, plating/stripping schedule, voltage criterion and the definition of failure. A standardized measurement proposal for lithium garnets highlights that changing any of these parameters can reorder apparent limits \cite{klimpel2023standardizing,sarkar2022critical}. Consequently, a pellet conductivity and a symmetric-cell CCD should be presented as complementary outcomes, not as interchangeable performance scores.
+
+\subsection{Reconciling apparent contradictions}
+
+When two studies disagree, the first diagnostic is a comparison of density, temperature and resistance partition. The second is surface and boundary chemistry: carbonate, hydroxide or a transient glass can lower or raise the measured boundary term without changing the garnet lattice parameter. The third is lithium inventory and thermal history, which can shift phase fraction and defect concentration. This order of checks keeps an apparent materials contradiction from being attributed prematurely to a dopant or a new transport mechanism \cite{shi2025li2co3,zhang2023on,moy2025irreversible,li2026structure}.

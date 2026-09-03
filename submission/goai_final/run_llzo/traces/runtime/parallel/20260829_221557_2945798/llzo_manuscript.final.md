@@ -1,12 +1,12 @@
-已完成，提交包位于 [submission/llzo_survey](/home/gaojing/goai_research/submission/llzo_survey)。
+已完成，提交包位于 [submission/llzo_survey](<HOME>
 
 主要文件：
 
-- [main.tex](/home/gaojing/goai_research/submission/llzo_survey/main.tex)
-- [report.html](/home/gaojing/goai_research/submission/llzo_survey/report.html)
-- [MANUSCRIPT_VALIDATION.md](/home/gaojing/goai_research/submission/llzo_survey/MANUSCRIPT_VALIDATION.md)
-- [README.md](/home/gaojing/goai_research/submission/llzo_survey/README.md)
-- [references.bib](/home/gaojing/goai_research/submission/llzo_survey/references.bib)
+- [main.tex](<HOME>
+- [report.html](<HOME>
+- [MANUSCRIPT_VALIDATION.md](<HOME>
+- [README.md](<HOME>
+- [references.bib](<HOME>
 
 验收结果：
 

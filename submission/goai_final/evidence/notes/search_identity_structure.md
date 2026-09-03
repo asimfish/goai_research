@@ -19,7 +19,7 @@
 
 ### 阶段 0：本地语料优先
 
-1. `local_corpus_status()`：`ok=true`；引擎 `duckdb-parquet`；模式 `private-full-corpus`；15 个 Parquet 分片；根目录 `/mnt/nas/data/gaojing/markdown_corpus_v1/packages/markdown-v1-final`；schema 完整；不是 synthetic/public compact 数据。
+1. `local_corpus_status()`：`ok=true`；引擎 `duckdb-parquet`；模式 `private-full-corpus`；15 个 Parquet 分片；根目录 `<PRIVATE_MOUNT_PATH> 完整；不是 synthetic/public compact 数据。
 2. 精确式查询 `Ba5Y12Zn`：`max_results=10`、`context_lines=1`、literal、case-insensitive，120 秒超时。结果 `ok=false`、`total_returned=0`、`timed_out=true`、`truncated=false`，未取得路径/行号/DOI。
 3. 错误与处置：第一次默认 30 秒调用在 DuckDB 扫描期间未产生最终结果；随后显式以 120 秒复核，仍在读取约 26% 分片时由工具超时并返回上述结构化错误。由于精确目标式尚且无法在预算内完成，未对近义词反复无差别扫描 NAS；转用 DOI/API 多源检索补全。此处“0 条”是超时后的返回数，不解释为本地库不存在相关文献。
 

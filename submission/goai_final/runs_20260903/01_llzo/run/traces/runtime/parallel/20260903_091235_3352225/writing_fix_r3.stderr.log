@@ -1,0 +1,4 @@
+Reading additional input from stdin...
+2026-09-03T01:21:43.003441Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-09-03T01:24:57.118963Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rm -f /tmp/llzo_page-*.png && pdftoppm -png -r 72 <HOME> /tmp/llzo_page && montage /tmp/llzo_page-*.png -thumbnail 160x220 -tile 8x4 -geometry +4+4 /tmp/llzo_contact.png && identify /tmp/llzo_contact.png'`: CreateProcess { message: "Rejected(\"`/bin/bash -lc 'rm -f /tmp/llzo_page-*.png && pdftoppm -png -r 72 <HOME> /tmp/llzo_page && montage /tmp/llzo_page-*.png -thumbnail 160x220 -tile 8x4 -geometry +4+4 /tmp/llzo_contact.png && identify /tmp/llzo_contact.png'` rejected: rm -f style commands are not permitted. Use a safer approach\")" }
+2026-09-03T01:36:51.115756Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit

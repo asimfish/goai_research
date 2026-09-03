@@ -1,4 +1,4 @@
-范围与安全边界草案已写入 [scope.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/inputs/scope.md)，账本正在等待确认。
+范围与安全边界草案已写入 [scope.md](<HOME>
 
 请回复“确认”即可按以下默认方案继续：
 

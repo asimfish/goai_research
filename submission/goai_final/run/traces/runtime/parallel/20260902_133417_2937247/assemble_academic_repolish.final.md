@@ -8,7 +8,7 @@
 
 产物：
 
-- [最终 PDF](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/main.pdf>)
-- [仓库根目录副本](</home/gaojing/goai_cold_full_byzso_m2gfJJ/Ba5Y12Zn_合成调研_学术润色版.pdf>)
-- [main.tex](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/main.tex>)
-- [revision_log.md](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/revision_log.md>)
+- [最终 PDF](<<HOME>>)
+- [仓库根目录副本](<<HOME>>)
+- [main.tex](<<HOME>>)
+- [revision_log.md](<<HOME>>)

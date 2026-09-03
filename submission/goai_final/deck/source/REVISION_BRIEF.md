@@ -1,5 +1,7 @@
 # 修订简报：按材料方向评审/团队反馈重写 PPT 文案
 
+> **历史记录（已被 2026-09-03 最新稿取代）**：本文件保留早期改稿要求，其中案例数字不再作为最终口径。最终演示稿请以 `svg_output/`、`notes/total.md` 与 `design_spec.md` 为准；案例 3 最新口径为 35 页、513/513 条引用审计 PASS、757 次正文引用，LLZO 最新产物为 16 页、368/368 条引用审计 PASS、正文 212 篇文献/378 次引用。
+
 你在一个 ppt-master 项目目录里工作。幻灯片是 `svg_output/*.svg`（1280×720 的 SVG，每页一个文件），讲稿是 `notes/total.md`。请**直接修改这些文件**完成下面的全部修订。只允许改动 `svg_output/*.svg` 与 `notes/total.md`，不要新建文件，不要改文件名，不要动 `svg_final/`、`spec_lock.md`、`design_spec.md`、`animations.json`、`images/`。
 
 ## 一、硬性技术约束（违反会导致导出失败）

@@ -10,13 +10,13 @@
 
 交付文件：
 
-- [综述 PDF](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/main.pdf)
-- [LaTeX 主文件](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/main.tex)
-- [条件原始来源追踪](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/condition_source_trace.md)
-- [BibTeX 文献库](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/references.bib)
-- [引用审计报告](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.md)
-- [最终审稿报告](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/review_round2.md)
-- [证据—合成路线图 SVG](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig01_evidence_synthesis_map.svg) / [Draw.io](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig01_evidence_synthesis_map.drawio)
-- [路线—变量矩阵 SVG](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig02_route_variable_matrix.svg) / [Draw.io](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig02_route_variable_matrix.drawio)
+- [综述 PDF](<HOME>
+- [LaTeX 主文件](<HOME>
+- [条件原始来源追踪](<HOME>
+- [BibTeX 文献库](<HOME>
+- [引用审计报告](<HOME>
+- [最终审稿报告](<HOME>
+- [证据—合成路线图 SVG](<HOME> / [Draw.io](<HOME>
+- [路线—变量矩阵 SVG](<HOME> / [Draw.io](<HOME>
 
 综述的贡献结构由流水线自动采用，尚未代表你的逐项确认；可继续按你的用途调整为实验方案版、中文期刊版或英文投稿版。

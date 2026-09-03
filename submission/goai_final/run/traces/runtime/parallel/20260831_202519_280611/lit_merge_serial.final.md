@@ -11,8 +11,8 @@
 
 产物：
 
-- [papers.jsonl](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/papers.jsonl)
-- [references.bib](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/references.bib)
-- [search_log.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/search_log.md)
-- [coverage_report.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/coverage_report.md)
-- [scope.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/inputs/scope.md)
+- [papers.jsonl](<HOME>
+- [references.bib](<HOME>
+- [search_log.md](<HOME>
+- [coverage_report.md](<HOME>
+- [scope.md](<HOME>

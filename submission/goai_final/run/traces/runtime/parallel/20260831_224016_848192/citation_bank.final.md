@@ -1,7 +1,7 @@
 已完成且仅完成阶段零与阶段二：
 
-- [style_notes.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/style_notes.md)：检查了 4 份全文、现有卡片及范图，明确仅作写作/版式护栏，不作事实证据。
-- [citation_bank.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/citation_bank.md)：52 行覆盖全部 52 个 BibTeX key，strong 14、weak 38；D0 仅目标相原始报道，近邻均已降权。
+- [style_notes.md](<HOME> 4 份全文、现有卡片及范图，明确仅作写作/版式护栏，不作事实证据。
+- [citation_bank.md](<HOME> 行覆盖全部 52 个 BibTeX key，strong 14、weak 38；D0 仅目标相原始报道，近邻均已降权。
 
 校验结果：
 

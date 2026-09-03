@@ -157,7 +157,7 @@ orchestrator 读回环账本、按阶段分派对应 agent、验收出口闸门�
 
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
-bash install.sh     # 建 .venv、装依赖、生成填好绝对路径的 MCP 配置
+bash install.sh     # 按 uv.lock 建 .venv、写安装收据、生成填好绝对路径的 MCP 配置
 # 需要仓库内置的无机两步逆合成模型时：bash install.sh --retro
 
 # Codex CLI
@@ -173,7 +173,8 @@ tools/check.sh --servers
 .venv/bin/python -m pytest tests/ -q     # 离线测试，不需要网络
 ```
 
-要求：Python ≥ 3.10（install.sh 有 [uv](https://github.com/astral-sh/uv) 就用 uv）。
+要求：Python ≥ 3.10（`install.sh` 始终使用 [uv](https://github.com/astral-sh/uv)，
+缺少时在仓库 `.cache` 中自动引导，并写出 `.cache/install-receipt.json`）。
 可选增强：`brew install --cask drawio`（.drawio 导出 png/pdf）、
 `.venv/bin/pip install -e '.[preview]'`（图纸自检出 PNG 预览）、
 Node.js（官方 [draw.io MCP](https://github.com/jgraph/drawio-mcp)，浏览器实时编辑）。

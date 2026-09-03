@@ -9,6 +9,6 @@
 - I2 已关闭并完成 `loopctl log`。
 - `figures_ready` 未设置，仍保持原状态。
 
-相关文件：[figspec](/home/gaojing/goai_research/workspace/figures/figspec/llzo_process_map.json)、[figure_plan.md](/home/gaojing/goai_research/workspace/notes/figure_plan.md)、[SVG](/home/gaojing/goai_research/workspace/figures/svg/llzo_process_map.svg)、[drawio](/home/gaojing/goai_research/workspace/figures/drawio/llzo_process_map.drawio)。
+相关文件：[figspec](<HOME>
 
 PNG 已记录为由宿主 Chrome 从 SVG 生成；drawio CLI 仍缺失。本容器内 Chrome 因 crashpad 沙箱限制未能覆盖现有 PNG。

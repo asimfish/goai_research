@@ -1,0 +1,793 @@
+{
+  "audit_skill": "goai-refcheck",
+  "bib_file": "/home/gaojing/goai_synthesis_runs/20260903_synthesis_topics/02_bazn2si2o7/library/references.bib",
+  "total": 32,
+  "counts": {
+    "PASS": 32,
+    "FIX": 0,
+    "MISMATCH": 0,
+    "UNVERIFIED": 0,
+    "ERROR": 0
+  },
+  "gate": "PASS",
+  "per_entry": [
+    {
+      "key": "lin1999phase",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Phase transition and crystal structures of BaZn2Si2O7",
+        "authors": [
+          "Jianhua Lin",
+          "Guoxing Lu",
+          "Juan Du",
+          "M. Z. Su",
+          "C.-K. Loong",
+          "C. J. Richardson"
+        ],
+        "year": 1999,
+        "venue": "Journal of Physics and Chemistry of Solids",
+        "doi": "10.1016/s0022-3697(99)00004-9",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/s0022-3697(99)00004-9",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kerstan2013bazn2si2o7",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "BaZn2Si2O7 and the solid solution series BaZn2−xCoxSi2O7 (0",
+        "authors": [
+          "Marita Kerstan",
+          "Christian Thieme",
+          "Matthias Grosch",
+          "Matthias Müller",
+          "Christian Rüssel"
+        ],
+        "year": 2013,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2013.09.003",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2013.09.003",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016new",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "New Family of Materials with Negative Coefficients of Thermal Expansion: The Effect of MgO, CoO, MnO, NiO, or CuO on the Phase Stability and Thermal Expansion of Solid Solution Phases Derived from BaZn2Si2O7",
+        "authors": [
+          "Christian Thieme",
+          "Tina Waurischk",
+          "Stephan Heitmann",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "Inorganic Chemistry",
+        "doi": "10.1021/acs.inorgchem.6b00290",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/acs.inorgchem.6b00290",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yao2010synthesis",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Synthesis and luminescent properties of Eu2+ doped BaZn2Si2O7 phosphors by combustion-assisted synthesis method",
+        "authors": [
+          "Shanshan Yao",
+          "Lihong Xue",
+          "Youwei Yan"
+        ],
+        "year": 2010,
+        "venue": "Journal of Alloys and Compounds",
+        "doi": "10.1016/j.jallcom.2010.10.076",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jallcom.2010.10.076",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yao2010synthesisx",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Synthesis and crystal structures and luminescent properties of divalent europium-doped Ba2ZnSi2O7 and BaZn2Si2O7",
+        "authors": [
+          "Shanshan Yao",
+          "Lihong Xue",
+          "Youwei Yan"
+        ],
+        "year": 2010,
+        "venue": "Physica B Condensed Matter",
+        "doi": "10.1016/j.physb.2010.10.059",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.physb.2010.10.059",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kerstan2012thermal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Thermal expansion of Ba2ZnSi2O7, BaZnSiO4 and the solid solution series BaZn2−xMgxSi2O7 (0≤x≤2) studied by high-temperature X-ray diffraction and dilatometry",
+        "authors": [
+          "Marita Kerstan",
+          "Matthias Müller",
+          "Christian Rüssel"
+        ],
+        "year": 2012,
+        "venue": "Journal of Solid State Chemistry",
+        "doi": "10.1016/j.jssc.2012.01.055",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jssc.2012.01.055",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2015ba1",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Ba1−xSrxZn2Si2O7 - A new family of materials with negative and very high thermal expansion",
+        "authors": [
+          "Christian Thieme",
+          "Helmar Görls",
+          "Christian Rüssel"
+        ],
+        "year": 2015,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/srep18040",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1038/srep18040",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016very",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Very high or close to zero thermal expansion by the variation of the Sr/Ba ratio in Ba 1−x Sr x Zn 2 Si 2 O 7 – solid solutions",
+        "authors": [
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "Dalton Transactions",
+        "doi": "10.1039/c5dt04970a",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/c5dt04970a",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kracker2016sol",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Sol–gel powder synthesis and preparation of ceramics with high- and low-temperature polymorphs of Ba Sr1-Zn2Si2O7 (x= 1 and 0.5): A novel approach to obtain zero thermal expansion",
+        "authors": [
+          "Michael Kracker",
+          "Christian Thieme",
+          "Johannes Häßler",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "Journal of the European Ceramic Society",
+        "doi": "10.1016/j.jeurceramsoc.2016.02.023",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jeurceramsoc.2016.02.023",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016thermal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Thermal Expansion of Sintered Glass Ceramics in the System BaO–SrO–ZnO–SiO 2 and Its Dependence on Particle Size",
+        "authors": [
+          "Christian Thieme",
+          "Martin Schlesier",
+          "Christian Bocker",
+          "Gabriel Buzatto de Souza",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "ACS Applied Materials & Interfaces",
+        "doi": "10.1021/acsami.6b07353",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1021/acsami.6b07353",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016negative",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Negative Thermal Expansion in Ba0.5Sr0.5Zn2SiGeO7",
+        "authors": [
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2016,
+        "venue": "Materials",
+        "doi": "10.3390/ma9080631",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.3390/ma9080631",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "vladislavova2017heterogeneous",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Heterogeneous nucleation of Ba1-xSrxZn2Si2O7 from a BaO/SrO/ZnO/SiO2 glass using platinum as nucleation agent",
+        "authors": [
+          "Liliya Vladislavova",
+          "Christian Thieme",
+          "Tilman Zscheckel",
+          "Christian Patzig",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2017,
+        "venue": "Journal of the European Ceramic Society",
+        "doi": "10.1016/j.jeurceramsoc.2017.05.020",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jeurceramsoc.2017.05.020",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "vladislavova2018crystallisation",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Crystallisation of Ba1-xSrxZn2Si2O7 from BaO/SrO/ZnO/SiO2 glass with different ZrO2 and TiO2 concentrations",
+        "authors": [
+          "Liliya Vladislavova",
+          "Michael Kracker",
+          "Tilman Zscheckel",
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2018,
+        "venue": "Solid State Sciences",
+        "doi": "10.1016/j.solidstatesciences.2018.02.011",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.solidstatesciences.2018.02.011",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2015high",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "High thermal expansion of crystallized glasses in the system BaO–ZnO–NiO–SiO2",
+        "authors": [
+          "Christian Thieme",
+          "Christian Rüssel"
+        ],
+        "year": 2015,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2015.07.114",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2015.07.114",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "available2020materials",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Materials Data on BaZn2Si2O7 by Materials Project",
+        "authors": [
+          "None Available"
+        ],
+        "year": 2020,
+        "venue": "OSTI OAI (U.S. Department of Energy Office of Scientific and Technical Information)",
+        "doi": "10.17188/1271462",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.17188/1271462",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2016cheminform",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "ChemInform Abstract: New Family of Materials with Negative Coefficients of Thermal Expansion: The Effect of MgO, CoO, MnO, NiO, or CuO on the Phase Stability and Thermal Expansion of Solid Solution Phases Derived from BaZn2Si2O7.",
+        "authors": [
+          "Christian Thieme",
+          "Tina Waurischk",
+          "Stephan Heitmann",
+          "Christian Ruessel"
+        ],
+        "year": 2016,
+        "venue": "ChemInform",
+        "doi": "10.1002/chin.201628006",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1002/chin.201628006",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "erlebach2021phase",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Phase stability determination of negative thermal expansion silicates by theory and experiment",
+        "authors": [
+          "Andreas Erlebach",
+          "Ghada Belhadj Hassine",
+          "Christian Thieme",
+          "Katrin Thieme",
+          "Christian Rüssel",
+          "Marek Sierka"
+        ],
+        "year": 2021,
+        "venue": "Physical Chemistry Chemical Physics",
+        "doi": "10.1039/d1cp03862a",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1039/d1cp03862a",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "zou2021near",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Near‐Zero Thermal Expansion Ba1−xSrxZn2Si2O7‐Based Microwave Dielectric Ceramics for 3D Printed Dielectric Resonator Antenna with Integrative Lens",
+        "authors": [
+          "Zheng‐Yu Zou",
+          "Yihui Lou",
+          "Xiaoqiang Song",
+          "Hai Jiang",
+          "Kang Du",
+          "Changzhi Yin",
+          "Wenzhong Lü",
+          "Xiao‐Chuan Wang",
+          "Xiao‐Hong Wang",
+          "Ming Fu",
+          "Wen Lei"
+        ],
+        "year": 2021,
+        "venue": "Advanced Materials Interfaces",
+        "doi": "10.1002/admi.202100584",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1002/admi.202100584",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2017variable",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Variable thermal expansion of glass-ceramics containing Ba1−xSrxZn2Si2O7",
+        "authors": [
+          "Christian Thieme",
+          "Martin Schlesier",
+          "Eze Oji Dike",
+          "Christian Rüssel"
+        ],
+        "year": 2017,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/s41598-017-03132-x",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1038/s41598-017-03132-x",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "vladislavova2019crystallization",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Crystallization of Ba1-xSrxZn2Si2O7 from the BaO/SrO/ZnO/SiO2 glass system: Effect of platinum and Sb2O3 on nucleation",
+        "authors": [
+          "Liliya Vladislavova",
+          "Christian Thieme",
+          "Tilman Zscheckel",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2019,
+        "venue": "Journal of Alloys and Compounds",
+        "doi": "10.1016/j.jallcom.2019.04.034",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jallcom.2019.04.034",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "heitmann2019surface",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Surface and bulk crystallization of Ba1-xSrxZn2Si2O7 from glasses in the system BaO/SrO/ZnO/SiO2 doped with Nb2O5 or Ta2O5",
+        "authors": [
+          "Stephan Heitmann",
+          "Katrin Thieme",
+          "Christian Thieme",
+          "Michael Kracker",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2019,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2019.01.052",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2019.01.052",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2018growth",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Growth-front hopping via stress-induced nucleation illustrated for the crystallization of Ba1-xSrxZn2Si2O7 from a glass in the BaO-SrO-ZnO-SiO2 system",
+        "authors": [
+          "Katrin Thieme",
+          "Tilman Zscheckel",
+          "Christian Thieme",
+          "Michael Kracker",
+          "Christian Rüssel",
+          "Thomas Höche"
+        ],
+        "year": 2018,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2018.07.264",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2018.07.264",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2017on",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "On the search for nucleation agents in BaO-SrO-ZnO-SiO2 glasses: The influence of P2O5",
+        "authors": [
+          "Katrin Thieme",
+          "Tilman Zscheckel",
+          "Christian Thieme",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2017,
+        "venue": "Journal of the European Ceramic Society",
+        "doi": "10.1016/j.jeurceramsoc.2017.12.034",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.jeurceramsoc.2017.12.034",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2017effect",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Effect of Al2O3 on phase formation and thermal expansion of a BaO-SrO-ZnO-SiO2 glass ceramic",
+        "authors": [
+          "Christian Thieme",
+          "Michael Kracker",
+          "Andreas Erlebach",
+          "Christian Patzig",
+          "Marek Sierka",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2017,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2017.10.159",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2017.10.159",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "vladislavova2018nucleation",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Nucleation agents in the glass system BaO/SrO/ZnO/SiO2",
+        "authors": [
+          "Liliya Vladislavova"
+        ],
+        "year": 2018,
+        "venue": "Common Library Network (Der Gemeinsame Bibliotheksverbund)",
+        "doi": "10.22032/dbt.37559",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.22032/dbt.37559",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kireeva2022pauling",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Pauling Number as Efficient Descriptors for Screening the Structures with Negative Thermal Expansion Characteristics",
+        "authors": [
+          "Natalia Kireeva",
+          "А. Yu. Tsivadze"
+        ],
+        "year": 2022,
+        "venue": "ChemRxiv",
+        "doi": "10.26434/chemrxiv-2022-xrthv",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.26434/chemrxiv-2022-xrthv",
+        "sources": [
+          "openalex"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "thieme2022noble",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Noble metals Pt, Au, and Ag as nucleating agents in BaO/SrO/ZnO/SiO2 glasses: formation of alloys and core–shell structures",
+        "authors": [
+          "Christian Thieme",
+          "Liliya Vladislavova",
+          "Katrin Thieme",
+          "Christian Patzig",
+          "Thomas Höche",
+          "Christian Rüssel"
+        ],
+        "year": 2022,
+        "venue": "Journal of Materials Science",
+        "doi": "10.1007/s10853-022-07054-6",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1007/s10853-022-07054-6",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "yang2021cyan",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Cyan-emitting Ba0.45Ca2.5La6(SiO4)6: 0.05 Eu2+ and Ba1.45Ca1.5La6(SiO4)6:0.05 Eu2+ solid-solution phosphors for white light-emitting diodes",
+        "authors": [
+          "Chen Yang",
+          "Can He",
+          "Ximing Huang",
+          "Guo Chen",
+          "Guoqin Leng",
+          "Ruiyu Mi",
+          "Xin Min",
+          "Zhaohui Huang"
+        ],
+        "year": 2021,
+        "venue": "Ceramics International",
+        "doi": "10.1016/j.ceramint.2021.01.087",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.ceramint.2021.01.087",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "gupta2021combustion",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Combustion synthesis and photoluminescence studies of rare earth activated Yttrium Barium silicate Oxyapatites",
+        "authors": [
+          "Ritu Gupta",
+          "Ananya Rout",
+          "Sadhana Agrawal"
+        ],
+        "year": 2021,
+        "venue": "Materials Today: Proceedings",
+        "doi": "10.1016/j.matpr.2021.02.822",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.matpr.2021.02.822",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "kaiser2002crystal",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "Crystal structure of the new barium zinc silicate Ba2ZnSi2O7",
+        "authors": [
+          "J. W. Kaiser",
+          "W. Jeitschko"
+        ],
+        "year": 2002,
+        "venue": "Zeitschrift für Kristallographie - New Crystal Structures",
+        "doi": "10.1524/ncrs.2002.217.jg.25",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1524/ncrs.2002.217.jg.25",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "bocker2012in",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "In situ crystallization of barium zinc silicate in glass-ceramics studied by hot stage scanning electron microscopy",
+        "authors": [
+          "Christian Bocker",
+          "Marlen Michaelis",
+          "Christian Rüssel"
+        ],
+        "year": 2012,
+        "venue": "Microscopy",
+        "doi": "10.1093/jmicro/dfs058",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1093/jmicro/dfs058",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    },
+    {
+      "key": "wei2013a",
+      "verdict": "PASS",
+      "title_similarity": 1.0,
+      "canonical": {
+        "title": "A new green-emitting barium zinc silicate: Eu2+-doped Ba2Zn3Si3O11",
+        "authors": [
+          "Donglei Wei",
+          "Yanlin Huang",
+          "Sun Il Kim",
+          "Young Moon Yu",
+          "Hyo Jin Seo"
+        ],
+        "year": 2013,
+        "venue": "Materials Letters",
+        "doi": "10.1016/j.matlet.2013.02.083",
+        "arxiv_id": null,
+        "url": "https://doi.org/10.1016/j.matlet.2013.02.083",
+        "sources": [
+          "crossref"
+        ]
+      },
+      "issues": [],
+      "suggested_bibtex": null
+    }
+  ]
+}

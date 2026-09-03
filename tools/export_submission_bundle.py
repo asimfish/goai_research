@@ -44,13 +44,24 @@ import sys
 from pathlib import Path
 
 SECRET_PATTERNS = [
+    # Whalent gateway tokens also appear as bare ``--token tk-...`` arguments,
+    # so key/value-only redaction is insufficient.
+    re.compile(r"\btk-[A-Za-z0-9]{20,}-[A-Za-z0-9]{6,}\b"),
     re.compile(r"\bsk-(?:proj-|ant-)?[A-Za-z0-9]{20,}\b"),
     re.compile(r"ghp_[A-Za-z0-9]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
     re.compile(r"(?i)bearer\s+[A-Za-z0-9._-]{12,}"),
     re.compile(r"(?i)(api[_-]?key|secret|token|password)(\"?\s*[:=]\s*\"?)([A-Za-z0-9._-]{12,})"),
 ]
-TEXT_SUFFIXES = {".jsonl", ".json", ".md", ".log", ".txt", ".tsv", ".toml", ".tex", ".bib", ".status", ".exit", ".started", ".process_exit"}
+PRIVATE_PATH_PATTERNS = [
+    re.compile(r"/home/[A-Za-z0-9._-]+(?:/[^\s\"'<>]*)?"),
+    re.compile(r"/mnt/[^\s\"'<>]+"),
+]
+TEXT_SUFFIXES = {
+    ".bib", ".cfg", ".csv", ".env", ".exit", ".html", ".json", ".jsonl",
+    ".log", ".md", ".process_exit", ".py", ".sh", ".started", ".status",
+    ".svg", ".tex", ".toml", ".tsv", ".txt", ".xml", ".yaml", ".yml",
+}
 
 
 def scrub_text(text: str) -> tuple[str, int]:
@@ -63,7 +74,162 @@ def scrub_text(text: str) -> tuple[str, int]:
                 return f"{m.group(1)}{m.group(2)}[REDACTED]"
             return "[REDACTED]"
         text = pat.sub(_sub, text)
+    for pat, replacement in ((PRIVATE_PATH_PATTERNS[0], "<HOME>"),
+                             (PRIVATE_PATH_PATTERNS[1], "<PRIVATE_MOUNT_PATH>")):
+        text, count = pat.subn(replacement, text)
+        hits += count
     return text, hits
+
+
+def normalize_jsonl(text: str) -> tuple[str, int, int]:
+    """Return valid JSONL while preserving every non-empty malformed raw line.
+
+    Gateway truncation and shell diagnostics occasionally leave plain-text or
+    partial JSON in files named ``*.jsonl``.  Each such line is wrapped in a
+    machine-readable record instead of being silently discarded.
+    """
+    records: list[str] = []
+    wrapped = 0
+    blank = 0
+    for line_number, line in enumerate(text.splitlines(), 1):
+        if not line.strip():
+            blank += 1
+            continue
+        try:
+            json.loads(line)
+            records.append(line)
+        except json.JSONDecodeError as exc:
+            wrapped += 1
+            records.append(json.dumps({
+                "type": "unparsed_raw",
+                "source_line": line_number,
+                "parse_error": exc.msg,
+                "raw": line,
+            }, ensure_ascii=False))
+    return ("\n".join(records) + ("\n" if records else ""), wrapped, blank)
+
+
+def _read_submission_text(path: Path) -> str | None:
+    if path.name.endswith(".jsonl.gz"):
+        try:
+            with gzip.open(path, "rt", encoding="utf-8", errors="replace") as fh:
+                return fh.read()
+        except (gzip.BadGzipFile, EOFError, OSError):
+            return None
+    if path.suffix not in TEXT_SUFFIXES:
+        return None
+    try:
+        return path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return None
+
+
+def _write_submission_text(path: Path, text: str) -> None:
+    if path.name.endswith(".jsonl.gz"):
+        # mtime=0 makes identical sanitized content byte-identical.
+        with path.open("wb") as raw_file:
+            with gzip.GzipFile(fileobj=raw_file, mode="wb", mtime=0) as raw:
+                with io.TextIOWrapper(raw, encoding="utf-8") as sink:
+                    sink.write(text)
+    else:
+        path.write_text(text, encoding="utf-8")
+
+
+def sanitize_export_tree(root: Path, log: list[str]) -> dict[str, int]:
+    """Redact all exported text/gzip files and normalize JSONL in place."""
+    stats = {"files_scanned": 0, "redactions": 0, "jsonl_wrapped": 0,
+             "jsonl_blank_lines_removed": 0}
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        text = _read_submission_text(path)
+        if text is None:
+            continue
+        stats["files_scanned"] += 1
+        sanitized, hits = scrub_text(text)
+        stats["redactions"] += hits
+        if path.suffix == ".jsonl" or path.name.endswith(".jsonl.gz"):
+            sanitized, wrapped, blank = normalize_jsonl(sanitized)
+            stats["jsonl_wrapped"] += wrapped
+            stats["jsonl_blank_lines_removed"] += blank
+        if sanitized != text or path.name.endswith(".jsonl.gz"):
+            _write_submission_text(path, sanitized)
+    log.append(
+        "sanitized export tree: "
+        f"{stats['files_scanned']} text files, {stats['redactions']} redactions, "
+        f"{stats['jsonl_wrapped']} malformed JSONL lines wrapped"
+    )
+    return stats
+
+
+def refresh_export_metadata(root: Path) -> dict[str, int]:
+    """Refresh hashes/sizes invalidated by redaction and JSONL normalization."""
+    stats = {"run_trace_sizes": 0, "development_trace_hashes": 0}
+    for manifest_path in root.glob("run*/RUN_MANIFEST.json"):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for batch in manifest.get("parallel_batches", []):
+            for task in batch.get("tasks", []):
+                trace = task.get("trace")
+                if not trace:
+                    continue
+                if trace.startswith("state/parallel/"):
+                    trace = trace.replace("state/parallel/", "traces/runtime/parallel/", 1)
+                    task["trace"] = trace
+                trace_path = manifest_path.parent / trace
+                if trace_path.is_file():
+                    task["bytes"] = trace_path.stat().st_size
+                    stats["run_trace_sizes"] += 1
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                                 encoding="utf-8")
+
+    info_path = root / "traces" / "development" / "trace_info.json"
+    if info_path.is_file():
+        info = json.loads(info_path.read_text(encoding="utf-8"))
+        trace_path = info_path.parent / str(info.get("file", ""))
+        if trace_path.is_file():
+            info["sha256"] = hashlib.sha256(trace_path.read_bytes()).hexdigest()
+            info["post_export_sanitized"] = True
+            info_path.write_text(json.dumps(info, ensure_ascii=False, indent=2) + "\n",
+                                 encoding="utf-8")
+            stats["development_trace_hashes"] = 1
+    return stats
+
+
+def validate_export_tree(root: Path) -> dict[str, int]:
+    """Fail closed on secrets/private paths or malformed JSON/JSONL files."""
+    failures: list[str] = []
+    stats = {"text_files": 0, "json_files": 0, "jsonl_files": 0,
+             "jsonl_records": 0}
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        text = _read_submission_text(path)
+        if text is None:
+            continue
+        rel = path.relative_to(root).as_posix()
+        stats["text_files"] += 1
+        if any(p.search(text) for p in SECRET_PATTERNS):
+            failures.append(f"secret-like token remains in {rel}")
+        if any(p.search(text) for p in PRIVATE_PATH_PATTERNS):
+            failures.append(f"private absolute path remains in {rel}")
+        try:
+            if path.suffix == ".json":
+                json.loads(text)
+                stats["json_files"] += 1
+            elif path.suffix == ".jsonl" or path.name.endswith(".jsonl.gz"):
+                stats["jsonl_files"] += 1
+                for line_number, line in enumerate(text.splitlines(), 1):
+                    if not line.strip():
+                        failures.append(f"blank JSONL line in {rel}:{line_number}")
+                        continue
+                    json.loads(line)
+                    stats["jsonl_records"] += 1
+        except json.JSONDecodeError as exc:
+            failures.append(f"malformed JSON in {rel}:{exc.lineno}: {exc.msg}")
+    if failures:
+        preview = "\n  - ".join(failures[:20])
+        raise RuntimeError(f"submission export validation failed:\n  - {preview}")
+    return stats
 
 
 def copy_tree(src: Path, dst: Path, *, redact: bool, log: list[str]) -> int:
@@ -136,7 +302,8 @@ def run_inventory(parallel_dir: Path) -> list[dict]:
                     model = ev.get("model")
             tasks.append({
                 "task": stem,
-                "trace": str(jsonl.relative_to(parallel_dir.parent.parent)),
+                "trace": (Path("traces") / "runtime" / "parallel" /
+                          batch.name / jsonl.name).as_posix(),
                 "bytes": jsonl.stat().st_size,
                 "status": _read(".status"),
                 "exit": _read(".exit"),
@@ -254,19 +421,36 @@ def write_sha_manifest(root: Path) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--cold-workspace", required=True, help="repository clone that ran the formal cold-start case (contains workspace/, tasks_*.tsv, final PDF)")
+    ap.add_argument("--cold-workspace", help="repository clone that ran the formal cold-start case (contains workspace/, tasks_*.tsv, final PDF)")
     ap.add_argument("--final-pdf", default="Ba5Y12Zn_合成调研_学术润色版.pdf", help="final PDF filename inside --cold-workspace")
     ap.add_argument("--llzo-workspace", default=None, help="workspace/ of the LLZO diagnostic run (secondary case)")
     ap.add_argument("--dev-trace-dir", default=None, help="directory of exported gateway messages (<id>.json) for the development phase")
     ap.add_argument("--codex-sessions-dir", default=None, help="$CODEX_HOME/sessions directory holding native Codex rollout-*.jsonl files")
     ap.add_argument("--out", default="submission/goai_final")
+    ap.add_argument("--sanitize-only", action="store_true",
+                    help="sanitize, normalize and validate an existing --out tree")
     args = ap.parse_args()
+
+    out = Path(args.out).resolve()
+    log: list[str] = []
+    if args.sanitize_only:
+        if not out.is_dir():
+            ap.error(f"--out is not an existing directory: {out}")
+        sanitize_stats = sanitize_export_tree(out, log)
+        metadata_stats = refresh_export_metadata(out)
+        validation_stats = validate_export_tree(out)
+        n_files = write_sha_manifest(out)
+        print(json.dumps({"out": str(out), "files": n_files,
+                          "sanitize": sanitize_stats, "metadata": metadata_stats,
+                          "validation": validation_stats,
+                          "log": log}, ensure_ascii=False, indent=2))
+        return 0
+    if not args.cold_workspace:
+        ap.error("--cold-workspace is required unless --sanitize-only is used")
 
     cold = Path(args.cold_workspace).resolve()
     ws = cold / "workspace"
-    out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
-    log: list[str] = []
 
     # ---- report ---------------------------------------------------------------
     report = out / "report"
@@ -358,9 +542,14 @@ def main() -> int:
     if args.codex_sessions_dir:
         sessions_info = export_codex_sessions(Path(args.codex_sessions_dir), out, log)
 
+    sanitize_stats = sanitize_export_tree(out, log)
+    metadata_stats = refresh_export_metadata(out)
+    validation_stats = validate_export_tree(out)
     n_files = write_sha_manifest(out)
     summary = {"out": str(out), "files": n_files, "dev_trace": dev_info,
-               "codex_sessions": {k: len(v) for k, v in sessions_info.items()}, "log": log}
+               "codex_sessions": {k: len(v) for k, v in sessions_info.items()},
+               "sanitize": sanitize_stats, "metadata": metadata_stats,
+               "validation": validation_stats, "log": log}
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 

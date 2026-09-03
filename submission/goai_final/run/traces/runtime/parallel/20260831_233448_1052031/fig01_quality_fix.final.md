@@ -8,7 +8,7 @@ fig01 第三轮质量返工已完成，I4 三项问题经 Chrome 1800×1100 实�
 
 本轮更新且非空：
 
-- [返工记录](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/figure_parts/fig01.md)
-- [figspec](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/figspec/fig01_evidence_synthesis_map.json)
-- [SVG](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig01_evidence_synthesis_map.svg)
-- [drawio](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig01_evidence_synthesis_map.drawio)
+- [返工记录](<HOME>
+- [figspec](<HOME>
+- [SVG](<HOME>
+- [drawio](<HOME>

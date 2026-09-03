@@ -9,8 +9,8 @@
 
 产物：
 
-- [references.bib](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/references.bib)
-- [CITATION_AUDIT.json](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.json)
-- [CITATION_AUDIT.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.md)
+- [references.bib](<HOME>
+- [CITATION_AUDIT.json](<HOME>
+- [CITATION_AUDIT.md](<HOME>
 
 给 orchestrator 的建议：先修复 refcheck 的空作者处理、双侧姓名规范化、Unicode 同形字符和机构库作者角色映射，再重跑全库；否则转交 super_ref 深审。修复前不得放行 writing。

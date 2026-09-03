@@ -8,62 +8,62 @@
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
   <g id="p11-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">冷启动只输入一行主题，各类角色各自交出了什么</text>
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">从一行主题到 35 页终稿：每个角色都有可核对交付物</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
   <g id="p11-lead">
-    <text x="72" y="166" font-size="26" fill="#1D1D1F">唯一输入是一行主题，下面展示各角色交付的亮点与可核对结果。</text>
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">以案例 3 为例：检索、核对、写作、绘图、实验设计和审稿均落盘。</text>
   </g>
   <g id="p11-chain">
     <rect x="72" y="204" width="1136" height="72" fill="#F3F5F8"/>
     <rect x="72" y="204" width="6" height="72" fill="#1F4D78"/>
     <text x="96" y="232" font-size="18" font-weight="700" fill="#1F4D78">唯一输入</text>
-    <text x="96" y="262" font-size="24" fill="#1D1D1F">调研主题：Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件</text>
+    <text x="96" y="262" font-size="24" fill="#1D1D1F">Ba–Y–Zn–Si–O 硅酸盐：相图导向的合成与亚稳相问题</text>
   </g>
   <g id="p11-example">
     <rect x="72" y="300" width="556" height="96" fill="#F3F5F8"/>
     <rect x="72" y="300" width="6" height="96" fill="#1F4D78"/>
     <text x="96" y="330" font-size="18" font-weight="700" fill="#1F4D78">编排器</text>
-    <text x="96" y="356" font-size="18" fill="#1D1D1F">自动确认范围；在需要人确认的节点续跑 4 次</text>
-    <text x="96" y="380" font-size="18" fill="#1D1D1F">29 批 / 40 个子任务，约 7,084 万输入 token</text>
+    <text x="96" y="356" font-size="18" fill="#1D1D1F">七个子主题，范围与证据转移边界明确</text>
+    <text x="96" y="380" font-size="18" fill="#1D1D1F">15 批 / 24 个任务 JSONL，异常与重试保留</text>
     <rect x="652" y="300" width="556" height="96" fill="#F3F5F8"/>
     <rect x="652" y="300" width="6" height="96" fill="#1F4D78"/>
     <text x="676" y="330" font-size="18" font-weight="700" fill="#1F4D78">文献检索</text>
-    <text x="676" y="356" font-size="18" fill="#1D1D1F">8 个子主题；在线五源 + 本地全文库</text>
-    <text x="676" y="380" font-size="18" fill="#1D1D1F">63 条候选文献</text>
+    <text x="676" y="356" font-size="18" fill="#1D1D1F">在线多源 + 本地全文库，近邻 / 相图专项补检</text>
+    <text x="676" y="380" font-size="18" fill="#1D1D1F">516 条检索记录，形成 513 条去重文献</text>
   </g>
   <g id="p11-stats-run">
     <rect x="72" y="410" width="556" height="96" fill="#F3F5F8"/>
     <rect x="72" y="410" width="6" height="96" fill="#C48A2B"/>
     <text x="96" y="440" font-size="18" font-weight="700" fill="#1F4D78">引用核对</text>
-    <text x="96" y="466" font-size="18" fill="#1D1D1F">51 篇全部通过；5 条作者名不匹配的文献</text>
-    <text x="96" y="490" font-size="18" fill="#1D1D1F">三轮未收敛，交人决定后删除</text>
+    <text x="96" y="466" font-size="18" fill="#1D1D1F">513 / 513 条引用记录 PASS</text>
+    <text x="96" y="490" font-size="18" fill="#1D1D1F">存在性、元数据、作者顺序与引用解析可复查</text>
     <rect x="652" y="410" width="556" height="96" fill="#F3F5F8"/>
     <rect x="652" y="410" width="6" height="96" fill="#C48A2B"/>
     <text x="676" y="440" font-size="18" font-weight="700" fill="#1F4D78">写作</text>
-    <text x="676" y="466" font-size="18" fill="#1D1D1F">11 章、219 次引用、整合率 100%</text>
-    <text x="676" y="490" font-size="18" fill="#1D1D1F">同类体系单独成节，前人结论汇总</text>
+    <text x="676" y="466" font-size="18" fill="#1D1D1F">35 页、757 次正文引用、整合率 100%</text>
+    <text x="676" y="490" font-size="18" fill="#1D1D1F">直接证据、近邻类比和模型候选分层陈述</text>
   </g>
   <g id="p11-stats-traces">
     <rect x="72" y="520" width="360" height="96" fill="#F3F5F8"/>
     <rect x="72" y="520" width="6" height="96" fill="#4F8A9E"/>
     <text x="96" y="550" font-size="18" font-weight="700" fill="#1F4D78">绘图</text>
-    <text x="96" y="576" font-size="18" fill="#1D1D1F">3 张图先生成视觉参照，再重建为</text>
-    <text x="96" y="600" font-size="18" fill="#1D1D1F">可编辑图，全部通过排版检查</text>
+    <text x="96" y="576" font-size="18" fill="#1D1D1F">3 张图保持 figspec / SVG / draw.io</text>
+    <text x="96" y="600" font-size="18" fill="#1D1D1F">同源一致，公式与连接关系检查通过</text>
     <rect x="460" y="520" width="360" height="96" fill="#F3F5F8"/>
     <rect x="460" y="520" width="6" height="96" fill="#4F8A9E"/>
     <text x="484" y="550" font-size="18" font-weight="700" fill="#1F4D78">想法生成</text>
-    <text x="484" y="576" font-size="18" fill="#1D1D1F">调用 RECIPE 3 次（Zn / Mg / Co）</text>
-    <text x="484" y="600" font-size="18" fill="#1D1D1F">给出四个实验方向及前驱体候选</text>
+    <text x="484" y="576" font-size="18" fill="#1D1D1F">3 个研究提案 + 3 个实验计划</text>
+    <text x="484" y="600" font-size="18" fill="#1D1D1F">模型候选统一标记“待实验验证”</text>
     <rect x="848" y="520" width="360" height="96" fill="#F3F5F8"/>
     <rect x="848" y="520" width="6" height="96" fill="#4F8A9E"/>
     <text x="872" y="550" font-size="18" font-weight="700" fill="#1F4D78">对抗审稿</text>
-    <text x="872" y="576" font-size="18" fill="#1D1D1F">两轮；首轮 7 项问题全部关闭</text>
-    <text x="872" y="600" font-size="18" fill="#1D1D1F">终审 0 问题</text>
+    <text x="872" y="576" font-size="18" fill="#1D1D1F">格式终审 0 blocker / 0 major</text>
+    <text x="872" y="600" font-size="18" fill="#1D1D1F">仅 1 个参考文献元数据 minor</text>
   </g>
   <g id="p11-stats-data">
     <line x1="72" y1="634" x2="1208" y2="634" stroke="#D5DBE3" stroke-width="1"/>
-    <text x="72" y="660" font-size="16" fill="#5A6573">七类角色共同交付：从一行主题开始，把检索、核对、写作、绘图、想法与审稿串成可复查结果。</text>
+    <text x="72" y="660" font-size="16" fill="#5A6573">每一项数字都能回到 ledger、CITATION_AUDIT、tool_calls、逐任务 JSONL 与最终 PDF。</text>
   </g>
   <g id="p11-footer">
     <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>

@@ -172,7 +172,7 @@ either way; it never claims an unfinished survey is done).
 
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
-bash install.sh     # creates .venv, installs deps, generates MCP configs with absolute paths
+bash install.sh     # creates .venv from uv.lock, writes .cache/install-receipt.json, generates MCP configs
 # With the vendored two-stage inorganic model: bash install.sh --retro
 
 # Codex CLI
@@ -188,8 +188,8 @@ tools/check.sh --servers
 .venv/bin/python -m pytest tests/ -q     # offline tests, no network needed
 ```
 
-Requirements: Python ≥ 3.10 (install.sh uses [uv](https://github.com/astral-sh/uv) if
-available). Optional extras: `brew install --cask drawio` (export .drawio → png/pdf),
+Requirements: Python ≥ 3.10 (`install.sh` always uses [uv](https://github.com/astral-sh/uv)
+and bootstraps a repository-local copy when needed). Optional extras: `brew install --cask drawio` (export .drawio → png/pdf),
 `.venv/bin/pip install -e '.[preview]'` (PNG previews for figure self-checks),
 Node.js (official [draw.io MCP](https://github.com/jgraph/drawio-mcp) for live browser editing).
 For the final PDF you need a TeX distribution: English surveys compile with

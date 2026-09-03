@@ -120,7 +120,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 4.5 系统级指标
 
-56 项离线单元测试（BibTeX 往返、作者比对、figspec 校验与排版 lint、SVG↔draw.io 往返、本地全文库检索与受限读取、账本并发 12 写入者零丢失、`check-done` 语义与回执校验、bib/tex/术语闸门）全部通过；实测套件（真实五源检索、真实 draw.io 导出、完整 mini 综述回环）记录于 `docs/live-tests/`。
+离线单元测试（BibTeX 往返、作者比对、figspec 校验与排版 lint、SVG↔draw.io 往返、本地全文库检索与受限读取、账本并发 12 写入者零丢失、`check-done` 语义与回执校验、bib/tex/术语闸门、提交轨迹脱敏与 JSONL 规范化）全部通过，实际测试数量由 `pytest` 收据给出；实测套件（真实五源检索、真实 draw.io 导出、完整 mini 综述回环）记录于 `docs/live-tests/`。
 
 ### 4.6 科学意义解释
 
@@ -130,7 +130,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 5.1 复现方式
 
-`bash install.sh --retro` 完成安装；`bash scripts/smoke_test.sh --with-retro` 在干净环境无网络、无 LLM 条件下 1–2 分钟内验证环境、4 个 MCP server、56 项测试、公开知识库、结论—证据链与图纸渲染；`tools/retro_dry_run.py` 在 CPU 上加载模型并完成预测；`bash scripts/reproduce_core.sh` 用同一主题、同一模型与推理强度重新运行整条流水线。因 LLM 不可逐字复现，核心流程的复现判据是账本 `check-done` 退出 0、`CITATION_AUDIT` 全部 PASS、`bib_guard` 整合率 ≥ 90%，并产出 PDF、BibTeX、图源与逐子任务 JSONL 轨迹。报告中每个主要结论、图与指标都可沿"代码版本 → 配置 → 数据 → 日志/轨迹 → 结果文件"追溯（SUBMISSION.md §6 给出完整示例）。
+`bash install.sh --retro` 完成锁定安装；`bash scripts/smoke_test.sh --with-retro` 在干净环境无网络、无 LLM 条件下 1–2 分钟内验证环境、4 个 MCP server、全部离线测试、公开知识库、结论—证据链与图纸渲染；`tools/retro_dry_run.py` 在 CPU 上加载两个 checkpoint 并对一个参考目标完成预测；`bash scripts/reproduce_core.sh` 用同一主题、同一模型与推理强度重新运行整条流水线。因 LLM 不可逐字复现，核心流程的复现判据是账本 `check-done` 退出 0、`CITATION_AUDIT` 全部 PASS、`bib_guard` 整合率 ≥ 90%，并产出 PDF、BibTeX、图源与逐子任务 JSONL 轨迹；脚本只有在这些条件全部满足后才返回 0，并写出 `REPRODUCTION_RECEIPT.json`。报告中每个主要结论、图与指标都可沿"代码版本 → 配置 → 数据 → 日志/轨迹 → 结果文件"追溯（SUBMISSION.md §6 给出完整示例）。
 
 ### 5.2 开源计划
 

@@ -2,10 +2,10 @@
 
 产物：
 
-- 图 1：[figspec](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/figspec/fig01_evidence_synthesis_map.json>) · [SVG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig01_evidence_synthesis_map.svg>) · [Draw.io](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig01_evidence_synthesis_map.drawio>) · [PDF](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/pdf/fig01_evidence_synthesis_map.pdf>) · [PNG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/png/fig01_evidence_synthesis_map.png>)
-- 图 2：[figspec](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/figspec/fig02_route_variable_matrix.json>) · [SVG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig02_route_variable_matrix.svg>) · [Draw.io](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig02_route_variable_matrix.drawio>) · [PDF](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/pdf/fig02_route_variable_matrix.pdf>) · [PNG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/png/fig02_route_variable_matrix.png>)
-- 图 3：[figspec](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/figspec/fig03_research_roadmap.json>) · [SVG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/svg/fig03_research_roadmap.svg>) · [Draw.io](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/drawio/fig03_research_roadmap.drawio>) · [PDF](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/pdf/fig03_research_roadmap.pdf>) · [PNG](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/figures/png/fig03_research_roadmap.png>)
+- 图 1：[figspec](<<HOME>>) · [SVG](<<HOME>>) · [Draw.io](<<HOME>>) · [PDF](<<HOME>>) · [PNG](<<HOME>>)
+- 图 2：[figspec](<<HOME>>) · [SVG](<<HOME>>) · [Draw.io](<<HOME>>) · [PDF](<<HOME>>) · [PNG](<<HOME>>)
+- 图 3：[figspec](<<HOME>>) · [SVG](<<HOME>>) · [Draw.io](<<HOME>>) · [PDF](<<HOME>>) · [PNG](<<HOME>>)
 
-计划与审计记录已更新：[figure_plan.md](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/figure_plan.md>)、[fig01 audit](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/figure_parts/fig01.md>)、[fig02 audit](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/figure_parts/fig02.md>)、[fig03 audit](</home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/figure_parts/fig03.md>)。
+计划与审计记录已更新：[figure_plan.md](<<HOME>>)、[fig01 audit](<<HOME>>)、[fig02 audit](<<HOME>>)、[fig03 audit](<<HOME>>)。
 
 最终检查：三份 figspec 均 `validate/lint = 0 error, 0 warning`；SVG 与 Draw.io 同源复算一致；PNG 有效；PDF 均为单页且方向正常；`academic_language_guard` 通过。Draw.io Desktop CLI 不可用，因此采用仓库本地等价渲染并直接核对 XML 可编辑结构；未修改正文、`references.bib`，也未设置新的 `figures_ready` gate。

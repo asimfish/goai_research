@@ -13,8 +13,8 @@
 
 已更新：
 
-- [retro_llzo_top5.json](/home/gaojing/goai_research/workspace/ideas/retro_llzo_top5.json)
-- [experiment_llzo_diagnostic.json](/home/gaojing/goai_research/workspace/ideas/experiment_llzo_diagnostic.json)
-- [proposal_llzo_diagnostic.md](/home/gaojing/goai_research/workspace/ideas/proposal_llzo_diagnostic.md)
+- [retro_llzo_top5.json](<HOME>
+- [experiment_llzo_diagnostic.json](<HOME>
+- [proposal_llzo_diagnostic.md](<HOME>
 
 账本已记录 `event=diagnostic_repair`；`ideas_reviewed` 仍不存在，未设为 PASS。

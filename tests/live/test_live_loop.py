@@ -35,7 +35,7 @@ from server.core import retro  # noqa: E402
 
 LOOPCTL = os.path.join(ROOT, "tools", "loopctl.py")
 PARALLEL_RUN = os.path.join(ROOT, "tools", "parallel_run.sh")
-API_KEY = "live-test-key-abc123"
+API_KEY = "test-key"
 
 
 # --------------------------------------------------------------------------

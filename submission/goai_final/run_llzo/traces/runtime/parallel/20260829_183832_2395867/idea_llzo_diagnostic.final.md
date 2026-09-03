@@ -26,9 +26,9 @@ Top-5：
 
 产物：
 
-- [retro_llzo_top5.json](/home/gaojing/goai_research/workspace/ideas/retro_llzo_top5.json)
-- [experiment_llzo_diagnostic.json](/home/gaojing/goai_research/workspace/ideas/experiment_llzo_diagnostic.json)
-- [proposal_llzo_diagnostic.md](/home/gaojing/goai_research/workspace/ideas/proposal_llzo_diagnostic.md)
-- [idea_graveyard.md](/home/gaojing/goai_research/workspace/memory/idea_graveyard.md)
+- [retro_llzo_top5.json](<HOME>
+- [experiment_llzo_diagnostic.json](<HOME>
+- [proposal_llzo_diagnostic.md](<HOME>
+- [idea_graveyard.md](<HOME>
 
 已执行 `loopctl log`。因贡献确认和人工安全审批尚未完成，未设置 `ideas_reviewed` PASS。

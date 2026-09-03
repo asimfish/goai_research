@@ -49,7 +49,7 @@
 
 ## 3. 全部运行记录与正式结果的筛选规则
 
-复赛期间共进行 **7 组**运行，全部留痕；正式结果只取其中一组及其后续修订。
+复赛期间共进行 **8 组**运行，全部留痕；正式结果只取其中一组及其后续修订，第 8 组作为同一系统在三个新主题上的补充案例一并提交。
 
 | # | 日期 | 运行 | 性质 | 留痕位置 |
 |---|---|---|---|---|
@@ -59,6 +59,7 @@
 | 4 | 08-31 | Ba5Y12Zn[O(SiO4)]8（BYZSO）首轮 | 交互式编排 + 并行子任务；9 页报告 | `submission/byzso_synthesis_report/`、`traces/runtime_native_sessions/`（08-31 会话） |
 | 5 | 08-31 | 冷启动 `cold_byzso_J4XmS8` | 仅给主题；停在文献阶段并交出 Markdown 笔记，暴露回环协议漏洞（`check-done` 只记一个 gate 即可宣告完成），已在 PR #17 机械化修复 | `traces/runtime/orchestrator/` 同名 `final.md`；修复见 `docs/audits/2026-09-02_spec_audit/` |
 | 6 | 08-31 → 09-01 | **冷启动 `cold_full_byzso_m2gfJJ`（正式）** | 仅给主题；顶层编排器共调用 5 次（首轮 + 在 4 个人工停点处以同一主题续跑：范围确认、5 条作者名 MISMATCH 的处置、贡献结构确认、终审），29 批 / 40 个子任务；产出 20 页 PDF、51/51 核验文献、两轮对抗审稿 0 blocker / 0 major | `run/`（全部） |
+| 8 | 09-03 | 三主题英文冷启动（`submission/goai_final/runs_20260903/`） | 以同一系统、仅给一行主题、串行独立运行三个课题：LLZO 石榴石电解质（16 页）、BaZn₂Si₂O₇ 近邻体系（4 页）、Ba–Y–Zn–Si–O 相图导向合成（35 页）；`run_summary.tsv` 三组均 PASS；随后按用户对版式的反馈进入格式修复回环（摘要版式、章节编号、公式/表格、蓝色引用、参考文献），快照截取于 09-03 17:2x，LLZO 的格式复审当时仍在进行 | `runs_20260903/<slug>/{report,run,evidence}`（PDF、LaTeX、bib、账本、MCP 审计、子任务轨迹） |
 | 7 | 09-02 | 对第 6 组产物的学术修订 | 依据材料专家 8 条意见：重写引言与同类体系、补前人实验结论汇总与相图讨论、四类研究方向 + MCP 前驱体预测、去除工程化术语（新增 `academic_language_guard.py`）、移除 Pt/Au 成对对照建议、三轮学术化重绘图 1–3；由并行子任务（`tasks_academic_repolish.tsv`、`tasks_academic_assemble.tsv`）与构筑阶段 Harness 直接编辑共同完成 | `run/tasks/`、`run/traces/runtime/parallel/20260902_*`、`traces/development/` |
 
 **正式采用**：第 6 组冷启动结果经第 7 组修订后的最终稿 `report/Ba5Y12Zn_合成调研_学术润色版.pdf`（23 页）。
@@ -78,7 +79,11 @@
 | 风格库 | 30 篇经典综述的写作/画图风格卡（`style_bank`） | 风格卡为派生文本；原文 PDF 不分发 | 不影响闸门判定 |
 | 模拟语料 | `examples/demo_corpus/`（3 条 CC0 合成文本，`citable=false`） | CC0 | 用于无私有数据时验证工具链 |
 
-包内不含 API key、Token、密码或私有目录布局；导出脚本对轨迹做过密钥模式脱敏（`[REDACTED]`，共 4 处网关 Bearer/URL token）。
+包内不含 API key、Token、密码或私有绝对路径。导出脚本同时处理普通文本与
+压缩 JSONL：密钥替换为 `[REDACTED]`，`/home/...`、`/mnt/...` 替换为标准
+占位符；导出后再次扫描并解析全部 JSON/JSONL，任一敏感值、私有路径或格式
+错误都会令导出失败。实际脱敏计数写入导出命令的 JSON 收据，不使用易过期的
+手工固定数字。
 
 ---
 
@@ -135,13 +140,21 @@
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
 git checkout goai-final-2026-09-03
-bash install.sh --retro                 # .venv + 依赖 + MCP 配置；--retro 装 torch/pymatgen
+bash install.sh --retro                 # 按 uv.lock 安装并写收据；--retro 装 torch/pymatgen
 bash scripts/smoke_test.sh --with-retro # 无网络、无 LLM：约 1–2 分钟
 ```
 
-冒烟测试通过时依次打印 `OK`：Python ≥ 3.10；4 个 MCP server 可导入；56 项离线测试通过；公开知识库可被 `lookup_local_doi` 命中；结论—证据链 100 条 / 51 键全部核验；figspec 渲染出 SVG 与 draw.io；（`--with-retro`）两步模型在 20 条留出目标上完成预测。最后一行 `SMOKE TEST PASSED`。
+冒烟测试通过时依次打印 `OK`：Python ≥ 3.10；4 个 MCP server 可导入；
+`pytest` 报告全部离线测试通过；公开知识库可被 `lookup_local_doi` 命中；
+结论—证据链 100 条 / 51 键全部核验；figspec 渲染出 SVG 与 draw.io；
+（`--with-retro`）两步模型加载两个 checkpoint 并对一个公开参考目标完成 CPU
+预测。最后一行 `SMOKE TEST PASSED`。
 
-干净环境实测（2026-09-03，本地克隆）：`bash install.sh` 13 秒，`bash scripts/smoke_test.sh` 5 秒全部通过；`bash install.sh --retro` 约 10 分钟（torch 默认从 CPU 轮子源安装，168 MB；GPU 用户设 `GOAI_TORCH_INDEX=https://download.pytorch.org/whl/cu128`），`bash scripts/smoke_test.sh --with-retro` 13 秒，dry run 通过。
+本地已有依赖缓存的实测（2026-09-03）：`bash install.sh` 与基础 smoke 均为秒级；
+无缓存安装时间取决于网络。`bash install.sh --retro` 首次约 10 分钟（torch 默认
+从 CPU 轮子源安装，约 200 MB；GPU 用户设
+`GOAI_TORCH_INDEX=https://download.pytorch.org/whl/cu128`）；
+`bash scripts/smoke_test.sh --with-retro` 在模型环境就绪后为秒级，dry run 通过。
 
 ```bash
 # 前驱体预测模型 dry run（CPU，数秒；--json 输出完整工具返回）

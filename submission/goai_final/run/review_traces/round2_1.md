@@ -11,7 +11,7 @@
 >
 > [parallel runner delivery protocol]
 > - Write the declared artifacts early, then update them incrementally after each completed phase; do not wait for the final chat response.
-> - Do not read any active log under /home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/parallel/20260901_040838_2140274. Only inspect a prior run log when the prompt names that closed run_id explicitly.
+> - Do not read any active log under <HOME> Only inspect a prior run log when the prompt names that closed run_id explicitly.
 > - Before finishing, verify every declared artifact is non-empty and saved inside the requested path.
 > Declared artifacts: workspace/state/review_round2.md,workspace/state/review_traces/round2_1.md
 

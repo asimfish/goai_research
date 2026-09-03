@@ -129,7 +129,7 @@ Catalog read: 76 templates
 | Page | Template | Path | Summary-quote (verbatim) | Usage |
 | ---- | -------- | ---- | ------------------------ | ----- |
 | P06 | pipeline_with_stages（改为用户提供的论文架构图，不再套模板） | templates/charts/pipeline_with_stages.svg | "Pick for 3-5 horizontal pipeline stages, each = title + 1-line description + output artifact, connected by arrows (data pipelines, ETL, build pipelines)." | RECIPE 三阶段（候选生成 → 过滤枚举 → 集合重排）+ MCP 输出产物 |
-| P08 | kpi_cards | templates/charts/kpi_cards.svg | "Pick for 4-8 standalone numeric metrics shown as overview cards (2x2 or 1x4) — exec summary opener, dashboard headline, quarterly recap, results-at-a-glance." | 正式案例四个关键数字（51/51、100 条、219 次、23 页） |
+| P08 | kpi_cards | templates/charts/kpi_cards.svg | "Pick for 4-8 standalone numeric metrics shown as overview cards (2x2 or 1x4) — exec summary opener, dashboard headline, quarterly recap, results-at-a-glance." | 案例三四个关键数字（513/513、757 次、3+3、0/0） |
 
 Runners-up considered:
 - numbered_steps | rejected for P05: 每个阶段都有明确输出产物（候选池 / 4,928 个集合 / Top-K 排序），pipeline_with_stages 更贴合
@@ -149,6 +149,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 | system_pipeline.png | 1846x1028 | 1.80 | P03 系统流水线（系统自绘 figspec 渲染） | Diagram | #3 right-third image + #21 rounded rectangle crop | user | Existing | 用户提供 | | |
 | byzso_roadmap.png | 1600x900 | 1.78 | P06 正式报告研究路线图（第三轮学术化重绘） | Diagram | #5 top-bottom band | user | Existing | 用户提供 | | |
 | byzso_evidence_map.png | 1500x900 | 1.67 | P07 证据来源—路线—用途图（备用，若版面允许） | Diagram | #2 left-third image | user | Existing | 用户提供 | | |
+| byzso_latest_taxonomy.png | 1500x900 | 1.67 | P08 最新案例 3 的 Ba–Y–Zn–Si–O 证据分类图 | Diagram | #2 left-third image | local | Generated | 案例 3 `figures/svg/taxonomy_overview.svg` | preserve | result evidence |
 | byzso_route_matrix.png | 1500x860 | 1.74 | 备用（本次不放置） | Diagram | #2 left-third image | user | Existing | 用户提供 | | |
 | recipe_architecture.png | 2138x1450 | 1.47 | P06 RECIPE 两阶段架构（团队 NeurIPS 2026 投稿图 1，用户提供） | Diagram | #2 left-third image | user | Existing | 用户提供 | | |
 
@@ -233,56 +234,60 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 
 #### Slide 08 - 正式案例结果
 - **Layout**: 上方 1x4 KPI 卡（kpi_cards 结构，直角无阴影），下方研究路线图（no-crop，居中）
-- **Title**: 纯主题冷启动：51 篇文献全部核验、100 条结论全部可追溯、23 页正式报告
-- **Core message**: 唯一输入是一行主题；系统在 4 个人工停点续跑后交出 20 页综述，再经专家反馈修订为 23 页正式稿。
-- **Visualization**: kpi_cards + 用户提供图 byzso_roadmap.png
+- **Title**: 相图导向冷启动：513 篇文献闭环，三个实验方向可检验
+- **Core message**: 从一行 Ba–Y–Zn–Si–O 相图与亚稳相主题出发，系统在直接证据稀疏时形成 35 页终稿，并把直接证据、近邻类比和模型候选分层呈现。
+- **Visualization**: kpi_cards + 最新终稿图 byzso_latest_taxonomy.png
 - **Content**:
-  - 51 / 51 文献三轴核验 PASS（63 条候选入库 51 条）
-  - 100 条含引用结论 · 219 次引用 · 整合率 100% · 41.3 次/千词
-  - 3 张图 figspec → SVG + draw.io 同源，通过排版 lint
-  - 两轮对抗审稿：0 blocker / 0 major / 0 minor
-  - 图注：正式报告研究路线图——从 Ba–Y–Si–O 组成空间，经候选晶相与两条合成路径，到互补表征反馈
+  - 516 条检索记录 → 513 条去重文献；513 / 513 引用审计 PASS
+  - 757 次正文引用 · 整合率 100% · 35 页终稿
+  - 3 张 figspec / SVG / draw.io 同源图 + 3 个研究提案 / 3 个实验计划
+  - 15 批 / 24 个任务 JSONL · 42 次工具调用
+  - 格式终审：0 blocker / 0 major，仅 1 个参考文献元数据 minor
 
 #### Slide 09 - 科学结论与实验方向
-- **Layout**: 左栏三条结论（编号），右栏四个方向 + 模型 Top-1 前驱体
-- **Title**: 目标相只有一篇直接报道；组成坐标比单一温度更能解释成相差异
-- **Core message**: 系统给出的不是配方，而是文献证据限定的可迁移范围与四类可检验实验方向。
+- **Layout**: 上方证据边界说明，下方三个可证伪实验方向
+- **Title**: 缺的不是单一配方，而是四元相图与平衡 / 亚稳态判据
+- **Core message**: 513 条核验文献仍未证明可复现的相纯四元晶相；系统给出的是证据边界和三个可证伪实验方向，不是假定成功的配方。
 - **Content**:
-  - 结论 1：公开证据只能确认"开放体系高温溶液法 + 单晶 X 射线衍射鉴定"，不足以给出经验证的复现配方
-  - 结论 2：无 Zn 四方谱系提供三类可比路线——MoO3 助熔（Pt 坩埚、1150 °C、2 K/h）、`x:26:16` 固相陶瓷（1300 / 1600 °C）、`5:13:8` 粉体相场筛查（1273 / 1573 K）——数值不得无条件迁移
-  - 结论 3："获得单晶"不等于"建立批量相纯窗口"；局部相图是连接复现与发现的核心实验
-  - 方向 1 目标组成附近的局部相图 · 方向 2 Zn–Y–氧计量耦合 · 方向 3 固相成相与高温溶液长晶并行 · 方向 4 Mg/Co 类比
-  - 模型候选（待实验验证）：Zn `ZnO+Y2O3+SiO2+BaCO3` · Mg `MgO+Y2O3+BaCO3+SiO2` · Co `Co3O4+Y2O3+BaCO3+SiO2`
+  - 近邻硅酸盐只能支持结构、路线或热力学边界，不能替代目标相证据
+  - 可比较记录必须同时保留实际组成、前驱体、坩埚 / 气氛、热历史、相组成与不确定性
+  - 粉末 XRD、EPMA / WDS 和热历史联合区分相纯、组成漂移与动力学滞留
+  - 方向 1 测量缺失的四元相图子空间 · 方向 2 区分亚稳态与组成漂移 · 方向 3 不确定性感知的闭环选点
+  - 模型候选统一标记待实验验证；这里只定义测量问题与判据，不提供实验操作规程
 
 #### Slide 10 - LLZO 案例
 - **Layout**: 左侧三个数字（竖排）+ Top-1 路线；右侧失效模式列表（两列）
-- **Title**: 初赛承诺的 LLZO 诊断轮跑通端到端，并暴露、修复了 11 类集成失效模式
-- **Core message**: 46 篇文献六个子主题覆盖、46/46 核验通过、10 页综述、模型 Top-1 与文献一致；Top-2 起出现可疑命名，因而保留"模型生成—规范化—文献复核—审稿"闸门。
+- **Title**: LLZO 证据综合：三项判别实验贯通工艺—结构—电导
+- **Core message**: 文献丰富并不等于结果可比；最新终稿把组成、锂库存、致密化、界面与测量几何串成工艺—结构—输运链，并给出统一的最小比较记录。
 - **Content**:
-  - 46 篇 · 21 个 Agent 任务 · 49 次 MCP 调用 · 10 页 A4
-  - 模型 Top-1 `ZrO2 + La2O3 + Li2CO3` 与文献一致；Top-2–5 出现 `LiHO` / `La(HO)3` → 标记"化学路线未验证"
-  - 失效模式（已修复）：MCP 审批配置 · Agent 工作目录 · 并行写库竞争 · exit=0 假成功 · 旧产物假成功 · 上下文膨胀 · 上游限流 · 图片 lint 假绿 · retro 字段不兼容 · 测试契约漂移 · 同模型审稿独立性
-  - 后续替代材料分析：Li6PS5Cl / Li3YCl6 / LATP 的模型 Top-1 路线均通过文献复核
+  - 368 / 368 引用审计 PASS；正文使用 212 篇文献、378 次引用调用
+  - 16 页 · 10 节 · 3 图 · 5 表 · 2 个显示公式
+  - I22 温度符号与参考文献化学式排版缺陷已修复并通过产物检查；独立复审待刷新
+  - 3 个研究提案 + 3 个结构化实验计划；模型前驱体均标记待实验验证
+  - 判别实验：锂活度交互图 · 等密度 Ta–LLZO 晶界研究 · 超快烧结后表面清理配对测试
+  - 结论边界：不控制组成、锂库存、密度和测量几何，不能公平排名路线；当前没有通用最佳路线
 
 #### Slide 11 - 证据链与可追溯
 - **Layout**: 上方五节点水平链（自绘），中部一条真实结论示例，底部运行统计三段
-- **Title**: 每条结论可追溯：代码版本 → 配置 → 数据 → 日志/轨迹 → 结果文件
-- **Core message**: 报告中 100 条结论、3 张图、每条前驱体预测都能沿同一条链回到提交包中的具体文件。
+- **Title**: 从一行主题到 35 页终稿：每个角色都有可核对交付物
+- **Core message**: 以案例 3 为例，检索、核对、写作、绘图、实验设计和审稿的数字都能回到 ledger、审计、工具调用和逐任务 JSONL。
 - **Content**:
-  - 链：tag goai-final-2026-09-03 → topic.md / scope.md / Codex 配置 → references.bib + CITATION_AUDIT.json + corpus_release → parallel/<batch>/<task>.jsonl + ledger.json + tool_calls.jsonl → sections/*.tex → PDF
-  - 示例 C012："该文采用开放体系高温溶液法，并以单晶 X 射线衍射鉴定晶体。" → `ababaikeri2024ba5y12zn` · DOI 10.1039/D3NJ04480G · 三轴 PASS · 子任务 `write_identity_evidence.jsonl`
-  - 运行统计：40 个子任务 / 29 批 · 7,084 万输入 token · 224 次工具函数调用 · 205 次网页搜索 · 134 条服务端审计调用
-  - 数据边界：私有全文库不公开；公开包含被引 51 篇中 21 篇全文（review-only），其余 30 篇 DOI + 官方链接
+  - 编排：七个子主题 · 15 批 · 24 个任务 JSONL
+  - 检索 / 核对：516 条记录 → 513 条去重文献 → 513 / 513 PASS
+  - 写作：35 页 · 757 次正文引用 · 整合率 100%
+  - 绘图 / 想法：3 套同源可编辑图 · 3 个研究提案 · 3 个实验计划
+  - 审稿：0 blocker / 0 major；1 个参考文献元数据 minor
 
 #### Slide 12 - 复现情况与限制
 - **Layout**: 左栏命令与预期输出（等宽字体），右栏已知限制四条
-- **Title**: 干净环境一键冒烟 1–2 分钟；核心流程以闸门一致为复现判据
-- **Core message**: 确定性部分（模型 dry run、渲染、闸门）在干净环境稳定通过；LLM 部分不可逐字复现，以 check-done 退出 0、CITATION_AUDIT 全 PASS、整合率 ≥ 90% 为判据。
+- **Title**: 复现不是“能启动”：产物、闸门与轨迹必须同时通过
+- **Core message**: 锁定安装、65 项离线测试、核心结果复跑与导出安全扫描形成四层收据；任一必要产物缺失或质量关卡失败时脚本返回非零。
 - **Content**:
-  - `bash install.sh --retro` → `bash scripts/smoke_test.sh --with-retro` → `SMOKE TEST PASSED`（56 项离线测试、4 个 MCP server、公开知识库、结论—证据链、figspec 渲染）
+  - `bash install.sh --retro` 使用 uv.lock；`bash scripts/smoke_test.sh --with-retro` 覆盖 4 个 MCP server 与 65 项离线测试
   - `tools/retro_dry_run.py Li7La3Zr2O12` → 校验 checkpoint、CPU 预测 Top-5，RETRO DRY RUN PASSED
-  - `bash scripts/reproduce_core.sh --topic "…"` → Codex CLI 0.146.1 · gpt-5.6-sol · reasoning xhigh，同一主题重跑整条流水线
-  - 限制：目标相仅 1 篇直接报道，无"已验证配方" · 公开知识库覆盖 21/51 全文 · 终审为同家族模型冷启动复审 · 正式 PDF 含有记录的专家反馈修订
+  - `scripts/reproduce_core.sh` 强制检查 PDF、BibTeX、引用审计、ledger、SVG、draw.io 与逐任务 JSONL，成功才生成收据
+  - 导出器扫描普通文本与压缩轨迹，规范化 JSONL；发现凭证、私有路径或非法结构即拒绝打包
+  - 限制：LLM 不可逐字复现 · 案例 3 为同模型冷启动 provisional · 模型候选均待实验验证
 
 #### Slide 13 - 开源与结论（Closing）
 - **Closing impact**: 带走的一句话——"把'该不该相信这条结论'变成可以点开 DOI 与原文段落回答的问题"；构图 = 单列居中大字结论 + 下方三栏（开源 / 可复用 / 下一步）+ 仓库地址。
@@ -291,7 +296,7 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 - **Content**:
   - 开源：github.com/asimfish/goai_research · MIT · tag goai-final-2026-09-03 · 全部 Prompt / 配置 / 模型 checkpoint / 轨迹 / 证据包
   - 可复用：任意主题的综述回环 · 引用零信任核验 · figspec 可编辑图纸 · 无机前驱体预测 MCP 工具
-  - 下一步：接入跨模型审稿（Claude Code）· 对四个方向开展合成实验并回写证据 · 扩展条件预测器（温度 / 气氛）
+  - 下一步：接入跨模型审稿 · 对两个案例的优先实验开展验证并回写证据 · 扩展条件预测器（温度 / 气氛）
   - 团队：高京（SJTU）· 吕丁阳（UCAS）· 李雨峰（SJTU）
 
 ---

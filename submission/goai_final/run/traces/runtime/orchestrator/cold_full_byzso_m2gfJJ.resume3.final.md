@@ -9,6 +9,6 @@
 3. 失败边界与配方迁移：重点分析杂相、污染、挥发及近邻条件的适用边界。
 4. 推荐组合：以 1 为主线、2 为核心交付、3 为实践贡献。
 
-详细内容见 [contribution.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/contribution.md) 和 [taxonomy.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/taxonomy.md)。
+详细内容见 [contribution.md](<HOME> 和 [taxonomy.md](<HOME>
 
 回复“按推荐组合继续”即可继续生成综述、图和 PDF。

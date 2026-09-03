@@ -1,6 +1,6 @@
 I3 修复验证完成，全部确定性断言 PASS。
 
-- 验证报告：[i3_validation.md](/home/gaojing/goai_research/workspace/ideas/i3_validation.md)
+- 验证报告：[i3_validation.md](<HOME>
 - I3：`closed`
 - I4：`open`
 - 已记录 `event=validation_done`

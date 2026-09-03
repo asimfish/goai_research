@@ -2,10 +2,10 @@
 
 产物：
 
-- [Phase A 合同与自检记录](/home/gaojing/goai_research/workspace/notes/figure_plan.md)
-- [figspec 单一事实源](/home/gaojing/goai_research/workspace/figures/figspec/llzo_process_map.json)
-- [SVG](/home/gaojing/goai_research/workspace/figures/svg/llzo_process_map.svg)
-- [可编辑 drawio](/home/gaojing/goai_research/workspace/figures/drawio/llzo_process_map.drawio)
+- [Phase A 合同与自检记录](<HOME>
+- [figspec 单一事实源](<HOME>
+- [SVG](<HOME>
+- [可编辑 drawio](<HOME>
 
 验证结果：
 

@@ -9,8 +9,8 @@
 
 审查文件：
 
-- [原始审查记录](/home/gaojing/goai_research/workspace/state/review_traces/round1_diagnostic.md)
-- [结构化报告](/home/gaojing/goai_research/workspace/state/review_diagnostic.md)
+- [原始审查记录](<HOME>
+- [结构化报告](<HOME>
 
 引用审计为 46/46 PASS，未发现足以支持假引用或 wrong-context 指控的证据，因此未调用 `verify_entry`。安全边界完整，未误判为 blocker。
 

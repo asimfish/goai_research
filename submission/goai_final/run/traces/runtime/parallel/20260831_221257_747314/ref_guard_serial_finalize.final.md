@@ -9,6 +9,6 @@
 
 产物：
 
-- [CITATION_AUDIT.json](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.json)
-- [CITATION_AUDIT.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.md)
-- [ref_gate_resolution.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/ref_gate_resolution.md)
+- [CITATION_AUDIT.json](<HOME>
+- [CITATION_AUDIT.md](<HOME>
+- [ref_gate_resolution.md](<HOME>

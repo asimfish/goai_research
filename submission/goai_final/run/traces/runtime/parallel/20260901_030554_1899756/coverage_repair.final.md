@@ -8,7 +8,7 @@ I6 已完成并关闭。
 
 更新产物：
 
-- [coverage_report.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/coverage_report.md:1)
-- [search_log.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/search_log.md:177)
-- [papers.jsonl](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/library/papers.jsonl:1)
-- [scope.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/inputs/scope.md:65)
+- [coverage_report.md](<HOME>
+- [search_log.md](<HOME>
+- [papers.jsonl](<HOME>
+- [scope.md](<HOME>

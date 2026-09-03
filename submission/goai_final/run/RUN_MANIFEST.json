@@ -7,8 +7,8 @@
       "tasks": [
         {
           "task": "lit_identity_structure",
-          "trace": "state/parallel/20260831_193753_5998/lit_identity_structure.jsonl",
-          "bytes": 194114,
+          "trace": "traces/runtime/parallel/20260831_193753_5998/lit_identity_structure.jsonl",
+          "bytes": 193910,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -20,8 +20,8 @@
         },
         {
           "task": "lit_substitution_evidence",
-          "trace": "state/parallel/20260831_193753_5998/lit_substitution_evidence.jsonl",
-          "bytes": 144278,
+          "trace": "traces/runtime/parallel/20260831_193753_5998/lit_substitution_evidence.jsonl",
+          "bytes": 144573,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -39,8 +39,8 @@
         },
         {
           "task": "lit_synthesis_routes",
-          "trace": "state/parallel/20260831_193753_5998/lit_synthesis_routes.jsonl",
-          "bytes": 204157,
+          "trace": "traces/runtime/parallel/20260831_193753_5998/lit_synthesis_routes.jsonl",
+          "bytes": 204563,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -52,8 +52,8 @@
         },
         {
           "task": "style_bank",
-          "trace": "state/parallel/20260831_193753_5998/style_bank.jsonl",
-          "bytes": 263953,
+          "trace": "traces/runtime/parallel/20260831_193753_5998/style_bank.jsonl",
+          "bytes": 260137,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -70,8 +70,8 @@
       "tasks": [
         {
           "task": "style_bank_retry",
-          "trace": "state/parallel/20260831_200917_202735/style_bank_retry.jsonl",
-          "bytes": 175105,
+          "trace": "traces/runtime/parallel/20260831_200917_202735/style_bank_retry.jsonl",
+          "bytes": 174645,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -88,8 +88,8 @@
       "tasks": [
         {
           "task": "lit_merge_serial",
-          "trace": "state/parallel/20260831_202519_280611/lit_merge_serial.jsonl",
-          "bytes": 139301,
+          "trace": "traces/runtime/parallel/20260831_202519_280611/lit_merge_serial.jsonl",
+          "bytes": 138287,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -112,8 +112,8 @@
       "tasks": [
         {
           "task": "ref_guard",
-          "trace": "state/parallel/20260831_203905_340288/ref_guard.jsonl",
-          "bytes": 125972,
+          "trace": "traces/runtime/parallel/20260831_203905_340288/ref_guard.jsonl",
+          "bytes": 125683,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -136,8 +136,8 @@
       "tasks": [
         {
           "task": "ref_guard_retry",
-          "trace": "state/parallel/20260831_205210_394865/ref_guard_retry.jsonl",
-          "bytes": 207159,
+          "trace": "traces/runtime/parallel/20260831_205210_394865/ref_guard_retry.jsonl",
+          "bytes": 207916,
           "status": null,
           "exit": null,
           "process_exit": null,
@@ -154,8 +154,8 @@
       "tasks": [
         {
           "task": "ref_guard_serial",
-          "trace": "state/parallel/20260831_212312_530095/ref_guard_serial.jsonl",
-          "bytes": 157794,
+          "trace": "traces/runtime/parallel/20260831_212312_530095/ref_guard_serial.jsonl",
+          "bytes": 157746,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -178,8 +178,8 @@
       "tasks": [
         {
           "task": "ref_guard_resolution",
-          "trace": "state/parallel/20260831_215020_649130/ref_guard_resolution.jsonl",
-          "bytes": 1287425,
+          "trace": "traces/runtime/parallel/20260831_215020_649130/ref_guard_resolution.jsonl",
+          "bytes": 1466206,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -196,8 +196,8 @@
       "tasks": [
         {
           "task": "ref_guard_finalize",
-          "trace": "state/parallel/20260831_220642_719260/ref_guard_finalize.jsonl",
-          "bytes": 68992,
+          "trace": "traces/runtime/parallel/20260831_220642_719260/ref_guard_finalize.jsonl",
+          "bytes": 68987,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -214,8 +214,8 @@
       "tasks": [
         {
           "task": "ref_guard_serial_finalize",
-          "trace": "state/parallel/20260831_221257_747314/ref_guard_serial_finalize.jsonl",
-          "bytes": 44078,
+          "trace": "traces/runtime/parallel/20260831_221257_747314/ref_guard_serial_finalize.jsonl",
+          "bytes": 43427,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -238,8 +238,8 @@
       "tasks": [
         {
           "task": "taxonomy",
-          "trace": "state/parallel/20260831_221906_773623/taxonomy.jsonl",
-          "bytes": 85017,
+          "trace": "traces/runtime/parallel/20260831_221906_773623/taxonomy.jsonl",
+          "bytes": 84497,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -256,8 +256,8 @@
       "tasks": [
         {
           "task": "citation_bank",
-          "trace": "state/parallel/20260831_224016_848192/citation_bank.jsonl",
-          "bytes": 222468,
+          "trace": "traces/runtime/parallel/20260831_224016_848192/citation_bank.jsonl",
+          "bytes": 221617,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -275,8 +275,8 @@
         },
         {
           "task": "fig01_evidence_map",
-          "trace": "state/parallel/20260831_224016_848192/fig01_evidence_map.jsonl",
-          "bytes": 207050,
+          "trace": "traces/runtime/parallel/20260831_224016_848192/fig01_evidence_map.jsonl",
+          "bytes": 203256,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -288,8 +288,8 @@
         },
         {
           "task": "fig02_route_variables",
-          "trace": "state/parallel/20260831_224016_848192/fig02_route_variables.jsonl",
-          "bytes": 171171,
+          "trace": "traces/runtime/parallel/20260831_224016_848192/fig02_route_variables.jsonl",
+          "bytes": 167414,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -312,8 +312,8 @@
       "tasks": [
         {
           "task": "fig01_phase_c_retry",
-          "trace": "state/parallel/20260831_231118_953101/fig01_phase_c_retry.jsonl",
-          "bytes": 170644,
+          "trace": "traces/runtime/parallel/20260831_231118_953101/fig01_phase_c_retry.jsonl",
+          "bytes": 169568,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -336,8 +336,8 @@
       "tasks": [
         {
           "task": "fig01_quality_fix",
-          "trace": "state/parallel/20260831_233448_1052031/fig01_quality_fix.jsonl",
-          "bytes": 116223,
+          "trace": "traces/runtime/parallel/20260831_233448_1052031/fig01_quality_fix.jsonl",
+          "bytes": 115160,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -360,8 +360,8 @@
       "tasks": [
         {
           "task": "figure_merge",
-          "trace": "state/parallel/20260831_234954_1118154/figure_merge.jsonl",
-          "bytes": 188488,
+          "trace": "traces/runtime/parallel/20260831_234954_1118154/figure_merge.jsonl",
+          "bytes": 187543,
           "status": "FAIL",
           "exit": "3",
           "process_exit": "0",
@@ -384,8 +384,8 @@
       "tasks": [
         {
           "task": "blueprint_retrydep",
-          "trace": "state/parallel/20260901_000037_1166928/blueprint_retrydep.jsonl",
-          "bytes": 141732,
+          "trace": "traces/runtime/parallel/20260901_000037_1166928/blueprint_retrydep.jsonl",
+          "bytes": 141138,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -403,8 +403,8 @@
         },
         {
           "task": "figure_merge_retry",
-          "trace": "state/parallel/20260901_000037_1166928/figure_merge_retry.jsonl",
-          "bytes": 131244,
+          "trace": "traces/runtime/parallel/20260901_000037_1166928/figure_merge_retry.jsonl",
+          "bytes": 130447,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -427,8 +427,8 @@
       "tasks": [
         {
           "task": "write_conditions_neighbors",
-          "trace": "state/parallel/20260901_003133_1289042/write_conditions_neighbors.jsonl",
-          "bytes": 209258,
+          "trace": "traces/runtime/parallel/20260901_003133_1289042/write_conditions_neighbors.jsonl",
+          "bytes": 205896,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -446,8 +446,8 @@
         },
         {
           "task": "write_identity_evidence",
-          "trace": "state/parallel/20260901_003133_1289042/write_identity_evidence.jsonl",
-          "bytes": 170502,
+          "trace": "traces/runtime/parallel/20260901_003133_1289042/write_identity_evidence.jsonl",
+          "bytes": 169465,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -465,8 +465,8 @@
         },
         {
           "task": "write_validation_limits",
-          "trace": "state/parallel/20260901_003133_1289042/write_validation_limits.jsonl",
-          "bytes": 175653,
+          "trace": "traces/runtime/parallel/20260901_003133_1289042/write_validation_limits.jsonl",
+          "bytes": 172627,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -489,8 +489,8 @@
       "tasks": [
         {
           "task": "assemble_draft",
-          "trace": "state/parallel/20260901_005958_1409371/assemble_draft.jsonl",
-          "bytes": 909985,
+          "trace": "traces/runtime/parallel/20260901_005958_1409371/assemble_draft.jsonl",
+          "bytes": 904271,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -507,8 +507,8 @@
       "tasks": [
         {
           "task": "assemble_draft_retry",
-          "trace": "state/parallel/20260901_013116_1535382/assemble_draft_retry.jsonl",
-          "bytes": 1453479,
+          "trace": "traces/runtime/parallel/20260901_013116_1535382/assemble_draft_retry.jsonl",
+          "bytes": 1449813,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -525,8 +525,8 @@
       "tasks": [
         {
           "task": "review_round1",
-          "trace": "state/parallel/20260901_020320_1674257/review_round1.jsonl",
-          "bytes": 1465522,
+          "trace": "traces/runtime/parallel/20260901_020320_1674257/review_round1.jsonl",
+          "bytes": 1458182,
           "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
           "exit": "0",
           "process_exit": "124",
@@ -543,8 +543,8 @@
       "tasks": [
         {
           "task": "review_round1_retry",
-          "trace": "state/parallel/20260901_023439_1789074/review_round1_retry.jsonl",
-          "bytes": 263581,
+          "trace": "traces/runtime/parallel/20260901_023439_1789074/review_round1_retry.jsonl",
+          "bytes": 263259,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -561,8 +561,8 @@
       "tasks": [
         {
           "task": "review_round1_adjudicate",
-          "trace": "state/parallel/20260901_025538_1861564/review_round1_adjudicate.jsonl",
-          "bytes": 96106,
+          "trace": "traces/runtime/parallel/20260901_025538_1861564/review_round1_adjudicate.jsonl",
+          "bytes": 95512,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -585,8 +585,8 @@
       "tasks": [
         {
           "task": "coverage_repair",
-          "trace": "state/parallel/20260901_030554_1899756/coverage_repair.jsonl",
-          "bytes": 160495,
+          "trace": "traces/runtime/parallel/20260901_030554_1899756/coverage_repair.jsonl",
+          "bytes": 159812,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -604,8 +604,8 @@
         },
         {
           "task": "taxonomy_repair",
-          "trace": "state/parallel/20260901_030554_1899756/taxonomy_repair.jsonl",
-          "bytes": 74298,
+          "trace": "traces/runtime/parallel/20260901_030554_1899756/taxonomy_repair.jsonl",
+          "bytes": 73896,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -628,8 +628,8 @@
       "tasks": [
         {
           "task": "ref_deduplicate",
-          "trace": "state/parallel/20260901_032104_1954456/ref_deduplicate.jsonl",
-          "bytes": 246069,
+          "trace": "traces/runtime/parallel/20260901_032104_1954456/ref_deduplicate.jsonl",
+          "bytes": 245563,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -646,8 +646,8 @@
       "tasks": [
         {
           "task": "writing_repair",
-          "trace": "state/parallel/20260901_033810_2022884/writing_repair.jsonl",
-          "bytes": 550491,
+          "trace": "traces/runtime/parallel/20260901_033810_2022884/writing_repair.jsonl",
+          "bytes": 547781,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -670,8 +670,8 @@
       "tasks": [
         {
           "task": "review_round2_final",
-          "trace": "state/parallel/20260901_040838_2140274/review_round2_final.jsonl",
-          "bytes": 294394,
+          "trace": "traces/runtime/parallel/20260901_040838_2140274/review_round2_final.jsonl",
+          "bytes": 293950,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -688,8 +688,8 @@
       "tasks": [
         {
           "task": "define_strength_axis",
-          "trace": "state/parallel/20260901_042959_2223116/define_strength_axis.jsonl",
-          "bytes": 182681,
+          "trace": "traces/runtime/parallel/20260901_042959_2223116/define_strength_axis.jsonl",
+          "bytes": 181866,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -707,8 +707,8 @@
         },
         {
           "task": "refresh_citation_audit",
-          "trace": "state/parallel/20260901_042959_2223116/refresh_citation_audit.jsonl",
-          "bytes": 64793,
+          "trace": "traces/runtime/parallel/20260901_042959_2223116/refresh_citation_audit.jsonl",
+          "bytes": 64085,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -731,8 +731,8 @@
       "tasks": [
         {
           "task": "review_round2_adjudicate",
-          "trace": "state/parallel/20260901_043616_2248008/review_round2_adjudicate.jsonl",
-          "bytes": 92351,
+          "trace": "traces/runtime/parallel/20260901_043616_2248008/review_round2_adjudicate.jsonl",
+          "bytes": 91976,
           "status": "FAIL_TIMEOUT",
           "exit": "124",
           "process_exit": "124",
@@ -749,8 +749,8 @@
       "tasks": [
         {
           "task": "figure_academic_repolish",
-          "trace": "state/parallel/20260902_131342_2818733/figure_academic_repolish.jsonl",
-          "bytes": 349228,
+          "trace": "traces/runtime/parallel/20260902_131342_2818733/figure_academic_repolish.jsonl",
+          "bytes": 344426,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -768,8 +768,8 @@
         },
         {
           "task": "text_academic_repolish",
-          "trace": "state/parallel/20260902_131342_2818733/text_academic_repolish.jsonl",
-          "bytes": 308064,
+          "trace": "traces/runtime/parallel/20260902_131342_2818733/text_academic_repolish.jsonl",
+          "bytes": 305392,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",
@@ -792,8 +792,8 @@
       "tasks": [
         {
           "task": "assemble_academic_repolish",
-          "trace": "state/parallel/20260902_133417_2937247/assemble_academic_repolish.jsonl",
-          "bytes": 640893,
+          "trace": "traces/runtime/parallel/20260902_133417_2937247/assemble_academic_repolish.jsonl",
+          "bytes": 639284,
           "status": "PASS",
           "exit": "0",
           "process_exit": "0",

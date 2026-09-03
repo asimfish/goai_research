@@ -2,10 +2,10 @@
 
 产物：
 
-- [taxonomy.md](/home/gaojing/goai_research/workspace/notes/taxonomy.md)：14 个叶节点，46/46 DOI 唯一映射至 citation key；1 篇跨主题综述列为未归类。
-- [contribution.md](/home/gaojing/goai_research/workspace/notes/contribution.md)：提供 A、B、C 三种贡献表述及 motivation、现有综述差异。
-- [taxonomy_validation.md](/home/gaojing/goai_research/workspace/notes/taxonomy_validation.md)：校验 PASS，所有 key 均存在于 BibTeX，每叶 4–7 篇。
-- [validate_taxonomy.py](/home/gaojing/goai_research/tools/validate_taxonomy.py)：本地确定性校验脚本。
+- [taxonomy.md](<HOME> 个叶节点，46/46 DOI 唯一映射至 citation key；1 篇跨主题综述列为未归类。
+- [contribution.md](<HOME> A、B、C 三种贡献表述及 motivation、现有综述差异。
+- [taxonomy_validation.md](<HOME> PASS，所有 key 均存在于 BibTeX，每叶 4–7 篇。
+- [validate_taxonomy.py](<HOME>
 
 账本已记录：
 

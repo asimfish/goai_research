@@ -3,7 +3,7 @@
 - 52 条文献中 47 条通过、5 条因作者名规范化/机构角色污染被判 `MISMATCH`。
 - 目标论文 `ababaikeri2024ba5y12zn` 已通过核验。
 - 连续三次核验未收敛，已按规则升级人工决定。
-- 证据见 [CITATION_AUDIT.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/CITATION_AUDIT.md) 和 [ledger.json](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/ledger.json)。
+- 证据见 [CITATION_AUDIT.md](<HOME> 和 [ledger.json](<HOME>
 
 请选择后续方案：
 

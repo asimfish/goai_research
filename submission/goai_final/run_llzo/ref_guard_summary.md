@@ -6,7 +6,7 @@
 - 有界预检：46 条；仅读取条目数与 46 个 citation key，未整体打印 BibTeX。
 - 快速档：已真实调用 `goai-refcheck.verify_bib_file`，生成 `CITATION_AUDIT.json` 和 `CITATION_AUDIT.md`。
 - 抽查复核：仅对两个高风险非 PASS 条目 `huang2019searching`、`zhou2024li5alo4` 调用 `verify_entry`；两者仍为 MISMATCH。
-- 深度档：已调用 `deep_audit_info`；返回 `available=false`，预期路径 `/home/gaojing/Code/super_ref` 未检测到。本次没有执行 super_ref 深度审计，不得把快速档结果表述为证据级深审。
+- 深度档：已调用 `deep_audit_info`；返回 `available=false`，预期路径 `<HOME> 未检测到。本次没有执行 super_ref 深度审计，不得把快速档结果表述为证据级深审。
 - 本轮仅诊断，未修改或批量覆盖 `references.bib`。
 
 ## 总体裁决

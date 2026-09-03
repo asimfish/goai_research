@@ -3,7 +3,7 @@
 #
 #   bash scripts/smoke_test.sh            # installs .venv if missing, then runs all checks
 #   bash scripts/smoke_test.sh --with-retro   # additionally loads the two-stage precursor
-#                                             # model and predicts on 20 held-out targets (CPU)
+#                                             # model and predicts one reference target (CPU)
 #
 # Expected result: every step prints OK and the script exits 0. Details of what a
 # healthy run looks like are listed in docs/competition/SUBMISSION.md §冒烟测试.

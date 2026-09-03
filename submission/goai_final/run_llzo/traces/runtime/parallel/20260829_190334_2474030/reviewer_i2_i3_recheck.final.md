@@ -11,5 +11,5 @@
 
 报告：
 
-- [完整复审留痕](/home/gaojing/goai_research/workspace/state/review_traces/round1_repair_audit.md)
-- [复审结论](/home/gaojing/goai_research/workspace/state/review_repair_audit.md)
+- [完整复审留痕](<HOME>
+- [复审结论](<HOME>

@@ -3,13 +3,13 @@
     <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   </g>
   <g id="p12-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">复用开源 Codex，自研并开源 MCP 与绘图工具，仓库全开源</text>
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">复现不是“能启动”：产物、闸门与轨迹必须同时通过</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
   <g id="p12-lead">
     <text x="72" y="166" font-size="26" fill="#1D1D1F">
-      <tspan x="72" dy="0">复现依靠可读的角色说明、可运行的工具和开源产物；同一主题可以重跑整条流水线，</tspan>
-      <tspan x="72" dy="38">并以所有质量关卡通过作为判据。</tspan>
+      <tspan x="72" dy="0">安装锁定、65 项离线测试、核心结果复跑与导出安全扫描形成四层收据；</tspan>
+      <tspan x="72" dy="38">任一必要产物缺失或质量关卡失败，脚本返回非零。</tspan>
     </text>
   </g>
   <g id="p12-commands">
@@ -26,28 +26,29 @@
       <tspan x="96" dy="26">全部自主设计并开源。</tspan>
     </text>
     <line x1="96" y1="452" x2="604" y2="452" stroke="#D5DBE3" stroke-width="1"/>
-    <text x="96" y="486" font-size="18" font-weight="700" fill="#1F4D78">3 知识库构成</text>
+    <text x="96" y="486" font-size="18" font-weight="700" fill="#1F4D78">3 一键复现与确定性检查</text>
     <text x="96" y="518" font-size="18" fill="#1D1D1F">
-      <tspan x="96" dy="0">部分公开的文献全文库（被引文献中 21 篇全文）</tspan>
-      <tspan x="96" dy="26">+ 在线检索：arXiv / OpenAlex / Crossref /</tspan>
-      <tspan x="96" dy="26">Semantic Scholar</tspan>
+      <tspan x="96" dy="0">uv.lock 冻结安装；smoke 覆盖 4 个 MCP 与 65 项测试；</tspan>
+      <tspan x="96" dy="26">reproduce_core 强制检查 PDF、BibTeX、审计、图源、</tspan>
+      <tspan x="96" dy="26">ledger 与逐任务 JSONL，并生成复现收据。</tspan>
     </text>
   </g>
   <g id="p12-limitations">
     <rect x="652" y="230" width="556" height="402" fill="#F3F5F8"/>
     <use data-icon="tabler-outline/brand-github" x="676" y="254" width="28" height="28" fill="#1F4D78" stroke-width="2"/>
-    <text x="714" y="276" font-size="18" font-weight="700" fill="#1F4D78">4 绘图工具与开源仓库</text>
+    <text x="714" y="276" font-size="18" font-weight="700" fill="#1F4D78">4 开源、可编辑与安全导出</text>
     <text x="676" y="308" font-size="18" fill="#1D1D1F">
-      <tspan x="676" dy="0">一份图源同时生成论文图与 draw.io 可编辑图。</tspan>
-      <tspan x="676" dy="26">整个仓库 MIT 开源，一键安装、冒烟测试 1–2 分钟、</tspan>
-      <tspan x="676" dy="26">同一主题可重跑整条流水线。</tspan>
+      <tspan x="676" dy="0">一份图源同时生成论文图与 draw.io 可编辑图；</tspan>
+      <tspan x="676" dy="26">导出器同时扫描普通文本与压缩轨迹，规范化 JSONL，</tspan>
+      <tspan x="676" dy="26">发现凭证、私有路径或非法结构即拒绝打包。</tspan>
     </text>
     <line x1="676" y1="410" x2="1184" y2="410" stroke="#D5DBE3" stroke-width="1"/>
     <use data-icon="tabler-outline/alert-triangle" x="676" y="440" width="28" height="28" fill="#C48A2B" stroke-width="2"/>
     <text x="714" y="462" font-size="18" font-weight="700" fill="#1F4D78">诚实说明</text>
     <text x="676" y="494" font-size="18" fill="#1D1D1F">
-      <tspan x="676" dy="0">目标相仅 1 篇直接报道；大模型步骤不可逐字复现，</tspan>
-      <tspan x="676" dy="26">以关卡全部通过作为复现判据。</tspan>
+      <tspan x="676" dy="0">大模型步骤不可逐字复现；案例 3 终审为</tspan>
+      <tspan x="676" dy="26">同模型冷启动 provisional；模型候选均待实验验证。</tspan>
+      <tspan x="676" dy="26">复现以证据链与质量关卡一致为判据。</tspan>
     </text>
   </g>
   <g id="p12-footer">

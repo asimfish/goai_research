@@ -8,55 +8,68 @@ WITH_RETRO=0
 if [ "${1:-}" = "--retro" ] || [ "${GOAI_INSTALL_RETRO:-0}" = "1" ]; then
   WITH_RETRO=1
 fi
-INSTALL_SPEC=".[dev]"
-if [ "$WITH_RETRO" = "1" ]; then
-  INSTALL_SPEC=".[dev,retro]"
-fi
-
 echo "==> goai_research install @ $ROOT"
 
-# ---- 1. Python >=3.10 的 venv（优先 uv，其次系统 python3；最后本地引导 uv）----
+# ---- 1. Python >=3.10 的 venv + uv.lock 锁定安装 -------------------------------
 # retro 依赖里的 torch 默认从 CPU 轮子源安装（约 200 MB），避免默认 PyPI 拉取
 # 2.5 GB 的 CUDA 轮子；需要 GPU 时设 GOAI_TORCH_INDEX（如
 # https://download.pytorch.org/whl/cu128）或提前自行安装 torch。
-TORCH_SPEC="torch>=2.2,<2.8"
 TORCH_INDEX="${GOAI_TORCH_INDEX:-https://download.pytorch.org/whl/cpu}"
 
 if command -v uv >/dev/null 2>&1; then
-  echo "==> 用 uv 建 .venv（Python 3.11）"
-  uv venv --python 3.11 .venv 2>/dev/null || uv venv .venv
-  if [ "$WITH_RETRO" = "1" ]; then
-    echo "==> 安装 torch（$TORCH_INDEX）"
-    uv pip install --python .venv/bin/python "$TORCH_SPEC" --index-url "$TORCH_INDEX"
-  fi
-  uv pip install --python .venv/bin/python -e "$INSTALL_SPEC"
+  UV_BIN="$(command -v uv)"
+elif [[ -x "$ROOT/.cache/uv-bootstrap/bin/uv" ]]; then
+  UV_BIN="$ROOT/.cache/uv-bootstrap/bin/uv"
 else
-  PY=python3
-  V=$($PY -c 'import sys;print(sys.version_info>=(3,10))')
-  if [ "$V" != "True" ]; then
-    for cand in python3.12 python3.11 python3.10; do
-      command -v $cand >/dev/null 2>&1 && PY=$cand && break
-    done
+  PY_BOOTSTRAP=python3
+  echo "==> 在仓库 .cache 中引导 uv"
+  UV_BOOTSTRAP_DIR="$ROOT/.cache/uv-bootstrap"
+  mkdir -p "$UV_BOOTSTRAP_DIR"
+  "$PY_BOOTSTRAP" -m pip install -q --upgrade --target "$UV_BOOTSTRAP_DIR" uv
+  UV_BIN="$UV_BOOTSTRAP_DIR/bin/uv"
+fi
+
+PY=python3
+for cand in python3.11 python3.10 python3.12 python3; do
+  if command -v "$cand" >/dev/null 2>&1 &&
+     "$cand" -c 'import sys; raise SystemExit(sys.version_info < (3, 10))'; then
+    PY="$cand"
+    break
   fi
-  echo "==> 用 $PY 建 .venv"
-  if $PY -m venv .venv; then
-    .venv/bin/pip install -q -U pip
-    if [ "$WITH_RETRO" = "1" ]; then
-      echo "==> 安装 torch（$TORCH_INDEX）"
-      .venv/bin/pip install -q "$TORCH_SPEC" --index-url "$TORCH_INDEX"
-    fi
-    .venv/bin/pip install -q -e "$INSTALL_SPEC"
-  else
-    echo "==> 系统缺少venv/ensurepip；在仓库.cache中引导uv"
-    UV_BOOTSTRAP="$ROOT/.cache/uv-bootstrap"
-    mkdir -p "$UV_BOOTSTRAP"
-    $PY -m pip install -q --upgrade --target "$UV_BOOTSTRAP" uv
-    "$UV_BOOTSTRAP/bin/uv" venv --allow-existing --python "$PY" .venv
-    if [ "$WITH_RETRO" = "1" ]; then
-      "$UV_BOOTSTRAP/bin/uv" pip install --python .venv/bin/python "$TORCH_SPEC" --index-url "$TORCH_INDEX"
-    fi
-    "$UV_BOOTSTRAP/bin/uv" pip install --python .venv/bin/python -e "$INSTALL_SPEC"
-  fi
+done
+
+echo "==> 用 $UV_BIN 建 .venv（$($PY -c 'import platform; print(platform.python_version())')）"
+"$UV_BIN" venv --allow-existing --python "$PY" .venv
+
+if [ "$WITH_RETRO" = "0" ]; then
+  "$UV_BIN" sync --frozen --extra dev --python .venv/bin/python
+else
+  # PyPI's Linux torch wheel pulls several GiB of CUDA libraries.  Install the
+  # matching locked torch release from the selected CPU/GPU index, then apply
+  # every remaining version from uv.lock as a constraints file.
+  TORCH_VERSION=$($PY - <<'PY'
+import tomllib
+with open("uv.lock", "rb") as fh:
+    lock = tomllib.load(fh)
+print(next(p["version"] for p in lock["package"] if p["name"] == "torch"))
+PY
+  )
+  echo "==> 安装锁定的 torch $TORCH_VERSION（$TORCH_INDEX）"
+  "$UV_BIN" pip install --python .venv/bin/python \
+    "torch==$TORCH_VERSION" --index-url "$TORCH_INDEX"
+  RETRO_REQUIREMENTS="$(mktemp)"
+  RETRO_LOCKED_REQUIREMENTS="$(mktemp)"
+  trap 'rm -f "$RETRO_REQUIREMENTS" "$RETRO_LOCKED_REQUIREMENTS"' EXIT
+  "$UV_BIN" export --frozen --extra dev --extra retro --no-hashes \
+    --no-emit-project --output-file "$RETRO_REQUIREMENTS" >/dev/null
+  # The selected torch index owns torch and its platform dependencies.  Install
+  # every other direct/transitive dependency exactly as pinned by uv.lock.
+  grep -Ev '^(torch|triton|nvidia-[^=]+)==' "$RETRO_REQUIREMENTS" \
+    > "$RETRO_LOCKED_REQUIREMENTS"
+  "$UV_BIN" pip install --python .venv/bin/python \
+    --requirement "$RETRO_LOCKED_REQUIREMENTS"
+  "$UV_BIN" pip install --python .venv/bin/python --no-deps -e .
+  "$UV_BIN" pip check --python .venv/bin/python
 fi
 echo "==> 依赖就绪：$(.venv/bin/python -c 'import mcp,httpx;print("mcp",mcp.__file__.split("/")[-2],"ok")' 2>&1)"
 
@@ -79,6 +92,51 @@ if [ "$WITH_RETRO" = "1" ]; then
   PREFLIGHT_ARGS+=(--retro)
 fi
 .venv/bin/python tools/preflight.py "${PREFLIGHT_ARGS[@]}"
+
+# ---- 5. 安装收据：机器、解释器和关键依赖版本 -------------------------------
+mkdir -p "$ROOT/.cache"
+.venv/bin/python - "$ROOT/.cache/install-receipt.json" "$UV_BIN" "$WITH_RETRO" <<'PY'
+import datetime as dt
+import hashlib
+import importlib.metadata
+import json
+import platform
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+out, uv_bin, with_retro = Path(sys.argv[1]), sys.argv[2], sys.argv[3] == "1"
+packages = ["goai-research", "duckdb", "httpx", "mcp", "pytest"]
+if with_retro:
+    packages += ["numpy", "pandas", "pymatgen", "torch"]
+versions = {}
+for package in packages:
+    try:
+        versions[package] = importlib.metadata.version(package)
+    except importlib.metadata.PackageNotFoundError:
+        versions[package] = None
+
+def command_version(command):
+    if not shutil.which(command[0]):
+        return None
+    return subprocess.run(command, text=True, stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT, check=False).stdout.strip()
+
+receipt = {
+    "installed_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+    "python": platform.python_version(),
+    "platform": platform.platform(),
+    "uv": command_version([uv_bin, "--version"]),
+    "codex": command_version(["codex", "--version"]),
+    "with_retro": with_retro,
+    "packages": versions,
+    "uv_lock_sha256": hashlib.sha256(Path("uv.lock").read_bytes()).hexdigest(),
+}
+out.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n",
+               encoding="utf-8")
+print(f"==> 安装收据：{out}")
+PY
 
 cat <<EOF
 

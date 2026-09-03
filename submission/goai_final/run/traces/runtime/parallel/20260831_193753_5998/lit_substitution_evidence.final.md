@@ -7,4 +7,4 @@
 - 因严格排除弱相关结果，未达到每个子主题 15 篇，已作为证据稀疏 WARN 记录。
 - 未导出 `references.bib`，未运行公共 coverage；最终 `loopctl log` 已写入。
 
-唯一检索日志：[search_substitution_evidence.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/notes/search_substitution_evidence.md)
+唯一检索日志：[search_substitution_evidence.md](<HOME>

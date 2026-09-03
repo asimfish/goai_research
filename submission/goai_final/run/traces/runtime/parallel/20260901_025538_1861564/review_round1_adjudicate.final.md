@@ -10,5 +10,5 @@
 
 产物：
 
-- [review_round1.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/review_round1.md)
-- [round1_1.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/state/review_traces/round1_1.md)
+- [review_round1.md](<HOME>
+- [round1_1.md](<HOME>

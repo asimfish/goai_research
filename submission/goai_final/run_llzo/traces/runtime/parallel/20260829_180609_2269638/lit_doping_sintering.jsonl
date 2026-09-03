@@ -1,4 +1,4 @@
-Reading additional input from stdin...
+{"type": "unparsed_raw", "source_line": 1, "parse_error": "Expecting value", "raw": "Reading additional input from stdin..."}
 {"type":"thread.started","thread_id":"01a04d05-4108-75d2-85f2-504b7aa7db68"}
 {"type":"turn.started"}
 {"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"我会严格按 `goai-lit-search` 的职责边界执行：先读取 skill、账本状态与输入范围，再真实调用文献检索 MCP；只写指定检索笔记并保存筛选后的论文，不导出 BibTeX、不跑总 coverage、不设置 gate。该 skill 会决定具体检索、筛选和落盘流程。"}}

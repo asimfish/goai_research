@@ -1,4 +1,4 @@
-阶段三章节蓝图已完成：[blueprint.md](/home/gaojing/goai_cold_full_byzso_m2gfJJ/workspace/drafts/blueprint.md)。
+阶段三章节蓝图已完成：[blueprint.md](<HOME>
 
 - 已确认 `taxonomy_ready=PASS`、`figures_ready=PASS`
 - 规划 7 个互斥 section 文件，正文约 8,550 汉字、8–12 页

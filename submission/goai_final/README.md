@@ -11,6 +11,8 @@ evidence/          研究数据与证据包：references.bib、papers.jsonl、cl
 run/               运行与评测包（正式案例，冷启动 cold_full_byzso_m2gfJJ）：inputs/、tasks/、ledger.json、tool_calls.jsonl、
                    review_traces/、ideas/、traces/runtime/parallel/<batch>/<task>.jsonl、traces/runtime/orchestrator/、RUN_MANIFEST.json
 run_llzo/          次要案例（LLZO 诊断轮）：账本、MCP 日志、子任务轨迹、审计报告
+runs_20260903/     09-03 三主题英文冷启动补充案例（LLZO / BaZn2Si2O7 / Ba–Y–Zn–Si–O 相图）：PDF、LaTeX、bib、账本、MCP 审计、子任务轨迹；
+                   快照时格式修复回环仍在进行（见 SUBMISSION.md §3 第 8 组）
 traces/            development/  构筑阶段 Agent 轨迹（Codex 原生 rollout + 网关消息导出）
                    runtime_native_sessions/  codex exec 子任务的原生 rollout（08-29 LLZO、08-31 BYZSO 首轮）
                    codex_sessions_index.json

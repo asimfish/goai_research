@@ -10,8 +10,8 @@ LLZO standard 档汇合完成。
 
 产物：
 
-- [coverage_report.json](/home/gaojing/goai_research/workspace/notes/coverage_report.json)
-- [search_log.md](/home/gaojing/goai_research/workspace/notes/search_log.md)
-- [references.bib](/home/gaojing/goai_research/workspace/library/references.bib)
+- [coverage_report.json](<HOME>
+- [search_log.md](<HOME>
+- [references.bib](<HOME>
 
 日志已注明 S2 HTTP 429、本地查询超时，以及本次标题/摘要关键词诊断不代表投稿级查全的局限。

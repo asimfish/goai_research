@@ -24,17 +24,9 @@ else
 fi
 git describe --tags --exact-match 2>/dev/null >> $FINAL/VERSION || true
 
-# refresh the SHA manifest so it covers deck/, report_docx/ and VERSION
-.venv/bin/python - <<'PY'
-import hashlib, pathlib
-root = pathlib.Path("submission/goai_final")
-lines = []
-for p in sorted(root.rglob("*")):
-    if p.is_file() and p.name != "MANIFEST.sha256":
-        lines.append(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(root).as_posix()}")
-(root / "MANIFEST.sha256").write_text("\n".join(lines) + "\n", encoding="utf-8")
-print("manifest entries:", len(lines))
-PY
+# Fail closed before packaging: sanitize plaintext and gzip traces, normalize
+# every JSONL stream, validate all structured files, then refresh the manifest.
+.venv/bin/python tools/export_submission_bundle.py --sanitize-only --out "$FINAL"
 
 NONCODE="dist/${PREFIX}_非代码材料.zip"
 CODE="dist/${PREFIX}_代码材料.zip"

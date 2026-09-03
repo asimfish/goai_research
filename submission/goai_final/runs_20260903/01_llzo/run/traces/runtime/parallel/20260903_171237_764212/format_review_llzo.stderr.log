@@ -1,0 +1,9 @@
+Reading additional input from stdin...
+2026-09-03T09:15:05.767089Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'set -e
+rm -f /tmp/llzo_fmt_p*.png
+pdftoppm -f 1 -l 1 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p1
+pdftoppm -f 3 -l 3 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p3
+pdftoppm -f 6 -l 6 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p6
+pdftoppm -f 8 -l 8 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p8
+pdftoppm -f 16 -l 16 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p16
+identify /tmp/llzo_fmt_p*.png'`: CreateProcess { message: "Rejected(\"`/bin/bash -lc 'set -e\\nrm -f /tmp/llzo_fmt_p*.png\\npdftoppm -f 1 -l 1 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p1\\npdftoppm -f 3 -l 3 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p3\\npdftoppm -f 6 -l 6 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p6\\npdftoppm -f 8 -l 8 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p8\\npdftoppm -f 16 -l 16 -png -r 150 drafts/main.pdf /tmp/llzo_fmt_p16\\nidentify /tmp/llzo_fmt_p*.png'` rejected: rm -f style commands are not permitted. Use a safer approach\")" }

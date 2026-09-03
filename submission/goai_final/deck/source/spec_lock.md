@@ -48,6 +48,7 @@
 - system_pipeline: images/system_pipeline.png | no-crop
 - byzso_roadmap: images/byzso_roadmap.png | no-crop
 - byzso_evidence_map: images/byzso_evidence_map.png | no-crop
+- byzso_latest_taxonomy: images/byzso_latest_taxonomy.png | no-crop
 - recipe_architecture: images/recipe_architecture.png | no-crop
 
 ## page_rhythm

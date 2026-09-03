@@ -1,0 +1,26 @@
+\section{Background and Definitions}
+\label{sec:background}
+
+LLZO is commonly discussed as a garnet framework with lithium distributed over partially occupied sites. The useful distinction for processing is not simply “cubic” versus “tetragonal,” but the combination of symmetry, lithium occupancy, dopant distribution and hydration history. Reviews and structure studies describe aliovalent substitution as a way to change both the lithium count and the configurational disorder that stabilizes a highly conducting state \cite{cao2019modeling,raju2021crystal,kim2020research}.
+
+For a pellet of thickness $L$ and electrode area $A$, the conductivity inferred from a resistance $R$ is
+\begin{equation}
+  \sigma = \frac{L}{RA}.
+\end{equation}
+The resistance may be fitted as a bulk term, a grain-boundary term and an electrode polarization term. A reported “ionic conductivity” is therefore interpretable only when the fitted circuit, frequency range, electrode, temperature and specimen geometry are given. Surface conditioning can change the apparent bulk response, and proton exchange can change processing reproducibility, so cleaning and storage must be recorded alongside impedance \cite{grissa2020impact,rosen2021controlling,uhlenbruck2018reactions}.
+
+Temperature dependence is often summarized with an Arrhenius relation,
+\begin{equation}
+  \sigma T = \sigma_{0} \exp\left(-\frac{E_{\mathrm{a}}}{k_{\mathrm{B}}T}\right),
+\end{equation}
+where $E_{\mathrm{a}}$ is an apparent activation energy. A change in slope can indicate a phase transition, a change in dominant resistance or a contact artifact; it should not be interpreted as a new hopping mechanism without independent structural evidence. NMR, Raman and atomistic calculations provide complementary views of lithium mobility, but they probe different length and time scales \cite{kuhn2011li,larraz2015nmr,miyagawa2026raman,heo2021microstructural,ilina2023recent}.
+
+Relative density, open porosity and grain size are state variables rather than processing labels. Two samples made with the same nominal composition can have different connected-pore fractions and boundary area after pressing or sintering. Microstructure-aware modeling predicts that tortuosity and boundary resistance can dominate the total response even when the local bulk diffusivity is unchanged \cite{heo2021microstructural,gao2021revealing,grissa2020impact}. Accordingly, this review uses “bulk,” “grain boundary” and “total” only when the measurement separates them; otherwise the value is reported as unspecified.
+
+The measurement vocabulary is shared with broader oxide-electrolyte and battery studies, but the transfer is methodological rather than numerical. Reviews of inorganic conductors, garnet/polymer composites and all-solid-state interfaces emphasize that conductivity, mechanical constraint and interfacial stability must be reported on the same specimen \cite{ohno2020materials,abakumov2020solid,reddy2020sulfide,li2020status,guo2022solid,ma2023a,he2024solid}. Computational descriptors are likewise useful only when their length scale and boundary conditions are stated; LLTO calculations are a comparator and not LLZO evidence \cite{wang2025computational,li2024machine,burov2026machine}.
+
+Wet-chemical post-processing offers a further definition of state: structural modeling and spectroscopy show that washing or hydration can alter lithium occupancy, surface phases and the apparent transport response without changing the nominal formula \cite{kun2018structural,han2023fast}.
+
+Surface and environmental effects provide concrete examples of why the state variables are necessary. Thermal cleaning, surface regeneration, ZnO coatings and carbonate-based exposure each modify the near-surface reaction sequence, while air-stability studies show that particle size and dopant chemistry alter the rate of degradation \cite{benabed2023solving,vema2023understanding,mohammadi2023surface,garcia2026insights,watanabe2026chemical,hoinkis2023particle,zhao2025air}.
+
+The thermodynamic language also requires care. High-temperature studies resolve phase evolution and lithium volatilization for selected Al- or Nb-containing compositions, while a complete LLZO composition--temperature--oxygen-potential diagram is not reported in the present corpus \cite{gullbrekken2025phase,montoya2024lithium,luo2025phase,li2026structure}. We therefore refer to a local phase relation or measured phase sequence when evidence exists, and identify measurement of a composition-resolved phase diagram as an open experiment rather than inferring a universal phase boundary.
