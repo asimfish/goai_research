@@ -1,5 +1,9 @@
 # LLZO final manuscript task
 
+> 归档说明：本文件是 2026-08-29 LLZO 诊断轮写作子任务收到的原始提示词，内容保持逐字不变。
+> 文中提到的产物目录 `submission/llzo_survey/` 现位于
+> `submission/03_运行与评测包/LLZO诊断轮/最终输出/`。
+
 Act as `goai-survey-writer` in manuscript and assembly stages. Read fully:
 
 - `AGENTS.md` and `skills/goai-survey-writer/SKILL.md`;

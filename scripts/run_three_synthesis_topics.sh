@@ -9,8 +9,11 @@ set -uo pipefail
 
 cd "$(dirname "$0")/.."
 REPO="$PWD"
-RUN_ROOT="${1:-/home/gaojing/goai_synthesis_runs/20260903_synthesis_topics}"
-CORPUS_ROOT="${GOAI_LOCAL_CORPUS_ROOTS:-/mnt/nas/data/gaojing/markdown_corpus_v1/packages/markdown-v1-final}"
+# Usage: scripts/run_three_synthesis_topics.sh [RUN_ROOT]
+#   GOAI_LOCAL_CORPUS_ROOTS  Parquet corpus package root(s); defaults to the public
+#                            cited-paper package shipped in this repository.
+RUN_ROOT="${1:-$REPO/workspace_runs/$(date +%Y%m%d)_synthesis_topics}"
+CORPUS_ROOT="${GOAI_LOCAL_CORPUS_ROOTS:-$REPO/submission/02_研究数据与证据包/corpus_release}"
 
 mkdir -p "$RUN_ROOT"
 cp -f "$REPO/configs/three_synthesis_topics.tsv" "$RUN_ROOT/topic_manifest.tsv"

@@ -405,10 +405,14 @@ def test_aesthetics_edges_canvas_and_hierarchy():
                        _node("c", 420, 60, stroke_width=2.4)]}
     w = _aes(tiers)["warnings"]
     assert any("描边粗细" in x for x in w) and any("标题" in x and "最大" in x for x in w), w
-    # 仓库样例图：美学项不得产生 error（历史告警允许，但不能被新规则挡住出图）
-    for p in ("examples/pipeline.figspec.json",
-              "examples/survey_cof_her/paper/figures/src/fig1_factor_chain.json",
-              "examples/survey_cof_her/paper/figures/src/fig2_tppa1_idea.json"):
+    # 仓库样例图与正式报告图：美学项不得产生 error（历史告警允许，但不能被新规则挡住出图）。
+    # 报告图源随 submission/ 提供；在只含代码快照的归档里可能不存在，届时只检查样例图。
+    report_figs = ("submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig01_evidence_synthesis_map.json",
+                   "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig02_route_variable_matrix.json",
+                   "submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/figspec/fig03_research_roadmap.json",
+                   "submission/03_运行与评测包/LLZO诊断轮/最终输出/figures/figspec/llzo_process_map.json")
+    specs = ["examples/pipeline.figspec.json"] + [p for p in report_figs if os.path.exists(os.path.join(ROOT, p))]
+    for p in specs:
         with open(os.path.join(ROOT, p), encoding="utf-8") as f:
             assert _aes(json.load(f))["errors"] == [], p
 
@@ -1161,13 +1165,30 @@ def run_pdf_guard(*args):
 
 
 @pytest.mark.skipif(not _HAS_POPPLER, reason="poppler (pdfinfo/pdffonts/pdftotext) not installed")
-def test_pdf_guard_passes_real_tex_sample():
-    paper = os.path.join(ROOT, "examples", "survey_cof_her", "paper")
-    r = run_pdf_guard(os.path.join(paper, "main.pdf"),
-                      "--tex", os.path.join(paper, "main.tex"),
-                      "--bib", os.path.join(paper, "references.bib"))
-    assert r.returncode == 0, r.stdout
-    assert "PASS" in r.stdout and "dvipdfmx" in r.stdout.lower() or "xetex" in r.stdout.lower()
+def test_pdf_guard_passes_real_tex_build(tmp_path):
+    """真 TeX 产物必须 PASS：有 xelatex 就现场用仓库模板字体链编一个最小文档
+    （摘要块 + 编号章节），否则跳过。不依赖仓库里的样例 PDF（提交包重组时会被移走）。"""
+    if not _shutil.which("xelatex"):
+        pytest.skip("xelatex not installed")
+    tex = tmp_path / "main.tex"
+    tex.write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\usepackage{amsmath}\usepackage{newtxtext}\usepackage{newtxmath}",
+        r"\usepackage[colorlinks=true,citecolor=blue]{hyperref}",
+        r"\title{Guard Fixture}\author{A}\date{}",
+        r"\begin{document}\maketitle",
+        r"\begin{abstract}A minimal abstract block.\end{abstract}",
+        r"\section{Introduction}Numbered heading body text.",
+        r"\end{document}",
+    ]), encoding="utf-8")
+    r = subprocess.run(["xelatex", "-interaction=nonstopmode", "-halt-on-error", "main.tex"],
+                       cwd=tmp_path, capture_output=True, text=True, timeout=300)
+    if r.returncode != 0 or not (tmp_path / "main.pdf").exists():
+        pytest.skip("xelatex present but template packages (newtx) missing")
+    res = run_pdf_guard(str(tmp_path / "main.pdf"), "--tex", str(tex), "--min-pages", "1")
+    assert res.returncode == 0, res.stdout
+    low = res.stdout.lower()
+    assert "结论: pass" in low and ("dvipdfmx" in low or "xetex" in low)
 
 
 @pytest.mark.skipif(not _HAS_POPPLER, reason="poppler not installed")

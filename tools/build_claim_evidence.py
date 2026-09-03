@@ -22,12 +22,15 @@ DOI, and — when the text is in the package — read the passage through
 
 Usage::
 
-    python3 tools/build_claim_evidence.py --bundle submission/goai_final
+    python3 tools/build_claim_evidence.py            # formal report + evidence package
+    python3 tools/build_claim_evidence.py --report <dir with main.tex/sections/references.bib> \
+                                          --evidence <dir with CITATION_AUDIT.json/notes/corpus_release>
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -101,11 +104,13 @@ def parse_condition_trace(path: Path) -> dict[str, list[dict]]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--bundle", default="submission/goai_final")
+    ap.add_argument("--report", default="submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出",
+                    help="report directory (main.tex, sections/, references.bib)")
+    ap.add_argument("--evidence", default="submission/02_研究数据与证据包",
+                    help="evidence directory (CITATION_AUDIT.json, notes/, corpus_release/); outputs are written here")
     args = ap.parse_args()
-    bundle = Path(args.bundle).resolve()
-    report = bundle / "report"
-    evidence = bundle / "evidence"
+    report = Path(args.report).resolve()
+    evidence = Path(args.evidence).resolve()
 
     bib = {e["key"]: e["fields"] for e in parse_bibtex((report / "references.bib").read_text(encoding="utf-8"))}
     audit = {e["key"]: e for e in json.loads((evidence / "CITATION_AUDIT.json").read_text(encoding="utf-8"))["per_entry"]}
@@ -184,7 +189,9 @@ def main() -> int:
         "support_strength_of_cited_keys": {
             s: sorted(k for k in used if bank.get(k, {}).get("support_strength") == s) for s in ("strong", "weak")
         },
-        "files": {"claims": out_path.name, "bib": "../report/references.bib", "audit": "CITATION_AUDIT.json",
+        "files": {"claims": out_path.name,
+                  "bib": Path(os.path.relpath(report / "references.bib", evidence)).as_posix(),
+                  "audit": "CITATION_AUDIT.json",
                   "bank": "notes/citation_bank.md", "condition_trace": "notes/condition_source_trace.md",
                   "corpus_index": "corpus_release/cited_references_index.json"},
     }

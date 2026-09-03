@@ -1,0 +1,40 @@
+\section{Li Interfaces and Cathode Integration}
+\label{sec:interfaces}
+
+Pellet conductivity does not predict a stable battery interface by itself. Lithium metal can dewet, react with a contaminated surface or penetrate a mechanically weak grain boundary, while a composite cathode introduces constriction, chemical gradients and a second tortuosity scale. Direct observations, interface engineering and recent reviews all point to contact pressure, surface chemistry and boundary continuity as co-determinants of cell behavior \cite{wang2020garnet,wang2024review,zhao2024review}.
+
+\subsection{Li--LLZO contact and dendrites}
+
+Direct imaging has documented lithium penetration along defects or grain boundaries in garnet electrolytes, and mechanistic work links this behavior to local current focusing, boundary chemistry and mechanical softening \cite{ren2015direct,yu2018grain,counihan2023understanding,chen2024dendrite,hua2023dendrite}. Artificial metallic interlayers, lithiophilic salts, electron-blocking shields and three-dimensional boundary designs can improve contact or redistribute current, but each changes the chemical and mechanical boundary condition \cite{cui2022melt,cai2022in,du2021smart,du2024constructing,zheng2023high}.
+
+Recent interface studies add several distinct levers: femtosecond activation, dopant-controlled early-stage reactions, entropy-stabilized interphases, organic--inorganic contact layers and molten-salt processing \cite{zhang2026femtosecond,jeong2026dopant,giri2026entropy,feng2026interface,kang2026reducing}. These approaches are not interchangeable; each changes wetting, electronic leakage or the local stress field and therefore requires a matched current-density protocol.
+
+Electron-blocking shields and diffusion-limited lithium-metal studies provide additional controls for separating interfacial reaction from mechanical penetration \cite{huo2021a,krauskopf2019diffusion}. Their value is diagnostic: they identify which resistance or failure mode changes, rather than supplying a universal interface recipe.
+
+The correct comparison is therefore a matched stack rather than a single interface treatment. Report the polishing or cleaning history, interlayer composition and thickness, lithium foil history, applied pressure, temperature, current density and voltage criterion. Recent studies also show that excess-lithium-free processing and in situ boundary engineering can reduce interfacial resistance, yet their values remain tied to the particular surface and protocol \cite{nasir2025excess,you2025in,zhang2024an,jiang2024homogenizing}.
+
+Earlier garnet/Li compatibility measurements and interface reviews identify the same failure modes: reaction products, poor wetting, pressure-dependent constriction and current focusing at defects \cite{kotobuki2010compatibility,fingerle2017evidence,krauskopf2020physicochemical,gupta2020analyzing,banerjee2020interfaces,kim2020solid,du2019recent,lee2025solid,cao2025solid,hara2026roles}. They provide context for the newer interlayers but do not justify transferring a critical-current value between architectures.
+
+\subsection{Cathode composites and membranes}
+
+Composite cathodes expose the trade-off between ceramic connectivity and electrochemical contact. Infiltration into a porous or bilayer LLZO scaffold increases active-area access, while tape casting and co-sintering introduce shrinkage and chemical compatibility constraints \cite{zhang2023bilayer,finsterbusch2018high,go2026developing,touidjine2026tape,zubair2026high}. Ga substitution, lithium carbonate compensation and polymer incorporation can change cathode compatibility or low-temperature handling, but the resulting cell response includes both ionic transport and electrode reaction limitations \cite{roitzheim2026fully,lu2021modified,ren2022oxide,touidjine2024the,seo2020broad}.
+
+Scaffold infiltration, polymer--ceramic composites and high-capacity three-dimensional electrodes illustrate how cathode tortuosity and separator thickness enter the same measurement chain \cite{yan2020submicron,li2023a,song2020progress,fan2021tailoring,yu2020a,finsterbusch2018high,zhang2024advancements,kumchompoo2026lifepo4,zheng2026interfacial}. In these architectures, lithium compensation should be treated as an explicit process variable, and separator and electrode contributions should be separated. A cell-level improvement is therefore attributed to the architecture only after electrolyte resistance, active-area loading and areal capacity are reported separately.
+
+\begin{table}[t]
+\centering
+\caption{Interface architectures and the measurements needed to separate their effects.}
+\label{tab:interfaces}
+\begin{tabular}{P{0.22\linewidth}P{0.25\linewidth}P{0.26\linewidth}P{0.15\linewidth}}
+\toprule
+Architecture & Intended function & Required evidence & Representative sources \\
+\midrule
+Clean or modified Li surface & Improve wetting and lower contact resistance & Surface chemistry, pressure history and symmetric-cell impedance & \cite{cui2022melt,cai2022in,du2021smart} \\
+Continuous or electron-blocking boundary & Reduce local current focusing and penetration & Boundary continuity, electronic leakage and CCD protocol & \cite{du2024constructing,zhang2024an,klimpel2023standardizing} \\
+Porous scaffold or bilayer separator & Increase cathode contact area while retaining a dense barrier & Thickness map, infiltration fraction and tortuosity & \cite{zhang2023bilayer,go2026developing,zubair2026high} \\
+Tape-cast or co-sintered cathode & Enable scalable areal loading & Shrinkage match, chemical compatibility and areal impedance & \cite{touidjine2026tape,roitzheim2026fully,touidjine2024the} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Interface improvements should be reported as a change in a defined resistance or current-density limit under a named protocol. A lower initial impedance is not sufficient evidence for longer cycling if the interlayer reacts, delaminates or changes the failure criterion. This distinction is central when translating a process--structure relation from a polished pellet to a composite cell \cite{wang2024accelerating,yu2024elucidating,wang2024review}.

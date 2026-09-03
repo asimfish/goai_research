@@ -35,6 +35,82 @@ CITE_MD_EACH = re.compile(r"@([A-Za-z0-9_:\-]+)")
 # 或全大写缩写词（≥3 字母）。plainnat 等样式会把未保护 token 压成小写。
 RE_PROTECT_NEEDED = re.compile(
     r"\b(?=\w*[A-Z]\w*[A-Z])(?=\w*\d)[\w()\[\]+.\-]*[A-Za-z0-9]|\b[A-Z]{3,}\b")
+TITLE_FIELD = re.compile(r"(?m)^(\s*title\s*=\s*\{)(.*)(\},\s*)$")
+DOI_FIELD = re.compile(r"(?m)^\s*doi\s*=")
+URL_FIELD = re.compile(r"(?m)^\s*url\s*=.*\n?")
+
+
+def _protect_unbraced_title_tokens(title: str) -> str:
+    """Brace formula/acronym tokens without nesting already protected text."""
+    depth = 0
+    depth_at: list[int] = []
+    for char in title:
+        depth_at.append(depth)
+        if char == "{":
+            depth += 1
+        elif char == "}" and depth:
+            depth -= 1
+    spans = [m.span() for m in RE_PROTECT_NEEDED.finditer(title)
+             if all(depth_at[i] == 0 for i in range(*m.span()))]
+    for start, end in reversed(spans):
+        title = title[:start] + "{" + title[start:end] + "}" + title[end:]
+    return title
+
+
+def _normalize_formula_spacing(title: str) -> str:
+    """Undo publisher baseline spacing such as ``BaZnSi 3 O 8``."""
+    spaced_formula = re.compile(
+        r"\b(?:[A-Z][a-z]?)+(?:\s+\d+)(?:\s+(?:(?:[A-Z][a-z]?)+|\d+))+\b"
+    )
+    title = spaced_formula.sub(lambda match: re.sub(r"\s+", "", match.group(0)), title)
+    title = re.sub(r"(?<=\d)\s+([,;:])", r"\1", title)
+    title = re.sub(r"(?<=\d)\s+([‐‑–-])(?=[A-Za-z])", r"\1", title)
+    return title
+
+
+def _tidy_formula_braces(title: str) -> str:
+    """Move grouping braces around complete bracketed/parenthesized formulas."""
+    prefix = r"((?:[A-Z][a-z]?\d*)*)"
+    title = re.sub(
+        prefix + r"\[\{([^{}\]]+)\](\d*)\}([+-]?)",
+        lambda m: "{" + m.group(1) + "[" + m.group(2) + "]" +
+                  m.group(3) + m.group(4) + "}",
+        title,
+    )
+    title = re.sub(
+        prefix + r"\[\{([^{}\]]+)\}\]",
+        lambda m: "{" + m.group(1) + "[" + m.group(2) + "]}",
+        title,
+    )
+    title = re.sub(
+        r"((?:[A-Z][a-z]?\d*)+)\(\{([^{}()]+)\)(\d*)\}",
+        lambda m: "{" + m.group(1) + "(" + m.group(2) + ")" + m.group(3) + "}",
+        title,
+    )
+    return title
+
+
+def fix_bib_hygiene_text(text: str) -> tuple[str, int]:
+    """Remove redundant DOI URLs and protect title chemistry deterministically."""
+    chunks = re.split(r"(?m)(?=^@\w+\{)", text)
+    changed_entries = 0
+    fixed: list[str] = []
+    for chunk in chunks:
+        original = chunk
+        if DOI_FIELD.search(chunk):
+            chunk = URL_FIELD.sub("", chunk)
+
+        def fix_title(match: re.Match) -> str:
+            title = _normalize_formula_spacing(match.group(2))
+            title = _protect_unbraced_title_tokens(title)
+            title = _tidy_formula_braces(title)
+            return match.group(1) + title + match.group(3)
+
+        chunk = TITLE_FIELD.sub(fix_title, chunk)
+        if chunk != original and chunk.lstrip().startswith("@"):
+            changed_entries += 1
+        fixed.append(chunk)
+    return "".join(fixed), changed_entries
 
 
 def bib_hygiene(entries: list[dict]) -> list[str]:
@@ -59,7 +135,7 @@ def bib_hygiene(entries: list[dict]) -> list[str]:
 
 
 def collect_cites(path: str) -> list[tuple[str, str, int]]:
-    """→ [(key, file, line_no)]。全文扫描：\cite{...} 参数允许跨行。"""
+    """→ [(key, file, line_no)]。全文扫描：\\cite{...} 参数允许跨行。"""
     out = []
     with open(path, encoding="utf-8", errors="replace") as f:
         text = f.read()
@@ -93,6 +169,8 @@ def main() -> None:
                     help="每千词最低引用数（综述密度告警线）")
     ap.add_argument("--min-integration", type=float, default=0.9,
                     help="库内条目整合率下限（被引条目/bib 总条目，低于线阻塞）")
+    ap.add_argument("--fix-hygiene", action="store_true",
+                    help="原地删除 DOI 重复 URL、规范化化学式空格并保护标题 token")
     args = ap.parse_args()
 
     files = ([args.draft] if os.path.isfile(args.draft) else
@@ -104,6 +182,15 @@ def main() -> None:
         sys.exit(f"未找到稿件文件: {args.draft}")
     if not os.path.isfile(args.bib):
         sys.exit(f"未找到 bib 文件: {args.bib}")
+
+    if args.fix_hygiene:
+        with open(args.bib, encoding="utf-8") as f:
+            original = f.read()
+        fixed, changed_entries = fix_bib_hygiene_text(original)
+        if fixed != original:
+            with open(args.bib, "w", encoding="utf-8") as f:
+                f.write(fixed)
+        print(f"bib hygiene fix: {changed_entries} entries updated")
 
     with open(args.bib, encoding="utf-8") as f:
         bib_entries = parse_bibtex(f.read())

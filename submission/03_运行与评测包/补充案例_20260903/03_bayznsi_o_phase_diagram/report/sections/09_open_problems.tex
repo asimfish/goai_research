@@ -1,0 +1,104 @@
+\section{Open Problems and Experimental Priorities}\label{sec:open}
+
+The reviewed planning package adds three complementary experiment designs to the
+literature-derived priorities: a quaternary equilibrium and phase-purity map, a
+time--temperature history map for metastable products, and an uncertainty-aware
+combinatorial campaign. These designs are hypotheses for deciding which
+measurements to make, not evidence that a Ba--Y--Zn--Si--O phase has been
+isolated. Every precursor-route suggestion discussed below is explicitly a
+\emph{model prediction, pending experimental validation}; it is not a laboratory
+procedure or a phase assignment.
+
+The evidence motivating these priorities is similarly limited: the available
+four-cation reports describe glasses or precursor compositions rather than a
+reproducibly isolated quaternary crystal \cite{kozhevnikova2024synthesis,kaur2011influence,sayyed2026physical}.
+
+\subsection{Measure the missing quaternary subspaces}
+
+The largest uncertainty is the absence of a BaO--Y$_2$O$_3$--ZnO--SiO$_2$--O phase diagram. A decisive campaign should select binary and ternary joins that bracket the nominal target, equilibrate at multiple temperatures, quench rapidly, and determine phase compositions by EPMA plus XRD. Existing ZnO-, BaO-, and Y$_2$O$_3$-containing assessments provide the methodological template, not the answer \cite{kim2025key,jeon2025phase,makrovets2023y2o3,shukla2018thermodynamic}. The experiment discriminates a single-phase field from a tie triangle and identifies any invariant reaction.
+
+The public design envelope from the phase-purity design is a composition grid
+around Ba$_2$Y$_2$ZnSi$_2$O$_8$ and the relevant binary/ternary edges, with
+several equilibration temperatures spanning roughly 1,200--1,600~$^{\circ}$C
+and hours-scale holds. Sealed Pt capsules can be paired with open-crucible
+controls to quantify volatility, while duplicate samples and rapid-quench
+counterparts make path dependence visible. The reader-facing measurements are
+powder XRD with Rietveld refinement, EPMA/WDS composition maps, and gravimetric
+mass-loss checks; Raman or back-scattered electron imaging is reserved for
+unresolved minor peaks or reaction products. A phase-purity window is accepted
+only when duplicate samples are single phase by diffraction and show no
+resolvable secondary composition in the maps, with Zn loss reported rather than
+silently absorbed into the nominal formula \cite{kim2025key,derensy2026phase,makrovets2023y2o3}.
+
+\subsection{Resolve ZnO volatility and crucible effects}
+
+Matched runs in Pt, Au, and inert covered containers should quantify post-run Ba/Y/Zn ratios and compare open versus covered conditions. Noble-metal nucleation studies and quench--EPMA protocols show why the crucible and exposure boundary can alter phase selection \cite{thieme2022noble,abdeyazdan2024phase,abdeyazdan2023experimental}. This is a measurement recommendation, not a transferable recipe: the target flux and temperature remain to be established.
+
+\subsection{Separate equilibrium from kinetic products}
+
+A time--temperature matrix with rapid quench, slow cool, and controlled reheating can test whether a candidate phase persists after extended equilibration. In-situ microscopy, thermal analysis, and complementary spectroscopy should be used when a glass or interfacial melt is present \cite{mckenzie2020nucleation,bocker2012in,mastelaro2018x,wang2024optimal}. Persistence across hold time and cooling rate would support equilibrium; history dependence would identify kinetic trapping.
+
+The metastability design narrows this question to a bounded thermal-history
+screen: glass or powder starting states are compared across anneals below and
+above the first crystallization event, fast-to-slow quench histories, and a
+controlled reheating check. A broad, non-prescriptive window of about
+650--1,400~$^{\circ}$C is sufficient to expose transformations without
+assuming a crystallization temperature in advance. In-situ high-temperature
+XRD synchronized with DSC/DTA, Raman/FTIR, and EPMA/SEM-EDS can separate a
+structural change from composition drift. A phase is called a kinetic candidate
+only when the transformation is reproducible, composition remains constant, and
+the change follows a documented time--temperature perturbation
+\cite{dingwell1990relaxation,mckenzie2021nucleation,zeng2024selective,wang2024optimal}.
+
+\subsection{Use bounded computation and provenance}
+
+CALPHAD re-assessment, uncertainty-aware machine learning, and autonomous experiments can prioritize the next composition, but only if phase labels, conditions, and negative results are retained with provenance \cite{arroyave2022phase,tsutsui2021a,chen2024navigating,choi2026ai,zhang2026provmind}. A model-predicted precursor route should be treated as a hypothesis and compared against measured binary/ternary constraints before any experimental use. This separation keeps computational suggestions distinct from reported laboratory evidence.
+
+The closed-loop plan makes that separation testable. It proposes a 24--96-point
+composition/process library centered on the nominal stoichiometry and its
+neighboring edges, followed by at least two selection rounds. Blind hold-outs,
+process replicates, and explicit labels for single phase, multiphase, glass, and
+composition drift prevent a model from learning only positive examples. New
+points are prioritized by the product of predicted single-phase probability,
+uncertainty, and expected information gain; calibration is checked against
+measured edge equilibria before extrapolating into the quaternary interior.
+Success is a lower experiment count at a low false-pure rate on blind samples,
+not a high model confidence by itself \cite{chen2024navigating,wang2022dataset,huo2022machine,gong2022calibrating}.
+
+The three planning designs also enumerate five precursor-route families:
+an oxide solid-state baseline, a Ba-rich sensitivity arm, a flux-assisted
+exploratory arm, a sol--gel process-control arm, and a salt-derived comparison
+arm. Each is a \emph{model prediction, pending experimental validation}; the
+plans do not establish a synthesis route. For public, non-hazardous reporting,
+only broad windows are retained here: approximately 1,000--1,500~$^{\circ}$C
+for solid-state comparisons, 650--1,550~$^{\circ}$C for melt/glass and anneal
+histories, and lower-temperature precursor-process checks before calcination.
+Flux-bearing or salt-derived samples remain derivative controls and cannot be
+counted as oxide-target positives without composition and structural checks.
+Exact batch ratios, heating schedules, gas or off-gas handling, and containment
+instructions are intentionally not reproduced; any implementation must follow
+institutional chemical-safety review. The associated readouts remain XRD,
+EPMA/EDS, thermal analysis, spectroscopy, and mass-loss accounting
+\cite{parsa2018synthesis,bugaris2012materials,ranganathan2008sol,boyer2003yttrium,huo2022machine}.
+
+For a direct reader-facing pairing of the planning designs with the model-generated
+starting materials, Table~\ref{tab:direction_precursor_map} keeps the process
+choices and adjudication criteria at a non-procedural level. The precursor names
+are retained only to make the proposed comparisons reproducible on paper; they
+are not evidence that any route yields the nominal phase.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Mapping of each proposed direction to a broad process route, precursor family, and decision criterion.}
+\label{tab:direction_precursor_map}
+\begin{tabular}{P{0.17\linewidth}P{0.24\linewidth}P{0.36\linewidth}P{0.15\linewidth}}
+\toprule
+Direction & Recommended process route & Model-suggested precursor family & Decision criterion \\
+\midrule
+\textit{Phase-purity mapping} & Solid-state equilibration with paired quench and volatility-control samples \cite{kim2025key,derensy2026phase} & Oxide/carbonate baseline (ZnO, Y$_2$O$_3$, SiO$_2$, BaCO$_3$); Ba-rich sensitivity variant (BaO). Each named precursor is a \emph{model prediction, pending experimental validation}. & Duplicate XRD and EPMA/WDS must agree on a single-phase field, bounded Zn loss, and no resolvable secondary composition. \\
+\textit{Metastability kinetics} & Glass-to-ceramic and quench--anneal history screen with time-resolved readout \cite{dingwell1990relaxation,mckenzie2021nucleation,zeng2024selective} & Oxide/carbonate set (ZnO, Y$_2$O$_3$, SiO$_2$, BaCO$_3$); fluoride-assisted derivative (BaF$_2$); sol--gel derivative (SiH$_2$O$_3$). Each named precursor is a \emph{model prediction, pending experimental validation}. & A kinetic candidate must transform reproducibly under a documented time--temperature perturbation while bulk composition remains constant; persistence or transformation half-time is quantified. \\
+\textit{Closed-loop phase-diagram design} & Uncertainty-aware combinatorial composition/process library with blind hold-outs and replicate feedback \cite{chen2024navigating,wang2022dataset,gong2022calibrating,huo2022machine} & Oxide/carbonate set (ZnO, Y$_2$O$_3$, SiO$_2$, BaCO$_3$); Ba-rich (BaO); flux-assisted (BaF$_2$); sol--gel (SiH$_2$O$_3$); nitrate-derived (Ba(NO$_3$)$_2$). Each named precursor is a \emph{model prediction, pending experimental validation}. & Advance only when blind-sample XRD and EPMA agree, calibration remains acceptable, and the false-pure rate is low; model confidence alone is insufficient. \\
+\bottomrule
+\end{tabular}
+\end{table}

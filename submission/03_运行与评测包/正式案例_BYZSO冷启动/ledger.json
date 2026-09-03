@@ -1,0 +1,1422 @@
+{
+  "topic": "Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件",
+  "created": "2026-08-31T11:30:59Z",
+  "round": 2,
+  "max_rounds": 5,
+  "effort": "balanced",
+  "strictness": "strict",
+  "auto_proceed": true,
+  "stage": "final",
+  "stages": [
+    "intake",
+    "scoping",
+    "lit_search",
+    "ref_gate",
+    "taxonomy",
+    "figures",
+    "ideas",
+    "writing",
+    "review",
+    "final"
+  ],
+  "gates": {
+    "scope_confirmed": {
+      "status": "PASS",
+      "detail": "round2 revalidation after I6: 8 MECE leaves and inclusion/EHS boundaries unchanged; formal coverage profile is niche-balanced, comprehensive explicitly not claimed; bare-topic auto-proceed scope remains a disclosed working scope, not user-confirmed publication positioning",
+      "round": 2,
+      "at": "2026-08-31T20:48:51Z",
+      "inputs": [
+        {
+          "path": "workspace/inputs/topic.md",
+          "sha256": "aaec7a2a25ebe689705d2ec9366067ecdca4a6157e156818fcd247e139b097aa"
+        },
+        {
+          "path": "workspace/inputs/scope.md",
+          "sha256": "a6e972902f611282bd219ac7fa1bc8bb93946c494baba69e32cd721730af4101"
+        }
+      ]
+    },
+    "style_bank_ready": {
+      "status": "WARN",
+      "detail": "浅层降级：4 份全文 + 4 张参照图；0/25 exemplar 元数据，写作/图形卡未完成，不可视为领域基准。",
+      "round": 1,
+      "at": "2026-08-31T12:24:55Z",
+      "inputs": [
+        {
+          "path": "workspace/style_bank/writing_style_cards.md",
+          "sha256": "fc362fa134b543fef12dbacc5927bebe142cf3c7d38ad11ad1678c0f8632c7d9"
+        },
+        {
+          "path": "workspace/style_bank/figure_style_cards.md",
+          "sha256": "5cdf9c65e631480490b7a7597b26e4b9e19da62c53cc07682de20b45ff4563fb"
+        }
+      ]
+    },
+    "lit_coverage": {
+      "status": "WARN",
+      "detail": "niche-balanced formal downgrade; N=63; hits=1,16,15,8,6,5,7,14; reviews=3; 2024-2026=9/63=14.29%; niche-balanced recalculated quotas met; generic identity leaf remains GAPS_FOUND; target has one direct paper and no independent replication; comprehensive thresholds NOT met or claimed; four targeted rounds added 0,0,0,0",
+      "round": 2,
+      "at": "2026-08-31T19:19:06Z",
+      "inputs": [
+        {
+          "path": "workspace/notes/coverage_report.md",
+          "sha256": "4cbbd91ab1f9527a49b07241b0dc9f6fee016e3a8c7cba402fe97e9d1e6c3839"
+        },
+        {
+          "path": "workspace/notes/search_log.md",
+          "sha256": "611fbc62dc6474d2c5b4af1350156b024fafa3e1b2e62cb93219ae007e3cdd8f"
+        },
+        {
+          "path": "workspace/inputs/scope.md",
+          "sha256": "a6e972902f611282bd219ac7fa1bc8bb93946c494baba69e32cd721730af4101"
+        },
+        {
+          "path": "workspace/library/papers.jsonl",
+          "sha256": "d08cc93c6d791b664807f031deffd6afec568b25789d8e59b05357ec22822fa6"
+        }
+      ]
+    },
+    "ref_integrity": {
+      "status": "PASS",
+      "detail": "51/51 independent works PASS; existence/metadata/authors-order all PASS; liu1993structures canonical DOI 10.1006/jssc.1993.1013 retained, liu1993structuresx merged; BibTeX unique keys/DOIs PASS; fresh bib_guard 8 files, 196 citation calls, 51/51 integration 100%, density 36.5/千词; author regression 6/6 PASS",
+      "round": 2,
+      "at": "2026-08-31T20:35:15Z",
+      "inputs": [
+        {
+          "path": "workspace/state/CITATION_AUDIT.md",
+          "sha256": "8a934e6df76109e249e03021b86289bbe706cd33169fd926181f7f01566bb3d4"
+        },
+        {
+          "path": "workspace/state/CITATION_AUDIT.json",
+          "sha256": "acbbff598cb2dd9e6390037c8417f05044fd1dec11729e9375357ed1df8191f6"
+        },
+        {
+          "path": "workspace/library/references.bib",
+          "sha256": "fc04a3f4e40b4dc42f6b753fc426a536d2ccb1c3272dfecdd33ee3badeabd04e"
+        },
+        {
+          "path": "workspace/drafts/sections/00_review_method.tex",
+          "sha256": "a82465c9071688bf9a537ae0eb3213043c0711b597743613fc73db09f7c2c93a"
+        },
+        {
+          "path": "workspace/drafts/sections/01_phase_identity.tex",
+          "sha256": "c7a83d5a3d95a88622f51df439783812932a7f02f8d0ed14e77511f64849e27f"
+        },
+        {
+          "path": "workspace/drafts/sections/02_evidence_distance.tex",
+          "sha256": "77b6c255f159726952cd364045fcacbadcf9f0015443afa4ef2cf5864624ba8d"
+        },
+        {
+          "path": "workspace/drafts/sections/03_condition_matrix.tex",
+          "sha256": "288e33957970de720c8183b25c43389f43c78344ecbe8685c5950d0eabbeaedd"
+        },
+        {
+          "path": "workspace/drafts/sections/04_neighbor_routes.tex",
+          "sha256": "d6364537b0ae0966a1fdabd0a43a9dc95dd4ceb82a3cfd268854a30aebe9e7a4"
+        },
+        {
+          "path": "workspace/drafts/sections/05_validation_endpoints.tex",
+          "sha256": "077872b873af8af3f6980e6f5cceb96d36e219e433d93b1f844f487fdff625b6"
+        },
+        {
+          "path": "workspace/drafts/sections/06_failure_boundaries.tex",
+          "sha256": "7c7197cbbe24c829a61ab57d1b59412d33c056c95f6d62b61606968148cf1448"
+        },
+        {
+          "path": "workspace/drafts/sections/07_transferability_conclusion.tex",
+          "sha256": "c1dab8d6f316930b9c870b5826c3cede7b0e8b64057969f018b92c9add642fbd"
+        }
+      ]
+    },
+    "taxonomy_ready": {
+      "status": "PASS",
+      "detail": "非交互式裸主题按 orchestrator 自动推进规则采用候选1为主贡献、候选2为核心方法贡献、候选3为实践贡献；该组合仅为服务本次交付的工作假设，未经用户逐项确认，不代表投稿定位获用户确认；最终响应须显式告知用户可调整。D0 仍仅1篇，章节权重不变。",
+      "round": 2,
+      "at": "2026-08-31T19:08:33Z",
+      "inputs": [
+        {
+          "path": "workspace/notes/contribution.md",
+          "sha256": "c66ec28d8cc6ca6f20eec61c57db9e369d58f3700df60eace630b1c90a82bb1a"
+        },
+        {
+          "path": "workspace/notes/taxonomy.md",
+          "sha256": "3c39db683dc25118c69e4dd80435f7af214771ed218733c4dfe55588ce8f3c86"
+        }
+      ]
+    },
+    "ideas_reviewed": {
+      "status": "WARN",
+      "detail": "模型输出已按文献证据、电荷平衡与 EHS 做内部审计，并转化为局部相图/占位/固相-长晶/类比四类可检验方案；未作化学路线验证或独立材料专家复核。",
+      "round": 2,
+      "at": "2026-09-01T17:19:23Z",
+      "inputs": [
+        {
+          "path": "workspace/ideas/precursor_predictions.md",
+          "sha256": "8ff457cdee399b4944c615d96bf3015e08e065ccf7b668a66243be1ca3899a33"
+        },
+        {
+          "path": "workspace/ideas/experiment_directions.md",
+          "sha256": "5cbf76930bdc90efb3ec8c9dd9f4ea87df1752e685072c535a4096d13d97d829"
+        },
+        {
+          "path": "workspace/state/tool_calls.jsonl",
+          "sha256": "3d4b50ff00f207169924637191a69f5ae74d05bd637ccd0e8eca35455c750cfe"
+        }
+      ]
+    },
+    "figures_ready": {
+      "status": "PASS",
+      "detail": "3 图学术版式完成；每图 figspec/SVG/Draw.io/PDF 同源可编辑，研究路线图新增；lint 与实际预览无裁切、溢出、误连。",
+      "round": 2,
+      "at": "2026-09-01T17:19:23Z",
+      "inputs": [
+        {
+          "path": "workspace/notes/figure_plan.md",
+          "sha256": "d9c905a00312677711b75efc714e447f6710e4b6a25959377da77a323778137f"
+        },
+        {
+          "path": "workspace/figures/figspec/fig01_evidence_synthesis_map.json",
+          "sha256": "48ccd94c19d0a66f52137e589c35703a73cca407ca52681decba6bc0d39ad267"
+        },
+        {
+          "path": "workspace/figures/svg/fig01_evidence_synthesis_map.svg",
+          "sha256": "dff320e6a2621731194da982d7b64852fc2ad858ec5ac1310fde3db4130d8ec4"
+        },
+        {
+          "path": "workspace/figures/drawio/fig01_evidence_synthesis_map.drawio",
+          "sha256": "a50c275271c721a4aaccfeed97aa7c7c769634c6d606d7ae7dd34fc7d4842bbf"
+        },
+        {
+          "path": "workspace/figures/pdf/fig01_evidence_synthesis_map.pdf",
+          "sha256": "4f948bf70b6408dfac7d40cdd75c48c16e4d4287707a584922af9ea42a72caa5"
+        },
+        {
+          "path": "workspace/figures/figspec/fig02_route_variable_matrix.json",
+          "sha256": "1118b703039bb7550c5b681070f443e3e1ce79597267562cc1714e3bb70190cb"
+        },
+        {
+          "path": "workspace/figures/svg/fig02_route_variable_matrix.svg",
+          "sha256": "f903602cb683261a6098ef7a6c4e079c3c97bf80fbbf34644db253b7782776ba"
+        },
+        {
+          "path": "workspace/figures/drawio/fig02_route_variable_matrix.drawio",
+          "sha256": "f36c09031ad8ff563d3cdaa8c62839529093c2b81c7dbb86e1315c865e2c6672"
+        },
+        {
+          "path": "workspace/figures/pdf/fig02_route_variable_matrix.pdf",
+          "sha256": "2da625362d15f435e6c0e52371d78e4749ae5d86f64e954ccf16d94208d9c4e8"
+        },
+        {
+          "path": "workspace/figures/figspec/fig03_research_roadmap.json",
+          "sha256": "eb2da43bb043d75d458c8037f0db137afe8c603eaae7704bfd97679b059e1f92"
+        },
+        {
+          "path": "workspace/figures/svg/fig03_research_roadmap.svg",
+          "sha256": "297fbb60c8234307ff0d2d94394ee3eb5aaae00e976d4259ac1efa2519a7b34b"
+        },
+        {
+          "path": "workspace/figures/drawio/fig03_research_roadmap.drawio",
+          "sha256": "9b2957a600c07a58ab959ad12b9b40746fef7b0c5fe5f68dd188a12ad36bbd75"
+        },
+        {
+          "path": "workspace/figures/pdf/fig03_research_roadmap.pdf",
+          "sha256": "13b1cf75941426e8c721790634e6ac8118255cb230b59e2b9176edf404c60ed3"
+        }
+      ]
+    },
+    "draft_complete": {
+      "status": "PASS",
+      "detail": "学术结构重写完成：新增引言、相近体系、既有实验综合、相图/实验方向与结论；51/51 引用整合，bib_guard/tex_guard PASS；Tectonic 输出 23 页 PDF，日志零排版硬错误，关键页实际审图通过。",
+      "round": 2,
+      "at": "2026-09-01T17:19:23Z",
+      "inputs": [
+        {
+          "path": "workspace/drafts/main.tex",
+          "sha256": "e93948839db671c80a1b9866680a73f17dc0fdd9ed4d16381ce048f5c10dde84"
+        },
+        {
+          "path": "workspace/drafts/main.pdf",
+          "sha256": "8d617b4e84adb48ec36148f65a88245059b73c0e1a31161022abf13dd39fc48b"
+        },
+        {
+          "path": "workspace/drafts/sections/00_introduction.tex",
+          "sha256": "561453dd9553e8b9b0f0b134ad2f37b2958056ae664b880d3e71213852b7e8fc"
+        },
+        {
+          "path": "workspace/drafts/sections/00_review_method.tex",
+          "sha256": "8cd5d37d89f7c53f5eda400ae3fe63cad399a16bb195972c0e505aa5aa9dbc8e"
+        },
+        {
+          "path": "workspace/drafts/sections/04_prior_experimental_findings.tex",
+          "sha256": "ceba152825bc12274b7158c3b4bbde7ac33f8e2b552fe40937c82f3d2fceb634"
+        },
+        {
+          "path": "workspace/drafts/sections/08_future_directions.tex",
+          "sha256": "205366c83642afbcb91baba462f170170b6b87555c9a6ae59febb9ea28b4adc8"
+        },
+        {
+          "path": "workspace/drafts/sections/07_transferability_conclusion.tex",
+          "sha256": "e53547ea864be16098ca5cb3770d7442121ff0f7d16ac31435c73e39082642a9"
+        },
+        {
+          "path": "workspace/drafts/revision_log.md",
+          "sha256": "a1af02ec6a012b48918cd81e1c9e364b87c5cb9f1a677a507e18951f9efd975b"
+        },
+        {
+          "path": "workspace/library/references.bib",
+          "sha256": "fc04a3f4e40b4dc42f6b753fc426a536d2ccb1c3272dfecdd33ee3badeabd04e"
+        }
+      ]
+    },
+    "review_pass": {
+      "status": "PASS",
+      "detail": "round2 sequence2 three-view final adjudication: I5-I11 converged; blocker 0/major 0/minor 0; open issue 0; current audit/live bib_guard 8 files/196 calls/51 keys/51 entries/100%/36.5 per 1000 after I10 text addition; provisional same-family PASS, not cross-model publication certification",
+      "round": 2,
+      "at": "2026-08-31T20:45:53Z",
+      "receipt": "model=Codex CLI fresh ephemeral same-family;provisional=true;trace=workspace/state/review_traces/round2_2.md",
+      "inputs": [
+        {
+          "path": "workspace/drafts/main.tex",
+          "sha256": "b9c4f66a94f2a8c843c5132965d781e5ad12ce3b28ced9b0c0abaee2d41fcb76"
+        },
+        {
+          "path": "workspace/drafts/main.pdf",
+          "sha256": "7fff7e8ba7217895f9442692c003e9d1f39702743301e0047105183820690e31"
+        },
+        {
+          "path": "workspace/drafts/sections/00_review_method.tex",
+          "sha256": "a82465c9071688bf9a537ae0eb3213043c0711b597743613fc73db09f7c2c93a"
+        },
+        {
+          "path": "workspace/drafts/sections/01_phase_identity.tex",
+          "sha256": "c7a83d5a3d95a88622f51df439783812932a7f02f8d0ed14e77511f64849e27f"
+        },
+        {
+          "path": "workspace/drafts/sections/02_evidence_distance.tex",
+          "sha256": "77b6c255f159726952cd364045fcacbadcf9f0015443afa4ef2cf5864624ba8d"
+        },
+        {
+          "path": "workspace/drafts/sections/03_condition_matrix.tex",
+          "sha256": "288e33957970de720c8183b25c43389f43c78344ecbe8685c5950d0eabbeaedd"
+        },
+        {
+          "path": "workspace/drafts/sections/04_neighbor_routes.tex",
+          "sha256": "d6364537b0ae0966a1fdabd0a43a9dc95dd4ceb82a3cfd268854a30aebe9e7a4"
+        },
+        {
+          "path": "workspace/drafts/sections/05_validation_endpoints.tex",
+          "sha256": "077872b873af8af3f6980e6f5cceb96d36e219e433d93b1f844f487fdff625b6"
+        },
+        {
+          "path": "workspace/drafts/sections/06_failure_boundaries.tex",
+          "sha256": "7c7197cbbe24c829a61ab57d1b59412d33c056c95f6d62b61606968148cf1448"
+        },
+        {
+          "path": "workspace/drafts/sections/07_transferability_conclusion.tex",
+          "sha256": "c1dab8d6f316930b9c870b5826c3cede7b0e8b64057969f018b92c9add642fbd"
+        },
+        {
+          "path": "workspace/library/references.bib",
+          "sha256": "fc04a3f4e40b4dc42f6b753fc426a536d2ccb1c3272dfecdd33ee3badeabd04e"
+        },
+        {
+          "path": "workspace/figures/figspec/fig01_evidence_synthesis_map.json",
+          "sha256": "914868d16e45ce22775faec9588ef43effb5170e40e52ef02b0e37dfb8fead03"
+        },
+        {
+          "path": "workspace/figures/figspec/fig02_route_variable_matrix.json",
+          "sha256": "879c07acf61f7f1517853a0c8aba781f3c7140ddff8219fa612615a5e84cb21f"
+        },
+        {
+          "path": "workspace/notes/condition_source_trace.md",
+          "sha256": "e3ab23dac28b172ec4d6eeaab72460ede575f828a36374772f98be92e9c92c7f"
+        },
+        {
+          "path": "workspace/state/CITATION_AUDIT.md",
+          "sha256": "8a934e6df76109e249e03021b86289bbe706cd33169fd926181f7f01566bb3d4"
+        },
+        {
+          "path": "workspace/state/CITATION_AUDIT.json",
+          "sha256": "acbbff598cb2dd9e6390037c8417f05044fd1dec11729e9375357ed1df8191f6"
+        }
+      ]
+    }
+  },
+  "issues": [
+    {
+      "id": "I1",
+      "from": "goai-ref-guard",
+      "target": "writing",
+      "severity": "blocker",
+      "text": "ref_integrity 无法收敛：63/63 均因 Crossref/arXiv/OpenAlex/DBLP 网络沙箱 ConnectError 而 UNVERIFIED；禁止写作阶段引用或按已核验处理。需在权威源可达环境重跑，届时仍查无记录者删除并换真实证据。详见 workspace/state/CITATION_AUDIT.md。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "网络通道已在 danger-full-access 重跑。"
+    },
+    {
+      "id": "I2",
+      "from": "goai-ref-guard",
+      "target": "writing",
+      "severity": "blocker",
+      "text": "UNVERIFIED lookup 唯一重试后仍失败并已从 references.bib 移除 11 条：wierzbickawieczorek2011a, wierzbickawieczorek2007syntheses, michel1967structure, maksimov1970crystal, batalieva1972artificial, dias1990the, grosse1974barium, hesse1980crystal, hesse1980crystalx, goreaud1974sur, filipenko1971crystalline。候选 DOI 均解析为别文并触发 ID:id_conflict；writer 必须删除相关 cite/claim 或换用已过 ref_gate 的真实文献。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "11 条 UNVERIFIED 已按规则移除，且不在 52 条过闸库中。"
+    },
+    {
+      "id": "I3",
+      "from": "goai-ref-guard",
+      "target": "goai-orchestrator",
+      "severity": "blocker",
+      "text": "串行降级后 ref_integrity 仍不收敛：52 条中 5 条 MISMATCH。权威路由支持现有标题/作者/年份，但快速档规范记录作者缺失或污染，并存在 Greek Μ/Latin M 与 Last, First 单边归一化。不得采纳删空作者、导师/院系冒充作者等 suggested_bibtex；orchestrator 应安排修复 refcheck 归一化后重跑，或走 super_ref 深审，期间禁止 writing 放行。详见 CITATION_AUDIT.md。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "5 条 MISMATCH 已由通用双侧姓名归一化、initial-confusable folding、权威作者缺失状态区分及带来源的 closed author adjudication 解决。"
+    },
+    {
+      "id": "I4",
+      "from": "orchestrator",
+      "target": "figures",
+      "severity": "major",
+      "text": "fig01_evidence_synthesis_map 实际 SVG 渲染：路线归一化深色卡白字越界；PXRD/Rietveld 验证卡异常断行；若干边标签与节点/容器相撞。需在不改证据语义下修复 figspec 几何与手工换行，并重新视觉验收。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 1,
+      "close_note": "fig01 第三轮质量返工完成：Chrome 1800×1100 实际渲染确认路线族白字不再越界，PXRD/Rietveld 保持完整单行，输入/输出边标签进入独立走廊且不碰节点/容器；validate 0 硬错误，SVG/drawio 与 figspec 同源一致，语义与警示条未改。"
+    },
+    {
+      "id": "I5",
+      "from": "goai-reviewer",
+      "target": "writing",
+      "severity": "blocker",
+      "text": "workspace/drafts/sections/03_condition_matrix.tex:56-75,94,184-203 表2逐字段 claim-cite 失真：Gulay 2024 主文明确从 solid-state syntheses/粉体探索 phase A，B6 却标为“自熔/熔体”；B1、B5、C17 又把原文已明示的投料克数/空气与炉冷、Ba:Y:Si=x:26:16、以及 256 rpm/1–3 h/玛瑙罐球等字段写成 NA；C6 仅凭题名不能推出“自熔/熔体”。需回到各原始实验段逐单元格重建并给页/节定位，联动正文路线论述；不得以元数据或题名补路线。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 2,
+      "close_note": "已按 condition_source_trace 逐字段回核原始实验段并重建条件矩阵：B6 改固相/粉体；B1/B5/C17 补明示字段；C6 降为路线未明；NA 与比较段同步，D0 仍仅由 ababaikeri2024ba5y12zn 支撑。最终 bib_guard/tex_guard PASS，Tectonic 20 页 PDF 编译与版面复核通过。"
+    },
+    {
+      "id": "I6",
+      "from": "goai-reviewer",
+      "target": "lit_search",
+      "severity": "major",
+      "text": "workspace/notes/coverage_report.md:114-156 comprehensive 覆盖未达标：N=63<100，六个叶主题<15，综述3<8，2024-2026仅9/63，身份主题 GAPS_FOUND；此前三轮补检受网络失败影响。应在可用通道重跑有界定向检索/滚雪球并记录边际新增；若窄领域确已饱和，则正式降级覆盖档位并重算门槛，不能把 WARN 当 comprehensive 完成。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 2,
+      "close_note": "I6 bounded rerun added 0 records; four targeted marginal rounds=0,0,0,0. Public scholarly APIs were reachable in the I6 round (Semantic Scholar rate-limit recorded, OpenAlex fallback used), so coverage was formally downgraded from comprehensive to niche-balanced. N=63; recalculated niche-balanced quotas met; generic identity leaf remains GAPS_FOUND, target has only one direct paper/no independent replication, and lit_coverage remains WARN. No comprehensive completion claimed."
+    },
+    {
+      "id": "I7",
+      "from": "goai-reviewer",
+      "target": "writing",
+      "severity": "major",
+      "text": "workspace/drafts/main.tex:100-115 及全部 sections 缺少检索与纳排方法、检索日期/数据库、去重和覆盖局限披露；全文也未向读者公开 lit_coverage=WARN。内部 coverage_report 不能替代论文方法。需增加可复核 review-method/limitations，并使结论强度与最终覆盖档位一致。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 2,
+      "close_note": "新增 00_review_method.tex 并由 main.tex 引入；公开检索日期/来源/别名式/纳排去重/双向滚雪球、niche-balanced 档位、63 候选/51 ref_gate 独立 works、9/63 新近占比、D0 单篇且无独立复现及 comprehensive 未完成；摘要与结论同步降强度。最终 guards、真编译及 PDF 最小复核均通过。"
+    },
+    {
+      "id": "I8",
+      "from": "goai-reviewer",
+      "target": "taxonomy",
+      "severity": "major",
+      "text": "workspace/notes/contribution.md:1-3,33-35 与 workspace/notes/taxonomy.md:1-3 明示贡献仍待用户确认；账本 2026-08-31T14:38:05Z 仅按非交互式裸主题降级规则自动采用候选1/2/3，正文 sections/07_transferability_conclusion.tex:25 已据此定稿三项贡献。需由用户确认/修改主贡献、核心方法与实践贡献后重核 taxonomy/章节权重；在此之前不得表述为用户认可的定位。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 2,
+      "close_note": "已仅修改 contribution.md 与 taxonomy.md：将候选1/2/3的当前采用方式明确为非交互式流水线服务本次交付的工作假设，注明未经用户逐项确认、不得声称投稿定位获用户确认，且最终响应须告知用户可调整；D0单篇例外和章节权重均未改变。taxonomy_ready 已以两份 notes 为输入更新为 PASS。"
+    },
+    {
+      "id": "I9",
+      "from": "goai-reviewer",
+      "target": "ref_gate",
+      "severity": "minor",
+      "text": "workspace/library/references.bib:190-195 与 340-347 的 liu1993structures/liu1993structuresx 被 CITATION_AUDIT.json 分别记 PASS，但 canonical title/DOI 均为 10.1006/jssc.1993.1013；前者还缺 DOI/URL。正文虽声明不重复计权，参考文献与 52/52 统计仍按两个 key 膨胀。应合并为一个 key并按51个独立 works 重算引用/整合统计。",
+      "status": "closed",
+      "round_opened": 1,
+      "round_closed": 2,
+      "close_note": "Canonical Crossref/OpenAlex DOI record confirmed title and author order B. Liu -> J. Barbier. Merged duplicate key into liu1993structures with DOI/URL; 51 independent works verified 51/51 PASS; BibTeX uniqueness and bib_guard 51/51 integration PASS; active manuscript/reference list rebuilt without liu1993structuresx."
+    },
+    {
+      "id": "I10",
+      "from": "goai-reviewer",
+      "target": "writing",
+      "severity": "minor",
+      "text": "workspace/drafts/sections/03_condition_matrix.tex:33,57-62,90-95,123-127,154-158,185-190 表2逐行使用 D0/D1/N1/P1·strong/weak，但正文仅定义 D0/D1/N1/P1，未给 strong/weak 的独立判据；例如摘要级 B2 为 strong、原文实验级 C2/C17 为 weak，读者无法判断后缀表示结构距离、来源完整度还是主张置信度。建议在分级判据或表注中定义该轴，或删除未定义后缀。",
+      "status": "closed",
+      "round_opened": 2,
+      "round_closed": 2,
+      "close_note": "已在 sections/02_evidence_distance.tex 明确定义 strong/weak 为允许证据包对本综述赋予该记录主张的直接支撑强度；说明其与 D0/D1/N1/P1 迁移距离正交，且不表示全文可得性、字段完整度或字段真伪，并以 B2 strong、C2/C17 weak 解释。revision_log 已更新；bib_guard/tex_guard PASS；Tectonic 真编译 main.pdf 20 页 PASS。"
+    },
+    {
+      "id": "I11",
+      "from": "goai-reviewer",
+      "target": "ref_gate",
+      "severity": "minor",
+      "text": "workspace/state/CITATION_AUDIT.md:63-68 与 workspace/state/CITATION_AUDIT.json:i9_deduplication.citation_integration 仍记录 7 files/194 citation calls/38.9 per 1000 words；当前 fresh bib_guard 为 8 files/196 calls/36.8 per 1000 words。51/51 works、唯一 key/DOI 和作者顺序结论未受影响，但审计计数已 stale；建议按当前八个 sections 重生成 CITATION_AUDIT。",
+      "status": "closed",
+      "round_opened": 2,
+      "round_closed": 2,
+      "close_note": "已按当前8个sections与51条references重跑并同步CITATION_AUDIT.md/.json：fresh bib_guard 8 files、196 calls、51/51、100%、36.8/千词 PASS；51 works真实性/元数据/作者顺序、唯一key/DOI与canonical DOI结论保持PASS。"
+    }
+  ],
+  "next_issue_id": 12,
+  "log": [
+    {
+      "ts": "2026-08-31T11:32:22Z",
+      "round": 1,
+      "event": "advance",
+      "from": "intake",
+      "to": "scoping"
+    },
+    {
+      "ts": "2026-08-31T11:32:22Z",
+      "round": 1,
+      "stage": "scoping",
+      "agent": "orchestrator",
+      "event": "scope_draft",
+      "detail": "已写入 topic.md 与 8 个 MECE 子主题的 scope.md；目标化学式保持原样待文献核验，安全边界待用户确认"
+    },
+    {
+      "ts": "2026-08-31T11:32:22Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "scope_confirmed",
+      "status": "PENDING",
+      "detail": "等待用户确认调研范围及化学安全边界"
+    },
+    {
+      "ts": "2026-08-31T11:35:51Z",
+      "round": 1,
+      "stage": "scoping",
+      "agent": "orchestrator",
+      "event": "assumption",
+      "detail": "用户仅给出明确研究主题；采用 topic.md 中的默认读者、中文 8–12 页、无指定 venue/截止日期。仅综述已发表合成条件，不生成新的可执行实验方案，因此化学安全边界按文献证据与 EHS 提示处理，不设人工停点。"
+    },
+    {
+      "ts": "2026-08-31T11:35:51Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "scope_confirmed",
+      "status": "PASS",
+      "detail": "balanced：8 个 MECE 子主题；目标相与奠基文献不限年份，系统更新聚焦 2020–2026；排除无晶体学证据的仅组成相近体系。"
+    },
+    {
+      "ts": "2026-08-31T11:35:51Z",
+      "round": 1,
+      "event": "advance",
+      "from": "scoping",
+      "to": "lit_search"
+    },
+    {
+      "ts": "2026-08-31T11:37:53Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "parallel_run：3 路文献检索 + 1 路 style_bank 并行，汇合任务依赖四个生产者；TSV=tasks_lit_style.tsv"
+    },
+    {
+      "ts": "2026-08-31T11:38:47Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "decision",
+      "detail": "scale=comprehensive; slice=subtopics_4_5; no_public_coverage_or_bib_export"
+    },
+    {
+      "ts": "2026-08-31T11:38:48Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "decision",
+      "detail": "scale=comprehensive; slice=scope_subtopics_6_8"
+    },
+    {
+      "ts": "2026-08-31T11:39:21Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search-identity-structure",
+      "event": "decision",
+      "detail": "scale=comprehensive; slice=subtopics_1_3; coverage/export delegated to merger"
+    },
+    {
+      "ts": "2026-08-31T11:39:21Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search-identity-structure",
+      "event": "dispatch",
+      "detail": "scope=subtopics 1-3 identity notation, target structure baseline, structural-neighbor criteria and lineage; artifact=workspace/notes/search_identity_structure.md"
+    },
+    {
+      "ts": "2026-08-31T12:06:30Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "done",
+      "detail": "scope6_8 comprehensive complete; accepted evidence records=16; tool-added=10; shared_library_total=63; pdf_downloads=0; marginal_new=9,7,0; no_bib_export; no_public_coverage; artifact=workspace/notes/search_substitution_evidence.md"
+    },
+    {
+      "ts": "2026-08-31T12:08:26Z",
+      "round": 1,
+      "stage": "style_bank",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "run_id=20260831_193753_5998：style_bank 超时且 exemplar_surveys.jsonl 缺失，runner FAIL；按规程重试一次。lit_merge_coverage 因依赖失败未启动。"
+    },
+    {
+      "ts": "2026-08-31T12:09:17Z",
+      "round": 1,
+      "stage": "style_bank",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "style_bank 单次重试；lit_merge_coverage_retry 显式依赖重试通过。TSV=tasks_lit_style_retry.tsv"
+    },
+    {
+      "ts": "2026-08-31T12:24:55Z",
+      "round": 1,
+      "stage": "style_bank",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "第二次 run_id=20260831_200917_202735：style_bank_retry 超时且四个声明产物均未更新；按规程不再并行重试。"
+    },
+    {
+      "ts": "2026-08-31T12:24:55Z",
+      "round": 1,
+      "stage": "style_bank",
+      "agent": "orchestrator",
+      "event": "decision",
+      "detail": "并发连续失败后降级：保留 4 份 OA 全文与 4 张版权参照图；exemplar 元数据 0/25、cards 仅骨架，style_bank_ready 记 WARN 浅层不可直接消费；writer 必须生成 style_notes.md 补位。"
+    },
+    {
+      "ts": "2026-08-31T12:24:55Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "style_bank_ready",
+      "status": "WARN",
+      "detail": "浅层降级：4 份全文 + 4 张参照图；0/25 exemplar 元数据，写作/图形卡未完成，不可视为领域基准。"
+    },
+    {
+      "ts": "2026-08-31T12:25:19Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "并发失败后的串行降级汇合；TSV=tasks_merge_serial.tsv，jobs=1。"
+    },
+    {
+      "ts": "2026-08-31T12:26:04Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "decision",
+      "detail": "scale=comprehensive; serial fallback merge after closed parallel run 20260831_193753_5998; style_bank_ready=WARN accepted and non-blocking"
+    },
+    {
+      "ts": "2026-08-31T12:37:35Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "lit_coverage",
+      "status": "WARN",
+      "detail": "comprehensive; N=63 (<100); subtopic keyword hits=1,16,15,8,6,5,7,14 (six leaves <15; identity GAPS_FOUND); confirmed reviews=3 (<8); 2024-2026=9/63=14.29% (<30%); targeted supplemental rounds=3 with marginal additions 0,0,0; strict scope excludes weak composition-only records; reproducible queries/errors in search_log and raw coverage in coverage_report"
+    },
+    {
+      "ts": "2026-08-31T12:37:36Z",
+      "round": 1,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "done",
+      "detail": "serial fallback merge complete; library=63; supplemental_added=0; PDFs_downloaded=0; coverage=WARN; references.bib exported exactly once with 63 unique entries; artifacts validated non-empty"
+    },
+    {
+      "ts": "2026-08-31T12:38:40Z",
+      "round": 1,
+      "event": "advance",
+      "from": "lit_search",
+      "to": "ref_gate"
+    },
+    {
+      "ts": "2026-08-31T12:38:40Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "唯一导出的 63 条 references.bib 进入 ref-guard 快速档；coverage WARN 的窄领域缺口保留。"
+    },
+    {
+      "ts": "2026-08-31T12:50:22Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "FAIL",
+      "detail": "快速档首轮与终轮均 PASS 0/FIX 0/MISMATCH 0/UNVERIFIED 63；45 个标识符 lookup 0 命中，18 个无标识符四源标题检索 0 命中；四源均 ConnectError Operation not permitted，三轴均未完成，fail-closed。"
+    },
+    {
+      "ts": "2026-08-31T12:50:22Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 0/FIX 0/MISMATCH 0/UNVERIFIED 63；权威源网络不可达，ref_integrity=FAIL，blocker 已通知 writing。"
+    },
+    {
+      "ts": "2026-08-31T12:51:42Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "run_id=20260831_203905_340288：runner 产物 PASS 但 ref_integrity=FAIL；63/63 因 workspace-write 沙箱网络 Operation not permitted 未核验。按规程以 danger-full-access 网络沙箱重试一次。"
+    },
+    {
+      "ts": "2026-08-31T12:52:10Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "ref_guard 唯一重试；RUNNER_SANDBOX=danger-full-access 以恢复权威元数据源访问。"
+    },
+    {
+      "ts": "2026-08-31T13:22:39Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "collaboration 子任务接口无法建立 thread，分派未启动且无文件变更；按 goai-orchestrator 规程切换 parallel_run jobs=1 串行降级。"
+    },
+    {
+      "ts": "2026-08-31T13:23:12Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "ref_guard 串行降级：只处理 5 条 MISMATCH 并全库复核；TSV=tasks_ref_gate_serial.tsv，jobs=1，产物必须本轮更新。"
+    },
+    {
+      "ts": "2026-08-31T13:40:10Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "FAIL",
+      "detail": "全库 verify_bib_file：52 条=47 PASS/0 FIX/5 MISMATCH/0 UNVERIFIED/0 ERROR；5 条权威交叉核验显示快速档存在作者缺失、Unicode 同形、机构/导师污染及 Last, First 单边归一化，无法确定性收敛，fail-closed。"
+    },
+    {
+      "ts": "2026-08-31T13:41:05Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 47/FIX 0/MISMATCH 5/UNVERIFIED 0；全库 verify_bib_file gate=FAIL；权威交叉核验附记已落盘；I3 blocker 交 orchestrator；I1/I2 未关闭。"
+    },
+    {
+      "ts": "2026-08-31T13:44:02Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "escalation",
+      "detail": "ref_integrity 连续三次不收敛：初轮 63/63 网络 UNVERIFIED，权威源重试后 47/52 PASS，串行降级仍 5/52 MISMATCH（核验器作者规范化/角色映射噪声）；本机 super_ref 不可用。依 AGENTS.md 卡住三次升级人类。建议默认保守删除 5 条后重跑，或由用户选择安装 super_ref/授权修复核验器。流水线保持 ref_gate，禁止进入 taxonomy/writing。"
+    },
+    {
+      "ts": "2026-08-31T14:12:01Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-orchestrator",
+      "event": "error",
+      "detail": "ref_guard_finalize run_id=20260831_220642_719260 超时 exit=124；按 runner 产物验收未通过，转串行降级收尾。"
+    },
+    {
+      "ts": "2026-08-31T14:12:57Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-orchestrator",
+      "event": "decision",
+      "detail": "ref_guard_finalize 超时且产物验收失败，按规程降级为串行收尾；仅消费现有 52/52 PASS 审计，不再重复网络查询。"
+    },
+    {
+      "ts": "2026-08-31T14:16:38Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "52/52 PASS；存在性/元数据/作者名单与顺序三轴全 PASS；通用归一化回归测试 6/6 通过。"
+    },
+    {
+      "ts": "2026-08-31T14:16:53Z",
+      "round": 1,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 52/FIX 0/MISMATCH 0/UNVERIFIED 0/ERROR 0；存在性/元数据/作者名单与顺序三轴全 PASS；回归测试 6/6 通过；I1/I2/I3 已关闭。"
+    },
+    {
+      "ts": "2026-08-31T14:19:06Z",
+      "round": 1,
+      "event": "advance",
+      "from": "ref_gate",
+      "to": "taxonomy"
+    },
+    {
+      "ts": "2026-08-31T14:34:44Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "taxonomy_ready",
+      "status": "PENDING",
+      "detail": "taxonomy 已生成；contribution 待用户确认。目标相 D0 直接证据仅 1 篇，未以近邻凑数。"
+    },
+    {
+      "ts": "2026-08-31T14:34:44Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "goai-orchestrator",
+      "event": "review_request",
+      "detail": "taxonomy 产物已验收；runner process_exit=124 但两份声明产物本轮更新且非空。等待用户在贡献候选 1/2/3 或组合方案中确认。"
+    },
+    {
+      "ts": "2026-08-31T14:38:05Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "taxonomy_ready",
+      "status": "PASS",
+      "detail": "非交互式裸主题按 orchestrator 降级规则采用 contribution.md 推荐组合：候选1为主贡献、候选2为核心方法、候选3为实践贡献；贡献声明未经用户逐项确认。D0 仅1篇直接证据，明确例外且不以近邻凑数。"
+    },
+    {
+      "ts": "2026-08-31T14:38:05Z",
+      "round": 1,
+      "stage": "taxonomy",
+      "agent": "orchestrator",
+      "event": "decision",
+      "detail": "按非交互式裸主题规则自动采用贡献声明推荐组合；未经用户逐项确认，继续流水线。"
+    },
+    {
+      "ts": "2026-08-31T14:38:05Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "ideas_reviewed",
+      "status": "WARN",
+      "detail": "skipped：用户只要求已发表合成条件综述，未要求新 idea、实验方案或逆合成。"
+    },
+    {
+      "ts": "2026-08-31T14:38:05Z",
+      "round": 1,
+      "event": "advance",
+      "from": "taxonomy",
+      "to": "figures"
+    },
+    {
+      "ts": "2026-08-31T14:40:16Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "并行分派 fig01 主图、fig02 辅助图与 citation_bank；各任务独占产物，公共 figure_plan 与正文留待汇合。"
+    },
+    {
+      "ts": "2026-08-31T14:50:03Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey_writer",
+      "event": "decision",
+      "detail": "阶段零降级补位：style_bank_ready=WARN；已检查 workspace/style_bank 四份全文、现有 writing/figure cards 与四张内部范图，并生成 style_notes.md。该文件只提供写作/版式护栏，不作事实证据。GOAI_SUPERLIB 未设置且 ~/Code/super_library 不存在，按 writer skill 记录降级跳过，不阻塞阶段二。"
+    },
+    {
+      "ts": "2026-08-31T14:53:29Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey_writer",
+      "event": "decision",
+      "detail": "citation bank 默认 bank_check 留痕 FAIL：52 条/52 唯一 key；目标正文整合 47/52（>=90%）时，默认候选倍率 1.5 要求 70 条，超出已过 ref_gate 的 52 条受限引用池；2024-2026 条目仅 9/52=17.3%，默认近三年 50% 同样不可达。本轮不得补库或改 references/gate，故按 writer skill 将复跑参数显式适配为 --target-cites 47 --min-ratio 1.10（最低 51 条）--min-recent 0.17，并保留默认与适配两次摘要。"
+    },
+    {
+      "ts": "2026-08-31T14:55:11Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey_writer",
+      "event": "complete",
+      "detail": "仅完成 survey-writer 阶段零与阶段二：style_notes.md 已基于 style_bank_ready=WARN 下的 4 份本地全文、现有写作/图形卡及范图补位，并明确只作写作/版式护栏、非事实证据；citation_bank.md 以指定四文件为唯一证据边界，52 行覆盖 52/52 已过闸 key（strong 14、weak 38），每 key 至少一处未来落点，D0 仅 ababaikeri2024ba5y12zn，近邻均按 D1/N1/P1/X 降权。默认 bank_check(target=47, ratio=1.5, recent=0.5) 留痕 FAIL；decision 后适配 target=47, ratio=1.10, recent=0.17 复跑 PASS。未生成/修改 blueprint、章节正文或 main.tex，未修改 references.bib 或任何 gate。"
+    },
+    {
+      "ts": "2026-08-31T15:01:04Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "goai-figure-studio",
+      "event": "done",
+      "detail": "fig02_route_variable_matrix 辅助图完成：Phase A 合同/来源锚点/自检/caption 已写 fig02.md；figspec→SVG+drawio 同源直渲，3 groups/11 nodes/9 edges，validate+lint 零错误零警告，四项声明产物均非空；draw.io Desktop CLI 缺失，按 fallback 用 SVG 光栅视觉审图并直接核对 drawio XML；未设置 figures_ready gate。"
+    },
+    {
+      "ts": "2026-08-31T15:11:18Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "fig01_evidence_map 首次并行任务超时（process_exit=124）：4+2 候选与审计片段已更新，但 figspec/svg/drawio 未落盘，按产物验收判 FAIL_TIMEOUT。"
+    },
+    {
+      "ts": "2026-08-31T15:11:18Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "重试1/1：仅执行 fig01 Phase C，复用 closed run 20260831_224016_848192 的候选/reference/审计记录。"
+    },
+    {
+      "ts": "2026-08-31T15:32:15Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "goai-figure-studio",
+      "event": "done",
+      "detail": "fig01 Phase C完成：figspec校验0结构/0排版硬错误；同源SVG+drawio合法非空；draw.io导出预览2轮收敛；D0仅1篇直接证据，D1/N1/P1逐级降权，X独立排除旁路；caption与审计记录已写入figure_parts/fig01.md；未设置figures_ready。"
+    },
+    {
+      "ts": "2026-08-31T15:34:17Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "figures_ready",
+      "status": "FAIL",
+      "detail": "fig02 已通过；fig01 三件套与4+2候选齐，但实际渲染发现文字越界/异常断行/连线碰撞 major issue，待质量返工。"
+    },
+    {
+      "ts": "2026-08-31T15:34:48Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "I4 质量返工：仅修 fig01 字体越界、异常断行与边标签碰撞；不重跑候选、不改证据语义。"
+    },
+    {
+      "ts": "2026-08-31T15:47:13Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "figure-studio",
+      "event": "quality_rework",
+      "detail": "fig01 I4 第三轮：仅修改 figspec 几何/手工换行/waypoint；同源重渲染 SVG+drawio，Chrome 1800×1100 对照三项缺陷均消失；记录已追加 fig01.md；未设置 figures_ready gate。"
+    },
+    {
+      "ts": "2026-08-31T15:49:54Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "图纸汇合与 blueprint 拓扑分派：blueprint 显式依赖 figure_merge，I4 已关闭。"
+    },
+    {
+      "ts": "2026-08-31T15:58:37Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "figures_ready",
+      "status": "PASS",
+      "detail": "2 图三件套齐全且通过汇合验收：fig01/fig02 均为 figspec+SVG+drawio 同源、非空、JSON/XML 合法；主图 fig01 完成 c01-c04 + f01-f02 的 4+2 候选审计，reference=f02，审计路径为 workspace/notes/figure_plan.md 的 Phase B/C 与汇合验收记录；I4 的路线白字越界、PXRD/Rietveld 异常断行及边标碰撞已由 fig01 第3轮同源重建修复，并经 Chrome 1800x1100 实际 SVG 复核，I4 保持 closed。"
+    },
+    {
+      "ts": "2026-08-31T15:59:04Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "goai-figure-studio",
+      "event": "done",
+      "detail": "图纸汇合验收完成：figure_plan.md 已合并 fig01/fig02 片段；两图 figspec/SVG/drawio 同源合法非空；fig01 4+2 candidates/reference 齐，D0 唯一直接证据与近邻条件不等于目标相已验证配方警示保留；I4 实际渲染修复通过；figures_ready=PASS。"
+    },
+    {
+      "ts": "2026-08-31T16:00:37Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "figure_merge process_exit=0 但 runner exit=3：TSV 将只读既有 SVG/drawio 误声明为本轮须更新；blueprint 按依赖被正确 blocked。内容 gate 已 PASS，修正产物合同后重试。"
+    },
+    {
+      "ts": "2026-08-31T16:04:44Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "figures_ready",
+      "status": "PASS",
+      "detail": "2 图三件套齐全且通过汇合验收：fig01/fig02 均为 figspec+SVG+drawio 同源、非空、JSON/XML 合法；主图 fig01 完成 c01-c04 + f01-f02 的 4+2 候选审计，reference=f02，审计路径为 workspace/notes/figure_plan.md 的 Phase B/C 与汇合验收记录；I4 的路线白字越界、PXRD/Rietveld 异常断行及边标碰撞已由 fig01 第3轮同源重建修复，并经 Chrome 1800x1100 实际 SVG 复核，I4 保持 closed。"
+    },
+    {
+      "ts": "2026-08-31T16:04:44Z",
+      "round": 1,
+      "stage": "figures",
+      "agent": "goai-figure-studio",
+      "event": "done",
+      "detail": "唯一重试完成：更正 runner 产物合同，figure_plan.md 本轮已追加复核记录；四个既有 SVG/drawio 按 =path 只读验收且未改动；open blocker/major=0、I4 closed、两图三件套与 fig01 4+2 candidates/reference 复核通过；figures_ready 以原完整 10 项 inputs 重设 PASS。"
+    },
+    {
+      "ts": "2026-08-31T16:08:42Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "goai-survey-writer",
+      "event": "decision",
+      "detail": "阶段三蓝图采用 style_notes.md 的材料综述护栏；GOAI_SUPERLIB 未设置且 ~/Code/super_library 不存在，按 skill 降级跳过标题 lint。用户限定仅产出 blueprint.md，不写任何 tex/main.tex，也不设置 draft_complete。"
+    },
+    {
+      "ts": "2026-08-31T16:29:30Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "goai-survey-writer",
+      "event": "done",
+      "detail": "阶段三章节蓝图完成：workspace/drafts/blueprint.md 非空；7 个互斥 section ownership、8–12 页/8550 汉字预算、逐节 reader question/taxonomy/contribution/bank keys/图表/字数/完稿检查齐全；表2含 D0/D1/N1-P1 数值分区及 NA/禁止类比补值规则。未创建任何 tex/main.tex，未设置 draft_complete。"
+    },
+    {
+      "ts": "2026-08-31T16:31:33Z",
+      "round": 1,
+      "event": "advance",
+      "from": "figures",
+      "to": "writing"
+    },
+    {
+      "ts": "2026-08-31T16:31:33Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "按 blueprint ownership 三路并行写作：01-02、03-04、05-07；公共 main.tex 留待单一汇合者。"
+    },
+    {
+      "ts": "2026-08-31T16:33:00Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey_writer_03_04",
+      "event": "decision",
+      "detail": "阶段零探测未发现 GOAI_SUPERLIB 或 <HOME> skill 降级跳过 super_library bundle，材料化学术语卡本不适用。"
+    },
+    {
+      "ts": "2026-08-31T16:34:59Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey-writer-05-07",
+      "event": "decision",
+      "detail": "阶段四 05–07 写作：按 skill 探测 GOAI_SUPERLIB 与 ~/Code/super_library 均不可用，降级跳过有界语料包；材料化学不使用其领域术语卡。仅消费 blueprint/taxonomy/contribution/citation_bank/style_notes/figure_plan。"
+    },
+    {
+      "ts": "2026-08-31T16:44:13Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey-writer",
+      "event": "done",
+      "detail": "阶段四逐节写作完成：仅更新 workspace/drafts/sections/01_phase_identity.tex 与 02_evidence_distance.tex；01 覆盖蓝图 7/7 key，D0 精确目标仅由 ababaikeri2024ba5y12zn 支撑；02 覆盖蓝图 20/20 key，定义 D0/D1/N1/P1/X、单向降权并预留 fig:evidence-map PDF 路径；两文件非空，bib_guard 引用密度与未定义 key 检查通过。"
+    },
+    {
+      "ts": "2026-08-31T16:47:58Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey-writer-05-07",
+      "event": "done",
+      "detail": "阶段四逐节写作完成：仅写入 05_validation_endpoints.tex、06_failure_boundaries.tex、07_transferability_conclusion.tex；三文件非空，逐文件 bib_guard PASS，引用均来自 citation_bank/已过闸 references.bib。05 区分四类验证终点，06 覆盖 G1–G4 与 EHS 且不提新实验，07 按 D0→D1→N1/P1→X 收束并各一次回指图1、图2、表2；核心句已落盘。"
+    },
+    {
+      "ts": "2026-08-31T16:55:15Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "survey_writer_03_04",
+      "event": "done",
+      "detail": "阶段四完成 03_condition_matrix.tex 与 04_neighbor_routes.tex：03 含指定 fig:route-matrix 路径及 A/D0、B/D1、C/N1-P1 分区的 tab:synthesis-conditions；D0 仅 ababaikeri2024ba5y12zn，缺值均 NA，未跨文献补值；04 完成近邻跨路线综合、不重复数值，03/04 ownership key 全覆盖并明确 liu1993structuresx 重复不增权。bib_guard 全 sections 52/52、整合率100%、密度40.2/千词 PASS；tex_guard 仅报 fig01/fig02 指定 PDF 尚未落盘（图文件不在本任务写入权限），未报标签/环境结构问题。两项声明产物本轮更新且非空。"
+    },
+    {
+      "ts": "2026-08-31T16:59:58Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "单一汇合者组装 main.tex、渲染两图 PDF、使用官方 Tectonic 编译、运行 bib_guard/tex_guard 并精修。"
+    },
+    {
+      "ts": "2026-08-31T17:31:16Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "assemble_draft run 20260901_005958_1409371 超时 exit=124：main.tex/figure PDF/XDV/bbl 已有，bib_guard与tex_guard初检PASS，但 main.pdf 缺失，按产物验收失败。"
+    },
+    {
+      "ts": "2026-08-31T17:31:16Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "重试1/1：复用 Tectonic bundle/XDV/bbl，只诊断 PDF 后端、完成正式编译与终检。"
+    },
+    {
+      "ts": "2026-08-31T18:02:40Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "draft_complete",
+      "status": "PASS",
+      "detail": "runner WARN_ARTIFACT_PASS_AFTER_TIMEOUT：Tectonic 真正由 main.tex 编译 19 页 PDF；bib_guard 52/52、整合率100%、引用密度39.0/千词 PASS；tex_guard 20 文件/11 labels/6 refs PASS；19页联络表无空白、图表无裁切。后端超时仅发生在终检收尾，关键产物本轮更新且非空。"
+    },
+    {
+      "ts": "2026-08-31T18:02:40Z",
+      "round": 1,
+      "stage": "writing",
+      "agent": "orchestrator",
+      "event": "done",
+      "detail": "draft_complete 补记：assemble retry process_exit=124 但 runner 产物验收 WARN_PASS；主编独立复跑 bib_guard/tex_guard 与 PDF 联络表抽查均通过。"
+    },
+    {
+      "ts": "2026-08-31T18:02:40Z",
+      "round": 1,
+      "event": "advance",
+      "from": "writing",
+      "to": "review"
+    },
+    {
+      "ts": "2026-08-31T18:03:20Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "orchestrator",
+      "event": "dispatch",
+      "detail": "严格审稿 round1：独立模型优先，全量 claim-cite 与条件表数值审计；审稿人只开 issue、不改稿。"
+    },
+    {
+      "ts": "2026-08-31T18:33:58Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "round1 run 20260901_020320_1674257 timed out at 1800s; declared files were non-empty but report and trace remained explicitly in-progress, so artifact-only WARN is rejected as substantive review evidence; retry required"
+    },
+    {
+      "ts": "2026-08-31T18:55:05Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "round1 retry run 20260901_023439_1789074 timed out at 1200s; it produced model metadata and adjudication prompt but no final verdict/gate/issues; second stuck attempt, one final bounded adjudication attempt remains before human escalation"
+    },
+    {
+      "ts": "2026-08-31T19:02:50Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "review_pass",
+      "status": "FAIL",
+      "detail": "round1 third bounded adjudication: blocker 1/major 3/minor 1; provisional=true; same-family fresh ephemeral; table-2 claim-cite distortion blocks release"
+    },
+    {
+      "ts": "2026-08-31T19:02:50Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "goai-reviewer",
+      "event": "done",
+      "detail": "blocker 1/major 3/minor 1"
+    },
+    {
+      "ts": "2026-08-31T19:03:22Z",
+      "round": 1,
+      "event": "gate",
+      "gate": "review_pass",
+      "status": "FAIL",
+      "detail": "round1 third bounded adjudication: blocker 1/major 3/minor 1; provisional=true; same-family fresh ephemeral; table-2 claim-cite distortion blocks release"
+    },
+    {
+      "ts": "2026-08-31T19:03:22Z",
+      "round": 1,
+      "stage": "review",
+      "agent": "goai-reviewer",
+      "event": "done",
+      "detail": "blocker 1/major 3/minor 1; input fingerprints complete"
+    },
+    {
+      "ts": "2026-08-31T19:04:31Z",
+      "round": 2,
+      "event": "next_round"
+    },
+    {
+      "ts": "2026-08-31T19:08:33Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "taxonomy_ready",
+      "status": "PASS",
+      "detail": "非交互式裸主题按 orchestrator 自动推进规则采用候选1为主贡献、候选2为核心方法贡献、候选3为实践贡献；该组合仅为服务本次交付的工作假设，未经用户逐项确认，不代表投稿定位获用户确认；最终响应须显式告知用户可调整。D0 仍仅1篇，章节权重不变。"
+    },
+    {
+      "ts": "2026-08-31T19:08:48Z",
+      "round": 2,
+      "stage": "taxonomy",
+      "agent": "goai-survey-writer",
+      "event": "done",
+      "detail": "reviewer issue I8 resolved: contribution/taxonomy now state candidate 1/2/3 are auto-adopted working assumptions for this delivery, not user-confirmed submission positioning; user-adjustability required in final response; D0=1 and chapter weights unchanged."
+    },
+    {
+      "ts": "2026-08-31T19:19:06Z",
+      "round": 2,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "decision",
+      "detail": "scale=niche-balanced; formal downgrade from comprehensive after bounded targeted marginal additions 0,0,0,0; strict crystallographic scope retained"
+    },
+    {
+      "ts": "2026-08-31T19:19:06Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "lit_coverage",
+      "status": "WARN",
+      "detail": "niche-balanced formal downgrade; N=63; hits=1,16,15,8,6,5,7,14; reviews=3; 2024-2026=9/63=14.29%; niche-balanced recalculated quotas met; generic identity leaf remains GAPS_FOUND; target has one direct paper and no independent replication; comprehensive thresholds NOT met or claimed; four targeted rounds added 0,0,0,0"
+    },
+    {
+      "ts": "2026-08-31T19:20:07Z",
+      "round": 2,
+      "stage": "lit_search",
+      "agent": "goai-lit-search",
+      "event": "done",
+      "detail": "library=63; added=0; downloads=0; scale=niche-balanced; issue=I6 closed; lit_coverage=WARN; comprehensive not completed"
+    },
+    {
+      "ts": "2026-08-31T19:33:30Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "51/51 independent works PASS; existence/metadata/authors-order all PASS; liu1993structures canonical DOI 10.1006/jssc.1993.1013 retained, liu1993structuresx merged; BibTeX unique keys/DOIs PASS; bib_guard 51/51 integration 100%, 194 citation calls, density 38.9/千词; author regression 6/6 PASS"
+    },
+    {
+      "ts": "2026-08-31T19:33:46Z",
+      "round": 2,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "I9 closed: PASS 51/FIX 0/MISMATCH 0/UNVERIFIED 0/ERROR 0; existence, metadata, authors/order all 51 PASS; liu1993structuresx merged into canonical liu1993structures (DOI 10.1006/jssc.1993.1013); BibTeX unique keys/DOIs PASS; bib_guard 51/51 integration 100% (194 calls, 38.9/千词); author-order regression 6/6 PASS; active PDF rebuilt to 19 pages with one Liu-Barbier reference."
+    },
+    {
+      "ts": "2026-08-31T19:36:32Z",
+      "round": 2,
+      "stage": "ref_gate",
+      "agent": "orchestrator",
+      "event": "done",
+      "detail": "run 20260901_032104_1954456 process timed out after substantive completion; independent bib_guard PASS, 51 unique entries, duplicate key removed, ref_integrity=51/51 and I9 closed; timeout accepted as terminal-only"
+    },
+    {
+      "ts": "2026-08-31T20:00:52Z",
+      "round": 2,
+      "stage": "writing",
+      "agent": "survey-writer",
+      "event": "decision",
+      "detail": "super_library 未发现（GOAI_SUPERLIB 与 ~/Code/super_library 均不存在）；按 survey-writer skill 降级跳过 bundle/wording lint，不把域外语料当证据。"
+    },
+    {
+      "ts": "2026-08-31T20:06:05Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "draft_complete",
+      "status": "PASS",
+      "detail": "I5/I7 返工完成：五条条件记录有 DOI/key+页节+支持/不支持字段 trace；B6/B1/B5/C17/C6 与 NA/比较段同步；review method 公开 2026-08-31~2026-09-01 检索、niche-balanced 及覆盖局限。bib_guard 51/51、100%、36.8/千词 PASS；tex_guard 21 files/12 labels/6 refs PASS；Tectonic 0.17.0 真编译 20 页 PDF，逐页非空且抽检无裁切/重叠。"
+    },
+    {
+      "ts": "2026-08-31T20:06:13Z",
+      "round": 2,
+      "stage": "writing",
+      "agent": "survey-writer",
+      "event": "done",
+      "detail": "仅处理 reviewer I5/I7：condition trace、条件矩阵、review method、main/摘要/结论和 revision log 已更新；BibTeX/taxonomy/图未改。I5/I7 closed；draft_complete PASS；bib_guard/tex_guard/Tectonic 20页PDF/QC 全通过。"
+    },
+    {
+      "ts": "2026-08-31T20:29:08Z",
+      "round": 2,
+      "stage": "review",
+      "agent": "orchestrator",
+      "event": "error",
+      "detail": "round2 terminal review run 20260901_040838_2140274 timed out at 1200s after complete artifact/evidence audit; report remained working, but trace complete through three audit phases and opened minor I10/I11; no blocker/major issued; route minors before bounded adjudication retry"
+    },
+    {
+      "ts": "2026-08-31T20:32:49Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "51/51 independent works PASS; existence/metadata/authors-order all PASS; liu1993structures canonical DOI 10.1006/jssc.1993.1013 retained, liu1993structuresx merged; BibTeX unique keys/DOIs PASS; fresh bib_guard 8 files, 196 citation calls, 51/51 integration 100%, density 36.8/千词; author regression 6/6 PASS"
+    },
+    {
+      "ts": "2026-08-31T20:32:49Z",
+      "round": 2,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 51/FIX 0/MISMATCH 0/UNVERIFIED 0; I11 closed; fresh bib_guard 8 files/196 calls/51 of 51/100%/36.8 per 1000 words"
+    },
+    {
+      "ts": "2026-08-31T20:33:43Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "51/51 independent works PASS; existence/metadata/authors-order all PASS; liu1993structures canonical DOI 10.1006/jssc.1993.1013 retained, liu1993structuresx merged; BibTeX unique keys/DOIs PASS; fresh bib_guard 8 files, 196 citation calls, 51/51 integration 100%, density 36.8/千词; author regression 6/6 PASS"
+    },
+    {
+      "ts": "2026-08-31T20:34:47Z",
+      "round": 2,
+      "stage": "review",
+      "agent": "goai-survey-writer",
+      "event": "done",
+      "detail": "终审 minor I10 已关闭：strong/weak 定义补入 02_evidence_distance.tex，明确与 D0/D1/N1/P1 正交且非全文/字段完整度/真伪标签；B2 strong 与 C2/C17 weak 已解释。revision_log 已更新；bib_guard 51/51、100%、36.5/千词 PASS，tex_guard PASS；Tectonic exit 0 真编译 20 页 main.pdf。未修改 BibTeX/figure/taxonomy/CITATION_AUDIT，I11 保持 ref_gate open。"
+    },
+    {
+      "ts": "2026-08-31T20:35:15Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "ref_integrity",
+      "status": "PASS",
+      "detail": "51/51 independent works PASS; existence/metadata/authors-order all PASS; liu1993structures canonical DOI 10.1006/jssc.1993.1013 retained, liu1993structuresx merged; BibTeX unique keys/DOIs PASS; fresh bib_guard 8 files, 196 citation calls, 51/51 integration 100%, density 36.5/千词; author regression 6/6 PASS"
+    },
+    {
+      "ts": "2026-08-31T20:35:15Z",
+      "round": 2,
+      "stage": "ref_gate",
+      "agent": "goai-ref-guard",
+      "event": "done",
+      "detail": "PASS 51/FIX 0/MISMATCH 0/UNVERIFIED 0; I11 closed; final fresh bib_guard 8 files/196 calls/51 of 51/100%/36.5 per 1000 words (supersedes earlier pre-concurrent 36.8 snapshot)"
+    },
+    {
+      "ts": "2026-08-31T20:45:53Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "review_pass",
+      "status": "PASS",
+      "detail": "round2 sequence2 three-view final adjudication: I5-I11 converged; blocker 0/major 0/minor 0; open issue 0; current audit/live bib_guard 8 files/196 calls/51 keys/51 entries/100%/36.5 per 1000 after I10 text addition; provisional same-family PASS, not cross-model publication certification"
+    },
+    {
+      "ts": "2026-08-31T20:46:09Z",
+      "round": 2,
+      "stage": "review",
+      "agent": "goai-reviewer",
+      "event": "done",
+      "detail": "round2_2 final adjudication: blocker 0/major 0/minor 0; I5-I11 converged; review_pass=PASS provisional same-family; trace=workspace/state/review_traces/round2_2.md"
+    },
+    {
+      "ts": "2026-08-31T20:46:53Z",
+      "round": 2,
+      "event": "gate_stale",
+      "gate": "scope_confirmed"
+    },
+    {
+      "ts": "2026-08-31T20:46:53Z",
+      "round": 2,
+      "event": "gate_stale",
+      "gate": "figures_ready"
+    },
+    {
+      "ts": "2026-08-31T20:46:53Z",
+      "round": 2,
+      "event": "gate_stale",
+      "gate": "draft_complete"
+    },
+    {
+      "ts": "2026-08-31T20:48:51Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "scope_confirmed",
+      "status": "PASS",
+      "detail": "round2 revalidation after I6: 8 MECE leaves and inclusion/EHS boundaries unchanged; formal coverage profile is niche-balanced, comprehensive explicitly not claimed; bare-topic auto-proceed scope remains a disclosed working scope, not user-confirmed publication positioning"
+    },
+    {
+      "ts": "2026-08-31T20:48:51Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "figures_ready",
+      "status": "PASS",
+      "detail": "round2 stale refresh: taxonomy change only clarified auto-adopted contribution status; figure semantics unchanged. Both figspec JSON parse, SVG/drawio XML parse, all files nonempty; prior 4+2 audit and final 20-page visual QC show no clipping/overlap"
+    },
+    {
+      "ts": "2026-08-31T20:48:51Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "draft_complete",
+      "status": "PASS",
+      "detail": "round2 final refresh after I10/I11: 8 sections, 51 independent works, bib_guard 196 calls/51 keys/100%/36.5 per 1000 PASS; tex_guard 21 files/12 labels/6 refs PASS; Tectonic PDF 20 pages, final contact-sheet visual QC no blank/clipped/overlapped pages; source trace and current citation audit aligned"
+    },
+    {
+      "ts": "2026-08-31T20:49:05Z",
+      "round": 2,
+      "event": "advance",
+      "from": "review",
+      "to": "final"
+    },
+    {
+      "ts": "2026-08-31T20:49:05Z",
+      "round": 2,
+      "stage": "final",
+      "agent": "orchestrator",
+      "event": "done",
+      "detail": "full survey pipeline delivered: 20-page TeX/PDF, 51 verified independent works, 2 figspec/SVG/drawio figures, condition source trace, two adversarial review rounds; final review PASS provisional same-family with receipt round2_2; all issues closed"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "stage": "ideas",
+      "agent": "goai-idea-forge",
+      "event": "done",
+      "detail": "真实 MCP 两步预测完成：Zn/Mg/Co 首选前驱体分别为共同 BaCO3/Y2O3/SiO2 加 ZnO/MgO/Co3O4；所有路线 chemical_route_verified=false，低概率冗余/含氟/异常标签已降为模型诊断。"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "ideas_reviewed",
+      "status": "WARN",
+      "detail": "模型输出已按文献证据、电荷平衡与 EHS 做内部审计，并转化为局部相图/占位/固相-长晶/类比四类可检验方案；未作化学路线验证或独立材料专家复核。"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "stage": "figures",
+      "agent": "goai-figure-studio",
+      "event": "rebuilt",
+      "detail": "三图均先生成视觉参照，再以 figspec 重建；白底深蓝灰+单赭色，无渐变/阴影；3 套 figspec/SVG/Draw.io/PDF 完成并实际预览。"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "figures_ready",
+      "status": "PASS",
+      "detail": "3 图学术版式完成；每图 figspec/SVG/Draw.io/PDF 同源可编辑，研究路线图新增；lint 与实际预览无裁切、溢出、误连。"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "event": "gate",
+      "gate": "draft_complete",
+      "status": "PASS",
+      "detail": "学术结构重写完成：新增引言、相近体系、既有实验综合、相图/实验方向与结论；51/51 引用整合，bib_guard/tex_guard PASS；Tectonic 输出 23 页 PDF，日志零排版硬错误，关键页实际审图通过。"
+    },
+    {
+      "ts": "2026-09-01T17:19:23Z",
+      "round": 2,
+      "stage": "final",
+      "agent": "orchestrator",
+      "event": "revised",
+      "detail": "用户 1-8 项意见全部落稿；最终 PDF 23 页，三张学术图，MCP 前驱体和相图实验方向均有审计边界。"
+    },
+    {
+      "ts": "2026-09-02T05:28:36Z",
+      "round": 2,
+      "stage": "final",
+      "agent": "survey-writer",
+      "event": "decision",
+      "detail": "完成中文学术语言独立返工：仅修改sections/*.tex与revision_log.md；保留全部可核验事实、数值、限制和引用，补充未来方向的模型预测待实验验证标注；academic_language_guard、bib_guard（整合率100%，引用密度41.3/千词）与tex_guard均PASS。未设置任何gate。"
+    },
+    {
+      "ts": "2026-09-02T05:29:23Z",
+      "round": 2,
+      "stage": "final",
+      "agent": "survey-writer",
+      "event": "decision",
+      "detail": "终检后修正08_future_directions.tex数学标点空格并复跑三项检查，academic_language_guard、bib_guard、tex_guard均PASS；未设置gate。"
+    },
+    {
+      "ts": "2026-09-02T05:33:08Z",
+      "round": 2,
+      "stage": "figures",
+      "agent": "figure-studio",
+      "event": "rework",
+      "detail": "2026-09-02 academic_style_reference-driven rebuild: fig01/fig02/fig03 figspec rewritten; SVG, editable Draw.io, PNG and single-page PDF regenerated from same fact sources; Phase A contracts and measurement/audit records updated; lint/validate 0 errors and 0 warnings; academic_language_guard PASS; figures_ready gate intentionally not changed."
+    },
+    {
+      "ts": "2026-09-02T05:50:55Z",
+      "round": 2,
+      "stage": "final",
+      "agent": "survey-writer",
+      "event": "done",
+      "detail": "阶段五组装与精修完成：使用指定 Tectonic 实际编译 23 页 PDF；三张最新 PDF 图已嵌入并完成首页、图页、表格页和参考文献页抽查；academic_language_guard、bib_guard（整合率 100%，引用密度 41.3/千词）与 tex_guard 均 PASS；仅做断行和来源显示层排版修复，未设置 gate。"
+    }
+  ]
+}

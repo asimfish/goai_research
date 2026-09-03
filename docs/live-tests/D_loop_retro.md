@@ -52,7 +52,7 @@ mock 后端按 `server/core/retro.py` 的约定实现：`POST {target_smiles, ma
 | 7 | 真实 HTTP 往返、响应解析 | PASS | `route_id=mock-askcos-1`、`engine=mock-askcos/1.0`、steps 结构完整 |
 | 8 | `max_depth` 透传并被后端遵守 | PASS | `max_depth=3` → 3 步；`max_depth=2` → 2 步 |
 | 9 | 请求体符合文档约定 | PASS | `{"target_smiles":"CC(=O)Oc1ccccc1C(=O)O","max_depth":2}` |
-| 10 | **API key 透传** | PASS | 8/8 请求带 `Authorization: Bearer live-test-key-abc123`；`evidence/mock_requests.jsonl` |
+| 10 | **API key 透传** | PASS | 8/8 请求带 `Authorization: Bearer <TEST_API_KEY>`；`evidence/mock_requests.jsonl` |
 | 11 | 未设 key 时不发 Authorization 头 | PASS | mock 记录 `authorization: null`，后端 401 被结构化返回 |
 | 12 | `Content-Type: application/json` | PASS | mock 记录全部为 `application/json` |
 | 13 | 后端 `verified=true` 透传到实验方案 | PASS | `plan.provider_verified=true` |

@@ -23,8 +23,8 @@ Environment (private side only; nothing from it is written into the package)::
 Usage::
 
     .venv/bin/python tools/build_cited_corpus.py \
-        --bib submission/goai_final/report/references.bib \
-        --out submission/goai_final/evidence/corpus_release \
+        --bib submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/references.bib \
+        --out submission/02_研究数据与证据包/corpus_release \
         --license "review-only; publisher copyright retained"
 """
 from __future__ import annotations

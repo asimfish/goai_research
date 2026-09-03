@@ -1,5 +1,0 @@
-Reading additional input from stdin...
-{"type":"thread.started","thread_id":"01a04d05-4106-7ea2-a36b-fe1bb9ee000a"}
-{"type":"turn.started"}
-{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"我会严格按 `goai-lit-search` 的职责边界执行：先读取技能说明与 topic/scope，并检查账本状态；随后真实调用文献检索 MCP，最后仅写指定检索笔记与 loopctl 日志，不碰 coverage gate 或 BibTeX 导出。"}}
-{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"技能与范围已确认：这是 standard 诊断切片，限定 2007–2026，重点 2020–2026。账本状态命令因当前工作区为只读而无法创建 `ledger.json.lock`，我会把这项真实环境失败记录进指定笔记；现在继续调用 `goai-litsearch` 的本地语料与多源检索接口。"}}

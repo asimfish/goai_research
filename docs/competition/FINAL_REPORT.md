@@ -1,16 +1,16 @@
-# SAGE-Mat（GoAI Research）：面向无机材料合成调研与合成规划的证据约束多智能体系统
+# SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能体
 
-> 复赛报告（AI for Research 赛道 · 算法赛 · 材料方向），依据官方初赛模板六章结构加强；提交仓库 https://github.com/asimfish/goai_research ，评审入口 docs/competition/SUBMISSION.md。
+> 复赛报告（AI for Research 赛道 · 算法赛 · 材料科学），第13队 · 科学无极（TeamNo.13 · MaterialsScience）；依据官方初赛模板六章结构加强；提交仓库 https://github.com/asimfish/goai_research ，评审入口 docs/competition/SUBMISSION.md。
 
 ## 一、项目概述
 
 ### 1.1 项目名称
 
-SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环智能体（开源实现名 GoAI Research）。
+SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能体（SAGE-Mat: Evidence-Constrained Self-Cyclic Agent for Inorganic Material Discovery & Synthesis Planning；开源实现名 GoAI Research）。
 
 ### 1.2 参赛方向
 
-方向三"材料科学文献驱动的科学发现智能体"，进阶路线 C"合成路线与工艺设计"。
+方向三"材料科学文献驱动的科学发现智能体"（材料科学 / MaterialsScience），进阶路线 C"合成路线与工艺设计"。
 
 ### 1.3 方案概述
 
@@ -86,7 +86,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 4.2 案例 A：Ba5Y12Zn[O(SiO4)]8 合成条件调研
 
-![正式报告研究路线图](submission/goai_final/report/figures/png/fig03_research_roadmap.png){0.95}
+![正式报告研究路线图](submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/png/fig03_research_roadmap.png){0.95}
 
 图 2｜正式报告的研究路线图（第三轮学术化重绘）：从 Ba–Y–Si–O 近邻的组成空间与局部候选区，经候选晶相与两条合成路径（固相成相、高温溶液长晶），到粉末衍射、单晶结构与实际化学计量的互补表征反馈。
 
@@ -120,7 +120,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 4.5 系统级指标
 
-56 项离线单元测试（BibTeX 往返、作者比对、figspec 校验与排版 lint、SVG↔draw.io 往返、本地全文库检索与受限读取、账本并发 12 写入者零丢失、`check-done` 语义与回执校验、bib/tex/术语闸门）全部通过；实测套件（真实五源检索、真实 draw.io 导出、完整 mini 综述回环）记录于 `docs/live-tests/`。
+离线单元测试（BibTeX 往返、作者比对、figspec 校验与排版 lint、SVG↔draw.io 往返、本地全文库检索与受限读取、账本并发 12 写入者零丢失、`check-done` 语义与回执校验、bib/tex/术语闸门、提交轨迹脱敏与 JSONL 规范化）全部通过，实际测试数量由 `pytest` 收据给出；实测套件（真实五源检索、真实 draw.io 导出、完整 mini 综述回环）记录于 `docs/live-tests/`。
 
 ### 4.6 科学意义解释
 
@@ -130,7 +130,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 5.1 复现方式
 
-`bash install.sh --retro` 完成安装；`bash scripts/smoke_test.sh --with-retro` 在干净环境无网络、无 LLM 条件下 1–2 分钟内验证环境、4 个 MCP server、56 项测试、公开知识库、结论—证据链与图纸渲染；`tools/retro_dry_run.py` 在 CPU 上加载模型并完成预测；`bash scripts/reproduce_core.sh` 用同一主题、同一模型与推理强度重新运行整条流水线。因 LLM 不可逐字复现，核心流程的复现判据是账本 `check-done` 退出 0、`CITATION_AUDIT` 全部 PASS、`bib_guard` 整合率 ≥ 90%，并产出 PDF、BibTeX、图源与逐子任务 JSONL 轨迹。报告中每个主要结论、图与指标都可沿"代码版本 → 配置 → 数据 → 日志/轨迹 → 结果文件"追溯（SUBMISSION.md §6 给出完整示例）。
+`bash install.sh --retro` 完成锁定安装；`bash scripts/smoke_test.sh --with-retro` 在干净环境无网络、无 LLM 条件下 1–2 分钟内验证环境、4 个 MCP server、全部离线测试、公开知识库、结论—证据链与图纸渲染；`tools/retro_dry_run.py` 在 CPU 上加载两个 checkpoint 并对一个参考目标完成预测；`bash scripts/reproduce_core.sh` 用同一主题、同一模型与推理强度重新运行整条流水线。因 LLM 不可逐字复现，核心流程的复现判据是账本 `check-done` 退出 0、`CITATION_AUDIT` 全部 PASS、`bib_guard` 整合率 ≥ 90%，并产出 PDF、BibTeX、图源与逐子任务 JSONL 轨迹；脚本只有在这些条件全部满足后才返回 0，并写出 `REPRODUCTION_RECEIPT.json`。报告中每个主要结论、图与指标都可沿"代码版本 → 配置 → 数据 → 日志/轨迹 → 结果文件"追溯（SUBMISSION.md §6 给出完整示例）。
 
 ### 5.2 开源计划
 
@@ -144,7 +144,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 6.1 成员背景
 
-团队由三名博士成员组成：高京，上海交通大学；吕丁阳，中国科学院大学；李雨峰，上海交通大学。分工覆盖材料文献理解、科学问题识别、科研智能体设计、模型训练与逆合成评价等环节。
+队名科学无极，参赛编号第13队（TeamNo.13），方向材料科学（MaterialsScience）。团队由三名博士成员组成：高京，上海交通大学；吕丁阳，中国科学院大学；李雨峰，上海交通大学。分工覆盖材料文献理解、科学问题识别、科研智能体设计、模型训练与逆合成评价等环节。
 
 ### 6.2 团队分工
 

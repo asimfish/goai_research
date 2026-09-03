@@ -1,0 +1,21 @@
+Reading additional input from stdin...
+2026-09-02T05:23:05.023925Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rm -rf /tmp/chrome-profile-fig && mkdir -p /tmp/chrome-profile-fig; google-chrome --headless=new --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/chrome-profile-fig --window-size=1500,900 --screenshot=/tmp/fig_render_check/fig01.png file://<HOME> >/tmp/fig_render_check/chrome1.log 2>&1; rc=$?; echo rc=$rc; ls -l /tmp/fig_render_check/fig01.png; sed -n '"'1,80p' /tmp/fig_render_check/chrome1.log"`: CreateProcess { message: "Rejected(\"`/bin/bash -lc 'rm -rf /tmp/chrome-profile-fig && mkdir -p /tmp/chrome-profile-fig; google-chrome --headless=new --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/chrome-profile-fig --window-size=1500,900 --screenshot=/tmp/fig_render_check/fig01.png file://<HOME> >/tmp/fig_render_check/chrome1.log 2>&1; rc=$?; echo rc=$rc; ls -l /tmp/fig_render_check/fig01.png; sed -n '\\\"'1,80p' /tmp/fig_render_check/chrome1.log\\\"` rejected: rm -f style commands are not permitted. Use a safer approach\")" }
+2026-09-02T05:25:06.454274Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+     "x": 540, "y": 250, "w": 360, "h": 365, "shape": "rect", "fill": "#FFFDF7",
+2026-09-02T05:25:25.291500Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+          500
+        ],
+        [
+          500,
+          442
+2026-09-02T05:26:53.542748Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+    {"id": "recording", "label": "", "x": 460, "y": 95, "w": 520, "h": 690,
+2026-09-02T05:30:46.200492Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+最终事实源固定为
+`workspace/figures/figspec/fig01_evidence_synthesis_map.json`；候选 PNG
+仅供 Phase C 版式参照，不作为论文交付图。
+2026-09-02T05:31:17.955171Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+- 本轮重设 `figures_ready=PASS` 时沿用上一 gate 的完整 inputs 集合：
+  `taxonomy.md`、`figure_plan.md`、fig01/fig02 两套 figspec/SVG/drawio，以及
+  `figure_parts/fig01.md`、`figure_parts/fig02.md`；只更新这些输入的账本指纹，
+  不改变图文件内容。

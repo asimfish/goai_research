@@ -1,0 +1,5 @@
+Reading additional input from stdin...
+2026-09-02T23:16:35.682022Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
+    {"id": "r6", "from": "n6", "to": "n7", "arrow": "block", "width": 3},
+    {"id": "feedback", "from": "n6", "to": "n7", "label": "measurement context informs design rules", "font_size": 17, "dashed": true, "arrow": "open", "width": 2.0, "waypoints": [[1410, 750], [1410, 870]]}
+[parallel_run] 任务超过 RUNNER_TIMEOUT=1800s 未返回，已强杀

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family='"Microsoft YaHei", "PingFang SC", Arial, sans-serif'>
+  <defs>
+    <marker id="arrowChain" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1F4D78"/>
+    </marker>
+  </defs>
+  <g id="p11-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  </g>
+  <g id="p11-header">
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">从一行主题到 35 页终稿：每个角色都有可核对交付物</text>
+    <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
+  </g>
+  <g id="p11-lead">
+    <text x="72" y="166" font-size="26" fill="#1D1D1F">以案例 3 为例：检索、核对、写作、绘图、实验设计和审稿均落盘。</text>
+  </g>
+  <g id="p11-chain">
+    <rect x="72" y="204" width="1136" height="72" fill="#F3F5F8"/>
+    <rect x="72" y="204" width="6" height="72" fill="#1F4D78"/>
+    <text x="96" y="232" font-size="18" font-weight="700" fill="#1F4D78">唯一输入</text>
+    <text x="96" y="262" font-size="24" fill="#1D1D1F">Ba–Y–Zn–Si–O 硅酸盐：相图导向的合成与亚稳相问题</text>
+  </g>
+  <g id="p11-example">
+    <rect x="72" y="300" width="556" height="96" fill="#F3F5F8"/>
+    <rect x="72" y="300" width="6" height="96" fill="#1F4D78"/>
+    <text x="96" y="330" font-size="18" font-weight="700" fill="#1F4D78">编排器</text>
+    <text x="96" y="356" font-size="18" fill="#1D1D1F">七个子主题，范围与证据转移边界明确</text>
+    <text x="96" y="380" font-size="18" fill="#1D1D1F">15 批 / 24 个任务 JSONL，异常与重试保留</text>
+    <rect x="652" y="300" width="556" height="96" fill="#F3F5F8"/>
+    <rect x="652" y="300" width="6" height="96" fill="#1F4D78"/>
+    <text x="676" y="330" font-size="18" font-weight="700" fill="#1F4D78">文献检索</text>
+    <text x="676" y="356" font-size="18" fill="#1D1D1F">在线多源 + 本地全文库，近邻 / 相图专项补检</text>
+    <text x="676" y="380" font-size="18" fill="#1D1D1F">516 条检索记录，形成 513 条去重文献</text>
+  </g>
+  <g id="p11-stats-run">
+    <rect x="72" y="410" width="556" height="96" fill="#F3F5F8"/>
+    <rect x="72" y="410" width="6" height="96" fill="#C48A2B"/>
+    <text x="96" y="440" font-size="18" font-weight="700" fill="#1F4D78">引用核对</text>
+    <text x="96" y="466" font-size="18" fill="#1D1D1F">513 / 513 条引用记录 PASS</text>
+    <text x="96" y="490" font-size="18" fill="#1D1D1F">存在性、元数据、作者顺序与引用解析可复查</text>
+    <rect x="652" y="410" width="556" height="96" fill="#F3F5F8"/>
+    <rect x="652" y="410" width="6" height="96" fill="#C48A2B"/>
+    <text x="676" y="440" font-size="18" font-weight="700" fill="#1F4D78">写作</text>
+    <text x="676" y="466" font-size="18" fill="#1D1D1F">35 页、757 次正文引用、整合率 100%</text>
+    <text x="676" y="490" font-size="18" fill="#1D1D1F">直接证据、近邻类比和模型候选分层陈述</text>
+  </g>
+  <g id="p11-stats-traces">
+    <rect x="72" y="520" width="360" height="96" fill="#F3F5F8"/>
+    <rect x="72" y="520" width="6" height="96" fill="#4F8A9E"/>
+    <text x="96" y="550" font-size="18" font-weight="700" fill="#1F4D78">绘图</text>
+    <text x="96" y="576" font-size="18" fill="#1D1D1F">3 张图保持 figspec / SVG / draw.io</text>
+    <text x="96" y="600" font-size="18" fill="#1D1D1F">同源一致，公式与连接关系检查通过</text>
+    <rect x="460" y="520" width="360" height="96" fill="#F3F5F8"/>
+    <rect x="460" y="520" width="6" height="96" fill="#4F8A9E"/>
+    <text x="484" y="550" font-size="18" font-weight="700" fill="#1F4D78">想法生成</text>
+    <text x="484" y="576" font-size="18" fill="#1D1D1F">3 个研究提案 + 3 个实验计划</text>
+    <text x="484" y="600" font-size="18" fill="#1D1D1F">模型候选统一标记“待实验验证”</text>
+    <rect x="848" y="520" width="360" height="96" fill="#F3F5F8"/>
+    <rect x="848" y="520" width="6" height="96" fill="#4F8A9E"/>
+    <text x="872" y="550" font-size="18" font-weight="700" fill="#1F4D78">对抗审稿</text>
+    <text x="872" y="576" font-size="18" fill="#1D1D1F">格式终审 0 blocker / 0 major</text>
+    <text x="872" y="600" font-size="18" fill="#1D1D1F">仅 1 个参考文献元数据 minor</text>
+  </g>
+  <g id="p11-stats-data">
+    <line x1="72" y1="634" x2="1208" y2="634" stroke="#D5DBE3" stroke-width="1"/>
+    <text x="72" y="660" font-size="16" fill="#5A6573">每一项数字都能回到 ledger、CITATION_AUDIT、tool_calls、逐任务 JSONL 与最终 PDF。</text>
+  </g>
+  <g id="p11-footer">
+    <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
+    <text x="1208" y="694" font-size="16" fill="#8A94A0" text-anchor="end">11 / 13</text>
+  </g>
+</svg>

@@ -1,0 +1,88 @@
+% English survey manuscript assembled from the vetted Ba--Y--Zn--Si--O corpus.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Phase-diagram-guided Ba--Y--Zn--Si--O synthesis}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\emergencystretch=1.5em
+\usepackage{textcomp}
+
+\title{Phase-Diagram-Guided Synthesis of \\
+Ba--Y--Zn--Si--O Silicates: \\
+Unresolved Phase-Purity and Metastability Bottlenecks}
+\author{GoAI Research Consortium}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Ba--Y--Zn--Si--O silicates occupy a composition space in which direct quaternary phase evidence is sparse, while neighboring Ba--Y, Ba--Zn, and Y--Si--O systems provide only conditional structural and processing analogies. This review organizes the literature by composition, synthesis route, phase-purity characterization, kinetics, thermodynamics, and integrated experiment design. Binary and ternary phase diagrams constrain competing silicate fields but do not replace the missing BaO--Y$_2$O$_3$--ZnO--SiO$_2$ assessment. We show how glass relaxation, interfacial melts, crucible boundaries, and quench histories can retain metastable or impurity-rich products. The resulting framework bounds near-neighbor transfer and prioritizes equilibration--quench measurements, compositional mapping, complementary diffraction and spectroscopy, and provenance-aware computational design. Model-generated precursor suggestions, where considered, remain hypotheses pending experimental validation.
+\end{abstract}
+
+\input{sections/01_introduction}
+% Figure 1: approved vector roadmap, embedded in the authoritative assembly.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/svg/roadmap.svg}
+\caption{Roadmap from composition to phase-purity evidence. Six modules order the review from composition definition through evidence classification, phase relations, process-window selection, phase-purity verification, and experimental prioritization; arrows indicate organizational progression, not causal effects.}
+\label{fig:roadmap}
+\end{figure}
+\input{sections/02_background}
+\input{sections/03_taxonomy}
+% Figure 2: approved vector taxonomy, embedded in the authoritative assembly.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/svg/taxonomy_overview.svg}
+\caption{Evidence taxonomy linking the Ba--Y--Zn--Si--O target space to direct records, bounded structural neighbors, phase relations, processing controls, complementary phase checks, and prioritized experiments. Edge labels denote evidence relation classes; repeated ``structure motif'' labels are distinguished by their explicitly named endpoint nodes.}
+\label{fig:taxonomy-overview}
+\end{figure}
+\input{sections/04_synthesis_routes}
+\input{sections/05_phase_purity}
+\input{sections/06_phase_thermodynamics}
+\input{sections/07_metastability}
+% Figure 3: approved vector relation map, embedded in the authoritative assembly.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/svg/phase_bottlenecks.svg}
+\caption{Phase-purity bottlenecks and metastability. Solid arrows show the clockwise relation cycle; dashed open links show how phase field, process history, kinetic retention, and purity checks converge on reproducible isolation; the highlighted callout marks the missing quaternary map.}
+\label{fig:phase-bottlenecks}
+\end{figure}
+\input{sections/08_discussion}
+\input{sections/09_open_problems}
+\input{sections/10_conclusion}
+
+\clearpage
+\input{sections/11_corpus_coverage}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{../library/references}
+\end{document}

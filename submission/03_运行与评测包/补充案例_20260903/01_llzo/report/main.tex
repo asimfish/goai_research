@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+
+% Keep the requested downward-balanced A4 layout explicit in the source.  The
+% Unicode fallback mirrors these dimensions in its @page rule.
+\usepackage[a4paper,top=22mm,bottom=20mm,left=18mm,right=18mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape LLZO processing--structure--conductivity}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\emergencystretch=1.5em
+\usepackage{textcomp}
+
+\title{Processing--Structure--Conductivity Relations in LLZO Garnet Electrolytes: \\
+Synthesis, Densification, Interfaces, and Measurement Comparability}
+\author{GoAI Research Working Group}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Garnet-type Li$_7$La$_3$Zr$_2$O$_{12}$ (LLZO) is frequently compared through a single room-temperature conductivity value, although composition, lithium inventory, precursor chemistry, thermal history, microstructure and measurement geometry vary substantially between studies. This review organizes the literature as a process--structure--transport chain. We first define the phase, defect and resistance terms needed for a fair comparison, then follow powder synthesis through forming, densification, membranes, grain boundaries and Li or cathode interfaces. A minimum comparison record keeps nominal and retained composition, cover and crucible, relative density, microstructure, temperature, electrode geometry and fitting model together. The synthesis shows that lithium activity, boundary chemistry and surface exposure are coupled variables rather than independent optimization knobs; a complete LLZO phase diagram and a universal route ranking remain unavailable. Three executable experiments are proposed: a lithium-activity interaction map, a matched-density Ta--LLZO grain-boundary study, and a paired surface-cleaning test after ultrafast sintering. Precursor choices returned by a local model are labelled as model predictions, pending experimental validation, and are not chemical conclusions.
+\end{abstract}
+
+% Section manifest: keep this order synchronized with drafts/sections/*.tex.
+% The ten files below are the complete manuscript body used by both LaTeX and
+% the local groff fallback renderer.
+\input{sections/01_introduction.tex}
+\input{sections/02_background.tex}
+\input{sections/03_composition_phase.tex}
+\input{sections/04_powder_synthesis.tex}
+\input{sections/05_densification_microstructure.tex}
+\input{sections/06_transport_measurement.tex}
+\input{sections/07_interfaces_integration.tex}
+\input{sections/08_discussion.tex}
+\input{sections/09_open_problems.tex}
+\input{sections/10_conclusion.tex}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{../library/references}
+\end{document}

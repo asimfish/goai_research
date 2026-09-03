@@ -1,0 +1,12 @@
+Reading additional input from stdin...
+2026-09-03T04:02:08.114698Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "rm -rf /tmp/refchunks && mkdir -p /tmp/refchunks && python3 - <<'PY'
+import re, pathlib
+p='<HOME>'
+s=open(p,encoding='utf-8').read()
+entries=re.findall(r'(?ms)"'^@'"\\w+\\{.*?(?="'^@'"\\w+\\{|\\Z)',s)
+for i in range(0,len(entries),50):
+    pathlib.Path(f'/tmp/refchunks/chunk_{i//50:02d}.bib').write_text('\\n'.join(entries[i:i+50]),encoding='utf-8')
+print(len(entries), (len(entries)+49)//50)
+PY
+ls -l /tmp/refchunks | head"`: CreateProcess { message: "Rejected(\"`/bin/bash -lc \\\"rm -rf /tmp/refchunks && mkdir -p /tmp/refchunks && python3 - <<'PY'\\nimport re, pathlib\\np='<HOME>'\\ns=open(p,encoding='utf-8').read()\\nentries=re.findall(r'(?ms)\\\"'^@'\\\"\\\\\\\\w+\\\\\\\\{.*?(?=\\\"'^@'\\\"\\\\\\\\w+\\\\\\\\{|\\\\\\\\Z)',s)\\nfor i in range(0,len(entries),50):\\n    pathlib.Path(f'/tmp/refchunks/chunk_{i//50:02d}.bib').write_text('\\\\\\\\n'.join(entries[i:i+50]),encoding='utf-8')\\nprint(len(entries), (len(entries)+49)//50)\\nPY\\nls -l /tmp/refchunks | head\\\"` rejected: rm -f style commands are not permitted. Use a safer approach\")" }
+[parallel_run] 任务超过 RUNNER_TIMEOUT=900s 未返回，已强杀

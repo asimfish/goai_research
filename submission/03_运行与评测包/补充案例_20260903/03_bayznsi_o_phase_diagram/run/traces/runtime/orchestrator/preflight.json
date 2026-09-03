@@ -1,0 +1,78 @@
+{
+  "checks": {
+    "corpus": {
+      "engine": "duckdb-parquet",
+      "hint": null,
+      "mode": "private-full-corpus",
+      "ok": true,
+      "package": null,
+      "parquet_files": 15,
+      "rg_path": "<HOME>",
+      "roots": [
+        "<PRIVATE_MOUNT_PATH>"
+      ],
+      "schema": {
+        "columns": [
+          "uuid",
+          "canonical_uuid",
+          "doi_raw",
+          "doi_normalized",
+          "doi_registrant",
+          "doi_source",
+          "publisher_group",
+          "title",
+          "markdown",
+          "text_bytes",
+          "text_sha256",
+          "source_archive",
+          "source_member",
+          "parse_status",
+          "doi_uuid_matches",
+          "uuid_compatibility",
+          "decode_replacement_count",
+          "keyword_ruleset",
+          "keyword_groups",
+          "keyword_hit_count",
+          "keyword_score"
+        ],
+        "missing_columns": [],
+        "ok": true
+      }
+    },
+    "environment": {
+      "dependencies": {
+        "duckdb": true,
+        "httpx": true,
+        "mcp": true
+      },
+      "expected_prefix": "<HOME>",
+      "hint": null,
+      "ok": true,
+      "prefix": "<HOME>",
+      "python": "<HOME>",
+      "using_repository_venv": true
+    },
+    "servers": {
+      "modules": {
+        "figure": {
+          "ok": true,
+          "path": "<HOME>"
+        },
+        "litsearch": {
+          "ok": true,
+          "path": "<HOME>"
+        },
+        "refcheck": {
+          "ok": true,
+          "path": "<HOME>"
+        },
+        "retro": {
+          "ok": true,
+          "path": "<HOME>"
+        }
+      },
+      "ok": true
+    }
+  },
+  "ok": true
+}

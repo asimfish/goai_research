@@ -1,0 +1,48 @@
+\documentclass[11pt,fontset=fandol]{ctexart}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\kaishu BaZn$_2$Si$_2$O$_7$ 合成与相控制}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\emergencystretch=1.5em
+\title{BaZn$_2$Si$_2$O$_7$ 的合成与相控制：\texorpdfstring{\\}{ }\,作为 Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$ 的结构类似物}
+\author{GoAI Research}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+本文综述 BaZn$_2$Si$_2$O$_7$ 的晶体结构、合成路线和相控制变量，并评估其作为 Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$ 结构类似物的可比性。已有研究通过高温衍射、单晶结构分析和热膨胀测量建立了 BaZn$_2$Si$_2$O$_7$ 的低温—高温多晶型及 Ba/Sr、Zn 位替位规律；固相、溶胶—凝胶和玻璃析晶路线则揭示了前驱体均匀性、成核剂和微结构对主相的共同影响。相反，本次核查未发现 Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$ 的可验证原始结构或合成报道，因此仅能提出分层结构判据和可证伪实验优先级。综述特别指出 BaO--ZnO--SiO$_2$ 三元相图及温度相关热力学数据的缺失，并给出结合高温 XRD、热分析和配位精修的安全研究路径。
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_structure}
+\input{sections/03_synthesis_phase}
+\input{sections/04_neighbors}
+\input{sections/05_analogue}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{../library/references}
+\end{document}

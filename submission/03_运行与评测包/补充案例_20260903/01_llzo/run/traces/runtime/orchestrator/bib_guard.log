@@ -1,0 +1,58 @@
+稿件文件: 10  引用调用: 378  去重 key: 212
+bib 条目: 368  整合率: 58%  引用密度: 55.5 次/千词
+
+[阻塞] 156 个孤儿 bib 条目（未被引用），整合率 58% vs 下限 90%:
+  - 2013sb
+  - abdalla2020communications
+  - abrahams1971rutile
+  - ahmad2016lithium
+  - angelis2022chc
+  - anon1969structure
+  - anon2024industrial
+  - anon2024review
+  - anon2024reviewx
+  - anon2024reviewx_review1
+  - anon2025decision
+  - anon2026test
+  - asta1993theoretical
+  - bachmann2022ecg
+  - balaish2021processing
+  - baumgartner2026unlocking
+  - bell2021monoclinic
+  - bernstein2012origin
+  - besiii2026measurement
+  - besiii2026precise
+
+[告警] 497 项 bib 字段卫生问题:
+  - raju2021crystal: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - raju2021crystal: title 含未保护 token ['LLZO', 'Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - anderson2024comprehensive: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - anderson2024comprehensive: title 含未保护 token ['Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - kosir2022comparative: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - kosir2022comparative: title 含未保护 token ['Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - luo2025phase: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - luo2025phase: title 含未保护 token ['Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - he2026enhanced: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - maphoto2023phase: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - besiii2026measurement: title 含未保护 token ['CKM']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - besiii2026precise: title 含未保护 token ['CKM']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - liu2023thermodynamics: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - liu2023thermodynamics: title 含未保护 token ['CALPHAD']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - burov2026machine: title 含未保护 token ['LLZO']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - turkoglu2025xy: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - saran2024optical: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - lessmeier2026transformation: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - lessmeier2026transformation: title 含未保护 token ['LLZO']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - saran2025structural: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - saran2025structural: title 含未保护 token ['LLZO', 'Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - miyagawa2026raman: title 含未保护 token ['LLZO']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - aote2025impact: title 含未保护 token ['Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - aote2024investigation: title 含未保护 token ['Li7La3Zr2O12']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - alizadeh2023synthesis: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - alizadeh2023synthesis: title 含未保护 token ['LLZO']——加 {{}} 防止 bibliography 样式压成小写（化学式会被拆成 bazn 2 si 2 o 7 这种碎片）
+  - chen2022enhancement: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - shen2023understanding: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - ma2023a: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+  - zhang2024unveiling: doi 与 url 同存——删 url 留 doi（正文已链接 DOI，长 URL 编译后断行难看）
+
+结论: FAIL（整合率 58% 低于 90%）

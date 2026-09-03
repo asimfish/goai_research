@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Reproduce the core result: ONE research topic line in -> verified survey PDF + evidence out.
 #
-# This is the exact launch used for the formal case (submission/goai_final/run):
+# This is the exact launch used for the formal case
+# (submission/03_运行与评测包/正式案例_BYZSO冷启动):
 # a non-interactive Codex CLI run that receives only the topic string, reads the
 # repository skills (goai-orchestrator etc.), and drives the ledger state machine
 # (scoping -> lit_search/style_bank -> ref_gate -> taxonomy -> figures/writing/ideas
@@ -14,12 +15,14 @@
 #   * network access to Crossref / OpenAlex / arXiv / Semantic Scholar (free, no key)
 #   * a TeX engine for the final PDF: xelatex+ctex (Chinese) or tectonic
 #   * cost/compute: the formal run used ~70.8M input / 0.57M output tokens across
-#     40 sub-agent tasks plus the orchestrator (see metrics/agent_trace_stats_byzso.md);
+#     40 sub-agent tasks plus the orchestrator
+#     (see submission/04_指标与分析代码/agent_trace_stats_byzso.md);
 #     the local two-stage precursor model runs on CPU in seconds per query.
 #
 # Usage
 #   bash scripts/reproduce_core.sh                       # formal topic, fresh workspace
 #   bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结致密化"
+#   bash scripts/reproduce_core.sh --verify-only --workdir /path/to/completed/workspace
 #   GOAI_CORPUS=private bash scripts/reproduce_core.sh   # use your own private corpus env
 #
 # Model pinning: model and reasoning effort are passed explicitly so the run matches the
@@ -31,15 +34,18 @@ REPO="$PWD"
 
 TOPIC='调研主题：Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件'
 WORKDIR=""
+VERIFY_ONLY=0
 while (( $# )); do
   case "$1" in
     --topic)   TOPIC="调研主题：${2:?}"; shift 2 ;;
     --workdir) WORKDIR="${2:?}"; shift 2 ;;
+    --verify-only) VERIFY_ONLY=1; shift ;;
     -h|--help) sed -n '2,30p' "$0"; exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
 
+if [[ $VERIFY_ONLY == 0 ]]; then
 command -v codex >/dev/null || { echo "codex CLI not found; install with: npm i -g @openai/codex" >&2; exit 2; }
 [[ -x .venv/bin/python ]] || bash install.sh --retro
 RETRO_PY=".venv-retro/bin/python"; [[ -x $RETRO_PY ]] || RETRO_PY=".venv/bin/python"
@@ -51,7 +57,7 @@ LOGDIR="$WORKDIR/state/orchestrator"; mkdir -p "$LOGDIR"
 
 # --- corpus: public package of the cited full texts by default -----------------------
 if [[ "${GOAI_CORPUS:-public}" == "public" ]]; then
-  export GOAI_LOCAL_CORPUS_ROOTS="$REPO/submission/goai_final/evidence/corpus_release"
+  export GOAI_LOCAL_CORPUS_ROOTS="$REPO/submission/02_研究数据与证据包/corpus_release"
   unset GOAI_LOCAL_CORPUS_EXPECTED_INDEX GOAI_LOCAL_CORPUS_SHARD_ROOT
   echo "corpus: public cited-paper package ($GOAI_LOCAL_CORPUS_ROOTS)"
 else
@@ -125,11 +131,121 @@ for attempt in 2 3 4 5; do
   codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
     -C "$REPO" -o "$LOGDIR/orchestrator.resume$attempt.final.md" "$TOPIC" | tee "$LOGDIR/orchestrator.resume$attempt.jsonl" >/dev/null
 done
+else
+  [[ -n "$WORKDIR" ]] || { echo "--verify-only requires --workdir" >&2; exit 2; }
+  [[ -d "$WORKDIR" ]] || { echo "workspace not found: $WORKDIR" >&2; exit 2; }
+  WORKDIR="$(realpath "$WORKDIR")"
+  LOGDIR="$WORKDIR/state/orchestrator"
+  mkdir -p "$LOGDIR"
+  export GOAI_WORKSPACE="$WORKDIR"
+  MODEL="${GOAI_MODEL:-gpt-5.6-sol}"
+  EFFORT="${GOAI_REASONING_EFFORT:-xhigh}"
+  echo "verify-only: $WORKDIR"
+fi
+
+# --- fail-closed final verification --------------------------------------------------
+fail() { echo "CORE REPRODUCTION FAILED: $*" >&2; exit 1; }
+require_nonempty() { [[ -s "$1" ]] || fail "missing or empty artifact: $1"; }
 
 echo
-echo "==> gates"; .venv/bin/python tools/loopctl.py status || true
-echo "==> outputs"
-ls -la "$WORKDIR/drafts/main.pdf" "$WORKDIR/library/references.bib" "$WORKDIR/state/CITATION_AUDIT.md" 2>/dev/null || true
-echo "==> expected: main.pdf (8-25 pages), references.bib with all entries PASS in CITATION_AUDIT.md,"
-echo "    figures/{svg,drawio}/fig0*.{svg,drawio}, state/ledger.json with review_pass PASS,"
-echo "    state/parallel/<batch>/<task>.jsonl for every sub-agent, state/tool_calls.jsonl for MCP calls."
+echo "==> final ledger gate"
+if ! .venv/bin/python tools/loopctl.py check-done; then
+  .venv/bin/python tools/loopctl.py status >&2 || true
+  fail "ledger did not reach DONE after 5 orchestrator attempts"
+fi
+
+require_nonempty "$WORKDIR/drafts/main.pdf"
+require_nonempty "$WORKDIR/library/references.bib"
+require_nonempty "$WORKDIR/state/CITATION_AUDIT.md"
+require_nonempty "$WORKDIR/state/CITATION_AUDIT.json"
+require_nonempty "$WORKDIR/state/ledger.json"
+require_nonempty "$WORKDIR/state/tool_calls.jsonl"
+
+shopt -s nullglob globstar
+SVG_FILES=("$WORKDIR"/figures/svg/*.svg)
+DRAWIO_FILES=("$WORKDIR"/figures/drawio/*.drawio)
+TRACE_FILES=("$WORKDIR"/state/parallel/**/*.jsonl)
+(( ${#SVG_FILES[@]} > 0 )) || fail "no SVG figure artifacts found"
+(( ${#DRAWIO_FILES[@]} > 0 )) || fail "no draw.io figure artifacts found"
+(( ${#TRACE_FILES[@]} > 0 )) || fail "no per-task JSONL traces found"
+for path in "${SVG_FILES[@]}" "${DRAWIO_FILES[@]}" "${TRACE_FILES[@]}"; do
+  require_nonempty "$path"
+done
+
+echo "==> deterministic manuscript gates"
+run_guard() {
+  local name="$1"; shift
+  local guard_log="$LOGDIR/${name}.log"
+  if ! "$@" > "$guard_log" 2>&1; then
+    tail -40 "$guard_log" >&2 || true
+    fail "$name did not pass (full log: $guard_log)"
+  fi
+}
+run_guard bib_guard .venv/bin/python tools/bib_guard.py \
+  "$WORKDIR/drafts/sections" "$WORKDIR/library/references.bib"
+run_guard tex_guard .venv/bin/python tools/tex_guard.py "$WORKDIR/drafts"
+run_guard academic_language_guard .venv/bin/python tools/academic_language_guard.py \
+  "$WORKDIR/drafts"
+
+.venv/bin/python - "$WORKDIR" "$TOPIC" "$MODEL" "$EFFORT" <<'PY'
+from __future__ import annotations
+
+import datetime as dt
+import hashlib
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+workspace = Path(sys.argv[1])
+topic, model, effort = sys.argv[2:]
+audit_path = workspace / "state" / "CITATION_AUDIT.json"
+audit = json.loads(audit_path.read_text(encoding="utf-8"))
+counts = audit.get("counts", {})
+bad = {key: value for key, value in counts.items() if key != "PASS" and value}
+if bad or counts.get("PASS", 0) != audit.get("total"):
+    raise SystemExit(f"citation audit is not all PASS: counts={counts!r}")
+
+required = [
+    workspace / "drafts" / "main.pdf",
+    workspace / "library" / "references.bib",
+    workspace / "state" / "CITATION_AUDIT.json",
+    workspace / "state" / "ledger.json",
+    workspace / "state" / "tool_calls.jsonl",
+]
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+receipt = {
+    "status": "PASS",
+    "verified_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+    "workspace": str(workspace),
+    "topic": topic,
+    "model": model,
+    "reasoning_effort": effort,
+    "git_commit": subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], text=True
+    ).strip(),
+    "gates": {
+        "loopctl_check_done": "PASS",
+        "citation_audit": "PASS",
+        "bib_guard": "PASS",
+        "tex_guard": "PASS",
+        "academic_language_guard": "PASS",
+    },
+    "artifacts": {str(path.relative_to(workspace)): sha256(path) for path in required},
+    "svg_files": len(list((workspace / "figures" / "svg").glob("*.svg"))),
+    "drawio_files": len(list((workspace / "figures" / "drawio").glob("*.drawio"))),
+    "task_trace_files": len(list((workspace / "state" / "parallel").glob("**/*.jsonl"))),
+}
+receipt_path = workspace / "state" / "REPRODUCTION_RECEIPT.json"
+receipt_path.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8")
+print(f"reproduction receipt: {receipt_path}")
+PY
+
+echo "==> verified outputs"
+ls -la "$WORKDIR/drafts/main.pdf" "$WORKDIR/library/references.bib" \
+  "$WORKDIR/state/CITATION_AUDIT.md" "$WORKDIR/state/REPRODUCTION_RECEIPT.json"
+echo "CORE REPRODUCTION PASSED: $WORKDIR"
