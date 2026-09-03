@@ -1,16 +1,16 @@
-# SAGE-Mat（GoAI Research）：面向无机材料合成调研与合成规划的证据约束多智能体系统
+# SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能体
 
-> 复赛报告（AI for Research 赛道 · 算法赛 · 材料方向），依据官方初赛模板六章结构加强；提交仓库 https://github.com/asimfish/goai_research ，评审入口 docs/competition/SUBMISSION.md。
+> 复赛报告（AI for Research 赛道 · 算法赛 · 材料科学），第13队 · 科学无极（TeamNo.13 · MaterialsScience）；依据官方初赛模板六章结构加强；提交仓库 https://github.com/asimfish/goai_research ，评审入口 docs/competition/SUBMISSION.md。
 
 ## 一、项目概述
 
 ### 1.1 项目名称
 
-SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环智能体（开源实现名 GoAI Research）。
+SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能体（SAGE-Mat: Evidence-Constrained Self-Cyclic Agent for Inorganic Material Discovery & Synthesis Planning；开源实现名 GoAI Research）。
 
 ### 1.2 参赛方向
 
-方向三"材料科学文献驱动的科学发现智能体"，进阶路线 C"合成路线与工艺设计"。
+方向三"材料科学文献驱动的科学发现智能体"（材料科学 / MaterialsScience），进阶路线 C"合成路线与工艺设计"。
 
 ### 1.3 方案概述
 
@@ -144,7 +144,7 @@ SAGE-Mat：面向无机材料科学发现与合成规划的证据驱动自循环
 
 ### 6.1 成员背景
 
-团队由三名博士成员组成：高京，上海交通大学；吕丁阳，中国科学院大学；李雨峰，上海交通大学。分工覆盖材料文献理解、科学问题识别、科研智能体设计、模型训练与逆合成评价等环节。
+队名科学无极，参赛编号第13队（TeamNo.13），方向材料科学（MaterialsScience）。团队由三名博士成员组成：高京，上海交通大学；吕丁阳，中国科学院大学；李雨峰，上海交通大学。分工覆盖材料文献理解、科学问题识别、科研智能体设计、模型训练与逆合成评价等环节。
 
 ### 6.2 团队分工
 

@@ -4,10 +4,10 @@
 
 ## 提交前最后步骤（人工）
 
-- [ ] 确认队伍名，运行 `bash scripts/package_submission.sh "<队伍名>"` 生成两个 zip（`dist/`）。
+- [ ] 队伍名已定为科学无极（第13队），运行 `bash scripts/package_submission.sh "科学无极"` 生成两个 zip（`dist/`）。
 - [ ] 打 tag `goai-final-2026-09-03` 并推送；`submission/goai_final/VERSION` 由打包脚本写入 commit。
 - [ ] 将 GitHub 仓库设为公开（最后一步）；若不能公开，改为上传 `dist/` 中的 release 压缩包并在报告中说明。
-- [ ] 官网上传两个 zip 与 PPT（`AI4R_MAT_<队伍名>_SAGE-Mat_非代码材料_PPT.pptx`），回下载校验 SHA-256。
+- [ ] 官网上传两个 zip 与 PPT（`AI4R_MAT_科学无极_SAGE-Mat_非代码材料_PPT.pptx`），回下载校验 SHA-256。
 - [ ] 在复赛群确认"研究数据与证据包 / 运行与评测包"归入非代码类的口径（官方总览表与正文不一致）。
 
 ## 已完成

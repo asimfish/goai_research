@@ -164,9 +164,9 @@ P04（九个闸门链）、P10（追溯链五节点）为 `no-template-match`：
 #### Slide 01 - 封面
 - **Cover impact**: 钩子 = 一句核心主张"一行主题进去，可核验的综述与合成路线出来"；构图 = 版式化排字海报：左侧大字主标题 + 副题，右侧一条竖向 Primary 色栏承载四个关键数字（51/51、100、2,558、23），无背景装饰。
 - **Layout**: 左 2/3 文字栏，右 1/3 竖色栏
-- **Title**: SAGE-Mat：面向无机材料合成调研与合成规划的证据约束多智能体系统
-- **Subtitle**: 一行主题进去，可核验的综述、证据链与候选合成路线出来
-- **Info**: GOAI 2026 · AI for Research 材料方向 · 进阶路线 C ｜ 高京 · 吕丁阳 · 李雨峰（上海交通大学 / 中国科学院大学）｜ github.com/asimfish/goai_research
+- **Title**: SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能体
+- **Subtitle**: Evidence-Constrained Self-Cyclic Agent for Inorganic Material Discovery & Synthesis Planning
+- **Info**: 第13队 · 科学无极 · 材料科学 · TeamNo.13 ｜ 高京 · 吕丁阳 · 李雨峰（上海交通大学 / 中国科学院大学）｜ github.com/asimfish/goai_research
 
 #### Slide 02 - 背景与科学 gap
 - **Layout**: 左侧四节点知识闭环图（历史文献 → 大模型抽取压缩 → 假设与合成方案 → 自动化实验室 → 回到文献），右侧三条"为什么现在重要" + 我们的科学 gap

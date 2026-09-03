@@ -37,7 +37,7 @@ bash install.sh --retro                    # 安装（.venv + 依赖 + MCP 配�
 bash scripts/smoke_test.sh --with-retro    # 冒烟：无网络、无 LLM，1–2 分钟，末行 SMOKE TEST PASSED
 .venv/bin/python tools/retro_dry_run.py       # 前驱体模型 dry run：校验 checkpoint 并在 CPU 上预测
 bash scripts/reproduce_core.sh             # 核心复现：一行主题 → 综述 PDF（需 Codex 登录、网络、TeX）
-bash scripts/package_submission.sh "<队伍名>"   # 生成官方命名的两个 zip
+bash scripts/package_submission.sh "科学无极"   # 生成官方命名的两个 zip
 ```
 
 ## 📰 动态

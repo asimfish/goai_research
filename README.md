@@ -41,7 +41,7 @@ bash install.sh --retro                    # .venv + deps + MCP config
 bash scripts/smoke_test.sh --with-retro    # offline, no LLM, 1–2 min, ends with SMOKE TEST PASSED
 .venv/bin/python tools/retro_dry_run.py       # precursor model dry run: verify checkpoints, predict on CPU
 bash scripts/reproduce_core.sh             # core reproduction: one topic line → survey PDF (Codex login, network, TeX)
-bash scripts/package_submission.sh "<team>"    # builds the two officially named zips
+bash scripts/package_submission.sh "科学无极"    # builds the two officially named zips
 ```
 
 ## 📰 News

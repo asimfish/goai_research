@@ -1,7 +1,8 @@
 # GOAI 2026 · AI for Research（材料方向）复赛提交说明
 
-项目：**SAGE-Mat / GoAI Research** —— 面向无机材料合成调研与合成规划的证据约束多智能体系统
-方向：材料科学文献驱动的科学发现智能体（进阶路线 C：合成路线与工艺设计）
+项目：**SAGE-Mat** —— 面向无机材料发现与合成规划的证据约束自循环智能体
+英文名：SAGE-Mat: Evidence-Constrained Self-Cyclic Agent for Inorganic Material Discovery & Synthesis Planning
+队伍：科学无极（第13队 / TeamNo.13）｜方向：材料科学 / MaterialsScience（进阶路线 C：合成路线与工艺设计）
 代码仓库：<https://github.com/asimfish/goai_research>（提交 tag：`goai-final-2026-09-03`；提交前固定 commit hash 写入 `submission/goai_final/MANIFEST.sha256` 同级的 `VERSION`）
 
 本文件是评审入口：先说明六项交付物在仓库中的位置，再给出模型与 Harness 声明、全部运行记录与正式结果的筛选规则、数据与许可边界、指标复核方式、一条结论的完整追溯链，以及冒烟测试 / 核心复现命令。
@@ -184,9 +185,9 @@ bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结�
 ## 9. 打包与命名
 
 ```bash
-bash scripts/package_submission.sh "<队伍名>"     # 生成两个 zip 到 dist/
-# AI4R_MAT_<队伍名>_SAGE-Mat_非代码材料.zip : deck/ + report_docx/ + evidence/ + run/ + run_llzo/
-# AI4R_MAT_<队伍名>_SAGE-Mat_代码材料.zip   : 仓库源码快照 + traces/ + metrics/ + scripts/
+bash scripts/package_submission.sh "科学无极"     # 生成两个 zip 到 dist/
+# 非代码材料.zip 根目录：README.md · 方案说明PPT/ · 复赛报告/ · 研究数据与证据包/ · 运行与评测包/
+# 代码材料.zip 根目录：README.md · 01_系统复现包/ · 02_研究数据与证据包/ · 03_运行与评测包/ · 04_指标与分析代码/ · 05_README与一键命令/
 ```
 
-官方总览表将"研究数据与证据包 / 运行与评测包"同时列在两类下；本包按正文说明放入非代码材料，并在代码材料的 README 中给出相对路径与 SHA-256，评审可按任一口径检查。
+官方总览表将"研究数据与证据包 / 运行与评测包"同时列在两类下；两包根目录都按官方名称分文件夹，并在根目录 `README.md` 指向各部分。评审打开任一压缩包即可按目录核对。
