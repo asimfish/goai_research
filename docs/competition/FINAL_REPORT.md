@@ -86,7 +86,7 @@ SAGE-Mat：面向无机材料发现与合成规划的证据约束自循环智能
 
 ### 4.2 案例 A：Ba5Y12Zn[O(SiO4)]8 合成条件调研
 
-![正式报告研究路线图](submission/goai_final/report/figures/png/fig03_research_roadmap.png){0.95}
+![正式报告研究路线图](submission/03_运行与评测包/正式案例_BYZSO冷启动/最终输出/figures/png/fig03_research_roadmap.png){0.95}
 
 图 2｜正式报告的研究路线图（第三轮学术化重绘）：从 Ba–Y–Si–O 近邻的组成空间与局部候选区，经候选晶相与两条合成路径（固相成相、高温溶液长晶），到粉末衍射、单晶结构与实际化学计量的互补表征反馈。
 

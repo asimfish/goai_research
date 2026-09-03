@@ -3,24 +3,24 @@
 项目：**SAGE-Mat** —— 面向无机材料发现与合成规划的证据约束自循环智能体
 英文名：SAGE-Mat: Evidence-Constrained Self-Cyclic Agent for Inorganic Material Discovery & Synthesis Planning
 队伍：科学无极（第13队 / TeamNo.13）｜方向：材料科学 / MaterialsScience（进阶路线 C：合成路线与工艺设计）
-代码仓库：<https://github.com/asimfish/goai_research>（提交 tag：`goai-final-2026-09-03`；提交前固定 commit hash 写入 `submission/goai_final/MANIFEST.sha256` 同级的 `VERSION`）
+代码仓库：<https://github.com/asimfish/goai_research>。正式打包时的 commit hash 写入 `submission/VERSION`，包内每个文件的 SHA-256 在 `submission/MANIFEST.sha256`。初始提交（2026-09-03 18:00 前打包）对应 tag `goai-final-2026-09-03`；截止后按官方六项材料整理目录、修复轨迹脱敏并重新打包的版本对应 tag `goai-final-2026-09-03-r2`（内容相同，目录与索引更清晰，见 §9）。
 
-本文件是评审入口：先说明六项交付物在仓库中的位置，再给出模型与 Harness 声明、全部运行记录与正式结果的筛选规则、数据与许可边界、指标复核方式、一条结论的完整追溯链，以及冒烟测试 / 核心复现命令。
+本文件是评审入口：先说明六项交付物在仓库中的位置，再给出模型与 Harness 声明、全部运行记录与正式结果的筛选规则、数据与许可边界、指标复核方式、一条结论的完整追溯链，以及冒烟测试 / 核心复现命令。下文中以 `submission/` 开头的路径均相对仓库根目录；`03/` 是 `submission/03_运行与评测包/` 的缩写，`02/` 是 `submission/02_研究数据与证据包/` 的缩写。
 
 ---
 
 ## 1. 六项交付物与位置
 
+仓库根目录即**系统复现包**（源代码、Prompt、配置、依赖）；`submission/` 下按官方名称分文件夹存放其余交付物。
+
 | # | 官方交付物 | 本仓库位置 |
 |---|---|---|
-| 非代码 1 | 方案说明 PPT + 复赛报告 | `submission/goai_final/deck/`（PPTX + PDF）；`submission/goai_final/report_docx/复赛报告_SAGE-Mat.docx`（正文源 `docs/competition/FINAL_REPORT.md`） |
-| 代码 1 | 系统复现包 | 全部源代码 `server/`（4 个 MCP server、25 个工具）、`skills/`（9 个 agent 的全部 Prompt）、`AGENTS.md`、`tools/`、`vendor/two_stage_retro/`（预测模型代码 + checkpoint）、`configs/*.example`、`.env.example`、`pyproject.toml` + `uv.lock`（依赖版本）、`docs/competition/TASK_PROMPT.md`；构筑阶段 Agent 轨迹 `submission/goai_final/traces/development/` |
-| 代码 2 | 研究数据与证据包 | `submission/goai_final/evidence/`：`references.bib`（51 条）、`papers.jsonl`（63 条候选）、`claim_evidence.jsonl`（100 条结论 → 219 次引用）、`CITATION_AUDIT.json`（逐条核验）、`notes/condition_source_trace.md`（合成条件单元格 → 原文页/节）、`corpus_release/`（被引文献全文的精简 Parquet 知识库 + 构建脚本 `tools/build_cited_corpus.py`） |
-| 代码 3 | 运行与评测包 | `submission/goai_final/run/`：输入 `inputs/topic.md`、子任务提示词 `tasks/*.tsv`、账本 `ledger.json`、MCP 审计日志 `tool_calls.jsonl`、审稿 trace、Codex 事件流 `traces/runtime/parallel/<batch>/<task>.jsonl`（40 个子任务）、`traces/runtime/orchestrator/`、`RUN_MANIFEST.json`；次要案例 `submission/goai_final/run_llzo/`；原生 Codex 会话 `submission/goai_final/traces/runtime_native_sessions/` |
-| 代码 4 | 指标与分析代码 | `tools/build_claim_evidence.py`（引用—证据链与核验率）、`tools/analyze_agent_traces.py`（轨迹统计）、`tools/bib_guard.py` / `tools/tex_guard.py` / `tools/academic_language_guard.py`（稿件闸门）；结果 `submission/goai_final/metrics/`。逆合成部分按最小交付：两个 checkpoint + 最小加载/预测代码（`server/core/inorganic_retro.py`、`vendor/two_stage_retro/`）+ 必备原料库；其基准指标以随 checkpoint 提交的源包评测汇总（`vendor/two_stage_retro/checkpoints/*_summary.json`）为准，不另附评测脚本；`tools/retro_dry_run.py` 保证模型可加载、可预测 |
-| 代码 5 | README + 一键命令 | `README.md` / `README_CN.md`、本文件、`scripts/smoke_test.sh`、`scripts/reproduce_core.sh`、`install.sh` |
-
-`submission/goai_final/MANIFEST.sha256` 列出提交包内每个文件的 SHA-256。
+| 非代码 1 | 方案说明 PPT + 复赛报告 | `submission/方案说明PPT/`（PPTX + PDF，可编辑 SVG 源与讲稿在 `source/`）；`submission/复赛报告/复赛报告_SAGE-Mat.docx`（官方模板六章加强版，正文源 `docs/competition/FINAL_REPORT.md`） |
+| 代码 1 | 系统复现包 | 全部源代码 `server/`（4 个 MCP server、25 个工具）、`skills/`（9 个 agent 的全部 Prompt）、`AGENTS.md`、`tools/`、`vendor/two_stage_retro/`（预测模型代码 + checkpoint）、`configs/*.example`、`.env.example`、`pyproject.toml` + `uv.lock`（依赖版本）、`docs/competition/TASK_PROMPT.md`；构筑阶段 Agent 轨迹 `submission/01_系统复现包/构筑阶段轨迹/`，会话索引 `submission/01_系统复现包/codex_sessions_index.json` |
+| 代码 2 | 研究数据与证据包 | `02/`：`references.bib`（51 条）、`papers.jsonl`（63 条候选）、`claim_evidence.jsonl`（100 条结论 → 219 次引用）、`CITATION_AUDIT.json`（逐条核验）、`notes/condition_source_trace.md`（合成条件单元格 → 原文页/节）、`corpus_release/`（被引文献全文的精简 Parquet 知识库；构建脚本 `tools/build_cited_corpus.py`） |
+| 代码 3 | 运行与评测包 | `03/正式案例_BYZSO冷启动/`：输入 `inputs/topic.md`、子任务提示词 `tasks/*.tsv`、账本 `ledger.json`、MCP 审计日志 `tool_calls.jsonl`、审稿 trace、Codex 事件流 `traces/runtime/parallel/<batch>/<task>.jsonl`（40 个子任务）、`traces/runtime/orchestrator/`、`RUN_MANIFEST.json`，最终输出 `最终输出/`（23 页 PDF + LaTeX + bib + 图源）；次要案例 `03/LLZO诊断轮/`（含 `最终输出/` 10 页综述）；历史运行 `03/BYZSO首轮_20260831/`；补充案例 `03/补充案例_20260903/`；运行阶段原生 Codex 会话 `03/运行阶段轨迹/` |
+| 代码 4 | 指标与分析代码 | 代码：`tools/build_claim_evidence.py`（引用—证据链与核验率）、`tools/analyze_agent_traces.py`（轨迹统计）、`tools/bib_guard.py` / `tools/tex_guard.py` / `tools/academic_language_guard.py`（稿件闸门）、`tools/retro_dry_run.py`（模型加载与预测 dry run）；结果：`submission/04_指标与分析代码/`。逆合成部分按最小交付：两个 checkpoint + 最小加载/预测代码（`server/core/inorganic_retro.py`、`vendor/two_stage_retro/`）+ 必备原料库；其基准指标以随 checkpoint 提交的源包评测汇总（`vendor/two_stage_retro/checkpoints/*_summary.json`）为准，不另附评测脚本 |
+| 代码 5 | README + 一键命令 | `README.md`（索引）、本文件、`install.sh`、`scripts/smoke_test.sh`、`scripts/reproduce_core.sh`、`scripts/package_submission.sh` |
 
 ---
 
@@ -28,9 +28,9 @@
 
 **智能体 Harness**：Codex CLI **0.146.1**（`@openai/codex`）。
 
-- 运行阶段（生成正式结果）：`codex exec --json --ephemeral -a never -s danger-full-access`，宿主收到的唯一输入是一行主题文本；子任务由 `tools/parallel_run.sh` 以同一 CLI 扇出，每个子任务的完整事件流保存在 `run/traces/runtime/parallel/<batch>/<task>.jsonl`（含 `.exit` / `.status` / `.final.md` / `.stderr.log`）。
-- 构筑阶段（编写本仓库）：同一 Codex 内核通过 whalent 网关以多轮对话方式使用（`session_meta.originator = "whalent"`），完整原生 rollout 见 `traces/development/rollout-2026-08-16T22-01-50-….jsonl.gz`（43 轮、2026-08-16 → 2026-09-02，`turn_context` 中逐轮记录 `model` 与 `effort`）；网关侧同一对话的消息级导出为 `traces/development/whalent_codex_conversation.jsonl.gz`（3399 条）。仓库另一部分由队友（GitHub `asimplefish`）以 Codex CLI 通过 PR #1–#20 提交，其会话轨迹以 PR 形式留存于 GitHub 历史。
-- 两类轨迹分目录存放，`traces/codex_sessions_index.json` 给出每个 rollout 的 originator、cwd、模型、推理强度和轮数。
+- 运行阶段（生成正式结果）：`codex exec --json --ephemeral -a never -s danger-full-access`，宿主收到的唯一输入是一行主题文本；子任务由 `tools/parallel_run.sh` 以同一 CLI 扇出，每个子任务的完整事件流保存在 `03/正式案例_BYZSO冷启动/traces/runtime/parallel/<batch>/<task>.jsonl`（含 `.exit` / `.status` / `.final.md` / `.stderr.log`）；子任务的原生 `codex exec` rollout（51 个）在 `03/运行阶段轨迹/`。
+- 构筑阶段（编写本仓库）：同一 Codex 内核通过 whalent 网关以多轮对话方式使用（`session_meta.originator = "whalent"`），完整原生 rollout 见 `submission/01_系统复现包/构筑阶段轨迹/rollout-2026-08-16T22-01-50-….jsonl.gz`（2026-08-16 → 2026-09-02，`turn_context` 中逐轮记录 `model` 与 `effort`）；网关侧同一对话的消息级导出为同目录 `whalent_codex_conversation.jsonl.gz`（3,539 条，`trace_info.json` 给出计数与 SHA-256）；09-03 用 `codex exec --json` 按修订简报改 PPT 的会话为同目录 `codex_exec_deck_revision_2026-09-03.jsonl.gz`。仓库另一部分由队友（GitHub `asimplefish`）以 Codex CLI 通过 PR #1–#20 提交，其会话轨迹以 PR 形式留存于 GitHub 历史。
+- 构筑阶段与运行阶段轨迹分目录存放（`01_系统复现包/构筑阶段轨迹/` 与 `03_运行与评测包/…/traces/`、`03_运行与评测包/运行阶段轨迹/`）；`submission/01_系统复现包/codex_sessions_index.json` 给出每个 rollout 的 originator、cwd、模型、推理强度和轮数。
 
 **LLM 与采样参数**：
 
@@ -38,13 +38,13 @@
 |---|---|
 | 模型 | `gpt-5.6-sol`（OpenAI，经 Codex CLI 的默认 OpenAI 端点 `model_provider = "openai"`） |
 | 推理强度 | `model_reasoning_effort = "xhigh"` |
-| 温度 / top-p | Codex CLI 不暴露，采用服务端默认；LLM 输出**不可逐字复现**，复现目标是闸门级一致（见 §6） |
+| 温度 / top-p | Codex CLI 不暴露，采用服务端默认；LLM 输出**不可逐字复现**，复现目标是闸门级一致（见 §7） |
 | 沙箱 / 审批 | `sandbox_mode = danger-full-access`，`approval_policy = never`，MCP `default_tools_approval_mode = "approve"` |
 | 随机种子 | LLM 无可设种子；确定性组件有：两步前驱体预测模型 checkpoint（训练种子 20260504，SHA-256 见 `vendor/two_stage_retro/PROVENANCE.md`）、figspec 渲染器、bib/tex/术语闸门、引用核验（给定 API 返回时确定） |
 | 外部 API（免密钥） | Crossref、OpenAlex、arXiv、Semantic Scholar、DBLP（文献检索与核验）；Codex 内置 `web_search` |
 | 私有服务 | 无。不使用任何商业检索 API；不需要额外 API key |
 
-**Prompt 全集**：`skills/goai-*/SKILL.md`（9 个角色的完整方法论提示词）、`AGENTS.md`（宿主路由表与铁律）、`docs/competition/TASK_PROMPT.md`（比赛任务模板）、`run/tasks/*.tsv`（正式运行中每个子任务收到的逐字提示词）、`run/inputs/topic.md`（唯一的人类输入）。
+**Prompt 全集**：`skills/goai-*/SKILL.md`（9 个角色的完整方法论提示词）、`AGENTS.md`（宿主路由表与铁律）、`docs/competition/TASK_PROMPT.md`（比赛任务模板）、`03/正式案例_BYZSO冷启动/tasks/*.tsv`（正式运行中每个子任务收到的逐字提示词）、`03/正式案例_BYZSO冷启动/inputs/topic.md`（唯一的人类输入）；其余运行的子任务提示词在各自目录的 `tasks/` 下。
 
 ---
 
@@ -54,16 +54,16 @@
 
 | # | 日期 | 运行 | 性质 | 留痕位置 |
 |---|---|---|---|---|
-| 1 | 08-27 | COF 光催化综述（框架样例） | 框架演示，非比赛结果 | `examples/competition_run/`、`examples/survey_cof_her/` |
-| 2 | 08-29 | LLZO 烧结致密化诊断轮（初赛承诺主题） | 21 个 Agent 任务、49 次 MCP 调用；产出 10 页综述、46 篇核验文献、Top-5 前驱体路线 | `run_llzo/`、`submission/llzo_survey/`、`docs/competition/LLZO_AGENT_INTEGRATION_AUDIT.md` |
-| 3 | 08-30 | LLZO 替代材料与路线分析 | 交互式补充分析 | `submission/llzo_survey/LLZO_ALTERNATIVES_AND_ROUTES.md` |
-| 4 | 08-31 | Ba5Y12Zn[O(SiO4)]8（BYZSO）首轮 | 交互式编排 + 并行子任务；9 页报告 | `submission/byzso_synthesis_report/`、`traces/runtime_native_sessions/`（08-31 会话） |
-| 5 | 08-31 | 冷启动 `cold_byzso_J4XmS8` | 仅给主题；停在文献阶段并交出 Markdown 笔记，暴露回环协议漏洞（`check-done` 只记一个 gate 即可宣告完成），已在 PR #17 机械化修复 | `traces/runtime/orchestrator/` 同名 `final.md`；修复见 `docs/audits/2026-09-02_spec_audit/` |
-| 6 | 08-31 → 09-01 | **冷启动 `cold_full_byzso_m2gfJJ`（正式）** | 仅给主题；顶层编排器共调用 5 次（首轮 + 在 4 个人工停点处以同一主题续跑：范围确认、5 条作者名 MISMATCH 的处置、贡献结构确认、终审），29 批 / 40 个子任务；产出 20 页 PDF、51/51 核验文献、两轮对抗审稿 0 blocker / 0 major | `run/`（全部） |
-| 8 | 09-03 | 三主题英文冷启动（`submission/goai_final/runs_20260903/`） | 以同一系统、仅给一行主题、串行独立运行三个课题：LLZO 石榴石电解质（16 页）、BaZn₂Si₂O₇ 近邻体系（4 页）、Ba–Y–Zn–Si–O 相图导向合成（35 页）；`run_summary.tsv` 三组均 PASS；随后按用户对版式的反馈进入格式修复回环（摘要版式、章节编号、公式/表格、蓝色引用、参考文献），快照截取于 09-03 17:2x，LLZO 的格式复审当时仍在进行 | `runs_20260903/<slug>/{report,run,evidence}`（PDF、LaTeX、bib、账本、MCP 审计、子任务轨迹） |
-| 7 | 09-02 | 对第 6 组产物的学术修订 | 依据材料专家 8 条意见：重写引言与同类体系、补前人实验结论汇总与相图讨论、四类研究方向 + MCP 前驱体预测、去除工程化术语（新增 `academic_language_guard.py`）、移除 Pt/Au 成对对照建议、三轮学术化重绘图 1–3；由并行子任务（`tasks_academic_repolish.tsv`、`tasks_academic_assemble.tsv`）与构筑阶段 Harness 直接编辑共同完成 | `run/tasks/`、`run/traces/runtime/parallel/20260902_*`、`traces/development/` |
+| 1 | 08-27 | COF 光催化综述（框架样例） | 框架演示，非比赛结果 | 已从最终仓库移除；产物见 git 历史（tag `goai-final-2026-09-03` 下的 `examples/competition_run/`、`examples/survey_cof_her/`） |
+| 2 | 08-29 | LLZO 烧结致密化诊断轮（初赛承诺主题） | 21 个 Agent 任务、49 次 MCP 调用；产出 10 页综述、46 篇核验文献、Top-5 前驱体路线 | `03/LLZO诊断轮/`（账本、MCP 日志、提示词、轨迹；`最终输出/` 为综述 PDF + LaTeX + 图源）、`docs/competition/LLZO_AGENT_INTEGRATION_AUDIT.md` |
+| 3 | 08-30 | LLZO 替代材料与路线分析 | 交互式补充分析 | `03/LLZO诊断轮/最终输出/LLZO_ALTERNATIVES_AND_ROUTES.md` |
+| 4 | 08-31 | Ba5Y12Zn[O(SiO4)]8（BYZSO）首轮 | 交互式编排 + 并行子任务；9 页报告 | `03/BYZSO首轮_20260831/`（report.md、bib、审阅与验收记录）、`03/运行阶段轨迹/`（08-31 会话） |
+| 5 | 08-31 | 冷启动 `cold_byzso_J4XmS8` | 仅给主题；停在文献阶段并交出 Markdown 笔记，暴露回环协议漏洞（`check-done` 只记一个 gate 即可宣告完成），已在 PR #17 机械化修复 | `03/正式案例_BYZSO冷启动/traces/runtime/orchestrator/` 同名 `final.md`；修复见 `docs/audits/2026-09-02_spec_audit/` |
+| 6 | 08-31 → 09-01 | **冷启动 `cold_full_byzso_m2gfJJ`（正式）** | 仅给主题；顶层编排器共调用 5 次（首轮 + 在 4 个人工停点处以同一主题续跑：范围确认、5 条作者名 MISMATCH 的处置、贡献结构确认、终审），29 批 / 40 个子任务；产出 20 页 PDF、51/51 核验文献、两轮对抗审稿 0 blocker / 0 major | `03/正式案例_BYZSO冷启动/`（全部） |
+| 7 | 09-02 | 对第 6 组产物的学术修订 | 依据材料专家 8 条意见：重写引言与同类体系、补前人实验结论汇总与相图讨论、四类研究方向 + MCP 前驱体预测、去除工程化术语（新增 `academic_language_guard.py`）、移除 Pt/Au 成对对照建议、三轮学术化重绘图 1–3；由并行子任务（`tasks_academic_repolish.tsv`、`tasks_academic_assemble.tsv`）与构筑阶段 Harness 直接编辑共同完成 | `03/正式案例_BYZSO冷启动/tasks/`、`…/traces/runtime/parallel/20260902_*`、`submission/01_系统复现包/构筑阶段轨迹/` |
+| 8 | 09-03 | 三主题英文冷启动 | 以同一系统、仅给一行主题、串行独立运行三个课题（`scripts/run_three_synthesis_topics.sh`）：LLZO 石榴石电解质（16 页）、BaZn₂Si₂O₇ 近邻体系（4 页）、Ba–Y–Zn–Si–O 相图导向合成（35 页）；`run_summary.tsv` 三组均 PASS；随后按用户对版式的反馈进入格式修复回环（摘要版式、章节编号、公式/表格、蓝色引用、参考文献），快照截取于 09-03 17:2x，LLZO 的格式复审当时仍在进行 | `03/补充案例_20260903/<slug>/{report,run,evidence}`（PDF、LaTeX、bib、账本、MCP 审计、编排器与子任务轨迹）；三个课题共用的子任务提示词在 `03/补充案例_20260903/tasks/` |
 
-**正式采用**：第 6 组冷启动结果经第 7 组修订后的最终稿 `report/Ba5Y12Zn_合成调研_学术润色版.pdf`（23 页）。
+**正式采用**：第 6 组冷启动结果经第 7 组修订后的最终稿 `03/正式案例_BYZSO冷启动/最终输出/Ba5Y12Zn_合成调研_学术润色版.pdf`（23 页）。
 **筛选规则**：取最后一个同时通过全部机械闸门的版本 —— `bib_guard`（整合率 100%、无未定义键）、`tex_guard`（无占位/悬空引用）、`academic_language_guard`（无工程术语）、账本 `review_pass = PASS`。没有在多次运行间"挑最好的一次"：第 2–5 组各自完整留痕，其结论均以其自身产物为准，不混入正式报告。
 **诚实边界**：终审 reviewer 为同家族 Codex 冷启动复审（`provisional = true`），不是跨模型独立认证；第 7 组修订包含人类专家意见驱动的编辑，因此正式 PDF 不是"零人工干预一次生成"，而是"一次冷启动 + 有记录的专家反馈修订"。
 
@@ -74,17 +74,13 @@
 | 数据 | 来源 / 版本 | 许可与公开状态 | 对复现的影响 |
 |---|---|---|---|
 | 私有全文库 | 团队自建 Markdown 化全文库（约 3.76 千万篇，1990s–2021），DuckDB/Parquet 分片 + SQLite DOI 索引 | **不公开**（版权） | `grep_local_corpus` / `lookup_local_doi` 在公开环境只能命中下方精简包中的 21 篇；在线检索与核验（Crossref/OpenAlex/arXiv）不受影响 |
-| 被引文献精简知识库 | `evidence/corpus_release/corpus.parquet`（`goai-compact-parquet-v1`）：正式报告 51 条参考文献中，私有库内有全文的 **21 篇** Markdown 全文；其余 30 篇（多为 2022–2026 年发表或不在库中）以 DOI + 官方链接形式列于 `cited_references_index.json` | 全文仅供评审复现使用，出版社版权保留，不得二次分发（`license` 字段已写明） | 构建脚本 `tools/build_cited_corpus.py`；`corpus_manifest.json` 含每篇 SHA-256；`tools/check.sh --corpus` 可验证 |
-| 文献元数据与摘要 | `evidence/papers.jsonl`（63 条候选，来自 Crossref/OpenAlex/arXiv/S2） | 公开 API 元数据 | 完整提交 |
+| 被引文献精简知识库 | `02/corpus_release/corpus.parquet`（`goai-compact-parquet-v1`）：正式报告 51 条参考文献中，私有库内有全文的 **21 篇** Markdown 全文；其余 30 篇（多为 2022–2026 年发表或不在库中）以 DOI + 官方链接形式列于 `cited_references_index.json` | 全文仅供评审复现使用，出版社版权保留，不得二次分发（`license` 字段已写明） | 构建脚本 `tools/build_cited_corpus.py`；`corpus_manifest.json` 含每篇 SHA-256；`tools/check.sh --corpus` 可验证 |
+| 文献元数据与摘要 | `02/papers.jsonl`（63 条候选，来自 Crossref/OpenAlex/arXiv/S2） | 公开 API 元数据 | 完整提交 |
 | 前驱体预测原料库 | Retrieval-Retro 年份切分基准（源自 Ceder 文本挖掘合成数据集）：24,034 训练 / 1,842 验证 / 2,558 测试；`vendor/two_stage_retro/data/`（前驱体词表与化学式、电荷表、`retro_split.csv` 用于化学先验的共现统计） | 随源基准公开；本仓库只含推理所需最小数据与两份 checkpoint | 推理所需原料库完整提交；指标以随 checkpoint 提交的评测汇总为准（§5.1） |
 | 风格库 | 30 篇经典综述的写作/画图风格卡（`style_bank`） | 风格卡为派生文本；原文 PDF 不分发 | 不影响闸门判定 |
 | 模拟语料 | `examples/demo_corpus/`（3 条 CC0 合成文本，`citable=false`） | CC0 | 用于无私有数据时验证工具链 |
 
-包内不含 API key、Token、密码或私有绝对路径。导出脚本同时处理普通文本与
-压缩 JSONL：密钥替换为 `[REDACTED]`，`/home/...`、`/mnt/...` 替换为标准
-占位符；导出后再次扫描并解析全部 JSON/JSONL，任一敏感值、私有路径或格式
-错误都会令导出失败。实际脱敏计数写入导出命令的 JSON 收据，不使用易过期的
-手工固定数字。
+包内不含 API key、Token、密码或私有绝对路径。导出脚本 `tools/export_submission_bundle.py` 同时处理普通文本与压缩 JSONL：密钥替换为 `[REDACTED]`，`/home/...`、`/mnt/...` 替换为标准占位符；JSONL 逐行按 JSON 结构脱敏后再序列化，不会破坏记录；导出后再次扫描并解析全部 JSON/JSONL，任一敏感值、私有路径或格式错误都会令导出失败。实际脱敏计数写入导出命令的 JSON 收据。
 
 ---
 
@@ -98,7 +94,7 @@
 2. **化学硬过滤 + 变长集合枚举**：保留非挥发元素与目标元素兼容的前驱体（pool_cap 15），枚举 2–5 元组合（典型 4,928 个集合）；
 3. **Complete-Set Reranker**（Stage 2）：以目标条件化的集合 token + 374 维集合描述子做 listwise 重排，直接对"完整前驱体集合"排序，返回 Top-K。
 
-在综述流水线中，`goai-idea-forge` 对每个研究方向调用一次该工具，结果只能以"模型候选、待实验验证"（`chemical_route_verified=false`）写入正文，并保留 `stage1_probability`、`stage2_score` 与候选池内概率供审稿人核对；正式报告中对 Zn / Mg / Co 三个目标各调用一次（`run/ideas/precursor_predictions.md`，原始请求与返回在 `run/tool_calls.jsonl`）。
+在综述流水线中，`goai-idea-forge` 对每个研究方向调用一次该工具，结果只能以"模型候选、待实验验证"（`chemical_route_verified=false`）写入正文，并保留 `stage1_probability`、`stage2_score` 与候选池内概率供审稿人核对；正式报告中对 Zn / Mg / Co 三个目标各调用一次（`03/正式案例_BYZSO冷启动/ideas/precursor_predictions.md`，原始请求与返回在同目录 `tool_calls.jsonl`）。
 
 逆合成部分按**最小交付**提交：两个 checkpoint（SHA-256 见 `vendor/two_stage_retro/PROVENANCE.md`）、最小加载与预测代码、必备原料库（前驱体词表与化学式、电荷表、用于化学先验的训练集共现统计），不另附评测脚本。基准指标以随 checkpoint 提交的源包评测汇总（`checkpoints/stage1_summary.json`、`stage2_summary.json`，单种子 20260504，Retro 测试集 2,558 条，全分母）为准：
 
@@ -114,25 +110,25 @@
 
 ### 5.2 文献与引用完整性
 
-`tools/build_claim_evidence.py` 产出 `evidence/claim_evidence_summary.json`：正文 100 条含引用的结论、219 次引用、51 个独立键全部被使用（整合率 100%），`goai-refcheck` 对 51 条的存在性 / 元数据 / 作者顺序三轴核验全部 PASS；54 条结论有包内全文可直接回读，36 条合成条件结论带原文页/节定位。
+`tools/build_claim_evidence.py` 产出 `02/claim_evidence_summary.json`：正文 100 条含引用的结论、219 次引用、51 个独立键全部被使用（整合率 100%），`goai-refcheck` 对 51 条的存在性 / 元数据 / 作者顺序三轴核验全部 PASS；54 条结论有包内全文可直接回读，36 条合成条件结论带原文页/节定位。
 
 ### 5.3 Agent 运行统计
 
-`tools/analyze_agent_traces.py` 对正式运行 40 个子任务的事件流统计（`metrics/agent_trace_stats_byzso.md`）：约 7,084 万输入 token / 56.7 万输出 token；224 次工具函数调用（`lookup` 25、`coverage_report` 25、`search_papers` 24、`save_to_library` 24、`render_figure` 17、`grep_local_corpus` 16、`verify_bib_file` 16 …）、205 次内置 web_search；任务状态 PASS 23、超时后产物完整放行（WARN）6、超时失败 9、失败 1、无终态 1。失败与超时任务均保留在轨迹中并由后续批次重跑，未被删除。子任务通过 Python 直接调用 MCP server 的同一函数，故事件流中 `mcp_tool_call` 计数为 0，工具调用以 `command_execution` 与服务端审计日志 `run/tool_calls.jsonl`（134 条）为准。
+`tools/analyze_agent_traces.py` 对正式运行 40 个子任务的事件流统计（`submission/04_指标与分析代码/agent_trace_stats_byzso.md`，直接由包内轨迹重算得到）：约 7,084 万输入 token / 56.7 万输出 token；223 次工具函数调用（`coverage_report` 25、`search_papers` 24、`save_to_library` 24、`lookup` 24、`render_figure` 17、`grep_local_corpus` 16、`verify_bib_file` 16 …）、205 次内置 web_search；任务状态 PASS 23、超时后产物完整放行（WARN）6、超时失败 9、失败 1、无终态 1。失败与超时任务均保留在轨迹中并由后续批次重跑，未被删除。子任务通过 Python 直接调用 MCP server 的同一函数，故事件流中 `mcp_tool_call` 计数为 0，工具调用以 `command_execution` 与服务端审计日志 `03/正式案例_BYZSO冷启动/tool_calls.jsonl`（134 条）为准。LLZO 诊断轮的同类统计在 `agent_trace_stats_llzo.md`（23 个任务、49 次 MCP 调用）。
 
 ---
 
 ## 6. 一条结论的完整追溯链（示例）
 
-结论 C012（`evidence/claim_evidence.jsonl`）："该文采用开放体系高温溶液法，并以单晶 X 射线衍射鉴定晶体。"
+结论 C012（`02/claim_evidence.jsonl`）："该文采用开放体系高温溶液法，并以单晶 X 射线衍射鉴定晶体。"
 
-1. **代码版本**：tag `goai-final-2026-09-03`（`VERSION`）；生成该句的 skill 为 `skills/goai-survey-writer/SKILL.md`，写作子任务提示词 `run/tasks/tasks_write_sections.tsv`（任务 `write_identity_evidence`）。
-2. **配置**：`run/inputs/topic.md`（唯一输入）、`run/inputs/scope.md`（自动确认的范围）、Codex 配置 §2。
-3. **数据**：引用键 `ababaikeri2024ba5y12zn` → DOI `10.1039/D3NJ04480G`（`report/references.bib`）；核验记录 `evidence/CITATION_AUDIT.json`（三轴 PASS）；全文不在私有库（`cited_references_index.json: full_text_in_package=false`），证据来自出版社页面与 ESI（`evidence/notes/search_identity_structure.md`）。
-4. **运行日志 / 轨迹**：子任务事件流 `run/traces/runtime/parallel/20260901_003133_1289042/write_identity_evidence.jsonl`；账本 `run/ledger.json` 中 `draft_complete` 与 `review_pass` 的记录及回执；审稿 `run/review_round2.md`。
-5. **结果文件**：`report/sections/01_phase_identity.tex` 第 12 行附近 → `report/Ba5Y12Zn_合成调研_学术润色版.pdf` 第 1 章"目标相出处"。
+1. **代码版本**：`submission/VERSION` 中的 commit（tag 见文首）；生成该句的 skill 为 `skills/goai-survey-writer/SKILL.md`，写作子任务提示词 `03/正式案例_BYZSO冷启动/tasks/tasks_write_sections.tsv`（任务 `write_identity_evidence`）。
+2. **配置**：`03/正式案例_BYZSO冷启动/inputs/topic.md`（唯一输入）、同目录 `scope.md`（自动确认的范围）、Codex 配置 §2。
+3. **数据**：引用键 `ababaikeri2024ba5y12zn` → DOI `10.1039/D3NJ04480G`（`最终输出/references.bib`）；核验记录 `02/CITATION_AUDIT.json`（三轴 PASS）；全文不在私有库（`02/corpus_release/cited_references_index.json: full_text_in_package=false`），证据来自出版社页面与 ESI（`02/notes/search_identity_structure.md`）。
+4. **运行日志 / 轨迹**：子任务事件流 `03/正式案例_BYZSO冷启动/traces/runtime/parallel/20260901_003133_1289042/write_identity_evidence.jsonl`；账本 `ledger.json` 中 `draft_complete` 与 `review_pass` 的记录及回执；审稿 `review_round2.md`。
+5. **结果文件**：`03/正式案例_BYZSO冷启动/最终输出/sections/01_phase_identity.tex` 第 12 行附近 → 同目录 `Ba5Y12Zn_合成调研_学术润色版.pdf` 第 1 章"目标相出处"。
 
-同样的链对报告中的每张图（`report/figures/figspec/*.json` → `svg/` + `drawio/` → PDF）和每条前驱体预测（`run/tool_calls.jsonl` → `run/ideas/precursor_predictions.md` → 第 8 章）成立。
+同样的链对报告中的每张图（`最终输出/figures/figspec/*.json` → `svg/` + `drawio/` → PDF）和每条前驱体预测（`tool_calls.jsonl` → `ideas/precursor_predictions.md` → 第 8 章）成立。
 
 ---
 
@@ -140,7 +136,6 @@
 
 ```bash
 git clone https://github.com/asimfish/goai_research && cd goai_research
-git checkout goai-final-2026-09-03
 bash install.sh --retro                 # 按 uv.lock 安装并写收据；--retro 装 torch/pymatgen
 bash scripts/smoke_test.sh --with-retro # 无网络、无 LLM：约 1–2 分钟
 ```
@@ -164,9 +159,10 @@ bash scripts/smoke_test.sh --with-retro # 无网络、无 LLM：约 1–2 分钟
 # 核心流程复现：一行主题 → 综述 PDF（需 Codex CLI 登录、网络、TeX；数小时，token 量见 §5.3）
 bash scripts/reproduce_core.sh                      # 默认正式主题，使用公开精简知识库
 bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结致密化"
+bash scripts/run_three_synthesis_topics.sh          # 第 8 组的三主题串行运行
 ```
 
-核心复现的判定标准不是逐字相同的 PDF（LLM 不可逐字复现），而是：`loopctl check-done` 退出 0；`CITATION_AUDIT.md` 中全部条目 PASS；`bib_guard` 整合率 ≥ 90%；产出 `main.pdf`、`references.bib`、`figures/{svg,drawio}`、逐子任务 JSONL 轨迹与 `tool_calls.jsonl`。
+核心复现的判定标准不是逐字相同的 PDF（LLM 不可逐字复现），而是：`loopctl check-done` 退出 0；`CITATION_AUDIT.md` 中全部条目 PASS；`bib_guard` 整合率 ≥ 90%；产出 `main.pdf`、`references.bib`、`figures/{svg,drawio}`、逐子任务 JSONL 轨迹与 `tool_calls.jsonl`，并写出 `REPRODUCTION_RECEIPT.json`。
 
 算力与成本：确定性组件仅需 CPU（前驱体预测单次查询秒级）；LLM 调用量以正式运行为参考（§5.3）。
 
@@ -179,6 +175,7 @@ bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结�
 - 终审为同家族模型的冷启动复审；跨模型（如 Claude Code）审稿在本仓库支持但本次未启用。
 - LLM 步骤不可逐字复现；复现以闸门与证据链一致为准。
 - 正式 PDF 含专家反馈驱动的修订（§3 第 7 组），全部有轨迹留痕。
+- 顶层编排器的事件流由网关捕获，部分被网关截断或以多行形式渲染，这些片段以 `unparsed_raw` 记录保留原文而非丢弃（子任务事件流不受影响）。
 
 ---
 
@@ -186,8 +183,9 @@ bash scripts/reproduce_core.sh --topic "LLZO 石榴石固态电解质的烧结�
 
 ```bash
 bash scripts/package_submission.sh "科学无极"     # 生成两个 zip 到 dist/
-# 非代码材料.zip 根目录：README.md · 方案说明PPT/ · 复赛报告/ · 研究数据与证据包/ · 运行与评测包/
-# 代码材料.zip 根目录：README.md · 01_系统复现包/ · 02_研究数据与证据包/ · 03_运行与评测包/ · 04_指标与分析代码/ · 05_README与一键命令/
+# AI4R_MAT_科学无极_SAGE-Mat_非代码材料.zip 根目录：README.md · 方案说明PPT/ · 复赛报告/ · 研究数据与证据包/ · 运行与评测包/
+# AI4R_MAT_科学无极_SAGE-Mat_代码材料.zip   根目录：README.md · 01_系统复现包/（仓库快照 + 构筑阶段轨迹）· 02_研究数据与证据包/ · 03_运行与评测包/ · 04_指标与分析代码/ · 05_README与一键命令/
+# AI4R_MAT_科学无极_SAGE-Mat_非代码材料_PPT.pptx / .pdf  单独上传的 PPT
 ```
 
-官方总览表将"研究数据与证据包 / 运行与评测包"同时列在两类下；两包根目录都按官方名称分文件夹，并在根目录 `README.md` 指向各部分。评审打开任一压缩包即可按目录核对。
+官方总览表将"研究数据与证据包 / 运行与评测包"同时列在两类下；两个压缩包因此都包含这两项，根目录 `README.md` 指向各部分。截止前上传的初始压缩包对应 tag `goai-final-2026-09-03`（当时提交包位于 `submission/goai_final/`，两个 zip 内部已按上述文件夹组织）；本仓库随后按同一文件夹结构整理目录、删除派生 PDF/HTML 与框架样例、修复轨迹脱敏对 JSONL 的破坏（见 §4）并重新出包，对应 tag `goai-final-2026-09-03-r2`。两版的正式结果文件（PDF、bib、账本、MCP 审计日志）相同。

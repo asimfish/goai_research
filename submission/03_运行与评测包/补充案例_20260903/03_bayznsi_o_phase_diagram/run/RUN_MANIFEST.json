@@ -1,0 +1,490 @@
+{
+  "slug": "03_bayznsi_o_phase_diagram",
+  "snapshot_time": "2026-09-03 17:24:01 +0800",
+  "note": "snapshot taken while the formatting-repair loop of the source run was still active; see SUBMISSION.md §3 run group 8",
+  "parallel_batches": [
+    {
+      "batch_id": "20260903_111323_3802188",
+      "tasks": [
+        {
+          "task": "lit_neighbors",
+          "trace": "traces/runtime/parallel/20260903_111323_3802188/lit_neighbors.jsonl",
+          "bytes": 1224865,
+          "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
+          "exit": "0",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 40,
+          "command_executions": 5,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "lit_phase_thermo",
+          "trace": "traces/runtime/parallel/20260903_111323_3802188/lit_phase_thermo.jsonl",
+          "bytes": 2000392,
+          "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
+          "exit": "0",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 72,
+          "command_executions": 8,
+          "agent_messages": 6,
+          "usage": null
+        },
+        {
+          "task": "lit_targets",
+          "trace": "traces/runtime/parallel/20260903_111323_3802188/lit_targets.jsonl",
+          "bytes": 847637,
+          "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
+          "exit": "0",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 40,
+          "command_executions": 8,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "style_bank",
+          "trace": "traces/runtime/parallel/20260903_111323_3802188/style_bank.jsonl",
+          "bytes": 1098904,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 31,
+          "command_executions": 41,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 7692777,
+            "cached_input_tokens": 7312512,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 42442,
+            "reasoning_output_tokens": 13185
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_114418_3914337",
+      "tasks": [
+        {
+          "task": "lit_neighbors_retry",
+          "trace": "traces/runtime/parallel/20260903_114418_3914337/lit_neighbors_retry.jsonl",
+          "bytes": 121960,
+          "status": "FAIL_TIMEOUT",
+          "exit": "124",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 13,
+          "command_executions": 3,
+          "agent_messages": 3,
+          "usage": null
+        },
+        {
+          "task": "lit_phase_retry",
+          "trace": "traces/runtime/parallel/20260903_114418_3914337/lit_phase_retry.jsonl",
+          "bytes": 130243,
+          "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
+          "exit": "0",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 13,
+          "command_executions": 6,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "lit_targets_retry",
+          "trace": "traces/runtime/parallel/20260903_114418_3914337/lit_targets_retry.jsonl",
+          "bytes": 87290,
+          "status": "WARN_ARTIFACT_PASS_AFTER_TIMEOUT",
+          "exit": "0",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 9,
+          "command_executions": 4,
+          "agent_messages": 2,
+          "usage": null
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_115532_3953903",
+      "tasks": [
+        {
+          "task": "ref_guard",
+          "trace": "traces/runtime/parallel/20260903_115532_3953903/ref_guard.jsonl",
+          "bytes": 66328,
+          "status": "FAIL_TIMEOUT",
+          "exit": "124",
+          "process_exit": "124",
+          "started": "",
+          "mcp_tool_calls": 2,
+          "command_executions": 12,
+          "agent_messages": 3,
+          "usage": null
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_121058_4000532",
+      "tasks": [
+        {
+          "task": "ref_guard_retry",
+          "trace": "traces/runtime/parallel/20260903_121058_4000532/ref_guard_retry.jsonl",
+          "bytes": 1463391,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 33,
+          "command_executions": 30,
+          "agent_messages": 11,
+          "usage": {
+            "input_tokens": 3774970,
+            "cached_input_tokens": 3631360,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 16849,
+            "reasoning_output_tokens": 7536
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_123106_4060765",
+      "tasks": [
+        {
+          "task": "taxonomy",
+          "trace": "traces/runtime/parallel/20260903_123106_4060765/taxonomy.jsonl",
+          "bytes": 423152,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 45,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 5254898,
+            "cached_input_tokens": 5002624,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 40501,
+            "reasoning_output_tokens": 15566
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_124710_4109455",
+      "tasks": [
+        {
+          "task": "figures",
+          "trace": "traces/runtime/parallel/20260903_124710_4109455/figures.jsonl",
+          "bytes": 441889,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 21,
+          "command_executions": 56,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 8906441,
+            "cached_input_tokens": 8579328,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 44620,
+            "reasoning_output_tokens": 11377
+          }
+        },
+        {
+          "task": "ideas",
+          "trace": "traces/runtime/parallel/20260903_124710_4109455/ideas.jsonl",
+          "bytes": 286777,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 23,
+          "command_executions": 38,
+          "agent_messages": 8,
+          "usage": {
+            "input_tokens": 5973931,
+            "cached_input_tokens": 5813248,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 33343,
+            "reasoning_output_tokens": 7776
+          }
+        },
+        {
+          "task": "writing",
+          "trace": "traces/runtime/parallel/20260903_124710_4109455/writing.jsonl",
+          "bytes": 519036,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 50,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 5219629,
+            "cached_input_tokens": 5027072,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 41172,
+            "reasoning_output_tokens": 11117
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_131659_22295",
+      "tasks": [
+        {
+          "task": "writing_fix",
+          "trace": "traces/runtime/parallel/20260903_131659_22295/writing_fix.jsonl",
+          "bytes": 243358,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 20,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 1420189,
+            "cached_input_tokens": 1341440,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 15099,
+            "reasoning_output_tokens": 7243
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_132327_42906",
+      "tasks": [
+        {
+          "task": "ideas_integrate",
+          "trace": "traces/runtime/parallel/20260903_132327_42906/ideas_integrate.jsonl",
+          "bytes": 134745,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 27,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 1451564,
+            "cached_input_tokens": 1338112,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 13646,
+            "reasoning_output_tokens": 4600
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_133037_73286",
+      "tasks": [
+        {
+          "task": "review",
+          "trace": "traces/runtime/parallel/20260903_133037_73286/review.jsonl",
+          "bytes": 1734655,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 14,
+          "command_executions": 48,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 7517425,
+            "cached_input_tokens": 7317248,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 23816,
+            "reasoning_output_tokens": 11298
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_134214_109294",
+      "tasks": [
+        {
+          "task": "figures_round2",
+          "trace": "traces/runtime/parallel/20260903_134214_109294/figures_round2.jsonl",
+          "bytes": 257537,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 58,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 5402577,
+            "cached_input_tokens": 5248000,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 29373,
+            "reasoning_output_tokens": 11128
+          }
+        },
+        {
+          "task": "ideas_round2",
+          "trace": "traces/runtime/parallel/20260903_134214_109294/ideas_round2.jsonl",
+          "bytes": 197163,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 29,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 1827132,
+            "cached_input_tokens": 1710080,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 17882,
+            "reasoning_output_tokens": 10155
+          }
+        },
+        {
+          "task": "ref_dedup",
+          "trace": "traces/runtime/parallel/20260903_134214_109294/ref_dedup.jsonl",
+          "bytes": 1401631,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 15,
+          "command_executions": 54,
+          "agent_messages": 11,
+          "usage": {
+            "input_tokens": 7183329,
+            "cached_input_tokens": 6910976,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 31563,
+            "reasoning_output_tokens": 13217
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_140901_196691",
+      "tasks": [
+        {
+          "task": "writing_round2",
+          "trace": "traces/runtime/parallel/20260903_140901_196691/writing_round2.jsonl",
+          "bytes": 286683,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 48,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 7930872,
+            "cached_input_tokens": 7740800,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 37375,
+            "reasoning_output_tokens": 14247
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_142712_251956",
+      "tasks": [
+        {
+          "task": "review_round2",
+          "trace": "traces/runtime/parallel/20260903_142712_251956/review_round2.jsonl",
+          "bytes": 251681,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 10,
+          "command_executions": 42,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 6714475,
+            "cached_input_tokens": 6500992,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 24426,
+            "reasoning_output_tokens": 9549
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_160021_511265",
+      "tasks": [
+        {
+          "task": "byzso_format_writer",
+          "trace": "traces/runtime/parallel/20260903_160021_511265/byzso_format_writer.jsonl",
+          "bytes": 414753,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 86,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 17124772,
+            "cached_input_tokens": 16860800,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 47997,
+            "reasoning_output_tokens": 19205
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_163157_622046",
+      "tasks": [
+        {
+          "task": "format_review_llzo",
+          "trace": "traces/runtime/parallel/20260903_163157_622046/format_review_llzo.jsonl",
+          "bytes": 101,
+          "status": null,
+          "exit": null,
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 0,
+          "agent_messages": 0,
+          "usage": null
+        }
+      ]
+    },
+    {
+      "batch_id": "20260903_163239_625670",
+      "tasks": [
+        {
+          "task": "format_review_byzso",
+          "trace": "traces/runtime/parallel/20260903_163239_625670/format_review_byzso.jsonl",
+          "bytes": 461279,
+          "status": "PASS",
+          "exit": "0",
+          "process_exit": "0",
+          "started": "",
+          "mcp_tool_calls": 10,
+          "command_executions": 61,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 8725854,
+            "cached_input_tokens": 8490240,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 32956,
+            "reasoning_output_tokens": 15489
+          }
+        }
+      ]
+    }
+  ]
+}

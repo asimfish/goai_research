@@ -1,0 +1,3 @@
+Reading additional input from stdin...
+2026-08-31T14:59:48.077880Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rm -f <HOME> <HOME>
+rg -n "loopctl.py log.*--stage figures|--event figure|event.*complete" skills docs tools | head -n 120'`: CreateProcess { message: "Rejected(\"`/bin/bash -lc 'rm -f <HOME> <HOME>\\nrg -n \\\"loopctl.py log.*--stage figures|--event figure|event.*complete\\\" skills docs tools | head -n 120'` rejected: rm -f style commands are not permitted. Use a safer approach\")" }

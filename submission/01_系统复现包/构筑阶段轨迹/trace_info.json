@@ -1,0 +1,30 @@
+{
+  "file": "whalent_codex_conversation.jsonl.gz",
+  "conversation_id": "85yztacs9okgapg14a0t7ui22",
+  "messages": 3539,
+  "message_types": {
+    "human": 31,
+    "thinking": 1646,
+    "ai": 420,
+    "tool_call": 1442
+  },
+  "first_message_ms": 1786888914107,
+  "last_message_ms": 1788367352518,
+  "redacted_tokens": 7668,
+  "sha256": "681d446e40fd3d113b71ebd910507b94a9fe84cd653c71cf514f5efd998efea9",
+  "post_export_sanitized": true,
+  "deck_revision_session": {
+    "file": "codex_exec_deck_revision_2026-09-03.jsonl.gz",
+    "harness": "Codex CLI 0.146.1 (codex exec --json)",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "purpose": "apply REVISION_BRIEF.md to the slide deck SVGs and speaker notes",
+    "events": 181,
+    "redacted_tokens": 188,
+    "sha256": "8063bfb0628f4da76f5e11391110147644326c59e0ba4c485be079b042efaa75"
+  },
+  "native_rollout": {
+    "file": "rollout-2026-08-16T22-01-50-01a00ae0-f7a0-7e42-b9a5-40cf709aa35f.jsonl.gz",
+    "note": "native Codex rollout of the same development conversation; per-turn model/effort in turn_context; index in ../codex_sessions_index.json"
+  }
+}

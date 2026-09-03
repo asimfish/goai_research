@@ -16,7 +16,7 @@ page setup and heading styles; the Markdown supplies the body.  Supported Markdo
 Usage::
 
     python3 tools/build_report_docx.py --md docs/competition/FINAL_REPORT.md \
-        --out submission/goai_final/report_docx/复赛报告_SAGE-Mat.docx \
+        --out submission/复赛报告/复赛报告_SAGE-Mat.docx \
         --title "AI for Research赛道｜算法赛复赛报告" \
         --subtitle "复赛提交：方案说明 PPT + 复赛报告（初赛问题定义文档加强版）" \
         --note "报告中的每个主要结论、图与指标均可追溯到提交包中的代码版本、配置、数据、运行日志与结果文件。"

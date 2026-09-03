@@ -1,0 +1,11 @@
+checkpoints verified: stage1 f302cb315a60… stage2 373ee6bdaf56…
+
+Li7La3Zr2O12 -> Li7La3Zr2O12  (pool 15, 4928 candidate sets, 4.8s on cpu)
+  #1  ZrO2 + La2O3 + Li2CO3                            stage2 score   3.600   pool prob 0.230
+  #2  ZrO2 + La2O3 + LiHO                              stage2 score   2.791   pool prob 0.102
+  #3  ZrO2 + Li2CO3 + La(HO)3                          stage2 score   2.322   pool prob 0.064
+  #4  ZrO2 + La2O3 + Li2CO3 + LiHO                     stage2 score   2.153   pool prob 0.054
+  #5  ZrO2 + LiHO + La(HO)3                            stage2 score   2.017   pool prob 0.047
+  (model candidates only: chemical_route_verified=false)
+
+RETRO DRY RUN PASSED

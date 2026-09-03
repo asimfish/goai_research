@@ -1,0 +1,499 @@
+{
+  "case": "LLZO diagnostic run (2026-08-29)",
+  "parallel_batches": [
+    {
+      "batch_id": "20260829_180609_2269638",
+      "tasks": [
+        {
+          "task": "lit_additive_property",
+          "trace": "traces/runtime/parallel/20260829_180609_2269638/lit_additive_property.jsonl",
+          "bytes": 1025,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 0,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "lit_doping_sintering",
+          "trace": "traces/runtime/parallel/20260829_180609_2269638/lit_doping_sintering.jsonl",
+          "bytes": 5863,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 1,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "lit_precursor_powder",
+          "trace": "traces/runtime/parallel/20260829_180609_2269638/lit_precursor_powder.jsonl",
+          "bytes": 955,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 0,
+          "agent_messages": 2,
+          "usage": null
+        },
+        {
+          "task": "style_llzo",
+          "trace": "traces/runtime/parallel/20260829_180609_2269638/style_llzo.jsonl",
+          "bytes": 362958,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 9,
+          "command_executions": 2,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 345955,
+            "cached_input_tokens": 307200,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2639,
+            "reasoning_output_tokens": 645
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_181830_2325339",
+      "tasks": [
+        {
+          "task": "lit_doping_repair",
+          "trace": "traces/runtime/parallel/20260829_181830_2325339/lit_doping_repair.jsonl",
+          "bytes": 189919,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 6,
+          "command_executions": 4,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 708103,
+            "cached_input_tokens": 622336,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4402,
+            "reasoning_output_tokens": 636
+          }
+        },
+        {
+          "task": "lit_precursor_repair",
+          "trace": "traces/runtime/parallel/20260829_181830_2325339/lit_precursor_repair.jsonl",
+          "bytes": 130358,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 5,
+          "command_executions": 5,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 340783,
+            "cached_input_tokens": 274688,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3885,
+            "reasoning_output_tokens": 490
+          }
+        },
+        {
+          "task": "lit_property_repair",
+          "trace": "traces/runtime/parallel/20260829_181830_2325339/lit_property_repair.jsonl",
+          "bytes": 177146,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 5,
+          "command_executions": 10,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 729110,
+            "cached_input_tokens": 664832,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5731,
+            "reasoning_output_tokens": 735
+          }
+        },
+        {
+          "task": "style_llzo_repair",
+          "trace": "traces/runtime/parallel/20260829_181830_2325339/style_llzo_repair.jsonl",
+          "bytes": 1212471,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 15,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 789970,
+            "cached_input_tokens": 695296,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 10544,
+            "reasoning_output_tokens": 741
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_182252_2344486",
+      "tasks": [
+        {
+          "task": "lit_gather",
+          "trace": "traces/runtime/parallel/20260829_182252_2344486/lit_gather.jsonl",
+          "bytes": 44189,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 2,
+          "command_executions": 5,
+          "agent_messages": 7,
+          "usage": {
+            "input_tokens": 221430,
+            "cached_input_tokens": 198400,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4265,
+            "reasoning_output_tokens": 303
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_182502_2351994",
+      "tasks": [
+        {
+          "task": "ref_guard_llzo",
+          "trace": "traces/runtime/parallel/20260829_182502_2351994/ref_guard_llzo.jsonl",
+          "bytes": 32501,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 4,
+          "command_executions": 6,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 301524,
+            "cached_input_tokens": 263424,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4146,
+            "reasoning_output_tokens": 339
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_183215_2375296",
+      "tasks": [
+        {
+          "task": "ref_guard_rerun",
+          "trace": "traces/runtime/parallel/20260829_183215_2375296/ref_guard_rerun.jsonl",
+          "bytes": 16160,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 1,
+          "command_executions": 6,
+          "agent_messages": 9,
+          "usage": {
+            "input_tokens": 247422,
+            "cached_input_tokens": 224000,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1935,
+            "reasoning_output_tokens": 200
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_183457_2384770",
+      "tasks": [
+        {
+          "task": "writer_taxonomy_llzo",
+          "trace": "traces/runtime/parallel/20260829_183457_2384770/writer_taxonomy_llzo.jsonl",
+          "bytes": 68138,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 6,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 239090,
+            "cached_input_tokens": 203776,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 8576,
+            "reasoning_output_tokens": 539
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_183832_2395867",
+      "tasks": [
+        {
+          "task": "figure_llzo_diagnostic",
+          "trace": "traces/runtime/parallel/20260829_183832_2395867/figure_llzo_diagnostic.jsonl",
+          "bytes": 114077,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 6,
+          "command_executions": 9,
+          "agent_messages": 7,
+          "usage": {
+            "input_tokens": 577525,
+            "cached_input_tokens": 539136,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 10699,
+            "reasoning_output_tokens": 536
+          }
+        },
+        {
+          "task": "idea_llzo_diagnostic",
+          "trace": "traces/runtime/parallel/20260829_183832_2395867/idea_llzo_diagnostic.jsonl",
+          "bytes": 50280,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 4,
+          "command_executions": 5,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 268088,
+            "cached_input_tokens": 238080,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4208,
+            "reasoning_output_tokens": 462
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_184400_2413528",
+      "tasks": [
+        {
+          "task": "figure_llzo_visual_repair",
+          "trace": "traces/runtime/parallel/20260829_184400_2413528/figure_llzo_visual_repair.jsonl",
+          "bytes": 110780,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 4,
+          "command_executions": 12,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 435439,
+            "cached_input_tokens": 388864,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5257,
+            "reasoning_output_tokens": 880
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_184542_2420024",
+      "tasks": [
+        {
+          "task": "idea_llzo_plan_repair",
+          "trace": "traces/runtime/parallel/20260829_184542_2420024/idea_llzo_plan_repair.jsonl",
+          "bytes": 81951,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 14,
+          "agent_messages": 8,
+          "usage": {
+            "input_tokens": 665324,
+            "cached_input_tokens": 608768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 8685,
+            "reasoning_output_tokens": 1036
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_185104_2436894",
+      "tasks": [
+        {
+          "task": "reviewer_llzo_diagnostic",
+          "trace": "traces/runtime/parallel/20260829_185104_2436894/reviewer_llzo_diagnostic.jsonl",
+          "bytes": 107349,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": null,
+          "mcp_tool_calls": 0,
+          "command_executions": 9,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 452451,
+            "cached_input_tokens": 405120,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6568,
+            "reasoning_output_tokens": 1299
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_185653_2453932",
+      "tasks": [
+        {
+          "task": "figure_issue_i2",
+          "trace": "traces/runtime/parallel/20260829_185653_2453932/figure_issue_i2.jsonl",
+          "bytes": 173592,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 3,
+          "command_executions": 13,
+          "agent_messages": 8,
+          "usage": {
+            "input_tokens": 612312,
+            "cached_input_tokens": 571648,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 9933,
+            "reasoning_output_tokens": 2097
+          }
+        },
+        {
+          "task": "idea_issue_i3",
+          "trace": "traces/runtime/parallel/20260829_185653_2453932/idea_issue_i3.jsonl",
+          "bytes": 42703,
+          "status": null,
+          "exit": "3",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 5,
+          "agent_messages": 5,
+          "usage": {
+            "input_tokens": 158270,
+            "cached_input_tokens": 127232,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2211,
+            "reasoning_output_tokens": 164
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_190152_2468878",
+      "tasks": [
+        {
+          "task": "idea_i3_validation",
+          "trace": "traces/runtime/parallel/20260829_190152_2468878/idea_i3_validation.jsonl",
+          "bytes": 203722,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 5,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 210528,
+            "cached_input_tokens": 178432,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3137,
+            "reasoning_output_tokens": 221
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_190334_2474030",
+      "tasks": [
+        {
+          "task": "reviewer_i2_i3_recheck",
+          "trace": "traces/runtime/parallel/20260829_190334_2474030/reviewer_i2_i3_recheck.jsonl",
+          "bytes": 15583,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 2,
+          "agent_messages": 4,
+          "usage": {
+            "input_tokens": 188871,
+            "cached_input_tokens": 165376,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1226,
+            "reasoning_output_tokens": 79
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_215833_2891817",
+      "tasks": [
+        {
+          "task": "llzo_writer_plan",
+          "trace": "traces/runtime/parallel/20260829_215833_2891817/llzo_writer_plan.jsonl",
+          "bytes": 297156,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 32,
+          "agent_messages": 8,
+          "usage": {
+            "input_tokens": 3795691,
+            "cached_input_tokens": 3608320,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 43358,
+            "reasoning_output_tokens": 15027
+          }
+        }
+      ]
+    },
+    {
+      "batch_id": "20260829_221557_2945798",
+      "tasks": [
+        {
+          "task": "llzo_manuscript",
+          "trace": "traces/runtime/parallel/20260829_221557_2945798/llzo_manuscript.jsonl",
+          "bytes": 274676,
+          "status": null,
+          "exit": "0",
+          "process_exit": null,
+          "started": "",
+          "mcp_tool_calls": 0,
+          "command_executions": 35,
+          "agent_messages": 6,
+          "usage": {
+            "input_tokens": 3303496,
+            "cached_input_tokens": 3164288,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 43419,
+            "reasoning_output_tokens": 8540
+          }
+        }
+      ]
+    }
+  ]
+}

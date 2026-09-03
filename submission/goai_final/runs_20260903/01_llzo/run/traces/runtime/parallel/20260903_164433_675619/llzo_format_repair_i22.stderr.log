@@ -1,9 +1,0 @@
-Reading additional input from stdin...
-2026-09-03T08:57:21.093125Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in <HOME>
-    # Formula word + integer/decimal/variable, including records with
-2026-09-03T09:06:57.684485Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'set -e
-RUN=<HOME>
-TMP=/tmp/llzo_raster.final
-rm -rf "$TMP"; mkdir -p "$TMP"
-for p in 9 14 16; do pdftoppm -f "$p" -l "$p" -png -r 120 "$RUN/drafts/main.pdf" "$TMP/page$p" >/dev/null; done
-file "$TMP"/*.png; sha256sum "$TMP"/*.png'`: CreateProcess { message: "Rejected(\"`/bin/bash -lc 'set -e\\nRUN=<HOME> -rf \\\"$TMP\\\"; mkdir -p \\\"$TMP\\\"\\nfor p in 9 14 16; do pdftoppm -f \\\"$p\\\" -l \\\"$p\\\" -png -r 120 \\\"$RUN/drafts/main.pdf\\\" \\\"$TMP/page$p\\\" >/dev/null; done\\nfile \\\"$TMP\\\"/*.png; sha256sum \\\"$TMP\\\"/*.png'` rejected: rm -f style commands are not permitted. Use a safer approach\")" }

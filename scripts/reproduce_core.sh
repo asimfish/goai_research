@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Reproduce the core result: ONE research topic line in -> verified survey PDF + evidence out.
 #
-# This is the exact launch used for the formal case (submission/goai_final/run):
+# This is the exact launch used for the formal case
+# (submission/03_运行与评测包/正式案例_BYZSO冷启动):
 # a non-interactive Codex CLI run that receives only the topic string, reads the
 # repository skills (goai-orchestrator etc.), and drives the ledger state machine
 # (scoping -> lit_search/style_bank -> ref_gate -> taxonomy -> figures/writing/ideas
@@ -14,7 +15,8 @@
 #   * network access to Crossref / OpenAlex / arXiv / Semantic Scholar (free, no key)
 #   * a TeX engine for the final PDF: xelatex+ctex (Chinese) or tectonic
 #   * cost/compute: the formal run used ~70.8M input / 0.57M output tokens across
-#     40 sub-agent tasks plus the orchestrator (see metrics/agent_trace_stats_byzso.md);
+#     40 sub-agent tasks plus the orchestrator
+#     (see submission/04_指标与分析代码/agent_trace_stats_byzso.md);
 #     the local two-stage precursor model runs on CPU in seconds per query.
 #
 # Usage
@@ -55,7 +57,7 @@ LOGDIR="$WORKDIR/state/orchestrator"; mkdir -p "$LOGDIR"
 
 # --- corpus: public package of the cited full texts by default -----------------------
 if [[ "${GOAI_CORPUS:-public}" == "public" ]]; then
-  export GOAI_LOCAL_CORPUS_ROOTS="$REPO/submission/goai_final/evidence/corpus_release"
+  export GOAI_LOCAL_CORPUS_ROOTS="$REPO/submission/02_研究数据与证据包/corpus_release"
   unset GOAI_LOCAL_CORPUS_EXPECTED_INDEX GOAI_LOCAL_CORPUS_SHARD_ROOT
   echo "corpus: public cited-paper package ($GOAI_LOCAL_CORPUS_ROOTS)"
 else

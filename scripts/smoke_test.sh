@@ -6,7 +6,7 @@
 #                                             # model and predicts one reference target (CPU)
 #
 # Expected result: every step prints OK and the script exits 0. Details of what a
-# healthy run looks like are listed in docs/competition/SUBMISSION.md §冒烟测试.
+# healthy run looks like are listed in docs/competition/SUBMISSION.md §7.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 WITH_RETRO=0
@@ -29,7 +29,7 @@ step "3/6 offline unit tests (no network)"
 ok "offline tests"
 
 step "4/6 public corpus package (cited full texts) served through the MCP corpus tools"
-export GOAI_LOCAL_CORPUS_ROOTS="$PWD/submission/goai_final/evidence/corpus_release"
+export GOAI_LOCAL_CORPUS_ROOTS="$PWD/submission/02_研究数据与证据包/corpus_release"
 unset GOAI_LOCAL_CORPUS_EXPECTED_INDEX GOAI_LOCAL_CORPUS_SHARD_ROOT
 tools/check.sh --corpus >/dev/null && ok "corpus package validates"
 .venv/bin/python - <<'PY'
@@ -44,7 +44,7 @@ PY
 step "5/6 claim -> evidence chain is complete for the formal report"
 .venv/bin/python - <<'PY'
 import json
-s = json.load(open("submission/goai_final/evidence/claim_evidence_summary.json"))
+s = json.load(open("submission/02_研究数据与证据包/claim_evidence_summary.json"))
 assert s["bib_entries_uncited"] == [], s["bib_entries_uncited"]
 assert s["refcheck_pass_rate"] == 100.0, s["refcheck_pass_rate"]
 print(f"OK  {s['claims']} claims / {s['citation_calls']} citation calls / {s['distinct_keys_cited']} verified keys")
