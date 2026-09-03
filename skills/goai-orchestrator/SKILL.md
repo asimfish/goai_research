@@ -32,7 +32,7 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 | taxonomy | goai-survey-writer（阶段一） | `taxonomy_ready`（分类法 + 每叶 ≥3 篇支撑） |
 | figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；**含行文路线图**；主图走 image-first 两轮候选制） |
 | ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验；材料 idea 带 retro MCP 前驱体预测） |
-| writing | goai-survey-writer | `draft_complete`（bib_guard + tex_guard PASS + 全节完成 + 骨架强制项齐） |
+| writing | goai-survey-writer | `draft_complete`（bib_guard + tex_guard + academic_language_guard + **pdf_guard** PASS + 全节完成 + 骨架强制项齐；缺 TeX 环境 = FAIL，不许回退渲染器冒充 PDF） |
 | review | goai-reviewer | `review_pass`（无 open blocker/major；终审含制作质量逐页 PDF 审计） |
 
 ## 执行规程
@@ -107,6 +107,13 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    `draft_complete` 额外运行 `.venv/bin/python tools/academic_language_guard.py
    workspace/drafts/sections workspace/drafts/main.tex`，阻止内部控制术语
    进入正文、表格和图注；未在 revision_log 中说明的命中一律退回 writing。
+   `draft_complete` 还必须过 **PDF 来源闸门**：`python3 tools/pdf_guard.py
+   workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib
+   workspace/library/references.bib`——PDF 只能由 xelatex/pdflatex 从模板编译
+   （Producer/字体/时效/摘要块/编号标题五项机械核验）。环境没有 TeX
+   （`tools/check.sh --tex` 不过）时该 gate 只能记 FAIL + issue「环境缺 TeX」，
+   final 交付 main.tex+bib+figures 并如实写「PDF 未编译」；发现 writer 用
+   groff/HTML→Chrome 等回退渲染器产出 PDF，一律判假、gate 置 FAIL 并记 error。
    关键 gate 建议带 `--inputs` 记录产物指纹：上游产物变更后 check-done
    会自动把旧 gate 置回 PENDING（旧审计不得当新审计用）。
    指纹范围规则：盖「该闸门结论真正依赖的全部文件」，不止本阶段产物——

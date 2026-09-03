@@ -163,6 +163,11 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 每节独立成文件 `workspace/drafts/sections/NN_<slug>.tex`。硬约束：
 - **claim-cite 绑定**：每个事实性 claim 后必须跟 `\cite{key}`，key 来自
   bank；写不出支撑就删 claim 或降级为 "可能/或许" 并明说是推测；
+  **禁止引用倾倒**：单处 `\cite{}` 最多 5 个 key（natbib `sort&compress` 会压
+  成区间）；不得为了拉高整合率写「本文文献库含 N 条，按角色分组如下……」
+  然后把几十上百个 key 堆进一段——那不是引用，是给读者一墙数字。库大而
+  正文用不完的条目，按阶段五孤儿规则处理：找到真正的落点、放进对比表/
+  附录表（角色 → 代表性文献 ≤5 条）、或开 issue 交 lit_search 评估后移出库；
 - 缺证据槽位的另一种合法处理：保留结构并插入
   `% 待补证据: <需要什么数据/文献>` 注释（编译不可见、可 grep），同时在
   账本开 minor issue 移交 final 清理。严禁第三种：用编造内容填槽；
@@ -269,16 +274,27 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    正文**（含与汉字紧贴的 key；确属同形词可在行尾注释
    `% tex-guard: allow-key` 豁免）；告警项：`\texttt` 密度过高、中文稿
    套英文模板。任一阻塞项不得记 `draft_complete`，告警项逐条处理或在
-   revision_log 说明原因。有 latex 环境则再编译验证（中文稿 xelatex；
-   图一律先 `drawio_export` 出 pdf 再 `\includegraphics`，不依赖
-   `\includesvg`），编译告警逐条处理；编译后 `pdftoppm` 抽首页、
-   一张表所在页、参考文献页各看一眼——标签语言、表格完整性、文献条目
-   有无被压小写的化学式，这三处是制作质量事故的高发区。
+   revision_log 说明原因。**编译是硬性步骤，且只能用 TeX**：先
+   `tools/check.sh --tex` 确认 xelatex/pdflatex 与模板宏包齐全；齐全则
+   xelatex→bibtex→xelatex×2（中文稿必须 xelatex；图一律先 `drawio_export`
+   出 pdf 再 `\includegraphics`，不依赖 `\includesvg`），编译告警逐条处理。
+   **环境缺 TeX 时 fail-closed**：`draft_complete` 记 FAIL + issue「环境缺
+   TeX」，交付 main.tex + references.bib + figures，终报明写「PDF 未编译」；
+   **禁止**用 groff/Ghostscript、HTML→Chrome、pandoc、Word 等任何回退渲染器
+   生成 PDF 冒充终稿——那样产出的文件没有摘要块、编号标题、公式排版、
+   booktabs 表格和蓝色引用，账本却会显得「完成」。编译后必跑
+   `python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`
+   （Producer 须为 TeX 引擎、字体须为模板字体族、PDF 不早于源文件、首页有
+   Abstract/摘要、有编号一级标题），FAIL 不得置 `draft_complete`。最后
+   `pdftoppm` 抽首页、一张表所在页、参考文献页各看一眼——标签语言、表格
+   完整性、文献条目有无被压小写的化学式，这三处是制作质量事故的高发区。
    另外，`academic_language_guard.py` 必须通过，确保内部控制语言没有泄漏
    到正文、表格和图注。
 5. `loopctl gate --name draft_complete --status PASS
-   --inputs workspace/drafts/main.tex,workspace/library/references.bib`
-   并交 review。
+   --inputs workspace/drafts/main.tex,workspace/library/references.bib,workspace/drafts/main.pdf
+   --detail "bib_guard/tex_guard/academic_language_guard/pdf_guard 全 PASS；<引擎> 编译 <N> 页"`
+   并交 review。PDF 也进指纹：源文件改了而 PDF 没重编，check-done 会把 gate
+   置回 PENDING。
 
 ## 返工协议
 

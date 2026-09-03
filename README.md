@@ -21,7 +21,7 @@ GOAI 2026 · AI for Research 算法赛 · 材料科学（MaterialsScience）· T
 | 代码 1 | 系统复现包 | 源代码 [`server/`](server/)（4 个 MCP server）· 全部 Prompt [`skills/`](skills/) + [`AGENTS.md`](AGENTS.md) + [`docs/competition/TASK_PROMPT.md`](docs/competition/TASK_PROMPT.md) · 配置 [`configs/`](configs/) · [`.env.example`](.env.example) · 依赖 [`pyproject.toml`](pyproject.toml) / [`uv.lock`](uv.lock) · 预测模型 [`vendor/two_stage_retro/`](vendor/two_stage_retro/) · 构筑阶段 Agent 轨迹 [`submission/01_系统复现包/`](submission/01_系统复现包/) |
 | 代码 2 | 研究数据与证据包 | [`submission/02_研究数据与证据包/`](submission/02_研究数据与证据包/)：文献清单与 DOI、`claim_evidence.jsonl`（100 条结论 → 219 次引用 → 51 个核验键）、逐条引用核验、被引全文精简知识库 |
 | 代码 3 | 运行与评测包 | [`submission/03_运行与评测包/`](submission/03_运行与评测包/)：正式案例（输入、提示词、账本、MCP 审计、JSONL 轨迹、最终 PDF）、LLZO 诊断轮、历史运行、09-03 补充案例、运行阶段原生 Codex 会话 |
-| 代码 4 | 指标与分析代码 | 代码在 [`tools/`](tools/)（`build_claim_evidence.py`、`analyze_agent_traces.py`、`bib_guard.py`、`tex_guard.py`、`academic_language_guard.py`、`retro_dry_run.py`）；结果与说明在 [`submission/04_指标与分析代码/`](submission/04_指标与分析代码/) |
+| 代码 4 | 指标与分析代码 | 代码在 [`tools/`](tools/)（`build_claim_evidence.py`、`analyze_agent_traces.py`、`bib_guard.py`、`tex_guard.py`、`academic_language_guard.py`、`pdf_guard.py`、`retro_dry_run.py`）；结果与说明在 [`submission/04_指标与分析代码/`](submission/04_指标与分析代码/) |
 | 代码 5 | README + 一键命令 | 本文件、[`install.sh`](install.sh)、[`scripts/smoke_test.sh`](scripts/smoke_test.sh)、[`scripts/reproduce_core.sh`](scripts/reproduce_core.sh)、[`scripts/package_submission.sh`](scripts/package_submission.sh) |
 
 正式报告（23 页，纯主题冷启动 + 有记录的专家反馈修订）：
@@ -33,6 +33,7 @@ GOAI 2026 · AI for Research 算法赛 · 材料科学（MaterialsScience）· T
 bash install.sh --retro                    # .venv + 依赖 + MCP 配置；--retro 另装 torch/pymatgen
 bash scripts/smoke_test.sh --with-retro    # 无网络、无 LLM，1–2 分钟，末行 SMOKE TEST PASSED
 .venv/bin/python tools/retro_dry_run.py    # 前驱体模型 dry run：校验 checkpoint 并在 CPU 上预测
+bash tools/check.sh --tex                  # TeX 工具链预检：缺 xelatex/模板宏包时流水线 fail-closed，不产假 PDF
 bash scripts/reproduce_core.sh             # 核心复现：一行主题 → 综述 PDF（需 Codex 登录、网络、TeX）
 bash scripts/package_submission.sh "科学无极"   # 生成官方命名的两个 zip 到 dist/
 ```

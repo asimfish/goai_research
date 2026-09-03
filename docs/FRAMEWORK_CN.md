@@ -6,8 +6,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](../pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
-[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2024%20tools-8A2BE2.svg)](../server/)
+[![Tests](https://img.shields.io/badge/tests-68%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
+[![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](../server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](../skills/)
 
 中文版 | [English](FRAMEWORK.md)
@@ -339,7 +339,7 @@ IDE 内置的 Task 子代理代替 `parallel_run.sh`。
 ## 11. 🧪 测试
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 54 个离线测试 —— 无网络、无 LLM
+.venv/bin/python -m pytest tests/ -q            # 68 个离线测试 —— 无网络、无 LLM
 .venv/bin/python -m pytest -m live tests/live/  # 实测套件 —— 真实 API、真实 draw.io CLI
 ```
 
@@ -356,7 +356,8 @@ figspec → drawio 往返**（分组恢复为容器、边 label 重挂）、retr
 语义（九个必需闸门全部落账、WARN 放行、minor 移交、产物指纹变更重置闸门、
 回执校验——trace 缺失/占位/事后删除均拒绝）、vendored 无机模型语法守卫、bib_guard
 阻塞行为（未定义 key 与整合率）与字段卫生告警、tex_guard 组稿闸门
-（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、bank_check 支持库校验。
+（含裸 key 泄漏阻塞、\texttt 密度与中文稿模板错配告警）、pdf_guard 来源闸门
+（真实 xelatex 样例通过、Chrome 渲染的 PDF 被拒）、TeX 预检结构、bank_check 支持库校验。
 
 对照最初需求做的一次独立只读审计（证据与判定表见
 [docs/audits/2026-09-02_spec_audit/](audits/2026-09-02_spec_audit/REPORT.md)）

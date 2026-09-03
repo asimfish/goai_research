@@ -1151,6 +1151,83 @@ def test_tex_guard_cjk_english_template_warns(tmp_path):
     assert "survey_main_zh" not in r3.stdout
 
 
+# ---------- pdf_guard：终稿 PDF 来源闸门 ----------
+
+import shutil as _shutil
+
+_HAS_POPPLER = all(_shutil.which(t) for t in ("pdfinfo", "pdffonts", "pdftotext"))
+
+
+def run_pdf_guard(*args):
+    return subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "pdf_guard.py"), *args],
+        capture_output=True, text=True)
+
+
+@pytest.mark.skipif(not _HAS_POPPLER, reason="poppler (pdfinfo/pdffonts/pdftotext) not installed")
+def test_pdf_guard_passes_real_tex_build(tmp_path):
+    """真 TeX 产物必须 PASS：有 xelatex 就现场用仓库模板字体链编一个最小文档
+    （摘要块 + 编号章节），否则跳过。不依赖仓库里的样例 PDF（提交包重组时会被移走）。"""
+    if not _shutil.which("xelatex"):
+        pytest.skip("xelatex not installed")
+    tex = tmp_path / "main.tex"
+    tex.write_text("\n".join([
+        r"\documentclass[11pt]{article}",
+        r"\usepackage{amsmath}\usepackage{newtxtext}\usepackage{newtxmath}",
+        r"\usepackage[colorlinks=true,citecolor=blue]{hyperref}",
+        r"\title{Guard Fixture}\author{A}\date{}",
+        r"\begin{document}\maketitle",
+        r"\begin{abstract}A minimal abstract block.\end{abstract}",
+        r"\section{Introduction}Numbered heading body text.",
+        r"\end{document}",
+    ]), encoding="utf-8")
+    r = subprocess.run(["xelatex", "-interaction=nonstopmode", "-halt-on-error", "main.tex"],
+                       cwd=tmp_path, capture_output=True, text=True, timeout=300)
+    if r.returncode != 0 or not (tmp_path / "main.pdf").exists():
+        pytest.skip("xelatex present but template packages (newtx) missing")
+    res = run_pdf_guard(str(tmp_path / "main.pdf"), "--tex", str(tex), "--min-pages", "1")
+    assert res.returncode == 0, res.stdout
+    low = res.stdout.lower()
+    assert "结论: pass" in low and ("dvipdfmx" in low or "xetex" in low)
+
+
+@pytest.mark.skipif(not _HAS_POPPLER, reason="poppler not installed")
+def test_pdf_guard_rejects_non_tex_pdf(tmp_path):
+    """审计实拍：测试机无 TeX，writer 用 HTML→HeadlessChrome 产出 PDF，账本却记 PASS。
+    手写一个最小 PDF，Producer 标成 Skia/Chrome，无模板字体、无摘要、无编号标题。"""
+    pdf = tmp_path / "fake.pdf"
+    body = (b"%PDF-1.4\n"
+            b"1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n"
+            b"2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n"
+            b"3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >> endobj\n"
+            b"4 0 obj << /Producer (Skia/PDF m142) /Creator (HeadlessChrome/142.0) >> endobj\n"
+            b"trailer << /Root 1 0 R /Info 4 0 R >>\n%%EOF\n")
+    pdf.write_bytes(body)
+    r = run_pdf_guard(str(pdf))
+    assert r.returncode == 1, r.stdout
+    assert "不是 TeX 引擎产出" in r.stdout
+    assert "Skia" in r.stdout
+    assert "Abstract" in r.stdout          # 摘要块缺失被点名
+    assert "编号一级标题" in r.stdout
+    # 陈旧产物：源文件比 PDF 新 → 阻塞
+    tex = tmp_path / "main.tex"; tex.write_text(r"\documentclass{article}")
+    os.utime(str(pdf), (1_600_000_000, 1_600_000_000))
+    r2 = run_pdf_guard(str(pdf), "--tex", str(tex))
+    assert "陈旧产物" in r2.stdout
+
+
+def test_preflight_tex_check_reports_shape():
+    """--tex 预检返回可判定的结构：引擎、宏包、CJK、缺失清单；缺失时给 fail-closed 提示。"""
+    from tools import preflight
+    result = preflight._check_tex()
+    for key in ("ok", "english_template_ok", "chinese_template_ok", "engines",
+                "packages", "cjk", "missing_packages", "missing_cjk"):
+        assert key in result, result
+    assert set(result["engines"]) == {"xelatex", "pdflatex", "latexmk", "bibtex"}
+    if not result["ok"]:
+        assert result["hint"] and "禁止" in result["hint"]
+
+
 # ---------- vendored retro model: syntax guard ----------
 
 def test_vendor_retro_modules_compile():

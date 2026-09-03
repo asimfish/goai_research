@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](../pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-54%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
+[![Tests](https://img.shields.io/badge/tests-68%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](../server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](../skills/)
 
@@ -263,6 +263,13 @@ mis-attributed citations. GoAI treats references as **zero-trust input**:
    dangling `\ref`, unclosed environments, and **bare BibTeX keys leaking into
    reader-visible text** all block assembly; typewriter-font (`\texttt`)
    overuse and a Chinese manuscript on the English template warn.
+   `pdf_guard.py` — the delivered PDF must come from a TeX engine (Producer /
+   Creator), embed the template font family, be newer than its sources, carry an
+   Abstract block on page 1 and numbered top-level headings. A Chrome-, groff- or
+   Word-rendered "PDF" fails on sight. `tools/check.sh --tex` preflights the
+   toolchain before writing starts; if TeX is missing the pipeline **fails closed**
+   — it delivers `main.tex` + bib + figures and says "PDF not compiled" instead of
+   improvising a renderer.
 5. **Context check** (reviewer): samples claim–citation pairs and verifies the cited
    paper actually supports the claim — the most diagnostic and most-missed check.
 
@@ -394,7 +401,9 @@ minor deferral, stale-input fingerprint reset, receipt validation — missing /
 stub / deleted trace files are rejected), bib_guard blocking (undefined keys +
 integration rate) and field-hygiene warnings, tex_guard assembly gate
 (including bibkey-leak blocking, `\texttt` density and CJK-template-mismatch
-warnings), template contract, and bank_check validation.
+warnings), pdf_guard provenance gate (real xelatex sample passes, a
+Chrome-rendered PDF fails), TeX preflight shape, template contract, and
+bank_check validation.
 
 An independent read-only audit against the original specification (evidence and
 verdict table in [docs/audits/2026-09-02_spec_audit/](audits/2026-09-02_spec_audit/REPORT.md))
