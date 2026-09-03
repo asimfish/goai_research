@@ -1,6 +1,6 @@
 # 引用核查报告（定向语境修复 + 正文同步）
 
-- 目标 bib：`/home/gaojing/goai_synthesis_runs/20260903_synthesis_topics/01_llzo/library/references.bib`
+- 目标 bib：`<HOME>
 - 生成时间：`2026-09-03T09:08:23+08:00`
 - 审计范围：保留既有 BibTeX 三轴核验结果；本轮只重扫正文引用并记录 I15/I17/I18 语境修复，未修改 `references.bib` 元数据。
 - 机械正文扫描：10 个 section 文件，109 个 `\cite`/Markdown 引用命令，378 次引用，212 个正文唯一 key；未定义 key：0。
