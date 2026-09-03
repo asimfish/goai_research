@@ -4,7 +4,7 @@
     <rect x="0" y="0" width="1280" height="8" fill="#1F4D78"/>
   </g>
   <g id="p13-header">
-    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">应用价值：合成建议可追溯、可执行、可回写</text>
+    <text x="72" y="96" font-size="40" font-weight="700" fill="#1D1D1F">应用价值：让每一条合成建议都可追溯、可执行、可回写</text>
     <rect x="72" y="114" width="72" height="4" fill="#1F4D78"/>
   </g>
   <g id="p13-takeaway">
@@ -18,12 +18,12 @@
     <text x="134" y="378" font-size="24" font-weight="700" fill="#1F4D78">对材料研究者</text>
     <text x="96" y="410" font-size="18" fill="#1D1D1F">
       <tspan x="96" dy="0"><tspan font-weight="700">一次运行替代数周文献梳理</tspan></tspan>
-      <tspan x="96" dy="28">· 案例 3：513 / 513</tspan>
-      <tspan x="96" dy="24">  LLZO：368 / 368，引用审计 PASS</tspan>
-      <tspan x="96" dy="28">· 每条结论可点开 DOI / 原文段落</tspan>
+      <tspan x="96" dy="28">· 51 篇文献逐条核对，28 条合成条件</tspan>
+      <tspan x="96" dy="24">  逐字段比较，同类体系单独成节</tspan>
+      <tspan x="96" dy="28">· 每条结论可点开 DOI 与原文段落，</tspan>
       <tspan x="96" dy="24">  “该不该信”变成可回答的问题</tspan>
-      <tspan x="96" dy="28">· 35 / 16 页终稿衔接</tspan>
-      <tspan x="96" dy="24">  证据边界、问题与实验设计</tspan>
+      <tspan x="96" dy="28">· 前人结论汇总 + 相图讨论，直接进入</tspan>
+      <tspan x="96" dy="24">  课题设计而非再读一遍文献</tspan>
     </text>
   </g>
   <g id="p13-reusable">
@@ -32,8 +32,8 @@
     <text x="522" y="378" font-size="24" font-weight="700" fill="#1F4D78">对自动化实验室</text>
     <text x="484" y="410" font-size="18" fill="#1D1D1F">
       <tspan x="484" dy="0"><tspan font-weight="700">交付可执行的方案，而非一段总结</tspan></tspan>
-      <tspan x="484" dy="28">· 方案包含前驱体、条件与表征，</tspan>
-      <tspan x="484" dy="24">  失败判据也是结构化可调度对象</tspan>
+      <tspan x="484" dy="28">· 方案 = 前驱体 + 条件 + 表征 + 失败判据，</tspan>
+      <tspan x="484" dy="24">  全部是结构化、可调度的对象</tspan>
       <tspan x="484" dy="28">· 实验结果同格式回写为证据，</tspan>
       <tspan x="484" dy="24">  触发新一轮检索、假设与路线更新</tspan>
       <tspan x="484" dy="28">· 需要人确认的节点保留在回路中，</tspan>
@@ -46,17 +46,16 @@
     <text x="910" y="378" font-size="24" font-weight="700" fill="#1F4D78">对新化合物与稀缺体系</text>
     <text x="872" y="410" font-size="18" fill="#1D1D1F">
       <tspan x="872" dy="0"><tspan font-weight="700">从近邻体系推断可迁移的边界</tspan></tspan>
-      <tspan x="872" dy="28">· 尚无相纯四元相的可复现报道，</tspan>
-      <tspan x="872" dy="24">  仍得到 3 个可证伪实验方向</tspan>
+      <tspan x="872" dy="28">· 只有 1 篇直接报道的目标相，也得到</tspan>
+      <tspan x="872" dy="24">  4 个实验方向与 7 种化合物的前驱体候选</tspan>
       <tspan x="872" dy="28">· 明确哪些近邻条件不可迁移，</tspan>
       <tspan x="872" dy="24">  避免重复已知的失败实验</tspan>
-      <tspan x="872" dy="28">· LLZO 再给出 3 项判别实验，</tspan>
-      <tspan x="872" dy="24">  把探索预算花在最有信息增益处</tspan>
+      <tspan x="872" dy="28">· 先做局部相图再做单一配方，</tspan>
+      <tspan x="872" dy="24">  把探索预算花在最有发现价值处</tspan>
     </text>
   </g>
   <g id="p13-team">
-    <text x="72" y="646" font-size="18" fill="#1D1D1F"><tspan font-weight="700" fill="#1F4D78">下一步</tspan>　跨模型审稿 · 实验验证回写 · 扩展温度 / 气氛预测</text>
-    <text x="1208" y="646" font-size="18" fill="#1D1D1F" text-anchor="end"><tspan font-weight="700" fill="#1F4D78">MIT 开源</tspan>　asimfish/goai_research</text>
+    <text x="72" y="646" font-size="18" fill="#1D1D1F"><tspan font-weight="700" fill="#1F4D78">下一步</tspan>　接入跨模型审稿 · 对四个方向开展合成实验并回写为证据 · 扩展温度 / 气氛条件预测　　<tspan font-weight="700" fill="#1F4D78">MIT 开源</tspan>　asimfish/goai_research</text>
   </g>
   <g id="p13-footer">
     <text x="72" y="694" font-size="16" fill="#8A94A0">SAGE-Mat · GOAI 2026 AI for Research 复赛</text>
