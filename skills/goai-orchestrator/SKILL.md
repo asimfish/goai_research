@@ -97,6 +97,11 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    4. draft ↔ guards：writer 与确定性检查（bib_guard/tex_guard/bank_check/
       superlib lint/academic_language_guard）的机械互搏——检查不过即返工，模型说了不算。
 4. **验收**：阶段完成后检查对应 gate 是否已 PASS（`loopctl status`）。
+   `loopctl gate` 会机械拒绝：跳阶段（上游 gate 未 PASS/WARN 就记下游）、缺并发
+   证据（lit_search <3 路、figures/writing <2 路的 done 分片日志，且无串行 decision）、
+   审稿不足两轮、无回执、非 TeX PDF。所以每路并行子任务收工都必须
+   `loopctl log --stage <阶段> --event done`，否则 gate 记不进去——这是设计意图，
+   不要用自造 gate 名或直接改 ledger.json 绕过（前者被警告且不计入，后者 check-done 再核会判无效）。
    gate 没过不允许 advance；agent 自报完成不算数，以账本 gate 为准。
    验收时抽查证据三件套：账本内该阶段的过程 log、产物文件实际存在
    （抽查路径，不只看 gate 状态）、审核/查验记录齐全。缺任何一件，

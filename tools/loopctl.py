@@ -36,6 +36,13 @@ gate 状态语义：
 跳过要显式记 WARN，禁止静默跳过）：
   scope_confirmed lit_coverage style_bank_ready ref_integrity taxonomy_ready
   figures_ready ideas_reviewed draft_complete review_pass
+
+流程机械约束（gate 命令直接拒绝，不靠 agent 自律）：
+  前置顺序   下游 gate 记 PASS/WARN 前上游必须已 PASS/WARN（scope→lit/style→ref→
+             taxonomy→figures/ideas/writing→review），跳阶段写不进账本
+  并发证据   lit_coverage 需 ≥3 条 lit_search done 分片日志、figures_ready ≥2 条
+             figures、draft_complete ≥2 条 writing；确属串行须先记 decision 说明
+  审稿轮次   review_pass 需回执 trace 所在目录 ≥2 份非占位 trace（对抗审稿两轮起）
 """
 from __future__ import annotations
 
@@ -61,6 +68,71 @@ RECEIPT_TRACE_MIN_BYTES = 512
 # 记 PASS 必须在 --inputs 里给出终稿 PDF 且通过 tools/pdf_guard.py 的闸门：
 # PDF 只能由 TeX 从模板编译；实跑中出现过 groff/HTML→Chrome 渲染的 PDF 被记 PASS
 PDF_GATES = {"draft_complete"}
+
+# 闸门前置：下游 gate 记 PASS/WARN 前，上游 gate 必须已是 PASS/WARN——这是状态机的
+# DAG 本身。跳过阶段直接写下游 gate 会被拒绝，「没走流程」在账本层就写不进去。
+GATE_PREREQS = {
+    "lit_coverage": ["scope_confirmed"],
+    "style_bank_ready": ["scope_confirmed"],
+    "ref_integrity": ["lit_coverage"],
+    "taxonomy_ready": ["ref_integrity"],
+    "figures_ready": ["taxonomy_ready"],
+    "ideas_reviewed": ["taxonomy_ready"],
+    "draft_complete": ["taxonomy_ready", "figures_ready"],
+    "review_pass": ["draft_complete"],
+}
+
+# 并发证据：这些阶段按协议必须多路并行（lit_search 按子主题 ≥3 路；figures 按图、
+# writing 按章节 ≥2 路）。记 PASS 时要求账本里有相应数量的 `log --event done`
+# 分片记录；确实只能串行时，必须先 `log --event decision` 写明串行原因。
+CONCURRENCY_EVIDENCE = {
+    "lit_coverage": ("lit_search", 3),
+    "figures_ready": ("figures", 2),
+    "draft_complete": ("writing", 2),
+}
+# 对抗审稿至少两轮：review_pass 记 PASS 时 trace 目录里须有 ≥2 份非占位审稿 trace
+REVIEW_MIN_ROUNDS = 2
+
+
+def _prereq_problem(lg: dict, name: str, status: str) -> str | None:
+    if status not in ("PASS", "WARN"):
+        return None
+    missing = [g for g in GATE_PREREQS.get(name, [])
+               if lg["gates"].get(g, {}).get("status") not in ("PASS", "WARN")]
+    if missing:
+        return (f"上游 gate {missing} 尚未 PASS/WARN——阶段不可跳过；先完成上游阶段并落账，"
+                "或把它显式记 WARN（合规跳过）")
+    return None
+
+
+def _concurrency_problem(lg: dict, name: str, status: str) -> str | None:
+    if status != "PASS" or name not in CONCURRENCY_EVIDENCE:
+        return None
+    stage, need = CONCURRENCY_EVIDENCE[name]
+    done = [e for e in lg["log"] if e.get("stage") == stage and e.get("event") == "done"]
+    serial_ok = [e for e in lg["log"] if e.get("event") == "decision"
+                 and e.get("stage") in (stage, None)
+                 and any(k in str(e.get("detail", "")) for k in ("串行", "serial", "降级"))]
+    if len(done) >= need or serial_ok:
+        return None
+    return (f"缺并发证据：{stage} 阶段只有 {len(done)} 条 `log --event done` 分片记录，协议要求 "
+            f"≥{need} 路并行（每路子任务收工各记一条）；确属串行降级须先 "
+            f"`log --stage {stage} --event decision --detail \"串行原因…\"`")
+
+
+def _review_rounds_problem(receipt: str) -> str | None:
+    r = _parse_receipt(receipt)
+    trace = r.get("trace", "")
+    d = os.path.dirname(trace) if trace else ""
+    if not d or not os.path.isdir(d):
+        return None   # 目录问题由回执校验负责
+    traces = [f for f in os.listdir(d)
+              if f.lower().endswith((".md", ".txt", ".json"))
+              and os.path.getsize(os.path.join(d, f)) >= RECEIPT_TRACE_MIN_BYTES]
+    if len(traces) < REVIEW_MIN_ROUNDS:
+        return (f"对抗审稿至少 {REVIEW_MIN_ROUNDS} 轮：{d} 下只有 {len(traces)} 份非占位 trace"
+                "（返工后必须独立复审一轮，终审三视角另计一轮）")
+    return None
 
 
 def _pdf_guard_problem(inputs: list[str]) -> str | None:
@@ -236,6 +308,14 @@ def cmd_gate(args) -> None:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     if args.name in PDF_GATES and args.status == "PASS":
         problem = _pdf_guard_problem([p.strip() for p in (args.inputs or "").split(",") if p.strip()])
+        if problem:
+            sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
+    for check in (_prereq_problem(lg, args.name, args.status),
+                  _concurrency_problem(lg, args.name, args.status)):
+        if check:
+            sys.exit(f"拒绝: gate {args.name} 记 {args.status} —— {check}")
+    if args.name == "review_pass" and args.status == "PASS":
+        problem = _review_rounds_problem(args.receipt)
         if problem:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     if args.name not in REQUIRED_GATES:
