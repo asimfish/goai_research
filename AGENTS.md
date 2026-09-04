@@ -33,7 +33,9 @@
 ## 铁律（所有角色通用）
 
 1. **账本是唯一状态源**：开工先 `python3 tools/loopctl.py status`，
-   收工必须 `loopctl log`；闸门/issue 只通过 loopctl 读写。
+   收工必须 `loopctl log --stage <阶段> --event done`（并行子任务每路一条——它就是
+   并发证据，gate 记 PASS 时会数）；闸门/issue 只通过 loopctl 读写。loopctl 会拒绝
+   跳阶段、缺并发证据、单轮审稿、无回执、非 TeX PDF 的 gate 写入，禁止绕过。
 2. **引用零信任**：只引用 `workspace/library/references.bib` 里
    已过 ref_gate 的 key；任何场合禁止手编 BibTeX 条目、禁止凭记忆写引用。
 3. **产物落盘**：一切结论写进 workspace/ 对应目录，不许只留在对话里。

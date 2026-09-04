@@ -20,6 +20,23 @@
 
 4a/4b/4c 无写冲突，**可并行**（见 parallel_run.sh）。
 
+## 流程机械约束（loopctl 直接拒绝，不靠 agent 自律）
+
+「一定走多 agent 并行的多阶段回环」不是靠 skill 里的文字保证的，而是 `loopctl gate`
+在写账本时拒绝一切绕过行为：
+
+| 约束 | 规则 | 违反时 |
+|---|---|---|
+| 前置顺序 | 下游 gate 记 PASS/WARN 前，上游必须已 PASS/WARN：scope → lit/style → ref → taxonomy → figures/ideas/writing → review | `gate` 命令拒绝，提示缺哪个上游 gate |
+| 并发证据 | `lit_coverage` 需 ≥3 条 `log --stage lit_search --event done` 分片记录；`figures_ready` ≥2 条 figures；`draft_complete` ≥2 条 writing。每路并行子任务收工各记一条 | 拒绝；确属串行降级须先 `log --event decision --detail "串行原因"` 再记 gate（如实记账优先于机械阻塞） |
+| 审稿轮次 | `review_pass` 回执 trace 所在目录须有 ≥2 份非占位 trace（返工后独立复审一轮；终审三视角另计） | 拒绝 |
+| 回执 / PDF | `review_pass` 需真实 trace 回执；`draft_complete` 需 `--inputs` 含 PDF 且过 `pdf_guard` | 拒绝；`check-done` 再核 |
+| 完整性 | 九个必需 gate 全部落账；自造 gate 名不计入并警告 | `check-done` 不放行 |
+
+这些约束加上产物指纹（`--inputs`）构成账本层的闭环：跳阶段写不进去、单线程冒充并行写不进去、
+一轮审稿冒充对抗回环写不进去、非 TeX 的 PDF 写不进去；`check-done` 只对通过全部约束的账本
+返回 0。历史样例账本若用自造 gate 名或缺过程证据，会被判为未完成——这正是加严的原因。
+
 ## Issue 路由表
 
 review 产出的 issue 按 target 字段路由回源头阶段：

@@ -841,21 +841,36 @@ def make_tex_like_pdf(path, producer="xdvipdfmx (20240305)", creator="LaTeX with
     return path
 
 
-def pass_all_gates(tmpdir, *, except_for=()):
-    """把全部必需 gate 记成 PASS（review_pass 带合规回执，draft_complete 带过闸的 PDF），
-    except_for 里的跳过。"""
-    trace = make_trace(tmpdir)
+def seed_process_evidence(tmpdir):
+    """协议要求的过程证据：lit_search 3 路、figures 2 路、writing 2 路的 done 分片日志，
+    以及两轮审稿 trace。"""
+    for stage, n in (("lit_search", 3), ("figures", 2), ("writing", 2)):
+        for i in range(n):
+            r = run_loopctl(tmpdir, "log", "--stage", stage, "--agent", f"goai-{stage}",
+                            "--event", "done", "--detail", f"slice {i} done")
+            assert r.returncode == 0, r.stderr
+    make_trace(tmpdir, "round1_1.md")
+    return make_trace(tmpdir, "round2_1.md")
+
+
+def pass_all_gates(tmpdir, *, except_for=(), overrides=None, seed=True):
+    """按状态机顺序把全部必需 gate 记成 PASS（含过程证据：并发分片日志、两轮审稿
+    trace、合规回执、过闸的 PDF），except_for 里的跳过，overrides 可替换某个 gate 的附加参数。"""
+    overrides = overrides or {}
+    trace = seed_process_evidence(tmpdir) if seed else str(tmpdir / "state" / "review_traces" / "round2_1.md")
     pdf = make_tex_like_pdf(tmpdir / "drafts" / "main.pdf")
     for g in REQUIRED_GATES:
         if g in except_for:
             continue
-        extra = []
-        if g == "review_pass":
-            extra = ["--receipt", f"model=x;trace={trace}"]
-        elif g == "draft_complete":
-            extra = ["--inputs", pdf]
+        extra = overrides.get(g)
+        if extra is None:
+            extra = []
+            if g == "review_pass":
+                extra = ["--receipt", f"model=x;trace={trace}"]
+            elif g == "draft_complete":
+                extra = ["--inputs", pdf]
         r = run_loopctl(tmpdir, "gate", "--name", g, "--status", "PASS", *extra)
-        assert r.returncode == 0, r.stderr
+        assert r.returncode == 0, f"{g}: {r.stderr}"
 
 
 def test_loopctl_full_cycle(tmp_path):
@@ -863,6 +878,8 @@ def test_loopctl_full_cycle(tmp_path):
     assert r.returncode == 0, r.stderr
     assert run_loopctl(tmp_path, "advance", "--to", "lit_search").returncode == 0
     assert run_loopctl(tmp_path, "advance", "--to", "bogus").returncode != 0
+    seed_process_evidence(tmp_path)
+    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS").returncode == 0
     assert run_loopctl(
         tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS",
         "--detail", "48 papers").returncode == 0
@@ -875,10 +892,10 @@ def test_loopctl_full_cycle(tmp_path):
     assert run_loopctl(tmp_path, "check-done").returncode != 0  # open issue → 未完成
     assert run_loopctl(tmp_path, "issue", "close", "--id", "I1",
                        "--note", "fixed").returncode == 0
-    # 只记了 1 个 gate：其余必需 gate 缺席 → 仍未完成（账本停半路不许宣告 DONE）
+    # 只记了 2 个 gate：其余必需 gate 缺席 → 仍未完成（账本停半路不许宣告 DONE）
     r = run_loopctl(tmp_path, "check-done")
     assert r.returncode != 0 and "missing_required_gates" in r.stdout
-    pass_all_gates(tmp_path)
+    pass_all_gates(tmp_path, except_for=("scope_confirmed", "lit_coverage"), seed=False)
     assert run_loopctl(tmp_path, "check-done").returncode == 0  # 全 PASS 无 open
 
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
@@ -903,9 +920,10 @@ def test_loopctl_check_done_semantics(tmp_path):
     # PENDING 阻塞
     run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PENDING")
     assert run_loopctl(tmp_path, "check-done").returncode != 0
-    trace = make_trace(tmp_path)
-    run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
-                "--receipt", f"model=x;trace={trace}")
+    trace = str(tmp_path / "state" / "review_traces" / "round2_1.md")
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                    "--receipt", f"model=x;trace={trace}")
+    assert r.returncode == 0, r.stderr
     assert run_loopctl(tmp_path, "check-done").returncode == 0
     # open minor 不阻塞（移交 final 清理），blocker/major 阻塞
     run_loopctl(tmp_path, "issue", "add", "--severity", "minor", "--text", "typo")
@@ -929,7 +947,7 @@ def test_loopctl_check_done_requires_every_gate_recorded(tmp_path):
     r = run_loopctl(tmp_path, "gate", "--name", "ref_audit", "--status", "PASS")
     assert r.returncode == 0 and "不是协议 gate 名" in r.stderr
     # 静默跳过不行，显式 WARN 才算记录
-    pass_all_gates(tmp_path, except_for=("style_bank_ready",))
+    pass_all_gates(tmp_path, except_for=("scope_confirmed", "style_bank_ready"))
     assert run_loopctl(tmp_path, "check-done").returncode != 0
     run_loopctl(tmp_path, "gate", "--name", "style_bank_ready", "--status", "WARN",
                 "--detail", "浅层风格库")
@@ -939,6 +957,7 @@ def test_loopctl_check_done_requires_every_gate_recorded(tmp_path):
 def test_loopctl_review_pass_requires_real_receipt(tmp_path):
     """审计发现的漏洞：review_pass 无回执记 PASS 曾被接受。"""
     run_loopctl(tmp_path, "init", "--topic", "t")
+    pass_all_gates(tmp_path, except_for=("review_pass",))
     # 无回执 → 命令拒绝
     r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS")
     assert r.returncode != 0 and "回执" in r.stderr
@@ -955,15 +974,14 @@ def test_loopctl_review_pass_requires_real_receipt(tmp_path):
     assert run_loopctl(tmp_path, "gate", "--name", "review_pass",
                        "--status", "FAIL").returncode == 0
     # 合规回执 → 接受并入账
-    trace = make_trace(tmp_path)
+    trace = str(tmp_path / "state" / "review_traces" / "round2_1.md")
     r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
                     "--receipt", f"model=gpt-x;trace={trace}")
     assert r.returncode == 0, r.stderr
     ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
     assert "trace" in ledger["gates"]["review_pass"]["receipt"]
-    # 事后 trace 被删 → check-done 再核时判无效
-    pass_all_gates(tmp_path, except_for=("review_pass",))
     assert run_loopctl(tmp_path, "check-done").returncode == 0
+    # 事后 trace 被删 → check-done 再核时判无效
     os.remove(trace)
     r = run_loopctl(tmp_path, "check-done")
     assert r.returncode != 0 and "invalid_receipts" in r.stdout
@@ -973,11 +991,12 @@ def test_loopctl_draft_complete_requires_tex_built_pdf(tmp_path):
     """实跑失效：测试机无 TeX，writer 用 HTML→Chrome 渲染 PDF，账本记 draft_complete PASS。
     现在：PASS 必须带 PDF 且 pdf_guard 通过；Chrome/groff 产物、缺 PDF 一律拒绝。"""
     run_loopctl(tmp_path, "init", "--topic", "t")
+    pass_all_gates(tmp_path, except_for=("draft_complete", "review_pass"))
     # 无 PDF → 拒绝
     r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS")
     assert r.returncode != 0 and "终稿 PDF" in r.stderr
     # Chrome 渲染的 PDF → 拒绝并点名 pdf_guard
-    fake = make_tex_like_pdf(tmp_path / "drafts" / "main.pdf",
+    fake = make_tex_like_pdf(tmp_path / "drafts" / "fake.pdf",
                              producer="Skia/PDF m142", creator="HeadlessChrome/142.0",
                              font="DejaVuSerif", text=("Ba-Y-Zn-Si-O silicates occupy", "1. Introduction"))
     r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", fake)
@@ -986,10 +1005,12 @@ def test_loopctl_draft_complete_requires_tex_built_pdf(tmp_path):
     assert run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "FAIL",
                        "--detail", "环境缺 TeX，PDF 未编译").returncode == 0
     # TeX 产物 → 接受；事后被 Chrome 版替换 → check-done 再核判无效
-    good = make_tex_like_pdf(tmp_path / "drafts" / "main.pdf")
+    good = str(tmp_path / "drafts" / "main.pdf")
     r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", good)
     assert r.returncode == 0, r.stderr
-    pass_all_gates(tmp_path, except_for=("draft_complete",))
+    trace = str(tmp_path / "state" / "review_traces" / "round2_1.md")
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                       "--receipt", f"model=x;trace={trace}").returncode == 0
     assert run_loopctl(tmp_path, "check-done").returncode == 0
     make_tex_like_pdf(tmp_path / "drafts" / "main.pdf", producer="Skia/PDF m142",
                       creator="HeadlessChrome", font="ArialMT", text=("x", "y"))
@@ -997,13 +1018,55 @@ def test_loopctl_draft_complete_requires_tex_built_pdf(tmp_path):
     assert r.returncode != 0 and "invalid_receipts" in r.stdout
 
 
+def test_loopctl_enforces_pipeline_order_concurrency_and_review_rounds(tmp_path):
+    """「一定走多 agent 并行的多阶段 loop」的机械保证：
+    跳阶段写下游 gate 被拒；缺并发分片证据被拒（除非记了串行 decision）；单轮审稿被拒。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    # 1) 跳过 scoping 直接记 lit_coverage → 拒绝（前置 gate 未过）
+    r = run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    assert r.returncode != 0 and "上游 gate" in r.stderr and "scope_confirmed" in r.stderr
+    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS").returncode == 0
+    # 2) scope 过了，但 lit_search 没有 ≥3 路分片 done 日志 → 拒绝（缺并发证据）
+    r = run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    assert r.returncode != 0 and "并发证据" in r.stderr
+    for i in range(2):
+        run_loopctl(tmp_path, "log", "--stage", "lit_search", "--agent", "goai-lit-search",
+                    "--event", "done", "--detail", f"slice {i}")
+    r = run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
+    assert r.returncode != 0                      # 2 路仍不够
+    # 显式记录串行降级 decision → 放行（如实记账优先于机械阻塞）
+    run_loopctl(tmp_path, "log", "--stage", "lit_search", "--agent", "goai-orchestrator",
+                "--event", "decision", "--detail", "并发失败，串行执行：API 限流")
+    assert run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS").returncode == 0
+    # 3) 跳过 taxonomy 直接记 figures_ready → 拒绝；WARN 也受前置约束
+    r = run_loopctl(tmp_path, "gate", "--name", "figures_ready", "--status", "WARN")
+    assert r.returncode != 0 and "taxonomy_ready" in r.stderr
+    for g in ("style_bank_ready", "ref_integrity", "taxonomy_ready"):
+        assert run_loopctl(tmp_path, "gate", "--name", g, "--status", "PASS").returncode == 0
+    # figures 只有 1 路 → 拒绝；补到 2 路 → 通过
+    run_loopctl(tmp_path, "log", "--stage", "figures", "--agent", "goai-figure-studio", "--event", "done", "--detail", "fig1")
+    assert run_loopctl(tmp_path, "gate", "--name", "figures_ready", "--status", "PASS").returncode != 0
+    run_loopctl(tmp_path, "log", "--stage", "figures", "--agent", "goai-figure-studio", "--event", "done", "--detail", "roadmap")
+    assert run_loopctl(tmp_path, "gate", "--name", "figures_ready", "--status", "PASS").returncode == 0
+    assert run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "WARN", "--detail", "skipped").returncode == 0
+    for i in range(2):
+        run_loopctl(tmp_path, "log", "--stage", "writing", "--agent", "goai-survey-writer", "--event", "done", "--detail", f"sec {i}")
+    pdf = make_tex_like_pdf(tmp_path / "drafts" / "main.pdf")
+    assert run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf).returncode == 0
+    # 4) 只有一轮审稿 trace → 拒绝；两轮 → 通过
+    t1 = make_trace(tmp_path, "round1_1.md")
+    r = run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS", "--receipt", f"model=x;trace={t1}")
+    assert r.returncode != 0 and "至少 2 轮" in r.stderr
+    t2 = make_trace(tmp_path, "round2_1.md")
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS", "--receipt", f"model=x;trace={t2}").returncode == 0
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+
+
 def test_loopctl_stale_inputs_reset_gate(tmp_path):
     artifact = tmp_path / "refs.bib"
     artifact.write_text("v1")
     run_loopctl(tmp_path, "init", "--topic", "t")
-    pass_all_gates(tmp_path, except_for=("ref_integrity",))
-    run_loopctl(tmp_path, "gate", "--name", "ref_integrity", "--status", "PASS",
-                "--inputs", str(artifact))
+    pass_all_gates(tmp_path, overrides={"ref_integrity": ["--inputs", str(artifact)]})
     assert run_loopctl(tmp_path, "check-done").returncode == 0
     artifact.write_text("v2 upstream changed")   # 上游产物变更
     r = run_loopctl(tmp_path, "check-done")
@@ -1472,3 +1535,24 @@ def test_bank_check_passes_and_blocks(tmp_path):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+# ---------- 规则绊线：裸主题默认全流程 / 并行默认 / 禁回退渲染 不得被并发编辑改丢 ----------
+
+def test_protocol_rules_present_in_agents_and_skills():
+    agents = open(os.path.join(ROOT, "AGENTS.md"), encoding="utf-8").read()
+    orch = open(os.path.join(ROOT, "skills", "goai-orchestrator", "SKILL.md"), encoding="utf-8").read()
+    writer = open(os.path.join(ROOT, "skills", "goai-survey-writer", "SKILL.md"), encoding="utf-8").read()
+    proto = open(os.path.join(ROOT, "docs", "LOOP_PROTOCOL.md"), encoding="utf-8").read()
+    # 裸主题 → 完整流水线（第一次冷启动的失效模式）
+    assert "只给" in agents and "orchestrator" in agents and "裸主题" in agents
+    assert "只给一个研究主题" in orch or "裸主题" in orch
+    # 并发是默认、串行是降级
+    assert "并发是默认" in orch and "串行" in orch
+    # 四条互搏通道 + 两轮起对抗审稿
+    assert "四条互搏通道" in orch and "两轮" in orch
+    # fail-closed：无 TeX 不出假 PDF；回退渲染器禁用
+    assert "回退渲染器" in agents and "pdf_guard" in agents
+    assert "pdf_guard" in writer and "fail-closed" in writer
+    # 协议文档记录了机械约束表
+    assert "流程机械约束" in proto and "并发证据" in proto and "前置顺序" in proto
