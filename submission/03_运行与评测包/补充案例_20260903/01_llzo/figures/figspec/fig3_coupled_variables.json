@@ -1,0 +1,380 @@
+{
+  "title": "Coupled variables governing LLZO transport",
+  "canvas": {
+    "width": 1700,
+    "height": 1000
+  },
+  "title_style": {
+    "font_size": 30,
+    "color": "#111111",
+    "bold": true,
+    "align": "center",
+    "y": 45
+  },
+  "defaults": {
+    "font_size": 19,
+    "font_family": "Helvetica",
+    "edge_color": "#3C536B",
+    "edge_width": 2.2,
+    "stroke_width": 1.8,
+    "arrow": "block",
+    "label_color": "#111111"
+  },
+  "groups": [
+    {
+      "id": "g_proc",
+      "label": "PROCESSING / CHEMISTRY",
+      "x": 40,
+      "y": 110,
+      "w": 360,
+      "h": 600,
+      "fill": "#F4F5F6",
+      "stroke": "#8A8F98",
+      "font_size": 23,
+      "stroke_width": 1.5
+    },
+    {
+      "id": "g_struct",
+      "label": "MICROSTRUCTURE",
+      "x": 410,
+      "y": 110,
+      "w": 430,
+      "h": 600,
+      "fill": "#F4F5F6",
+      "stroke": "#8A8F98",
+      "font_size": 23,
+      "stroke_width": 1.5
+    },
+    {
+      "id": "g_measure",
+      "label": "MEASUREMENT COMPARABILITY",
+      "x": 1230,
+      "y": 110,
+      "w": 420,
+      "h": 600,
+      "fill": "#F4F5F6",
+      "stroke": "#8A8F98",
+      "font_size": 23,
+      "stroke_width": 1.5
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pA",
+      "group": "g_proc",
+      "label": "Chemistry and\ndopants",
+      "sublabel": "site occupancy • liquid-phase formation",
+      "x": 65,
+      "y": 180,
+      "w": 280,
+      "h": 150,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "pB",
+      "group": "g_proc",
+      "label": "Thermal and forming\nhistory",
+      "sublabel": "Li₂O activity • atmosphere • dwell • packing",
+      "x": 65,
+      "y": 440,
+      "w": 280,
+      "h": 150,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "sA",
+      "group": "g_struct",
+      "label": "Phase and composition",
+      "sublabel": "phase purity • dopant distribution",
+      "x": 440,
+      "y": 180,
+      "w": 370,
+      "h": 140,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "sB",
+      "group": "g_struct",
+      "label": "Density and\ngrain structure",
+      "sublabel": "relative density • porosity • grain size",
+      "x": 440,
+      "y": 370,
+      "w": 370,
+      "h": 140,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "sC",
+      "group": "g_struct",
+      "label": "Boundary and\nsurface chemistry",
+      "sublabel": "segregation • wetting films • Li₂CO₃ • humidity",
+      "x": 440,
+      "y": 560,
+      "w": 370,
+      "h": 140,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "t1",
+      "label": "Ionic conductivity",
+      "sublabel": "bulk • grain boundary • total",
+      "x": 880,
+      "y": 275,
+      "w": 260,
+      "h": 180,
+      "shape": "stadium",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "mA",
+      "group": "g_measure",
+      "label": "Conditions and\ncell geometry",
+      "sublabel": "temperature • frequency • electrodes\npellet thickness • contacts",
+      "x": 1260,
+      "y": 180,
+      "w": 360,
+      "h": 175,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "mB",
+      "group": "g_measure",
+      "label": "Reporting and\nuncertainty",
+      "sublabel": "equivalent circuit • reproducibility\nreported uncertainty",
+      "x": 1260,
+      "y": 455,
+      "w": 360,
+      "h": 175,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "i1",
+      "label": "Li/LLZO interface stability",
+      "sublabel": "interphase chemistry • contact resistance • dendrites",
+      "x": 450,
+      "y": 770,
+      "w": 480,
+      "h": 130,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 23
+    },
+    {
+      "id": "f1",
+      "label": "Comparability → process design",
+      "sublabel": "identify missing controls • refine process window",
+      "x": 1060,
+      "y": 770,
+      "w": 500,
+      "h": 130,
+      "shape": "stadium",
+      "fill": "#FFF2D5",
+      "stroke": "#C8942E",
+      "label_bold": true,
+      "font_size": 23
+    }
+  ],
+  "edges": [
+    {
+      "id": "ePA",
+      "from": "pA",
+      "to": "sA",
+      "label": "dopant",
+      "font_size": 19,
+      "arrow": "block",
+      "width": 2.4
+    },
+    {
+      "id": "ePB",
+      "from": "pB",
+      "to": "sB",
+      "label": "packing",
+      "font_size": 19,
+      "arrow": "block",
+      "width": 2.4
+    },
+    {
+      "id": "eS1",
+      "from": "sA",
+      "to": "sB",
+      "arrow": "block",
+      "width": 3.0
+    },
+    {
+      "id": "eS2",
+      "from": "sB",
+      "to": "sC",
+      "arrow": "block",
+      "width": 3.0
+    },
+    {
+      "id": "eT",
+      "from": "sC",
+      "to": "t1",
+      "label": "tortuosity",
+      "font_size": 19,
+      "arrow": "block",
+      "width": 3.0,
+      "waypoints": [
+        [
+          860,
+          550
+        ],
+        [
+          860,
+          365
+        ]
+      ]
+    },
+    {
+      "id": "eM1",
+      "from": "t1",
+      "to": "mA",
+      "label": "conditions",
+      "font_size": 19,
+      "arrow": "block",
+      "width": 2.4,
+      "waypoints": [
+        [
+          1210,
+          365
+        ],
+        [
+          1210,
+          267
+        ]
+      ]
+    },
+    {
+      "id": "eM2",
+      "from": "mA",
+      "to": "mB",
+      "arrow": "block",
+      "width": 2.4
+    },
+    {
+      "id": "eI1",
+      "from": "pB",
+      "to": "i1",
+      "label": "thermal",
+      "font_size": 19,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.0,
+      "waypoints": [
+        [
+          205,
+          730
+        ],
+        [
+          430,
+          730
+        ]
+      ]
+    },
+    {
+      "id": "eI2",
+      "from": "i1",
+      "to": "sC",
+      "label": "interface chemistry",
+      "font_size": 19,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.0,
+      "waypoints": [
+        [
+          700,
+          730
+        ],
+        [
+          700,
+          720
+        ]
+      ]
+    },
+    {
+      "id": "eF1",
+      "from": "mB",
+      "to": "f1",
+      "label": "uncertainty",
+      "font_size": 19,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.0,
+      "waypoints": [
+        [
+          1440,
+          700
+        ],
+        [
+          1310,
+          700
+        ]
+      ]
+    },
+    {
+      "id": "eF2",
+      "from": "f1",
+      "to": "pB",
+      "label": "refined process window",
+      "font_size": 19,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.0,
+      "waypoints": [
+        [
+          1000,
+          935
+        ],
+        [
+          20,
+          935
+        ]
+      ]
+    }
+  ],
+  "texts": [
+    {
+      "id": "note",
+      "text": "Solid arrows show the main process-to-transport path; dashed arrows mark interface or feedback relationships.",
+      "x": 850,
+      "y": 965,
+      "font_size": 19,
+      "color": "#4B5563",
+      "align": "center"
+    }
+  ]
+}

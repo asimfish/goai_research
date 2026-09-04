@@ -1,0 +1,70 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="taxonomy_phase_control">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1200" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="BaZn2Si2O7 分类框架" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontColor=#1a1a1a;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="c" value="&lt;b&gt;BaZn2Si2O7&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;目标相&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="500" y="275" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="a" value="&lt;b&gt;结构与多晶型&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;相变 · 配位&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="100" y="90" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="b" value="&lt;b&gt;合成路线&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;固相 · 溶胶—凝胶&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="380" y="70" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d" value="&lt;b&gt;组成与热处理&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;Ba/Sr · Zn 位&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="700" y="90" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e" value="&lt;b&gt;玻璃析晶&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;成核 · 生长&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#D9EEE9;strokeColor=#2a9d8f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="100" y="500" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="f" value="&lt;b&gt;近邻体系&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;Ba2ZnSi2O7 等&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#D9EEE9;strokeColor=#2a9d8f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="380" y="530" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="g" value="&lt;b&gt;证据边界&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;直接 / 近邻 / 推断&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8DDD5;strokeColor=#e07a5f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="700" y="500" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="h" value="&lt;b&gt;Ba5Y12Zn[O(SiO4)]8&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;未见直接报道&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8DDD5;strokeColor=#e07a5f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="980" y="275" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ea" value="结构" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="a">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb" value="制备" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="b">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ed" value="变量" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="d">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ee" value="晶化" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="e">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ef" value="近邻" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="f">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eg" value="判读" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="c" target="g">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eh" value="类比" style="edgeStyle=none;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;dashed=1;" edge="1" parent="1" source="c" target="h">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t2" value="实线：实验依据；虚线：结构化学比较，不表示同构" style="text;html=1;align=center;verticalAlign=middle;fontSize=15;fontColor=#4b5563;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="229.25" y="643" width="241.5" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

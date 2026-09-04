@@ -1,0 +1,298 @@
+{
+  "title": "Phase-purity bottlenecks and metastability",
+  "title_style": {
+    "font_size": 28,
+    "color": "#222222",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1200,
+    "height": 760
+  },
+  "defaults": {
+    "font_size": 15,
+    "edge_color": "#59636E",
+    "edge_width": 3
+  },
+  "nodes": [
+    {
+      "id": "pb_phase",
+      "label": "Phase\nrelations",
+      "x": 425,
+      "y": 120,
+      "w": 260,
+      "h": 120,
+      "shape": "rounded",
+      "fill": "#E7F3F2",
+      "stroke": "#2A9D8F",
+      "stroke_width": 1.8,
+      "label_bold": true
+    },
+    {
+      "id": "pb_process",
+      "label": "Process\nwindow",
+      "x": 790,
+      "y": 300,
+      "w": 260,
+      "h": 120,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "label_bold": true
+    },
+    {
+      "id": "pb_meta",
+      "label": "Metastable\npathways",
+      "x": 425,
+      "y": 500,
+      "w": 260,
+      "h": 120,
+      "shape": "rounded",
+      "fill": "#FFF7E5",
+      "stroke": "#E9C46A",
+      "stroke_width": 2,
+      "label_bold": true
+    },
+    {
+      "id": "pb_char",
+      "label": "Characterization",
+      "x": 90,
+      "y": 300,
+      "w": 260,
+      "h": 120,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "label_bold": true
+    },
+    {
+      "id": "pb_dec",
+      "label": "Reproducible\nisolation",
+      "x": 450,
+      "y": 300,
+      "w": 260,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#FFFFFF",
+      "stroke": "#2A9D8F",
+      "stroke_width": 2,
+      "label_bold": true
+    },
+    {
+      "id": "pb_gap",
+      "label": "BaO–Y2O3–ZnO–SiO2–O\nmap missing",
+      "x": 875,
+      "y": 521,
+      "w": 260,
+      "h": 78,
+      "shape": "rounded",
+      "fill": "#FFF7E5",
+      "stroke": "#E9C46A",
+      "stroke_width": 1.8
+    }
+  ],
+  "edges": [
+    {
+      "id": "pbe1",
+      "from": "pb_phase",
+      "to": "pb_process",
+      "label": "driving force",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          720,
+          180
+        ],
+        [
+          760,
+          180
+        ],
+        [
+          760,
+          295
+        ]
+      ]
+    },
+    {
+      "id": "pbe2",
+      "from": "pb_process",
+      "to": "pb_meta",
+      "label": "thermal · atmosphere history",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          1080,
+          450
+        ],
+        [
+          720,
+          450
+        ],
+        [
+          720,
+          560
+        ]
+      ]
+    },
+    {
+      "id": "pbe3",
+      "from": "pb_meta",
+      "to": "pb_char",
+      "label": "nucleation barrier",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          380,
+          560
+        ],
+        [
+          380,
+          450
+        ],
+        [
+          270,
+          450
+        ]
+      ]
+    },
+    {
+      "id": "pbe4",
+      "from": "pb_char",
+      "to": "pb_phase",
+      "label": "phase identity",
+      "font_size": 15,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          220,
+          260
+        ],
+        [
+          220,
+          95
+        ],
+        [
+          425,
+          95
+        ]
+      ]
+    },
+    {
+      "id": "pbd1",
+      "from": "pb_phase",
+      "to": "pb_dec",
+      "label": "phase field",
+      "font_size": 15,
+      "arrow": "open",
+      "dashed": true,
+      "width": 2,
+      "waypoints": [
+        [
+          555,
+          270
+        ],
+        [
+          555,
+          300
+        ]
+      ]
+    },
+    {
+      "id": "pbd2",
+      "from": "pb_process",
+      "to": "pb_dec",
+      "label": "process history",
+      "font_size": 15,
+      "arrow": "open",
+      "dashed": true,
+      "width": 2,
+      "waypoints": [
+        [
+          760,
+          355
+        ],
+        [
+          700,
+          355
+        ]
+      ]
+    },
+    {
+      "id": "pbd3",
+      "from": "pb_meta",
+      "to": "pb_dec",
+      "label": "kinetic retention",
+      "font_size": 15,
+      "arrow": "open",
+      "dashed": true,
+      "width": 2,
+      "waypoints": [
+        [
+          555,
+          500
+        ],
+        [
+          555,
+          390
+        ]
+      ]
+    },
+    {
+      "id": "pbd4",
+      "from": "pb_char",
+      "to": "pb_dec",
+      "label": "purity check",
+      "font_size": 15,
+      "arrow": "open",
+      "dashed": true,
+      "width": 2,
+      "waypoints": [
+        [
+          350,
+          355
+        ],
+        [
+          450,
+          355
+        ]
+      ]
+    },
+    {
+      "id": "pbgap",
+      "from": "pb_gap",
+      "to": "pb_phase",
+      "label": "data gap",
+      "font_size": 15,
+      "arrow": "open",
+      "dashed": true,
+      "width": 2,
+      "waypoints": [
+        [
+          875,
+          565
+        ],
+        [
+          1110,
+          565
+        ],
+        [
+          1110,
+          90
+        ],
+        [
+          685,
+          90
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="fig1_processing_structure_conductivity">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="LLZO processing–structure–ionic-conductivity framework" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontColor=#111111;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="g_processing" value="PROCESSING PATHWAY" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=22;fontStyle=1;container=1;collapsible=0;fillColor=#F4F5F6;strokeColor=#8A8F98;strokeWidth=1.2;fontColor=#8A8F98;" vertex="1" parent="1">
+          <mxGeometry x="30" y="100" width="450" height="735" as="geometry" />
+        </mxCell>
+        <mxCell id="g_bridge" value="LLZO GARNET BODY" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=22;fontStyle=1;container=1;collapsible=0;fillColor=#FAFAF7;strokeColor=#9B9B91;strokeWidth=1.2;fontColor=#9B9B91;" vertex="1" parent="1">
+          <mxGeometry x="535" y="100" width="430" height="735" as="geometry" />
+        </mxCell>
+        <mxCell id="g_structure" value="STRUCTURE–TRANSPORT PATHWAY" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=22;fontStyle=1;container=1;collapsible=0;fillColor=#F4F5F6;strokeColor=#8A8F98;strokeWidth=1.2;fontColor=#8A8F98;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="100" width="450" height="735" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" value="&lt;b&gt;Composition and&lt;br/&gt;phase control&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;dopants • phase stability • Li inventory&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_processing">
+          <mxGeometry x="30" y="50" width="390" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" value="&lt;b&gt;Powder and precursor&lt;br/&gt;synthesis&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;solid-state • sol–gel • co-precipitation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_processing">
+          <mxGeometry x="30" y="180" width="390" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" value="&lt;b&gt;Forming and&lt;br/&gt;green-body quality&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;pressing • tape casting • pore closure&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_processing">
+          <mxGeometry x="30" y="310" width="390" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" value="&lt;b&gt;Thermal processing&lt;br/&gt;and densification&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;temperature • atmosphere • additives&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_processing">
+          <mxGeometry x="30" y="440" width="390" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p5" value="&lt;b&gt;Surface and interface&lt;br/&gt;engineering&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;cleaning • coatings • Li contact&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_processing">
+          <mxGeometry x="30" y="570" width="390" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" value="&lt;b&gt;Processed LLZO&lt;br/&gt;body&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;phase purity • relative&lt;br/&gt;density&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#CBE8E4;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_bridge">
+          <mxGeometry x="100" y="75" width="230" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="&lt;b&gt;Garnet framework&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;Li-vacancy network •&lt;br/&gt;site occupancy&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;spacing=8;fillColor=#FFFFFF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_bridge">
+          <mxGeometry x="90" y="250" width="250" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="&lt;b&gt;Process–structure–&lt;br/&gt;conductivity view&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;compare with stated conditions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;spacing=6;fillColor=#FFF2D5;strokeColor=#C8942E;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_bridge">
+          <mxGeometry x="60" y="485" width="310" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="&lt;b&gt;Phase and composition&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;cubic/tetragonal • secondary phases • defects&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_structure">
+          <mxGeometry x="25" y="50" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="&lt;b&gt;Density and porosity&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;relative density • pore size • shrinkage&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_structure">
+          <mxGeometry x="25" y="180" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;Grain structure and&lt;br/&gt;grain-boundary chemistry&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;grain size • segregation • wetting films&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_structure">
+          <mxGeometry x="25" y="310" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="&lt;b&gt;Li⁺ transport pathways&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;bulk • grain boundary • tortuosity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_structure">
+          <mxGeometry x="25" y="440" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" value="&lt;b&gt;Conductivity and&lt;br/&gt;cell validation&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:17px' color='#555555'&gt;σLi⁺ • activation energy • current-density limits&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=20;" vertex="1" parent="g_structure">
+          <mxGeometry x="25" y="570" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ep1" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="p1" target="p2">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ep2" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="p2" target="p3">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ep3" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="p3" target="p4">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ep4" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="p4" target="p5">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="es1" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="s1" target="s2">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="es2" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="s2" target="s3">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="es3" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="s3" target="s4">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="es4" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3;fontSize=16;" edge="1" parent="1" source="s4" target="s5">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb1" value="" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.2;fontSize=16;dashed=1;" edge="1" parent="1" source="p4" target="b1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="590" />
+              <mxPoint x="500" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb2" value="phase / defect state" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.2;fontSize=17;" edge="1" parent="1" source="b1" target="b2">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb3" value="" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.2;fontSize=16;dashed=1;" edge="1" parent="1" source="b2" target="s1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="980" y="405" />
+              <mxPoint x="980" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb4" value="interface condition" style="edgeStyle=none;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.2;fontSize=17;dashed=1;" edge="1" parent="1" source="p5" target="b3">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb5" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.2;fontSize=16;dashed=1;" edge="1" parent="1" source="b3" target="s5">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend" value="Solid arrows: within-path progression   Dashed arrows: cross-path coupling" style="text;html=1;align=center;verticalAlign=middle;fontSize=17;fontColor=#4B5563;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-20.3" y="848" width="880.6" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,275 @@
+{
+  "title": "Reading route for the LLZO review",
+  "canvas": {
+    "width": 1500,
+    "height": 1020
+  },
+  "title_style": {
+    "font_size": 28,
+    "color": "#111111",
+    "bold": true,
+    "align": "center"
+  },
+  "defaults": {
+    "font_size": 17,
+    "font_family": "Helvetica",
+    "edge_color": "#3C536B",
+    "edge_width": 2.4,
+    "stroke_width": 1.8,
+    "arrow": "block",
+    "label_color": "#111111"
+  },
+  "nodes": [
+    {
+      "id": "n1",
+      "label": "Scope and evidence boundaries",
+      "sublabel": "review questions • inclusion criteria • comparability limits",
+      "x": 150,
+      "y": 105,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n2",
+      "label": "Composition and phase stability",
+      "sublabel": "dopant site chemistry • cubic/tetragonal selection • secondary phases",
+      "x": 150,
+      "y": 225,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n3",
+      "label": "Powder and precursor synthesis",
+      "sublabel": "precursor chemistry • reaction pathway • calcination and milling",
+      "x": 150,
+      "y": 345,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n4",
+      "label": "Forming and densification",
+      "sublabel": "green-body quality • thermal profile • Li-loss compensation",
+      "x": 150,
+      "y": 465,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n5",
+      "label": "Microstructure and interfaces",
+      "sublabel": "density • porosity • grain-boundary chemistry • Li/LLZO contact",
+      "x": 150,
+      "y": 585,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n6",
+      "label": "Ionic transport and measurement comparability",
+      "sublabel": "bulk / grain-boundary / total conductivity • temperature • geometry",
+      "x": 150,
+      "y": 705,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "n7",
+      "label": "Processing–property design rules and scale-up",
+      "sublabel": "trade-offs • reproducibility • manufacturability • unresolved bottlenecks",
+      "x": 150,
+      "y": 825,
+      "w": 1240,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#FFF2D5",
+      "stroke": "#C8942E",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "c1",
+      "label": "1",
+      "x": 60,
+      "y": 120,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_color": "#1F66B3",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c2",
+      "label": "2",
+      "x": 60,
+      "y": 240,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_color": "#1F66B3",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c3",
+      "label": "3",
+      "x": 60,
+      "y": 360,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_color": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c4",
+      "label": "4",
+      "x": 60,
+      "y": 480,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_color": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c5",
+      "label": "5",
+      "x": 60,
+      "y": 600,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_color": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c6",
+      "label": "6",
+      "x": 60,
+      "y": 720,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_color": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 22
+    },
+    {
+      "id": "c7",
+      "label": "7",
+      "x": 60,
+      "y": 840,
+      "w": 58,
+      "h": 58,
+      "shape": "stadium",
+      "fill": "#FFF2D5",
+      "stroke": "#C8942E",
+      "label_color": "#C8942E",
+      "label_bold": true,
+      "font_size": 22
+    }
+  ],
+  "edges": [
+    {
+      "id": "r1",
+      "from": "n1",
+      "to": "n2",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "r2",
+      "from": "n2",
+      "to": "n3",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "r3",
+      "from": "n3",
+      "to": "n4",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "r4",
+      "from": "n4",
+      "to": "n5",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "r5",
+      "from": "n5",
+      "to": "n6",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "r6",
+      "from": "n6",
+      "to": "n7",
+      "arrow": "block",
+      "width": 3
+    }
+  ],
+  "texts": [
+    {
+      "id": "route_note",
+      "text": "Reading direction: evidence boundaries → processing → structure and transport → design rules",
+      "x": 750,
+      "y": 965,
+      "font_size": 17,
+      "color": "#4B5563",
+      "align": "center"
+    }
+  ]
+}

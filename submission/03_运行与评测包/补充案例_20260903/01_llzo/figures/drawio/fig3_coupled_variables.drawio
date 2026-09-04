@@ -1,0 +1,125 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="fig3_coupled_variables">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1700" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="Coupled variables governing LLZO transport" style="text;html=1;align=center;verticalAlign=middle;fontSize=30;fontColor=#111111;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="29" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="g_proc" value="PROCESSING / CHEMISTRY" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=23;fontStyle=1;container=1;collapsible=0;fillColor=#F4F5F6;strokeColor=#8A8F98;strokeWidth=1.5;fontColor=#8A8F98;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="360" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="g_struct" value="MICROSTRUCTURE" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=23;fontStyle=1;container=1;collapsible=0;fillColor=#F4F5F6;strokeColor=#8A8F98;strokeWidth=1.5;fontColor=#8A8F98;" vertex="1" parent="1">
+          <mxGeometry x="410" y="110" width="430" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="g_measure" value="MEASUREMENT COMPARABILITY" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=23;fontStyle=1;container=1;collapsible=0;fillColor=#F4F5F6;strokeColor=#8A8F98;strokeWidth=1.5;fontColor=#8A8F98;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="110" width="420" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="pA" value="&lt;b&gt;Chemistry and&lt;br/&gt;dopants&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;site occupancy •&lt;br/&gt;liquid-phase formation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_proc">
+          <mxGeometry x="25" y="70" width="280" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="pB" value="&lt;b&gt;Thermal and forming&lt;br/&gt;history&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;Li₂O activity • atmosphere •&lt;br/&gt;dwell • packing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_proc">
+          <mxGeometry x="25" y="330" width="280" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="sA" value="&lt;b&gt;Phase and composition&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;phase purity • dopant distribution&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_struct">
+          <mxGeometry x="30" y="70" width="370" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="sB" value="&lt;b&gt;Density and&lt;br/&gt;grain structure&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;relative density • porosity • grain size&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_struct">
+          <mxGeometry x="30" y="260" width="370" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="sC" value="&lt;b&gt;Boundary and&lt;br/&gt;surface chemistry&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;segregation • wetting films • Li₂CO₃ •&lt;br/&gt;humidity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_struct">
+          <mxGeometry x="30" y="450" width="370" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="t1" value="&lt;b&gt;Ionic conductivity&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;bulk • grain boundary •&lt;br/&gt;total&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;spacing=6;fillColor=#E4EEF9;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=23;" vertex="1" parent="1">
+          <mxGeometry x="880" y="275" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="mA" value="&lt;b&gt;Conditions and&lt;br/&gt;cell geometry&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;temperature • frequency • electrodes&lt;br/&gt;pellet thickness • contacts&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_measure">
+          <mxGeometry x="30" y="70" width="360" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="mB" value="&lt;b&gt;Reporting and&lt;br/&gt;uncertainty&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;equivalent circuit • reproducibility&lt;br/&gt;reported uncertainty&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#1F66B3;strokeWidth=1.8;fontSize=23;" vertex="1" parent="g_measure">
+          <mxGeometry x="30" y="345" width="360" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="i1" value="&lt;b&gt;Li/LLZO interface stability&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;interphase chemistry • contact resistance •&lt;br/&gt;dendrites&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DDF2EF;strokeColor=#2B8C8A;strokeWidth=1.8;fontSize=23;" vertex="1" parent="1">
+          <mxGeometry x="450" y="770" width="480" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" value="&lt;b&gt;Comparability → process design&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:19.55px' color='#555555'&gt;identify missing controls • refine process window&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;spacing=6;fillColor=#FFF2D5;strokeColor=#C8942E;strokeWidth=1.8;fontSize=23;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="770" width="500" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ePA" value="dopant" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.4;fontSize=19;" edge="1" parent="1" source="pA" target="sA">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ePB" value="packing" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.4;fontSize=19;" edge="1" parent="1" source="pB" target="sB">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eS1" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3.0;fontSize=19;" edge="1" parent="1" source="sA" target="sB">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eS2" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3.0;fontSize=19;" edge="1" parent="1" source="sB" target="sC">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eT" value="tortuosity" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=3.0;fontSize=19;" edge="1" parent="1" source="sC" target="t1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="550" />
+              <mxPoint x="860" y="365" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eM1" value="conditions" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.4;fontSize=19;" edge="1" parent="1" source="t1" target="mA">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="365" />
+              <mxPoint x="1210" y="267" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eM2" value="" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.4;fontSize=19;" edge="1" parent="1" source="mA" target="mB">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eI1" value="thermal" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.0;fontSize=19;dashed=1;" edge="1" parent="1" source="pB" target="i1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="205" y="730" />
+              <mxPoint x="430" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eI2" value="interface chemistry" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.0;fontSize=19;dashed=1;" edge="1" parent="1" source="i1" target="sC">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="730" />
+              <mxPoint x="700" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eF1" value="uncertainty" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.0;fontSize=19;dashed=1;" edge="1" parent="1" source="mB" target="f1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="700" />
+              <mxPoint x="1310" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eF2" value="refined process window" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#3C536B;strokeWidth=2.0;fontSize=19;dashed=1;" edge="1" parent="1" source="f1" target="pB">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="935" />
+              <mxPoint x="20" y="935" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note" value="Solid arrows show the main process-to-transport path; dashed arrows mark interface or feedback relationships." style="text;html=1;align=center;verticalAlign=middle;fontSize=19;fontColor=#4B5563;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="125.15" y="952.65" width="1449.7" height="24.7" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,111 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="phase_bottlenecks">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1200" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="Phase-purity bottlenecks and metastability" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontColor=#222222;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_phase" value="Phase&lt;br/&gt;relations" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E7F3F2;strokeColor=#2A9D8F;strokeWidth=1.8;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="425" y="120" width="260" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_process" value="Process&lt;br/&gt;window" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="790" y="300" width="260" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_meta" value="Metastable&lt;br/&gt;pathways" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFF7E5;strokeColor=#E9C46A;strokeWidth=2;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="425" y="500" width="260" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_char" value="Characterization" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="300" width="260" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_dec" value="Reproducible&lt;br/&gt;isolation" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#2A9D8F;strokeWidth=2;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="300" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="pb_gap" value="BaO–Y2O3–ZnO–SiO2–O&lt;br/&gt;map missing" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFF7E5;strokeColor=#E9C46A;strokeWidth=1.8;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="875" y="521" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="pbe1" value="driving force" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="pb_phase" target="pb_process">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="180" />
+              <mxPoint x="760" y="180" />
+              <mxPoint x="760" y="295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbe2" value="thermal · atmosphere history" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="pb_process" target="pb_meta">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="450" />
+              <mxPoint x="720" y="450" />
+              <mxPoint x="720" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbe3" value="nucleation barrier" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="pb_meta" target="pb_char">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="560" />
+              <mxPoint x="380" y="450" />
+              <mxPoint x="270" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbe4" value="phase identity" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="pb_char" target="pb_phase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="260" />
+              <mxPoint x="220" y="95" />
+              <mxPoint x="425" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbd1" value="phase field" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="pb_phase" target="pb_dec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="555" y="270" />
+              <mxPoint x="555" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbd2" value="process history" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="pb_process" target="pb_dec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="355" />
+              <mxPoint x="700" y="355" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbd3" value="kinetic retention" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="pb_meta" target="pb_dec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="555" y="500" />
+              <mxPoint x="555" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbd4" value="purity check" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="pb_char" target="pb_dec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="355" />
+              <mxPoint x="450" y="355" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pbgap" value="data gap" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=open;endFill=0;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=2;fontSize=15;dashed=1;" edge="1" parent="1" source="pb_gap" target="pb_phase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="565" />
+              <mxPoint x="1110" y="565" />
+              <mxPoint x="1110" y="90" />
+              <mxPoint x="685" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
