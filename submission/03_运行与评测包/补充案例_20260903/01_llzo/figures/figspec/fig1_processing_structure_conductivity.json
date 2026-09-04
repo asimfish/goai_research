@@ -1,0 +1,386 @@
+{
+  "title": "LLZO processing–structure–ionic-conductivity framework",
+  "canvas": {
+    "width": 1500,
+    "height": 900
+  },
+  "title_style": {
+    "font_size": 28,
+    "color": "#111111",
+    "bold": true,
+    "align": "center"
+  },
+  "defaults": {
+    "font_size": 16,
+    "font_family": "Helvetica",
+    "edge_color": "#3C536B",
+    "edge_width": 2.2,
+    "stroke_width": 1.8,
+    "arrow": "block",
+    "label_color": "#111111"
+  },
+  "groups": [
+    {
+      "id": "g_processing",
+      "label": "PROCESSING PATHWAY",
+      "x": 30,
+      "y": 100,
+      "w": 450,
+      "h": 735,
+      "fill": "#F4F5F6",
+      "stroke": "#8A8F98",
+      "font_size": 22
+    },
+    {
+      "id": "g_bridge",
+      "label": "LLZO GARNET BODY",
+      "x": 535,
+      "y": 100,
+      "w": 430,
+      "h": 735,
+      "fill": "#FAFAF7",
+      "stroke": "#9B9B91",
+      "font_size": 22
+    },
+    {
+      "id": "g_structure",
+      "label": "STRUCTURE–TRANSPORT PATHWAY",
+      "x": 1020,
+      "y": 100,
+      "w": 450,
+      "h": 735,
+      "fill": "#F4F5F6",
+      "stroke": "#8A8F98",
+      "font_size": 22
+    }
+  ],
+  "nodes": [
+    {
+      "id": "p1",
+      "group": "g_processing",
+      "label": "Composition and\nphase control",
+      "sublabel": "dopants • phase stability • Li inventory",
+      "x": 60,
+      "y": 150,
+      "w": 390,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "p2",
+      "group": "g_processing",
+      "label": "Powder and precursor\nsynthesis",
+      "sublabel": "solid-state • sol–gel • co-precipitation",
+      "x": 60,
+      "y": 280,
+      "w": 390,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "p3",
+      "group": "g_processing",
+      "label": "Forming and\ngreen-body quality",
+      "sublabel": "pressing • tape casting • pore closure",
+      "x": 60,
+      "y": 410,
+      "w": 390,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "p4",
+      "group": "g_processing",
+      "label": "Thermal processing\nand densification",
+      "sublabel": "temperature • atmosphere • additives",
+      "x": 60,
+      "y": 540,
+      "w": 390,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "p5",
+      "group": "g_processing",
+      "label": "Surface and interface\nengineering",
+      "sublabel": "cleaning • coatings • Li contact",
+      "x": 60,
+      "y": 670,
+      "w": 390,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#E4EEF9",
+      "stroke": "#1F66B3",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "b1",
+      "group": "g_bridge",
+      "label": "Processed LLZO\nbody",
+      "sublabel": "phase purity • relative density",
+      "x": 635,
+      "y": 175,
+      "w": 230,
+      "h": 120,
+      "shape": "rounded",
+      "fill": "#CBE8E4",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "b2",
+      "group": "g_bridge",
+      "label": "Garnet framework",
+      "sublabel": "Li-vacancy network • site occupancy",
+      "x": 625,
+      "y": 350,
+      "w": 250,
+      "h": 110,
+      "shape": "ellipse",
+      "fill": "#FFFFFF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "b3",
+      "group": "g_bridge",
+      "label": "Process–structure–\nconductivity view",
+      "sublabel": "compare with stated conditions",
+      "x": 595,
+      "y": 585,
+      "w": 310,
+      "h": 160,
+      "shape": "stadium",
+      "fill": "#FFF2D5",
+      "stroke": "#C8942E",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "s1",
+      "group": "g_structure",
+      "label": "Phase and composition",
+      "sublabel": "cubic/tetragonal • secondary phases • defects",
+      "x": 1045,
+      "y": 150,
+      "w": 400,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "s2",
+      "group": "g_structure",
+      "label": "Density and porosity",
+      "sublabel": "relative density • pore size • shrinkage",
+      "x": 1045,
+      "y": 280,
+      "w": 400,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "s3",
+      "group": "g_structure",
+      "label": "Grain structure and\ngrain-boundary chemistry",
+      "sublabel": "grain size • segregation • wetting films",
+      "x": 1045,
+      "y": 410,
+      "w": 400,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "s4",
+      "group": "g_structure",
+      "label": "Li⁺ transport pathways",
+      "sublabel": "bulk • grain boundary • tortuosity",
+      "x": 1045,
+      "y": 540,
+      "w": 400,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    },
+    {
+      "id": "s5",
+      "group": "g_structure",
+      "label": "Conductivity and\ncell validation",
+      "sublabel": "σLi⁺ • activation energy • current-density limits",
+      "x": 1045,
+      "y": 670,
+      "w": 400,
+      "h": 100,
+      "shape": "rounded",
+      "fill": "#DDF2EF",
+      "stroke": "#2B8C8A",
+      "label_bold": true,
+      "font_size": 20
+    }
+  ],
+  "edges": [
+    {
+      "id": "ep1",
+      "from": "p1",
+      "to": "p2",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "ep2",
+      "from": "p2",
+      "to": "p3",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "ep3",
+      "from": "p3",
+      "to": "p4",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "ep4",
+      "from": "p4",
+      "to": "p5",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "es1",
+      "from": "s1",
+      "to": "s2",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "es2",
+      "from": "s2",
+      "to": "s3",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "es3",
+      "from": "s3",
+      "to": "s4",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "es4",
+      "from": "s4",
+      "to": "s5",
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "eb1",
+      "from": "p4",
+      "to": "b1",
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.2,
+      "waypoints": [
+        [
+          500,
+          590
+        ],
+        [
+          500,
+          235
+        ]
+      ]
+    },
+    {
+      "id": "eb2",
+      "from": "b1",
+      "to": "b2",
+      "label": "phase / defect state",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 2.2
+    },
+    {
+      "id": "eb3",
+      "from": "b2",
+      "to": "s1",
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.2,
+      "waypoints": [
+        [
+          980,
+          405
+        ],
+        [
+          980,
+          200
+        ]
+      ]
+    },
+    {
+      "id": "eb4",
+      "from": "p5",
+      "to": "b3",
+      "label": "interface condition",
+      "font_size": 17,
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.2
+    },
+    {
+      "id": "eb5",
+      "from": "b3",
+      "to": "s5",
+      "dashed": true,
+      "arrow": "open",
+      "width": 2.2
+    }
+  ],
+  "texts": [
+    {
+      "id": "legend",
+      "text": "Solid arrows: within-path progression   Dashed arrows: cross-path coupling",
+      "x": 420,
+      "y": 860,
+      "font_size": 17,
+      "color": "#4B5563",
+      "align": "center"
+    }
+  ]
+}

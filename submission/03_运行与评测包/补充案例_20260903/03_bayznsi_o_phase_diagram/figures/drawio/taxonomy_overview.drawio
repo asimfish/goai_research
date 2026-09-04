@@ -1,0 +1,138 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="taxonomy_overview">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="Ba–Y–Zn–Si–O evidence taxonomy" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontColor=#222222;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="g_ev" value="Evidence basis" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=18;fontStyle=1;container=1;collapsible=0;fillColor=#F7F9F9;strokeColor=#7A9E9F;strokeWidth=1.2;fontColor=#7A9E9F;" vertex="1" parent="1">
+          <mxGeometry x="25" y="185" width="1450" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="g_mid" value="Process and validation" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=18;fontStyle=1;container=1;collapsible=0;fillColor=#F7F8FA;strokeColor=#7A9E9F;strokeWidth=1.2;fontColor=#7A9E9F;" vertex="1" parent="1">
+          <mxGeometry x="285" y="455" width="1190" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="g_dec" value="Priority actions" style="rounded=1;absoluteArcSize=1;arcSize=10;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontSize=18;fontStyle=1;container=1;collapsible=0;fillColor=#FBFAF5;strokeColor=#7A9E9F;strokeWidth=1.2;fontColor=#7A9E9F;" vertex="1" parent="1">
+          <mxGeometry x="410" y="700" width="680" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="target" value="Ba–Y–Zn–Si–O&lt;br/&gt;target space" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E7F3F2;strokeColor=#2A9D8F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="575" y="72" width="350" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="direct" value="Four-component records&lt;br/&gt;glasses / precursors" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E7F3F2;strokeColor=#2A9D8F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_ev">
+          <mxGeometry x="30" y="65" width="300" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="bay" value="Ba–Y–Si–O&lt;br/&gt;structures" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_ev">
+          <mxGeometry x="375" y="65" width="300" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="bzn" value="Ba–Zn–Si–O&lt;br/&gt;structures" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_ev">
+          <mxGeometry x="720" y="65" width="300" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="phase" value="Binary / ternary&lt;br/&gt;phase relations" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F1F3F5;strokeColor=#59636E;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_ev">
+          <mxGeometry x="1105" y="65" width="300" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="process" value="Processing&lt;br/&gt;controls" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_mid">
+          <mxGeometry x="50" y="55" width="300" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="checks" value="Diffraction + EPMA +&lt;br/&gt;complementary probes" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EEF2F5;strokeColor=#7A9E9F;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_mid">
+          <mxGeometry x="415" y="55" width="300" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="gap" value="Quaternary map&lt;br/&gt;missing" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFF7E5;strokeColor=#E9C46A;strokeWidth=1.8;fontSize=17;fontStyle=1;" vertex="1" parent="g_mid">
+          <mxGeometry x="815" y="55" width="300" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="priority" value="Prioritized experiments" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#FFF7E5;strokeColor=#E9C46A;strokeWidth=2;fontSize=17;fontStyle=1;" vertex="1" parent="g_dec">
+          <mxGeometry x="150" y="55" width="380" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t_direct" value="composition-direct" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="target" target="direct">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="205" />
+              <mxPoint x="205" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_t_bay" value="structure motif" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="target" target="bay">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="575" y="205" />
+              <mxPoint x="550" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_t_bzn" value="structure motif" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="target" target="bzn">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="925" y="205" />
+              <mxPoint x="895" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_t_phase" value="phase field" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="target" target="phase">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="955" y="205" />
+              <mxPoint x="1280" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_direct_process" value="composition evidence" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="direct" target="process">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="205" y="420" />
+              <mxPoint x="485" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_bay_process" value="structure motif" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="bay" target="process">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="455" />
+              <mxPoint x="485" y="455" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_bzn_checks" value="phase identity" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="bzn" target="checks">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="420" />
+              <mxPoint x="850" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_phase_gap" value="missing quaternary map" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="phase" target="gap">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_process_priority" value="process window" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="process" target="priority">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="485" y="650" />
+              <mxPoint x="640" y="650" />
+              <mxPoint x="640" y="755" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_checks_priority" value="purity check" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="checks" target="priority">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="675" />
+              <mxPoint x="750" y="675" />
+              <mxPoint x="750" y="755" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gap_priority" value="map subspaces" style="edgeStyle=orthogonalEdgeStyle;jettySize=0;orthogonalLoop=1;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#59636E;strokeWidth=3;fontSize=17;" edge="1" parent="1" source="gap" target="priority">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="675" />
+              <mxPoint x="920" y="675" />
+              <mxPoint x="920" y="755" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

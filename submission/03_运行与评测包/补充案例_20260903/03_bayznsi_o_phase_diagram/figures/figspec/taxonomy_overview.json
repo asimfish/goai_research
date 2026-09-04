@@ -1,0 +1,385 @@
+{
+  "title": "Ba–Y–Zn–Si–O evidence taxonomy",
+  "title_style": {
+    "font_size": 28,
+    "color": "#222222",
+    "bold": true
+  },
+  "canvas": {
+    "width": 1500,
+    "height": 900
+  },
+  "defaults": {
+    "font_size": 17,
+    "edge_color": "#59636E",
+    "edge_width": 3
+  },
+  "groups": [
+    {
+      "id": "g_ev",
+      "label": "Evidence basis",
+      "x": 25,
+      "y": 185,
+      "w": 1450,
+      "h": 225,
+      "fill": "#F7F9F9",
+      "stroke": "#7A9E9F",
+      "font_size": 18
+    },
+    {
+      "id": "g_mid",
+      "label": "Process and validation",
+      "x": 285,
+      "y": 455,
+      "w": 1190,
+      "h": 180,
+      "fill": "#F7F8FA",
+      "stroke": "#7A9E9F",
+      "font_size": 18
+    },
+    {
+      "id": "g_dec",
+      "label": "Priority actions",
+      "x": 410,
+      "y": 700,
+      "w": 680,
+      "h": 160,
+      "fill": "#FBFAF5",
+      "stroke": "#7A9E9F",
+      "font_size": 18
+    }
+  ],
+  "nodes": [
+    {
+      "id": "target",
+      "label": "Ba–Y–Zn–Si–O\ntarget space",
+      "x": 575,
+      "y": 72,
+      "w": 350,
+      "h": 92,
+      "shape": "rounded",
+      "fill": "#E7F3F2",
+      "stroke": "#2A9D8F",
+      "stroke_width": 1.8,
+      "label_bold": true
+    },
+    {
+      "id": "direct",
+      "label": "Four-component records\nglasses / precursors",
+      "x": 55,
+      "y": 250,
+      "w": 300,
+      "h": 125,
+      "shape": "rounded",
+      "fill": "#E7F3F2",
+      "stroke": "#2A9D8F",
+      "stroke_width": 1.8,
+      "group": "g_ev"
+    },
+    {
+      "id": "bay",
+      "label": "Ba–Y–Si–O\nstructures",
+      "x": 400,
+      "y": 250,
+      "w": 300,
+      "h": 125,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "group": "g_ev"
+    },
+    {
+      "id": "bzn",
+      "label": "Ba–Zn–Si–O\nstructures",
+      "x": 745,
+      "y": 250,
+      "w": 300,
+      "h": 125,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "group": "g_ev"
+    },
+    {
+      "id": "phase",
+      "label": "Binary / ternary\nphase relations",
+      "x": 1130,
+      "y": 250,
+      "w": 300,
+      "h": 125,
+      "shape": "rounded",
+      "fill": "#F1F3F5",
+      "stroke": "#59636E",
+      "stroke_width": 1.8,
+      "group": "g_ev"
+    },
+    {
+      "id": "process",
+      "label": "Processing\ncontrols",
+      "x": 335,
+      "y": 510,
+      "w": 300,
+      "h": 92,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "group": "g_mid"
+    },
+    {
+      "id": "checks",
+      "label": "Diffraction + EPMA +\ncomplementary probes",
+      "x": 700,
+      "y": 510,
+      "w": 300,
+      "h": 92,
+      "shape": "rounded",
+      "fill": "#EEF2F5",
+      "stroke": "#7A9E9F",
+      "stroke_width": 1.8,
+      "group": "g_mid"
+    },
+    {
+      "id": "gap",
+      "label": "Quaternary map\nmissing",
+      "x": 1100,
+      "y": 510,
+      "w": 300,
+      "h": 92,
+      "shape": "rounded",
+      "fill": "#FFF7E5",
+      "stroke": "#E9C46A",
+      "stroke_width": 1.8,
+      "group": "g_mid"
+    },
+    {
+      "id": "priority",
+      "label": "Prioritized experiments",
+      "x": 560,
+      "y": 755,
+      "w": 380,
+      "h": 70,
+      "shape": "rounded",
+      "fill": "#FFF7E5",
+      "stroke": "#E9C46A",
+      "stroke_width": 2,
+      "group": "g_dec",
+      "label_bold": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_t_direct",
+      "from": "target",
+      "to": "direct",
+      "label": "composition-direct",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          545,
+          205
+        ],
+        [
+          205,
+          205
+        ]
+      ]
+    },
+    {
+      "id": "e_t_bay",
+      "from": "target",
+      "to": "bay",
+      "label": "structure motif",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          575,
+          205
+        ],
+        [
+          550,
+          205
+        ]
+      ]
+    },
+    {
+      "id": "e_t_bzn",
+      "from": "target",
+      "to": "bzn",
+      "label": "structure motif",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          925,
+          205
+        ],
+        [
+          895,
+          205
+        ]
+      ]
+    },
+    {
+      "id": "e_t_phase",
+      "from": "target",
+      "to": "phase",
+      "label": "phase field",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          955,
+          205
+        ],
+        [
+          1280,
+          205
+        ]
+      ]
+    },
+    {
+      "id": "e_direct_process",
+      "from": "direct",
+      "to": "process",
+      "label": "composition evidence",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          205,
+          420
+        ],
+        [
+          485,
+          420
+        ]
+      ]
+    },
+    {
+      "id": "e_bay_process",
+      "from": "bay",
+      "to": "process",
+      "label": "structure motif",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          550,
+          455
+        ],
+        [
+          485,
+          455
+        ]
+      ]
+    },
+    {
+      "id": "e_bzn_checks",
+      "from": "bzn",
+      "to": "checks",
+      "label": "phase identity",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          895,
+          420
+        ],
+        [
+          850,
+          420
+        ]
+      ]
+    },
+    {
+      "id": "e_phase_gap",
+      "from": "phase",
+      "to": "gap",
+      "label": "missing quaternary map",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3
+    },
+    {
+      "id": "e_process_priority",
+      "from": "process",
+      "to": "priority",
+      "label": "process window",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          485,
+          650
+        ],
+        [
+          640,
+          650
+        ],
+        [
+          640,
+          755
+        ]
+      ]
+    },
+    {
+      "id": "e_checks_priority",
+      "from": "checks",
+      "to": "priority",
+      "label": "purity check",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          850,
+          675
+        ],
+        [
+          750,
+          675
+        ],
+        [
+          750,
+          755
+        ]
+      ]
+    },
+    {
+      "id": "e_gap_priority",
+      "from": "gap",
+      "to": "priority",
+      "label": "map subspaces",
+      "font_size": 17,
+      "arrow": "block",
+      "width": 3,
+      "waypoints": [
+        [
+          1250,
+          675
+        ],
+        [
+          920,
+          675
+        ],
+        [
+          920,
+          755
+        ]
+      ]
+    }
+  ]
+}

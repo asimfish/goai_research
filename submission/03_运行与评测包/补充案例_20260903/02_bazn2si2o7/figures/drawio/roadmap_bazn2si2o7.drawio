@@ -1,0 +1,56 @@
+<mxfile host="goai-research" agent="goai-figure-mcp" version="24.0.0">
+  <diagram id="goai-0" name="roadmap_bazn2si2o7">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1"
+        connect="1" arrows="1" fold="1" page="1" pageScale="1"
+        pageWidth="1200" pageHeight="650" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="goai-title" value="BaZn2Si2O7 综述路线" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontColor=#1a1a1a;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="8" width="480" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" value="&lt;b&gt;结构基础&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;低/高温多晶型&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="20" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="&lt;b&gt;合成路线&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;固相 · 溶胶—凝胶&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="230" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="&lt;b&gt;相控制&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;组成 · 热处理&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#DCE6F1;strokeColor=#1f4e79;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="440" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="&lt;b&gt;近邻体系&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;Ba–Sr–Zn–Si&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#D9EEE9;strokeColor=#2a9d8f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="650" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="&lt;b&gt;类似物判据&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;Ba5Y12Zn[O(SiO&lt;br/&gt;4)]8&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#D9EEE9;strokeColor=#2a9d8f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="860" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" value="&lt;b&gt;实验优先级&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:14.45px' color='#555555'&gt;相图 · 结构 ·&lt;br/&gt;热力学&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8DDD5;strokeColor=#e07a5f;strokeWidth=1.5;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="250" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="结构约束" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="n1" target="n2">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" value="条件窗口" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="n2" target="n3">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" value="可迁移变量" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="n3" target="n4">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="比较边界" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="n4" target="n5">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" value="缺口驱动" style="edgeStyle=none;rounded=0;html=1;endArrow=block;endFill=1;endSize=8;targetSpacing=0;perimeterSpacing=0;strokeColor=#1f4e79;strokeWidth=3;fontSize=15;" edge="1" parent="1" source="n5" target="n6">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t1" value="阅读顺序：事实 → 比较 → 可证伪建议" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#4b5563;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="238" y="418" width="224" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

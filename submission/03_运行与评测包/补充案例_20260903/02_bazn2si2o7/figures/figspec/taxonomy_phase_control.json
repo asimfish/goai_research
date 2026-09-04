@@ -1,0 +1,174 @@
+{
+  "title": "BaZn2Si2O7 分类框架",
+  "canvas": {
+    "width": 1200,
+    "height": 700
+  },
+  "defaults": {
+    "font_size": 17,
+    "edge_color": "#1f4e79",
+    "edge_width": 3
+  },
+  "groups": [],
+  "nodes": [
+    {
+      "id": "c",
+      "label": "BaZn2Si2O7",
+      "sublabel": "目标相",
+      "x": 500,
+      "y": 275,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "a",
+      "label": "结构与多晶型",
+      "sublabel": "相变 · 配位",
+      "x": 100,
+      "y": 90,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "b",
+      "label": "合成路线",
+      "sublabel": "固相 · 溶胶—凝胶",
+      "x": 380,
+      "y": 70,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "d",
+      "label": "组成与热处理",
+      "sublabel": "Ba/Sr · Zn 位",
+      "x": 700,
+      "y": 90,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "e",
+      "label": "玻璃析晶",
+      "sublabel": "成核 · 生长",
+      "x": 100,
+      "y": 500,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#D9EEE9",
+      "stroke": "#2a9d8f"
+    },
+    {
+      "id": "f",
+      "label": "近邻体系",
+      "sublabel": "Ba2ZnSi2O7 等",
+      "x": 380,
+      "y": 530,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#D9EEE9",
+      "stroke": "#2a9d8f"
+    },
+    {
+      "id": "g",
+      "label": "证据边界",
+      "sublabel": "直接 / 近邻 / 推断",
+      "x": 700,
+      "y": 500,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#F8DDD5",
+      "stroke": "#e07a5f"
+    },
+    {
+      "id": "h",
+      "label": "Ba5Y12Zn[O(SiO4)]8",
+      "sublabel": "未见直接报道",
+      "x": 980,
+      "y": 275,
+      "w": 200,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#F8DDD5",
+      "stroke": "#e07a5f"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ea",
+      "from": "c",
+      "to": "a",
+      "label": "结构",
+      "font_size": 15
+    },
+    {
+      "id": "eb",
+      "from": "c",
+      "to": "b",
+      "label": "制备",
+      "font_size": 15
+    },
+    {
+      "id": "ed",
+      "from": "c",
+      "to": "d",
+      "label": "变量",
+      "font_size": 15
+    },
+    {
+      "id": "ee",
+      "from": "c",
+      "to": "e",
+      "label": "晶化",
+      "font_size": 15
+    },
+    {
+      "id": "ef",
+      "from": "c",
+      "to": "f",
+      "label": "近邻",
+      "font_size": 15
+    },
+    {
+      "id": "eg",
+      "from": "c",
+      "to": "g",
+      "label": "判读",
+      "font_size": 15
+    },
+    {
+      "id": "eh",
+      "from": "c",
+      "to": "h",
+      "label": "类比",
+      "font_size": 15,
+      "dashed": true,
+      "arrow": "open"
+    }
+  ],
+  "texts": [
+    {
+      "id": "t2",
+      "text": "实线：实验依据；虚线：结构化学比较，不表示同构",
+      "x": 350,
+      "y": 655,
+      "font_size": 15,
+      "color": "#4b5563"
+    }
+  ]
+}

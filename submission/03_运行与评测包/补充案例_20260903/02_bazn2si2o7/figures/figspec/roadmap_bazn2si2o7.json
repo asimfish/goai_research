@@ -1,0 +1,134 @@
+{
+  "title": "BaZn2Si2O7 综述路线",
+  "canvas": {
+    "width": 1200,
+    "height": 650
+  },
+  "defaults": {
+    "font_size": 17,
+    "edge_color": "#1f4e79",
+    "edge_width": 3
+  },
+  "groups": [],
+  "nodes": [
+    {
+      "id": "n1",
+      "label": "结构基础",
+      "sublabel": "低/高温多晶型",
+      "x": 20,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "n2",
+      "label": "合成路线",
+      "sublabel": "固相 · 溶胶—凝胶",
+      "x": 230,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "n3",
+      "label": "相控制",
+      "sublabel": "组成 · 热处理",
+      "x": 440,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#DCE6F1",
+      "stroke": "#1f4e79"
+    },
+    {
+      "id": "n4",
+      "label": "近邻体系",
+      "sublabel": "Ba–Sr–Zn–Si",
+      "x": 650,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#D9EEE9",
+      "stroke": "#2a9d8f"
+    },
+    {
+      "id": "n5",
+      "label": "类似物判据",
+      "sublabel": "Ba5Y12Zn[O(SiO4)]8",
+      "x": 860,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#D9EEE9",
+      "stroke": "#2a9d8f"
+    },
+    {
+      "id": "n6",
+      "label": "实验优先级",
+      "sublabel": "相图 · 结构 · 热力学",
+      "x": 1070,
+      "y": 250,
+      "w": 130,
+      "h": 90,
+      "shape": "rounded",
+      "fill": "#F8DDD5",
+      "stroke": "#e07a5f"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "n1",
+      "to": "n2",
+      "label": "结构约束",
+      "font_size": 15
+    },
+    {
+      "id": "e2",
+      "from": "n2",
+      "to": "n3",
+      "label": "条件窗口",
+      "font_size": 15
+    },
+    {
+      "id": "e3",
+      "from": "n3",
+      "to": "n4",
+      "label": "可迁移变量",
+      "font_size": 15
+    },
+    {
+      "id": "e4",
+      "from": "n4",
+      "to": "n5",
+      "label": "比较边界",
+      "font_size": 15
+    },
+    {
+      "id": "e5",
+      "from": "n5",
+      "to": "n6",
+      "label": "缺口驱动",
+      "font_size": 15
+    }
+  ],
+  "texts": [
+    {
+      "id": "t1",
+      "text": "阅读顺序：事实 → 比较 → 可证伪建议",
+      "x": 350,
+      "y": 430,
+      "font_size": 16,
+      "color": "#4b5563"
+    }
+  ]
+}
