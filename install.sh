@@ -29,17 +29,23 @@ else
   UV_BIN="$UV_BOOTSTRAP_DIR/bin/uv"
 fi
 
-PY=python3
-for cand in python3.11 python3.10 python3.12 python3; do
+# 选一个 >=3.10 的解释器；系统只有旧 python（如 macOS 自带 3.9）时让 uv 下载托管的 3.11，
+# 不能把 3.9 拿来建 venv（pyproject 要求 >=3.10，后续步骤也会因缺模块中断）
+PY=""
+for cand in python3.11 python3.12 python3.10 python3; do
   if command -v "$cand" >/dev/null 2>&1 &&
      "$cand" -c 'import sys; raise SystemExit(sys.version_info < (3, 10))'; then
     PY="$cand"
     break
   fi
 done
-
-echo "==> 用 $UV_BIN 建 .venv（$($PY -c 'import platform; print(platform.python_version())')）"
-"$UV_BIN" venv --allow-existing --python "$PY" .venv
+if [[ -n "$PY" ]]; then
+  echo "==> 用 $UV_BIN 建 .venv（$($PY -c 'import platform; print(platform.python_version())')）"
+  "$UV_BIN" venv --allow-existing --python "$PY" .venv
+else
+  echo "==> 系统无 >=3.10 的 Python，用 uv 托管的 CPython 3.11 建 .venv"
+  "$UV_BIN" venv --allow-existing --python 3.11 .venv
+fi
 
 if [ "$WITH_RETRO" = "0" ]; then
   "$UV_BIN" sync --frozen --extra dev --python .venv/bin/python
@@ -47,14 +53,10 @@ else
   # PyPI's Linux torch wheel pulls several GiB of CUDA libraries.  Install the
   # matching locked torch release from the selected CPU/GPU index, then apply
   # every remaining version from uv.lock as a constraints file.
-  TORCH_VERSION=$($PY - <<'PY'
-import tomllib
-with open("uv.lock", "rb") as fh:
-    lock = tomllib.load(fh)
-print(next(p["version"] for p in lock["package"] if p["name"] == "torch"))
-PY
-  )
-  echo "==> 安装锁定的 torch $TORCH_VERSION（$TORCH_INDEX）"
+  # 从 uv.lock 取锁定的 torch 版本：纯 awk，不依赖 tomllib（3.11+）也不依赖系统 python 版本
+  TORCH_VERSION=$(awk '/^\[\[package\]\]/{p=0} /^name = "torch"$/{p=1} p && /^version = /{gsub(/"/,"",$3); print $3; exit}' uv.lock)
+  if [[ -z "$TORCH_VERSION" ]]; then echo "无法从 uv.lock 读取 torch 版本" >&2; exit 1; fi
+  echo "==> 安装锁定的 torch ${TORCH_VERSION}（${TORCH_INDEX}）"
   "$UV_BIN" pip install --python .venv/bin/python \
     "torch==$TORCH_VERSION" --index-url "$TORCH_INDEX"
   RETRO_REQUIREMENTS="$(mktemp)"
