@@ -216,3 +216,7 @@ export interface Artifacts {
   sections: string[]
   reviews: string[]
 }
+
+export interface McpTool { name: string; params: { name: string; default: string | null }[]; summary: string; doc: string; used_by: string[] }
+export interface McpServer { id: string; file: string; summary: string; tools: McpTool[]; used_by: string[]; exists: boolean }
+export interface RoleTask { workspace_id: string; workspace: string; topic: string; run_id: string; name: string; key: string; status: string; started: number | null; ended: number | null; elapsed: number | null }

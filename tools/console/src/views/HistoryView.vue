@@ -9,7 +9,8 @@ import { CheckmarkCircleOutline, FolderOpenOutline, LayersOutline, PulseOutline 
 import { api } from '../api'
 import type { ConsoleConfig, WorkspaceInfo } from '../types'
 import { WS_STATUS_LABEL, ago, dateTime, statusType } from '../format'
-import { GATE_ORDER } from '../roles'
+import { GATE_ORDER, STAGE_LABEL } from '../roles'
+import { checkStatus, gateLabel } from '../labels'
 import LaunchPanel from '../components/LaunchPanel.vue'
 
 const router = useRouter()
@@ -68,7 +69,7 @@ function gateBar(w: WorkspaceInfo) {
     const s = w.gates[g] || (g in w.gates ? 'PENDING' : '')
     return h(NTooltip, { key: g }, {
       trigger: () => h('span', { class: 'seg', style: { background: GATE_COLOR[s] || 'rgba(255,255,255,.06)' } }),
-      default: () => `${g}: ${s || '未记录'}`,
+      default: () => `${gateLabel(g)}（${g}）：${s ? checkStatus(s) : '未记录'}`,
     })
   }))
 }
@@ -88,9 +89,9 @@ const columns: DataTableColumns<WorkspaceInfo> = [
   },
   {
     title: '阶段 / 轮次', key: 'stage', width: 140,
-    render: (w) => w.stage ? h('div', [h('span', { class: 'mono' }, w.stage), h('span', { class: 'dim' }, ` · r${w.round}/${w.max_rounds}`)]) : h('span', { class: 'dim' }, '账本未初始化'),
+    render: (w) => w.stage ? h('div', [h('span', {}, STAGE_LABEL[w.stage] || w.stage), h('span', { class: 'dim' }, ` · 第 ${w.round}/${w.max_rounds} 轮`)]) : h('span', { class: 'dim' }, '尚未开始'),
   },
-  { title: '闸门（9 个）', key: 'gates', width: 150, render: gateBar },
+  { title: '质量检查（9 项）', key: 'gates', width: 150, render: gateBar },
   { title: '批次 / 任务', key: 'tasks', width: 104, render: (w) => `${w.batches} / ${w.tasks}${w.tasks_running ? ` (▶${w.tasks_running})` : ''}` },
   {
     title: '最近活动', key: 'last_activity', width: 120,
@@ -101,7 +102,7 @@ const columns: DataTableColumns<WorkspaceInfo> = [
     title: '产物', key: 'final_pdf', width: 84,
     render: (w) => w.final_pdf
       ? h('a', { href: api.pdfUrl(w.id), target: '_blank', style: 'color:#63c26b' }, 'PDF ↗')
-      : h('span', { class: 'dim' }, w.open_issues ? `${w.open_issues} open` : '—'),
+      : h('span', { class: 'dim' }, w.open_issues ? `${w.open_issues} 条意见待处理` : '—'),
   },
   {
     title: '操作', key: 'actions', width: 176,
@@ -112,7 +113,7 @@ const columns: DataTableColumns<WorkspaceInfo> = [
         w.status === 'running' && w.launcher.alive
           ? h(NPopconfirm, { onPositiveClick: () => stop(w) }, {
               trigger: () => h(NButton, { size: 'tiny', type: 'error', ghost: true }, { default: () => '终止' }),
-              default: () => `向 pid ${w.launcher.pid} 的整个进程组发 SIGTERM（编排器、子 agent、MCP server），8 秒后仍在则 SIGKILL。已落盘的产物与账本保留。`,
+              default: () => `将结束编排器、所有子 agent 和 MCP 服务进程；已落盘的产物与账本保留，工作区留在历史里可回放。`,
             })
           : null,
       ],

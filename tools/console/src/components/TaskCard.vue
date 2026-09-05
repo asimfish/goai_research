@@ -1,72 +1,89 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
-import { NCard, NSpace, NTag, NText, NTooltip } from 'naive-ui'
+import { computed } from 'vue'
+import { NCard, NProgress, NTag, NTooltip } from 'naive-ui'
 import type { TaskSummary } from '../types'
-import { dur, statusType, tok } from '../format'
+import { dur, hms, statusType, tok } from '../format'
 import { roleVisual } from '../roles'
-import EventLine from './EventLine.vue'
+import { latestMessage, taskStatus, toActivity } from '../labels'
 import RoleBadge from './RoleBadge.vue'
 
-const props = defineProps<{ task: TaskSummary; now: number; showReasoning: boolean; autoscroll: boolean }>()
+/** 低密度任务卡：角色 / 任务名 / 状态 · 进度 · 最新一句话 · ≤4 行人话活动。原始命令与 JSON 只在抽屉里看。 */
+const props = defineProps<{ task: TaskSummary; now: number; rows?: number }>()
 const emit = defineEmits<{ (e: 'open', key: string): void }>()
 
-const body = ref<HTMLElement | null>(null)
 const vis = computed(() => roleVisual(props.task.role))
 const stale = computed(() => props.task.status === 'RUNNING' && props.task.last_activity != null && props.now - props.task.last_activity > 300)
-const c = computed(() => props.task.counts || {})
-
-watch(() => props.task.recent.length + (props.task.recent.at(-1)?.status || ''), async () => {
-  if (!props.autoscroll || !body.value) return
-  const el = body.value
-  const nearBottom = el.scrollHeight - el.clientHeight - el.scrollTop < 40
-  await nextTick()
-  if (nearBottom) el.scrollTop = el.scrollHeight
+const steps = computed(() => (props.task.counts.command || 0) + (props.task.counts.mcp || 0) + (props.task.counts.web_search || 0) + (props.task.counts.file_change || 0))
+const message = computed(() => latestMessage(props.task.recent) || props.task.last_message || '')
+const activity = computed(() => {
+  const rows = []
+  for (let i = props.task.recent.length - 1; i >= 0 && rows.length < (props.rows || 4); i--) {
+    const ev = props.task.recent[i]
+    if (ev.kind === 'message') continue
+    if (ev.kind === 'command' && ev.status === 'in_progress') continue
+    const a = toActivity(ev)
+    if (a) rows.unshift(a)
+  }
+  return rows
 })
+/** 运行中用“步数”做不定进度；结束了就满格 */
+const percent = computed(() => props.task.status_group === 'RUNNING' ? Math.min(92, 10 + steps.value * 3) : 100)
+const barStatus = computed(() => props.task.status_group === 'FAIL' || props.task.status_group === 'BLOCKED' ? 'error' : props.task.status_group === 'WARN' ? 'warning' : props.task.status_group === 'RUNNING' ? 'info' : 'success')
 </script>
 
 <template>
-  <NCard size="small" class="task-card" :class="task.status_group" :style="{ borderTop: `3px solid ${vis.color}` }" hoverable>
-    <template #header>
-      <div class="hd" @click="emit('open', task.key)">
-        <RoleBadge :role="task.role" :size="26" />
-        <span class="role">{{ vis.label }}</span>
-        <NTooltip><template #trigger><span class="name mono">{{ task.name }}</span></template>{{ task.key }}</NTooltip>
+  <NCard size="small" class="tc" :class="task.status_group" hoverable @click="emit('open', task.key)">
+    <div class="hd">
+      <RoleBadge :role="task.role" :size="34" />
+      <div class="titles">
+        <div class="role">{{ vis.label }}</div>
+        <NTooltip><template #trigger><div class="name mono">{{ task.name }}</div></template>{{ task.key }}</NTooltip>
       </div>
-    </template>
-    <template #header-extra>
       <NTag size="small" :type="statusType(task.status_group)" round :bordered="false">
-        {{ task.status_group === 'RUNNING' ? '运行中' : task.status }}{{ stale ? ' · 5min 无输出' : '' }}
+        {{ taskStatus(task.status_group, task.status) }}<template v-if="stale"> · 5 分钟无输出</template>
       </NTag>
-    </template>
-    <div class="meta dim">
-      <span><b>耗时</b> {{ dur(task.elapsed) }}</span>
-      <span><b>tok</b> {{ tok(task.tokens_in) }} / {{ tok(task.tokens_out) }}</span>
-      <span><b>cmd</b> {{ c.command || 0 }}</span>
-      <NTooltip><template #trigger><span><b>MCP</b> {{ c.mcp || 0 }}<template v-if="task.audit_calls">/{{ task.audit_calls }}</template></span></template>Codex 事件流里的 mcp_tool_call / 服务端审计归因到本任务的调用</NTooltip>
-      <span><b>web</b> {{ c.web_search || 0 }}</span>
-      <span><b>files</b> {{ c.file_change || 0 }}</span>
-      <span v-if="task.exit != null">exit {{ task.exit }}<template v-if="task.process_exit && task.process_exit !== task.exit"> (proc {{ task.process_exit }})</template></span>
     </div>
-    <div ref="body" class="body">
-      <EventLine v-for="(ev, i) in task.recent" :key="ev.item_id || i" :ev="ev" :show-reasoning="showReasoning" compact />
-      <NText v-if="!task.recent.length" depth="3" style="font-size: 12px">等待事件…</NText>
+    <div class="prog">
+      <NProgress type="line" :percentage="percent" :status="barStatus" :show-indicator="false" :height="6" :border-radius="3" :processing="task.status_group === 'RUNNING'" />
+      <span class="prog-meta dim">
+        {{ dur(task.elapsed) }} · 第 {{ steps }} 步
+        <template v-if="task.tokens_in"> · 用量 {{ tok(task.tokens_in) }}</template>
+      </span>
     </div>
-    <div v-if="task.validation" class="ft fail">⛔ {{ task.validation }}</div>
-    <div v-else-if="task.status_group === 'RUNNING' && task.current_command" class="ft mono">$ {{ task.current_command }}</div>
-    <div v-else-if="task.final" class="ft pre">{{ task.final.slice(-420) }}</div>
-    <div v-else-if="task.expected.length" class="ft">声明产物：{{ task.expected.join(', ') }}</div>
+    <p class="msg" v-if="message">{{ message }}</p>
+    <p class="msg dim" v-else>等待第一条输出…</p>
+    <ul class="acts">
+      <li v-for="(a, i) in activity" :key="i" :class="a.tone">
+        <span class="ic">{{ a.icon }}</span>
+        <span class="lbl" v-if="a.label">{{ a.label }}</span>
+        <span class="det ellipsis">{{ a.detail }}</span>
+        <span class="ts mono dim">{{ hms(a.ts) }}</span>
+      </li>
+    </ul>
+    <div v-if="task.validation" class="ft fail">未通过产物验收：{{ task.validation }}</div>
+    <div v-else-if="task.expected.length && task.status_group !== 'RUNNING'" class="ft dim">交付产物：{{ task.expected.map((e) => e.split('/').pop()).join('、') }}</div>
   </NCard>
 </template>
 
 <style scoped>
-.task-card { display: flex; flex-direction: column; height: 460px; }
-.task-card :deep(.n-card__content) { display: flex; flex-direction: column; flex: 1; min-height: 0; padding-top: 6px; }
-.task-card.RUNNING { box-shadow: 0 0 0 1px rgba(91,141,239,.45) inset; }
-.hd { display: flex; align-items: center; gap: 8px; cursor: pointer; min-width: 0; }
-.role { font-weight: 600; white-space: nowrap; }
-.name { color: #8a93a6; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11.5px; margin-bottom: 4px; } .meta b { font-weight: 500; color: #6f7a8f; }
-.body { flex: 1; overflow: auto; min-height: 0; }
-.ft { margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.1); color: #8a93a6; font-size: 11.5px; max-height: 6em; overflow: hidden; }
+.tc { cursor: pointer; height: 100%; }
+.tc :deep(.n-card__content) { padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 10px; }
+.tc.RUNNING { box-shadow: 0 0 0 1px rgba(91,141,239,.45) inset; }
+.hd { display: flex; align-items: center; gap: 12px; }
+.titles { flex: 1; min-width: 0; }
+.role { font-weight: 600; font-size: 14px; }
+.name { color: #8a93a6; font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prog { display: flex; align-items: center; gap: 10px; }
+.prog :deep(.n-progress) { flex: 1; }
+.prog-meta { font-size: 11.5px; white-space: nowrap; }
+.msg { margin: 0; font-size: 13.5px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: #e6edf3; }
+.acts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.acts li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c9d1d9; min-width: 0; }
+.acts .ic { width: 16px; text-align: center; color: #8a93a6; flex: none; }
+.acts .lbl { color: #9aa3b5; white-space: nowrap; flex: none; }
+.acts .det { flex: 1; min-width: 0; }
+.acts .ts { font-size: 11px; flex: none; }
+.acts li.mcp .ic { color: #d2a8ff; } .acts li.file .ic { color: #7ee787; } .acts li.web .ic { color: #79c0ff; } .acts li.err .ic, .acts li.err .det { color: #f2726f; } .acts li.todo .ic { color: #e3b341; }
+.ft { font-size: 11.5px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 8px; }
 .ft.fail { color: #f2726f; }
 </style>

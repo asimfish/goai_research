@@ -46,7 +46,7 @@ import live_view  # noqa: E402  (同目录)
 ROLE_EXTRA = {
     "goai-orchestrator": {"stage": "intake → final（全程）", "gate": "check-done", "server": None,
                           "tools": ["tools/loopctl.py", "tools/parallel_run.sh"],
-                          "brief": "只做四件事：建账本 → 分派 → 验闸门 → 路由返工。自己不检索、不写、不画。"},
+                          "brief": "只做四件事：建账本 → 分派任务 → 按完成标准验收 → 把审稿意见路由回对应角色。自己不检索、不写、不画。"},
     "goai-lit-search": {"stage": "lit_search", "gate": "lit_coverage", "server": "goai-litsearch",
                         "tools": ["local_corpus_status", "grep_local_corpus", "read_local_document", "lookup_local_doi",
                                   "search_papers", "snowball", "lookup", "save_to_library", "coverage_report",
@@ -64,7 +64,7 @@ ROLE_EXTRA = {
                            "brief": "贡献先行五步流水线：taxonomy → 引用支持库 → 章节蓝图 → 逐节写作 → 组装精修，claim 级引用绑定，TeX 编译 PDF。"},
     "goai-figure-studio": {"stage": "figures（与 writing/ideas 并行）", "gate": "figures_ready", "server": "goai-figure",
                            "tools": ["figspec_schema", "validate_figspec", "render_figure", "drawio_export", "list_figures"],
-                           "brief": "策略合同 → AI 生图两轮候选 → figspec 可编辑化重建，产物恒为 svg + drawio，美学 lint 是闸门。"},
+                           "brief": "策略合同 → AI 生图两轮候选 → figspec 可编辑化重建，产物恒为 svg + drawio，版式与配色由自动化美学检查把关。"},
     "goai-figure-editable": {"stage": "figures", "gate": "figures_ready", "server": "goai-figure",
                              "tools": ["svg_file_to_drawio", "drawio_export"],
                              "brief": "把现成矢量图逆向为 figspec 并转成 draw.io 可编辑文件。"},
@@ -89,9 +89,9 @@ TOOL_DESC = {
     "figspec_schema": "figspec 结构说明与示例", "validate_figspec": "结构 + 排版 + 美学校验", "render_figure": "figspec → SVG + drawio",
     "drawio_export": "draw.io CLI 导出 png/svg/pdf", "list_figures": "盘点图纸三件套", "svg_file_to_drawio": "SVG 逆向为 figspec / drawio",
     "provider_status": "逆合成后端配置与可信度", "inorganic_model_status": "无机两步模型与 checkpoint 哈希",
-    "predict_precursor_routes": "化学式 → Top-K 前驱体组合", "predict_retro": "分子逆合成路线", "make_experiment_plan": "路线 → 实验方案骨架",
-    "tools/loopctl.py": "账本：init / advance / gate / issue / log / check-done", "tools/parallel_run.sh": "并行派活 runner（TSV → codex exec）",
-    "tools/bank_check.py": "引用支持库校验", "tools/bib_guard.py": "\\cite 与 bib 一致性 / 整合率", "tools/tex_guard.py": "组稿完整性闸门",
+    "predict_precursor_routes": "化学式 → Top-K 前驱体组合（模型预测，待实验验证）", "predict_retro": "分子逆合成路线", "make_experiment_plan": "路线 → 实验方案骨架",
+    "tools/loopctl.py": "运行账本：初始化 / 推进阶段 / 记录完成标准 / 审稿意见 / 日志 / 终验", "tools/parallel_run.sh": "并行派活 runner（TSV → codex exec）",
+    "tools/bank_check.py": "引用支持库校验", "tools/bib_guard.py": "\\cite 与 bib 一致性 / 整合率", "tools/tex_guard.py": "组稿完整性检查",
     "tools/academic_language_guard.py": "内部术语不入正文", "scripts/build_tex.sh": "xelatex→bibtex→xelatex×2 + pdf_guard",
     "tools/pdf_guard.py": "PDF 来源五项核验", "codex exec（独立模型）": "跨模型审稿通道，-o 落盘回执",
     "tools/loopctl.py issue add": "结构化 issue 写回账本并路由",
@@ -129,6 +129,97 @@ def load_roles(repo: str) -> list[dict]:
             "skill_headings": re.findall(r"^##\s+(.+)$", text, re.M)[:12],
         })
     return roles
+
+
+_SERVER_FILES = {"goai-litsearch": "server/litsearch_server.py", "goai-refcheck": "server/refcheck_server.py",
+                 "goai-figure": "server/figure_server.py", "goai-retro": "server/retro_server.py"}
+_TOOL_RE = re.compile(r"@mcp\.tool\(\)\s*\ndef\s+(\w+)\(([^)]*)\)\s*->\s*\w+:\s*\n\s*(?:\"\"\"|''')(.*?)(?:\"\"\"|''')", re.S)
+
+
+def _split_params(sig: str) -> list[str]:
+    """按顶层逗号切分参数列表（忽略引号与括号内的逗号）。"""
+    out, buf, depth, quote = [], "", 0, ""
+    for ch in sig:
+        if quote:
+            buf += ch
+            if ch == quote:
+                quote = ""
+            continue
+        if ch in "\"'":
+            quote = ch
+        elif ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth -= 1
+        elif ch == "," and depth == 0:
+            out.append(buf)
+            buf = ""
+            continue
+        buf += ch
+    if buf.strip():
+        out.append(buf)
+    return out
+
+
+def load_mcp(repo: str) -> list[dict]:
+    """从 server/*.py 源码解析 MCP 服务与工具（不 import，控制台不依赖 mcp 包）。"""
+    out = []
+    for server, rel in _SERVER_FILES.items():
+        text = live_view.read_text(os.path.join(repo, rel))
+        head = text.split('"""', 2)[1].strip().splitlines()[0] if text.startswith('"""') else ""
+        tools = []
+        for name, params, doc in _TOOL_RE.findall(text):
+            plist = []
+            for p in _split_params(params):
+                p = p.strip()
+                if not p:
+                    continue
+                pname = p.split(":")[0].split("=")[0].strip()
+                default = p.split("=", 1)[1].strip() if "=" in p else None
+                plist.append({"name": pname, "default": default})
+            doc_lines = [ln.strip() for ln in doc.strip().splitlines() if ln.strip()]
+            tools.append({"name": name, "params": plist, "summary": doc_lines[0] if doc_lines else TOOL_DESC.get(name, ""),
+                          "doc": doc.strip(), "used_by": [rid for rid, ex in ROLE_EXTRA.items() if name in ex.get("tools", [])]})
+        out.append({"id": server, "file": rel, "summary": head, "tools": tools,
+                    "used_by": [rid for rid, ex in ROLE_EXTRA.items() if ex.get("server") == server],
+                    "exists": bool(text)})
+    return out
+
+
+def recent_tasks_for_role(ws: "Workspaces", role: str, limit: int = 30) -> list[dict]:
+    """跨工作区收集某角色最近的子任务（按 .meta.json 的 skill 或任务名推断）。"""
+    rows = []
+    for path in ws.candidate_paths():
+        pdir = os.path.join(path, "state", "parallel")
+        if not os.path.isdir(pdir):
+            continue
+        info = None
+        for run_id in sorted(os.listdir(pdir), reverse=True)[:60]:
+            bd = os.path.join(pdir, run_id)
+            try:
+                files = os.listdir(bd)
+            except OSError:
+                continue
+            for f in files:
+                if not f.endswith(".jsonl"):
+                    continue
+                name = f[:-6]
+                meta = _read_json(os.path.join(bd, name + ".meta.json")) or {}
+                prompt = live_view.read_text(os.path.join(bd, name + ".prompt.txt"))[:2000]
+                r = live_view.infer_role(name, meta.get("skill", ""), prompt)
+                if r != role:
+                    continue
+                if info is None:
+                    info = ws.describe(path)
+                status = live_view.read_text(os.path.join(bd, name + ".status")).strip() or \
+                    ("RUNNING" if not os.path.exists(os.path.join(bd, name + ".exit")) else "PASS")
+                started = live_view.mtime(os.path.join(bd, name + ".started")) or live_view.mtime(os.path.join(bd, f))
+                ended = live_view.mtime(os.path.join(bd, name + ".exit"))
+                rows.append({"workspace_id": info["id"], "workspace": info["label"], "topic": info["topic"], "run_id": run_id,
+                             "name": name, "key": f"{run_id}/{name}", "status": status, "started": started, "ended": ended,
+                             "elapsed": (ended - started) if (started and ended) else None})
+    rows.sort(key=lambda r: -(r["started"] or 0))
+    return rows[:limit]
 
 
 def roles_stats(repo: str) -> dict:
@@ -468,6 +559,12 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                         return self._json({"error": "unknown role"}, 404)
                     text = live_view.read_text(os.path.join(ws.repo, "skills", rid, "SKILL.md"))
                     return self._json({"id": rid, "markdown": text})
+                if len(parts) == 4 and parts[1] == "roles" and parts[3] == "tasks":
+                    if parts[2] not in ROLE_ORDER:
+                        return self._json({"error": "unknown role"}, 404)
+                    return self._json({"tasks": recent_tasks_for_role(ws, parts[2], int(q.get("limit", ["30"])[0]))})
+                if parts[1:] == ["mcp"]:
+                    return self._json({"servers": load_mcp(ws.repo)})
                 if parts[1:] == ["workspaces"]:
                     return self._json({"workspaces": ws.list(), "now": time.time()})
                 if len(parts) >= 3 and parts[1] == "workspaces":
@@ -480,7 +577,14 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                     if sub == "state":
                         mon = ws.monitor(wid)
                         st = mon.state(recent=int(q.get("recent", ["30"])[0]), show_all=True)
-                        st["workspace_info"] = ws.describe(path)
+                        winfo = ws.describe(path)
+                        st["workspace_info"] = winfo
+                        if winfo["status"] != "running":
+                            # 工作区已结束：缺 .exit / 流被截断的任务不能再按“现在”算耗时，钉到最后一次活动
+                            for t in st["tasks"]:
+                                if t["status"] in ("RUNNING", "STALE") and t.get("started") and t.get("last_activity"):
+                                    t["ended"] = t["last_activity"]
+                                    t["elapsed"] = max(0.0, t["last_activity"] - t["started"])
                         return self._json(st)
                     if sub == "feed":
                         mon = ws.monitor(wid)
@@ -566,7 +670,7 @@ def cfg_public(cfg: dict) -> dict:
         "private_corpus_available": bool(cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS")),
         "private_corpus_roots": cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS"),
         "public_corpus": os.path.join(cfg["repo"], "submission", "02_研究数据与证据包", "corpus_release"),
-        "models": ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.5", "gpt-5.4-mini"],
+        "models": ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.5", "gpt-5.4-mini"],
         "efforts": ["low", "medium", "high", "xhigh", "max"],
     }
 
