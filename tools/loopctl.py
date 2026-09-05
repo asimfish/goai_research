@@ -29,7 +29,8 @@ gate 状态语义：
           tools/pdf_guard.py（只能是 TeX 从模板编译的产物；环境缺 TeX 就记 FAIL，
           禁止用 groff/HTML→Chrome 等回退渲染器冒充）
   FAIL    未通过，阻塞 check-done
-  WARN    合规跳过/带保留通过（如 ideas 支线跳过），不阻塞 check-done
+  WARN    合规跳过/带保留通过，不阻塞 check-done；但合成/制备类主题的
+          ideas_reviewed 不接受「跳过」类 WARN（见下）
   PENDING 待复审（级联失效重置用），阻塞 check-done
 
 必需 gate（check-done 要求每一个都已记录，缺任何一个 = 该阶段从未执行 = 未完成；
@@ -43,6 +44,10 @@ gate 状态语义：
   并发证据   lit_coverage 需 ≥3 条 lit_search done 分片日志、figures_ready ≥2 条
              figures、draft_complete ≥2 条 writing；确属串行须先记 decision 说明
   审稿轮次   review_pass 需回执 trace 所在目录 ≥2 份非占位 trace（对抗审稿两轮起）
+  合成主题   主题/scope 含合成、制备、生长、烧结、工艺、前驱体等字样时，ideas_reviewed
+             不可记「跳过」类 WARN；记 PASS/WARN 需 state/tool_calls.jsonl 里有账本
+             建立之后的 predict_precursor_routes 调用，且 ideas/ 下有写明推荐工艺与
+             前驱体的产出；draft_complete 记 PASS 时正文须出现前驱体推荐内容
 """
 from __future__ import annotations
 
@@ -51,6 +56,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 import sys
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -92,6 +98,115 @@ CONCURRENCY_EVIDENCE = {
 }
 # 对抗审稿至少两轮：review_pass 记 PASS 时 trace 目录里须有 ≥2 份非占位审稿 trace
 REVIEW_MIN_ROUNDS = 2
+
+# 合成/制备类主题：ideas 支线（新方向 → 推荐工艺 + 前驱体）是交付物的一部分，不得以
+# 「用户未要求」「安全边界」为由整体跳过。冷启动实跑里出现过把普通氧化物固相/助熔
+# 路线当成「危险实验协议」而 WARN skipped，终稿结论写成「不给出投料、温度、压力」。
+SYNTHESIS_TOPIC_RE = re.compile(
+    r"合成|制备|生长|烧结|工艺|前驱体|致密化|"
+    r"synthes|growth|sinter|precursor|preparation|fabricat|processing", re.I)
+IDEAS_GATE = "ideas_reviewed"
+RETRO_TOOL = "predict_precursor_routes"
+IDEAS_SKIP_RE = re.compile(r"skip|跳过|未要求|可选|不生成|不给出", re.I)
+IDEAS_OUTPUT_RE = (re.compile(r"前驱体|precursor", re.I),
+                   re.compile(r"工艺|路线|route|process", re.I))
+SCOPE_FILES = ("notes/scope.md", "inputs/scope.md", "state/scope.md")
+
+
+def _topic_text(lg: dict) -> str:
+    parts = [str(lg.get("topic", ""))]
+    for rel in SCOPE_FILES:
+        path = os.path.join(_ws(), rel)
+        if os.path.isfile(path):
+            try:
+                with open(path, encoding="utf-8", errors="replace") as fh:
+                    parts.append(fh.read(4000))
+            except OSError:
+                pass
+    return "\n".join(parts)
+
+
+def is_synthesis_topic(lg: dict) -> bool:
+    return bool(SYNTHESIS_TOPIC_RE.search(_topic_text(lg)))
+
+
+def _retro_calls_after(created: str) -> int:
+    """账本建立之后的 predict_precursor_routes 调用数（排除环境预检的样例调用）。"""
+    path = os.path.join(_ws(), "state", "tool_calls.jsonl")
+    if not os.path.isfile(path):
+        return 0
+    n = 0
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            try:
+                ev = json.loads(line)
+            except ValueError:
+                continue
+            if ev.get("tool") == RETRO_TOOL and str(ev.get("timestamp", "")) >= created:
+                n += 1
+    return n
+
+
+def _ideas_outputs() -> list[str]:
+    d = os.path.join(_ws(), "ideas")
+    if not os.path.isdir(d):
+        return []
+    hits = []
+    for root, _dirs, files in os.walk(d):
+        for f in files:
+            if not f.lower().endswith((".md", ".json", ".txt")):
+                continue
+            path = os.path.join(root, f)
+            try:
+                with open(path, encoding="utf-8", errors="replace") as fh:
+                    text = fh.read()
+            except OSError:
+                continue
+            if all(rx.search(text) for rx in IDEAS_OUTPUT_RE):
+                hits.append(path)
+    return hits
+
+
+def _ideas_problem(lg: dict, name: str, status: str, detail: str) -> str | None:
+    if name != IDEAS_GATE or status not in ("PASS", "WARN") or not is_synthesis_topic(lg):
+        return None
+    if status == "WARN" and IDEAS_SKIP_RE.search(detail or ""):
+        return ("合成/制备类主题的 ideas 支线不可跳过：方向→推荐工艺+前驱体是交付物的一部分"
+                "（goai-idea-forge 对目标物及近邻体系调用 goai-retro predict_precursor_routes，"
+                "写 ideas/*.md）。普通氧化物/硅酸盐/陶瓷的固相、助熔/高温溶液、溶胶-凝胶、"
+                "水热、熔盐路线不是『危险实验协议』；只有落入危险类别的具体路线才隐去并记 WARN，"
+                "其余照常交付")
+    if _retro_calls_after(str(lg.get("created", ""))) == 0:
+        return (f"缺逆合成证据：state/tool_calls.jsonl 里没有账本建立之后的 {RETRO_TOOL} 调用"
+                "（环境预检的样例调用不算）；合成类主题必须对目标物及近邻体系预测前驱体路线")
+    if not _ideas_outputs():
+        return ("缺 ideas 产出：ideas/ 下没有同时写明推荐工艺与前驱体的 .md/.json"
+                "（方向→依据→推荐工艺→前驱体→关键变量→安全提示 表）")
+    return None
+
+
+def _synthesis_draft_problem(lg: dict, name: str, status: str) -> str | None:
+    """合成类主题终稿必须把 ideas 支线的推荐（工艺 + 前驱体）写进正文。"""
+    if name != "draft_complete" or status != "PASS" or not is_synthesis_topic(lg):
+        return None
+    drafts = os.path.join(_ws(), "drafts")
+    texts = []
+    for root, _dirs, files in os.walk(drafts):
+        for f in files:
+            if f.lower().endswith(".tex"):
+                try:
+                    with open(os.path.join(root, f), encoding="utf-8", errors="replace") as fh:
+                        texts.append(fh.read())
+                except OSError:
+                    pass
+    body = "\n".join(texts)
+    if not texts:
+        return None   # 无 tex 源文件的情况由 pdf_guard / 前置 gate 负责
+    if not IDEAS_OUTPUT_RE[0].search(body):
+        return ("合成/制备类主题终稿正文没有出现前驱体（precursor）推荐内容：goai-survey-writer"
+                " 骨架强制项要求把 ideas/ 的方向→推荐工艺+前驱体表写进结果与结论，"
+                "不得以『不给出新的投料、温度、压力』收束")
+    return None
 
 
 def _prereq_problem(lg: dict, name: str, status: str) -> str | None:
@@ -311,7 +426,9 @@ def cmd_gate(args) -> None:
         if problem:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     for check in (_prereq_problem(lg, args.name, args.status),
-                  _concurrency_problem(lg, args.name, args.status)):
+                  _concurrency_problem(lg, args.name, args.status),
+                  _ideas_problem(lg, args.name, args.status, args.detail or ""),
+                  _synthesis_draft_problem(lg, args.name, args.status)):
         if check:
             sys.exit(f"拒绝: gate {args.name} 记 {args.status} —— {check}")
     if args.name == "review_pass" and args.status == "PASS":
@@ -441,6 +558,12 @@ def cmd_check_done(_args) -> None:
             problem = _pdf_guard_problem([fp["path"] for fp in g.get("inputs", [])])
             if problem:
                 bad_receipts[name] = problem
+    # 合成类主题的 ideas 支线再核一遍：跳过类 WARN / 无逆合成调用 / 无产出都不放行
+    g = lg["gates"].get(IDEAS_GATE)
+    if g and g["status"] in ("PASS", "WARN"):
+        problem = _ideas_problem(lg, IDEAS_GATE, g["status"], g.get("detail", ""))
+        if problem:
+            bad_receipts[IDEAS_GATE] = problem
     if not blocking_issues and not failing and not missing and not bad_receipts:
         msg = "DONE: 必需 gate 全部记录且 PASS/WARN，无 open blocker/major"
         if minor_open:

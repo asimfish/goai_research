@@ -1556,3 +1556,150 @@ def test_protocol_rules_present_in_agents_and_skills():
     assert "pdf_guard" in writer and "fail-closed" in writer
     # 协议文档记录了机械约束表
     assert "流程机械约束" in proto and "并发证据" in proto and "前置顺序" in proto
+
+
+# ---------- 冷启动实跑（2026-09-05 BYZSO）暴露的缺陷：ideas 支线被当成安全停点跳过 ----------
+
+def _append_retro_call(tmpdir, when):
+    p = tmpdir / "state" / "tool_calls.jsonl"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"timestamp": when, "tool": "predict_precursor_routes",
+                             "request": {"target_formula": "Li7La3Zr2O12"}, "response": {}}) + "\n")
+
+
+def test_loopctl_synthesis_topic_cannot_skip_ideas_lane(tmp_path):
+    """实跑失效：合成条件主题的冷启动把 ideas 支线记 WARN skipped（把普通氧化物的固相/助熔
+    路线当成「危险实验协议」），终稿结论写成「不给出新的投料、温度、压力」。现在：合成类主题
+    拒绝跳过类 WARN；PASS/WARN 需账本建立之后的 predict_precursor_routes 调用 + ideas/ 下写明
+    工艺与前驱体的产出；draft_complete 需正文含前驱体推荐；check-done 对账本再核一遍。"""
+    from datetime import datetime, timedelta, timezone
+    r = run_loopctl(tmp_path, "init", "--topic", "Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件")
+    assert r.returncode == 0, r.stderr
+    created = json.loads((tmp_path / "state" / "ledger.json").read_text())["created"]
+    pass_all_gates(tmp_path, except_for=("ideas_reviewed", "draft_complete", "review_pass"))
+    # 跳过类 WARN → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "WARN",
+                    "--detail", "skipped：用户未要求 idea/新实验方案/逆合成")
+    assert r.returncode != 0 and "不可跳过" in r.stderr, r.stderr
+    # 没有逆合成调用 → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "PASS")
+    assert r.returncode != 0 and "缺逆合成证据" in r.stderr, r.stderr
+    # 只有账本建立之前的环境预检样例调用 → 仍拒绝
+    _append_retro_call(tmp_path, "2000-01-01T00:00:00+00:00")
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "PASS")
+    assert r.returncode != 0 and "缺逆合成证据" in r.stderr, r.stderr
+    # 有真实调用但 ideas/ 没有工艺+前驱体产出 → 拒绝
+    _append_retro_call(tmp_path, (datetime.now(timezone.utc) + timedelta(minutes=1)).isoformat())
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "PASS")
+    assert r.returncode != 0 and "缺 ideas 产出" in r.stderr, r.stderr
+    ideas = tmp_path / "ideas"
+    ideas.mkdir()
+    (ideas / "synthesis_directions.md").write_text(
+        "| 方向 | 推荐工艺路线 | 前驱体 |\n"
+        "| 多元相图测定 | 固相反应 1473 K 空气 | BaCO3 + Y2O3 + ZnO + SiO2（模型预测，待实验验证） |\n",
+        encoding="utf-8")
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "PASS")
+    assert r.returncode == 0, r.stderr
+    # 正文以拒答式结论收束、没有前驱体推荐 → draft_complete 拒绝
+    pdf = str(tmp_path / "drafts" / "main.pdf")
+    tex = tmp_path / "drafts" / "main.tex"
+    tex.write_text("\\section{结论}不给出新的投料、温度、压力或操作流程。", encoding="utf-8")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode != 0 and "前驱体" in r.stderr, r.stderr
+    tex.write_text("\\section{新方向与推荐实验}推荐前驱体 BaCO3/Y2O3/ZnO/SiO2 走固相路线。", encoding="utf-8")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode == 0, r.stderr
+    trace = str(tmp_path / "state" / "review_traces" / "round2_1.md")
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                       "--receipt", f"model=x;trace={trace}").returncode == 0
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    # 账本绕过工具被改成 skipped → check-done 再核判无效
+    ledger_path = tmp_path / "state" / "ledger.json"
+    lg = json.loads(ledger_path.read_text())
+    lg["gates"]["ideas_reviewed"] = {"status": "WARN", "detail": "skipped：用户未要求",
+                                     "round": 1, "at": created}
+    ledger_path.write_text(json.dumps(lg, ensure_ascii=False))
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "ideas_reviewed" in r.stdout, r.stdout
+
+
+def test_loopctl_non_synthesis_topic_may_skip_ideas(tmp_path):
+    """纯理论/方法学综述仍允许合规跳过 ideas 支线（显式 WARN）。"""
+    run_loopctl(tmp_path, "init", "--topic", "扩散模型的理论综述")
+    pass_all_gates(tmp_path, except_for=("ideas_reviewed", "draft_complete", "review_pass"))
+    r = run_loopctl(tmp_path, "gate", "--name", "ideas_reviewed", "--status", "WARN",
+                    "--detail", "skipped：用户未要求实验方案")
+    assert r.returncode == 0, r.stderr
+
+
+def test_skills_make_ideas_lane_mandatory_for_synthesis_topics():
+    """规则一致性：orchestrator 不再写「ideas 支线可选」；危险类别有明确清单；
+    writer/reviewer 禁止拒答式收束。"""
+    def read(*parts):
+        return open(os.path.join(ROOT, *parts), encoding="utf-8").read()
+    orch = read("skills", "goai-orchestrator", "SKILL.md")
+    assert "ideas 支线可选" not in orch
+    assert "ideas 支线默认必做" in orch and "危险类别指且仅指" in orch
+    forge = read("skills", "goai-idea-forge", "SKILL.md")
+    assert "synthesis_directions.md" in forge and "不是危险协议" in forge
+    writer = read("skills", "goai-survey-writer", "SKILL.md")
+    assert "synthesis_directions.md" in writer and "禁止拒答式收束" in writer
+    reviewer = read("skills", "goai-reviewer", "SKILL.md")
+    assert "拒答式收束一律 major" in reviewer
+    # 同一实跑的另一处失效：只读到摘要/附件却把实验节写成「未披露」
+    lit = read("skills", "goai-lit-search", "SKILL.md")
+    assert "`access` 字段" in lit and "全文未获取" in lit
+    assert "只能写给读过全文的文献" in writer
+    assert "逐条核访问级别" in reviewer
+
+
+# ---------- 同一实跑的验证脚本缺陷 ----------
+
+def test_norm_title_strips_tex_and_html_markup_and_tolerates_spaced_formulas():
+    """实跑失效：bib_polish 给题名化学式加 {Ba}$_5$ 保护后，refcheck 按字符归一化比对得到
+    "ba 5 y 12" vs "ba5y12"，12 条真实条目被误判 FIX；出版方元数据本身也会把下标拆成
+    "Ba 2 Gd 2 (Si 4 O 13 )"。"""
+    from server.core.textnorm import norm_title
+    assert norm_title("Synthesis of {Ba}$_5${Y}$_{12}$Zn single crystals") == \
+        "synthesis of ba5y12zn single crystals"
+    assert norm_title("\\ce{Li7La3Zr2O12} garnets") == \
+        norm_title("Li<sub>7</sub>La<sub>3</sub>Zr<sub>2</sub>O<sub>12</sub> garnets")
+    assert norm_title("Salt \\& pepper: {XRD} of {AlN}") == "salt pepper xrd of aln"
+    assert norm_title("{Ce}$^{3+}$--{Mn}$^{2+}$ transfer in $\\alpha$-{Al}$_2${O}$_3$") == \
+        norm_title("Ce3+–Mn2+ transfer in α-Al2O3")
+    sim = bibtex.title_similarity(
+        "{$\\mathrm{Ba_2Gd_2(Si_4O_{13})}$}: a silicate with finite {$\\mathrm{Si_4O_{13}}$} chains",
+        "Ba 2 Gd 2 (Si 4 O 13 ): a silicate with finite Si 4 O 13 chains")
+    assert sim >= 0.92, sim
+    # 去空格比对不会把真正不同的题名拉成同一篇
+    assert bibtex.title_similarity("Crystal growth of Ba2Gd2Si4O13",
+                                   "Crystal structure of Ba2Gd2Si4O13") < 0.92
+
+
+def test_shell_scripts_stay_bash32_compatible():
+    """绊线：macOS 自带 /bin/bash 3.2；reproduce_core.sh 曾用 `shopt -s globstar`（bash 4+），
+    使一次合规完成的运行在验证阶段中途报错退出。"""
+    import glob
+    import re
+    bash4 = re.compile(r"\bglobstar\b|\bdeclare -A\b|\bmapfile\b|\breadarray\b|"
+                       r"\$\{[A-Za-z_]+(,,|\^\^)\}|\|&")
+    files = glob.glob(os.path.join(ROOT, "scripts", "*.sh")) + \
+        glob.glob(os.path.join(ROOT, "tools", "*.sh")) + [os.path.join(ROOT, "install.sh")]
+    assert files
+    for fp in files:
+        for i, line in enumerate(open(fp, encoding="utf-8", errors="ignore").read().splitlines(), 1):
+            if line.strip().startswith("#"):
+                continue
+            assert not bash4.search(line), f"{fp}:{i}: bash-4-only feature: {line.strip()}"
+
+
+def test_reproduce_core_matches_protocol_guard_scope_and_audit_semantics():
+    """绊线：reproduce_core.sh 曾对整个 drafts/ 跑 academic_language_guard（把 blueprint.md 的
+    规划用语判成行话），并要求引用审计「全 PASS」（refcheck 闸门本身允许 FIX），两处都把一次
+    合规完成的运行误判为失败。验证脚本必须与 skill 约定的范围和服务端闸门口径一致。"""
+    text = open(os.path.join(ROOT, "scripts", "reproduce_core.sh"), encoding="utf-8").read()
+    assert '"$WORKDIR/drafts/sections" "$WORKDIR/drafts/main.tex"' in text
+    assert 'academic_language_guard.py \\\n  "$WORKDIR/drafts"\n' not in text
+    assert 'audit.get("gate") != "PASS"' in text
+    assert 'counts.get("PASS", 0) != audit.get("total")' not in text

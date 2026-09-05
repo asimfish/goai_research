@@ -171,10 +171,13 @@ require_nonempty "$WORKDIR/state/CITATION_AUDIT.json"
 require_nonempty "$WORKDIR/state/ledger.json"
 require_nonempty "$WORKDIR/state/tool_calls.jsonl"
 
-shopt -s nullglob globstar
+# bash 3.2 (macOS /bin/bash) has no globstar; collect recursive traces with find.
+shopt -s nullglob
 SVG_FILES=("$WORKDIR"/figures/svg/*.svg)
 DRAWIO_FILES=("$WORKDIR"/figures/drawio/*.drawio)
-TRACE_FILES=("$WORKDIR"/state/parallel/**/*.jsonl)
+TRACE_FILES=()
+while IFS= read -r -d '' trace; do TRACE_FILES+=("$trace"); done \
+  < <(find "$WORKDIR/state/parallel" -type f -name '*.jsonl' -print0 2>/dev/null)
 (( ${#SVG_FILES[@]} > 0 )) || fail "no SVG figure artifacts found"
 (( ${#DRAWIO_FILES[@]} > 0 )) || fail "no draw.io figure artifacts found"
 (( ${#TRACE_FILES[@]} > 0 )) || fail "no per-task JSONL traces found"
@@ -194,8 +197,10 @@ run_guard() {
 run_guard bib_guard .venv/bin/python tools/bib_guard.py \
   "$WORKDIR/drafts/sections" "$WORKDIR/library/references.bib"
 run_guard tex_guard .venv/bin/python tools/tex_guard.py "$WORKDIR/drafts"
+# 与 goai-survey-writer / goai-orchestrator 约定的范围一致：只查正文源文件，
+# 不查 blueprint.md / revision_log.md 等内部规划笔记。
 run_guard academic_language_guard .venv/bin/python tools/academic_language_guard.py \
-  "$WORKDIR/drafts"
+  "$WORKDIR/drafts/sections" "$WORKDIR/drafts/main.tex"
 # 终稿 PDF 必须是 TeX 从模板编译的产物（Producer/字体/时效/摘要块/编号标题）
 run_guard pdf_guard .venv/bin/python tools/pdf_guard.py "$WORKDIR/drafts/main.pdf" \
   --tex "$WORKDIR/drafts/main.tex" --bib "$WORKDIR/library/references.bib"
@@ -215,9 +220,11 @@ topic, model, effort = sys.argv[2:]
 audit_path = workspace / "state" / "CITATION_AUDIT.json"
 audit = json.loads(audit_path.read_text(encoding="utf-8"))
 counts = audit.get("counts", {})
-bad = {key: value for key, value in counts.items() if key != "PASS" and value}
-if bad or counts.get("PASS", 0) != audit.get("total"):
-    raise SystemExit(f"citation audit is not all PASS: counts={counts!r}")
+# 与 goai-refcheck 服务端闸门同口径：MISMATCH / UNVERIFIED / ERROR 必须为 0；
+# FIX 是带 suggested_bibtex 的元数据漂移提示（作者缩写、年份口径、题名排版），允许存在。
+blocking = {k: counts.get(k, 0) for k in ("MISMATCH", "UNVERIFIED", "ERROR") if counts.get(k, 0)}
+if blocking or audit.get("gate") != "PASS" or not audit.get("total"):
+    raise SystemExit(f"citation audit gate is not PASS: gate={audit.get('gate')!r} counts={counts!r}")
 
 required = [
     workspace / "drafts" / "main.pdf",
@@ -242,7 +249,7 @@ receipt = {
     ).strip(),
     "gates": {
         "loopctl_check_done": "PASS",
-        "citation_audit": "PASS",
+        "citation_audit": f"PASS (PASS={counts.get('PASS', 0)}, FIX={counts.get('FIX', 0)})",
         "bib_guard": "PASS",
         "tex_guard": "PASS",
         "academic_language_guard": "PASS",
