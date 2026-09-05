@@ -74,6 +74,19 @@ CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 PROFILE="goai_repro_$STAMP"
 MODEL="${GOAI_MODEL:-gpt-5.6-sol}"
 EFFORT="${GOAI_REASONING_EFFORT:-xhigh}"
+# TOML 基本字符串：转义反斜杠与双引号（路径可含中文，UTF-8 直接合法）。
+toml_str() { printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
+# 私有语料的索引 / 分片变量按需追加。不能写在 heredoc 里的 ${var:+...} 中——bash 会把展开体内的双引号
+# 当引号处理并删掉，生成的 TOML 没有引号，codex 直接以 "string values must be quoted" 退出
+# （2026-09-06 控制台以私有全库发起时实测触发）。
+LIT_ENV="GOAI_EMAIL = \"$(toml_str "$GOAI_EMAIL")\", GOAI_WORKSPACE = \"$(toml_str "$WORKDIR")\", GOAI_LOCAL_CORPUS_ROOTS = \"$(toml_str "$GOAI_LOCAL_CORPUS_ROOTS")\""
+if [[ -n "${GOAI_LOCAL_CORPUS_EXPECTED_INDEX:-}" ]]; then
+  LIT_ENV+=", GOAI_LOCAL_CORPUS_EXPECTED_INDEX = \"$(toml_str "$GOAI_LOCAL_CORPUS_EXPECTED_INDEX")\""
+fi
+if [[ -n "${GOAI_LOCAL_CORPUS_SHARD_ROOT:-}" ]]; then
+  LIT_ENV+=", GOAI_LOCAL_CORPUS_SHARD_ROOT = \"$(toml_str "$GOAI_LOCAL_CORPUS_SHARD_ROOT")\""
+fi
+WORKDIR_T="$(toml_str "$WORKDIR")"
 cat > "$CODEX_HOME/$PROFILE.config.toml" <<TOML
 model = "$MODEL"
 model_reasoning_effort = "$EFFORT"
@@ -83,30 +96,38 @@ command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/litsearch_server.py"]
 default_tools_approval_mode = "approve"
 env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
-env = { GOAI_EMAIL = "$GOAI_EMAIL", GOAI_WORKSPACE = "$WORKDIR", GOAI_LOCAL_CORPUS_ROOTS = "$GOAI_LOCAL_CORPUS_ROOTS"${GOAI_LOCAL_CORPUS_EXPECTED_INDEX:+, GOAI_LOCAL_CORPUS_EXPECTED_INDEX = "$GOAI_LOCAL_CORPUS_EXPECTED_INDEX", GOAI_LOCAL_CORPUS_SHARD_ROOT = "$GOAI_LOCAL_CORPUS_SHARD_ROOT"} }
+env = { $LIT_ENV }
 
 [mcp_servers.goai-refcheck]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/refcheck_server.py"]
 default_tools_approval_mode = "approve"
 env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
-env = { GOAI_EMAIL = "$GOAI_EMAIL", GOAI_WORKSPACE = "$WORKDIR" }
+env = { GOAI_EMAIL = "$(toml_str "$GOAI_EMAIL")", GOAI_WORKSPACE = "$WORKDIR_T" }
 
 [mcp_servers.goai-figure]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/figure_server.py"]
 default_tools_approval_mode = "approve"
 env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
-env = { GOAI_WORKSPACE = "$WORKDIR" }
+env = { GOAI_WORKSPACE = "$WORKDIR_T" }
 
 [mcp_servers.goai-retro]
 command = "$REPO/$RETRO_PY"
 args = ["$REPO/server/retro_server.py"]
 default_tools_approval_mode = "approve"
 env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
-env = { GOAI_WORKSPACE = "$WORKDIR", GOAI_INORGANIC_RETRO_ROOT = "$GOAI_INORGANIC_RETRO_ROOT", GOAI_RETRO_DEVICE = "$GOAI_RETRO_DEVICE" }
+env = { GOAI_WORKSPACE = "$WORKDIR_T", GOAI_INORGANIC_RETRO_ROOT = "$(toml_str "$GOAI_INORGANIC_RETRO_ROOT")", GOAI_RETRO_DEVICE = "$GOAI_RETRO_DEVICE" }
 TOML
 echo "codex profile written: $CODEX_HOME/$PROFILE.config.toml (model=$MODEL, effort=$EFFORT)"
+# 有 tomllib（Python ≥3.11）就先解析一遍，别把坏配置交给 codex 才发现
+if python3 -c 'import tomllib' 2>/dev/null; then
+  python3 - "$CODEX_HOME/$PROFILE.config.toml" <<'PY' || { echo "生成的 codex profile 不是合法 TOML，见上方报错" >&2; exit 2; }
+import sys, tomllib
+with open(sys.argv[1], "rb") as fh:
+    tomllib.load(fh)
+PY
+fi
 
 # --- preflight ------------------------------------------------------------------------
 # The repository MCP servers run in .venv, while the vendored inorganic model

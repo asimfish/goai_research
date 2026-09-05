@@ -765,6 +765,7 @@ def list_artifacts(path: str) -> dict:
 def cfg_public(cfg: dict) -> dict:
     return {
         "repo": cfg["repo"], "runs_root": cfg["runs_root"], "codex_home": cfg["codex_home"], "codex_path": resolve_codex_path(),
+        "proxy": os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or None,
         "codex_login": cfg.get("codex_login"), "codex_version": cfg.get("codex_version"),
         "model": cfg["model"], "effort": cfg["effort"],
         "private_corpus_available": bool(cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS")),
@@ -814,7 +815,7 @@ def main(argv=None) -> int:
     ap.add_argument("--runs-root", default=None, help="控制台新建运行的工作区目录（默认 <repo>/workspace_runs/console）")
     ap.add_argument("--workspace-glob", action="append", default=[], help="额外的历史工作区 glob（可重复）")
     ap.add_argument("--private-corpus-env", default=None,
-                    help="KEY=VALUE 文件，提供 GOAI_LOCAL_CORPUS_ROOTS / _EXPECTED_INDEX / _SHARD_ROOT（不入库）")
+                    help="KEY=VALUE 文件：GOAI_LOCAL_CORPUS_* 作为私有语料配置；其余变量（如 HTTPS_PROXY）注入服务进程环境（不入库）")
     ap.add_argument("--model", default=os.environ.get("GOAI_MODEL", "gpt-5.6-sol"))
     ap.add_argument("--effort", default=os.environ.get("GOAI_REASONING_EFFORT", "xhigh"))
     ap.add_argument("--dist", default=os.path.join(HERE, "console", "dist"))
@@ -827,7 +828,14 @@ def main(argv=None) -> int:
     os.makedirs(runs_root, exist_ok=True)
     private_env = {k: v for k, v in os.environ.items() if k.startswith("GOAI_LOCAL_CORPUS")}
     if args.private_corpus_env:
-        private_env.update({k: v for k, v in read_env_file(args.private_corpus_env).items() if k.startswith("GOAI_LOCAL_CORPUS")})
+        for k, v in read_env_file(args.private_corpus_env).items():
+            if k.startswith("GOAI_LOCAL_CORPUS"):
+                private_env[k] = v
+            else:
+                # 其余变量（HTTPS_PROXY / GOAI_EMAIL 等）注入服务进程环境：codex 探测与发起的运行都继承它。
+                # 典型场景：控制台在 screen / systemd 的非交互 shell 里启动，.bashrc 的代理没加载，
+                # codex 直连 OpenAI 会一直 "Reconnecting... waiting for network"（2026-09-06 实测）。
+                os.environ[k] = v
     cfg = {"repo": repo, "runs_root": runs_root, "codex_home": args.codex_home, "model": args.model,
            "effort": args.effort, "private_env": private_env}
     if not args.no_probe:

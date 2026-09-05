@@ -61,6 +61,14 @@ async function tick() {
 }
 function schedule() { if (timer) clearInterval(timer); timer = window.setInterval(tick, interval.value) }
 onMounted(async () => { await tick(); schedule(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
+/** 失败 / 终止的运行：自动读启动日志，把最后一条错误直接放到横幅下 */
+watch(() => info.value?.status, async (s) => { if ((s === 'failed' || s === 'stopped' || s === 'ended') && !launcherLog.value) await loadLauncherLog() }, { immediate: true })
+const failReason = computed(() => {
+  if (info.value?.status !== 'failed' || !launcherLog.value) return ''
+  const lines = (launcherLog.value.stderr || '').replace(/\x1b\[[0-9;]*m/g, '').split('\n').map((l) => l.trim()).filter((l) => l && !/^Reading additional input/.test(l))
+  const err = lines.find((l) => /error|失败|not found|denied|Traceback|退出|拒绝/i.test(l)) || lines[0] || ''
+  return err.slice(0, 300)
+})
 watch(interval, schedule)
 watch(() => props.id, async () => { st.value = null; feed.value = []; lastSeq = 0; await tick(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
@@ -175,6 +183,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
       <div>
         <div class="banner-text">{{ headline }}</div>
         <div class="small dim">{{ elapsedText }}<template v-if="elapsedText"> · </template>最近更新 {{ ago(info.last_activity, st.now) }}<template v-if="info.launcher.stopped"> · 于 {{ info.launcher.stopped }} 终止</template></div>
+        <div v-if="failReason" class="fail-reason small"><span class="mono">{{ failReason }}</span> <a @click="showEvents = true">查看启动日志 ›</a></div>
       </div>
     </div>
 
@@ -290,6 +299,8 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
 .banner-icon { width: 44px; height: 44px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: #EFEDE6; color: var(--slate); flex: none; }
 .banner-icon.run, .banner-icon.ok { background: var(--verdigris-soft); color: var(--verdigris); } .banner-icon.warn { background: var(--amber-soft); color: var(--amber); } .banner-icon.bad { background: var(--cinnabar-soft); color: var(--cinnabar); }
 .banner-text { font-size: 18px; line-height: 26px; font-weight: 600; }
+.fail-reason { margin-top: 6px; color: var(--cinnabar); background: var(--cinnabar-soft); border-radius: 8px; padding: 6px 10px; word-break: break-all; }
+.fail-reason a { cursor: pointer; color: var(--ink); text-decoration: underline; margin-left: 6px; }
 .row1 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
 .row2 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
 .progress, .checks, .agents, .issues { padding: 18px 22px; }
