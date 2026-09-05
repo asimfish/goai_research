@@ -9,7 +9,7 @@
 
 | 结论 | 证据 | 处置 |
 |---|---|---|
-| 正式运行的子 agent **没有拿到 MCP**：40 个任务 0 次 `mcp_tool_call`，105 次 shell 直调 `from server.xxx_server import …` | 编排器派活命令 `RUNNER_TIMEOUT=900 RUNNER_SANDBOX=danger-full-access bash tools/parallel_run.sh …` 未带 `-p <profile>`；gaojing 无 `~/.codex/config.toml`，profile 只在 `~/.codex/cold_full_byzso_m2gfJJ.config.toml` | ✅ `parallel_run.sh` 自动把 `GOAI_CODEX_PROFILE` 转成 `-p`，缺失时告警并写 `RUN_INFO.json`；orchestrator skill / AGENTS.md 派活命令带 profile |
+| 正式运行的子 agent **一次也没用 MCP**：40 个任务 0 次 `mcp_tool_call`，105 次 shell 直调 `from server.xxx_server import …`。原因不是配置——启动命令 `export RUNNER_ARGS='-p cold_full_byzso_m2gfJJ --ephemeral'` 已把 profile 传给子 agent——而是 **Codex 把 MCP 工具延迟加载**（`tool_search_always_defer_mcp_tools` 已固化为默认），子 agent 开场清单里看不到 goai-*，没有去 `tool_search` 就判定「未暴露」 | 子 agent 自述：`lit_identity_structure`「当前工具清单没有直接暴露检索函数」、`fig01_phase_c_retry`「当前会话没有暴露 goai-figure MCP 调用…走 server/figure_server.py 降级」；用原始 profile 在 codex 0.153.4 复现：工具清单只有 `tool_search.tool_search_tool`，「No MCP server tools are currently exposed directly」；而两次探针里 gpt-5.4-mini 先 tool_search 再调用，全部成功 | ✅ runner 在每个子任务提示词末尾附「MCP 工具延迟加载，先 tool_search」；AGENTS.md 铁律 16、五个 skill 的工具面同句；另保留 `GOAI_CODEX_PROFILE`→`-p` 透传与缺 profile 告警作为第二道防线 |
 | MCP 服务端审计 **134 条全部无法归因**（`run_id: null`），且只覆盖 4/25 个工具 | `audit.record_tool_call` 读 `GOAI_RUN_ID`，runner 从未设置；codex 默认不向 MCP server 透传父进程 env（实测只带 9 个变量） | ✅ runner 导出 `GOAI_RUN_ID=<批次>/<任务>`；profile 加 `env_vars = ["GOAI_RUN_ID","GOAI_TASK_NAME"]`（实测透传成功）；`mcp_compat.FastMCP.tool()` 统一审计全部工具 |
 | **40% 子任务撞超时墙**（16/40：FAIL_TIMEOUT 10、WARN_ARTIFACT_PASS_AFTER_TIMEOUT 6） | `.status` 统计；超时任务多为 40–60 条命令的长会话 | ✅ 投递协议附时间预算与 20 KB 输出上限；⏳ 建议在任务书模板固化「预算/步数」 |
 | 输入 token 70.8 M 中 **95.8% 是缓存重发**；61 条命令输出 >20 KB，最大 950 KB（`rg`）与 933 KB（内嵌 `codex exec` 审稿） | 事件流 `turn.completed.usage` 汇总、`command_execution.aggregated_output` 长度 | ✅ AGENTS.md 铁律 16 + reviewer skill 要求内嵌 codex `-o` 落盘；⏳ 建议 `loopctl brief` 减少大文件重读（references.bib 被读 137 次、papers.jsonl 81 次） |
@@ -51,6 +51,10 @@ python3 tools/live_view.py --all           # 回放历史全部批次；--run-id
 - 状态：PASS 23 / WARN 6 / FAIL 10 / 未落盘 1。FAIL 全部是 `FAIL_TIMEOUT`（1800 s ×7、900 s ×4、1200 s ×2）或产物验收失败（figure_merge：产物「本轮未更新」）；BLOCKED_DEPENDENCY 3 个（style_bank 超时连带 lit_merge_coverage 两次未启动、figure_merge 失败连带 blueprint 未启动）。
 - token：仅 24 个跑到 `turn.completed` 的任务就用了 70.8 M 输入（其中 67.9 M 缓存）/ 0.57 M 输出；最大单任务 `writing_repair` 11.5 M 输入、66 条命令。成本结构说明：**贵的不是规程文本，而是长会话每轮把巨大的命令输出反复带着**。
 - 工具面：`mcp_tool_call` 0 次；`from server.` 直调 105 次；`references.bib` 被读 137 次、`papers.jsonl` 81 次、`SKILL.md` 47 次、`loopctl status/log` 67/69 次。
+  启动命令（原对话 08-31 19:29）：`export RUNNER_ARGS='-p cold_full_byzso_m2gfJJ --ephemeral'` + `codex exec --ephemeral -p cold_full_byzso_m2gfJJ -s danger-full-access …`，
+  profile 含 4 个 goai server 且冷启动目录的 `.venv`/`.venv-retro` 齐全——MCP 配置本身是启用的；子 agent 不用 MCP 的直接原因是 Codex 的延迟加载：
+  goai 工具不在开场清单，需先 `tool_search`。`style_bank` 的自述「本地 MCP 组件通过预检，但执行环境禁止其直接联网…Operation not permitted」
+  也印证它是在 `workspace-write` 沙箱的 shell 里直调 server 模块（MCP server 进程本身不受沙箱限制，走 MCP 就不会断网）。
 - 铁律 8（单条输出 ≤20 KB）被违反 61 次；最大的两条来自 `rg` 全库检索（950 KB）与内嵌 `codex exec` 审稿把整段 stdout 打回上下文（933 KB）；tectonic 编译日志 120–300 KB 出现 5 次。
 - 审计：`tool_calls.jsonl` 134 条（lookup_local_doi 111 / grep_local_corpus 19 / predict_precursor_routes 4），`run_id` 全为 null；`search_papers`（web 检索 205 次）、`verify_*`、`render_figure` 等 21 个工具没有任何服务端审计。
 
@@ -59,7 +63,7 @@ python3 tools/live_view.py --all           # 回放历史全部批次；--run-id
 | 文件 | 改动 |
 |---|---|
 | `tools/live_view.py` `tools/live_view_ui.html` | 新增实时查看工具（§1） |
-| `tools/parallel_run.sh` | `GOAI_CODEX_PROFILE`→`-p` 自动透传 + 缺 MCP 告警；`RUN_INFO.json`；`<task>.prompt.txt` / `.meta.json`；子进程导出 `GOAI_RUN_ID`/`GOAI_TASK_NAME`；投递协议附 20 KB 输出上限与时间预算；启动/收尾打印 live_view 用法。21 项 live 调度测试全过 |
+| `tools/parallel_run.sh` | 每个子任务提示词末尾附运行协议：**goai MCP 工具延迟加载、先 tool_search**、禁读活动日志、20 KB 输出上限、时间预算、声明产物增量落盘；`GOAI_CODEX_PROFILE`→`-p` 自动透传 + 缺 MCP 告警；`RUN_INFO.json`；`<task>.prompt.txt` / `.meta.json`；子进程导出 `GOAI_RUN_ID`/`GOAI_TASK_NAME`；启动/收尾打印 live_view 用法。21 项 live 调度测试全过 |
 | `scripts/reproduce_core.sh` | 四个 server 加 `env_vars = ["GOAI_RUN_ID","GOAI_TASK_NAME"]`；`export GOAI_CODEX_PROFILE`；打印 live_view 用法 |
 | `configs/codex.config.toml.example` | 同上 `env_vars` + profile 用法说明 |
 | `server/core/mcp_compat.py` | `FastMCP.tool()` 统一审计（跳过核心层已记的 4 个），请求截断 2000 字、响应只存摘要；MCP 协议路径与直调路径都留痕 |
@@ -68,6 +72,7 @@ python3 tools/live_view.py --all           # 回放历史全部批次；--run-id
 | `server/figure_server.py` `server/retro_server.py` | `drawio_export` / `provider_status` / `inorganic_model_status` 补 Args/Returns 与「结果怎么用」 |
 | `AGENTS.md` | 铁律 16（MCP 优先、直调兜底须留痕、输出 ≤20 KB 的具体做法）；环境速查加派活 profile 与 live_view |
 | `skills/goai-orchestrator/SKILL.md` | 终端派活命令带 `GOAI_CODEX_PROFILE`，看进度用 live_view 而不是读活动 jsonl |
+| `skills/goai-lit-search|ref-guard|figure-studio|idea-forge|style-bank` | 工具面各加一句「Codex 延迟加载 MCP 工具，先 tool_search 再调用；搜不到才降级直调并记账」 |
 | `skills/goai-reviewer/SKILL.md` | 跨模型审稿用 `codex exec -o <trace>` 直接落盘，禁止整段 stdout 回灌 |
 | `docs/LOOP_PROTOCOL.md` `README.md` | 并行协议规约 9–11（MCP 透传 / 归因 / 提示词落盘）；一键命令加 live_view |
 

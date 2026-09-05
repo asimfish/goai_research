@@ -47,6 +47,7 @@ python3 tools/live_view.py --follow        # 运行中按角色实时看各子 a
 
 ## 系统与框架文档
 
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) **运行手册**：怎么跑（全流程 / 单批子任务 / 无 LLM 验证）、怎么接真实 Parquet 全库、怎么用 `tools/live_view.py` 看整个流程
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) 三层架构 · [`docs/LOOP_PROTOCOL.md`](docs/LOOP_PROTOCOL.md) 账本驱动回环协议 · [`docs/FAILURE_MODE_FIXES.md`](docs/FAILURE_MODE_FIXES.md) 失效模式与守卫
 - [`docs/FRAMEWORK_CN.md`](docs/FRAMEWORK_CN.md) / [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) 开源框架使用指南（宿主接入、配置、测试、FAQ）
 - [`docs/live-tests/`](docs/live-tests/) 实测报告 · [`docs/audits/`](docs/audits/) 需求验收审计

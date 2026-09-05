@@ -79,13 +79,17 @@
     蓝色引用全部走样而账本记 PASS）。编译后必须过 `tools/pdf_guard.py`
     （Producer/字体/时效/摘要/编号五项）——`loopctl gate draft_complete PASS` 会自动
     调用它，不带 PDF 或不过闸直接拒绝；`check-done` 再核一遍。
-16. **工具调用走 MCP，直调只是兜底，且都要留痕**：goai-litsearch / refcheck /
-    figure / retro 的工具优先经 MCP 调用（事件流里留 `mcp_tool_call`，服务端审计
-    `state/tool_calls.jsonl` 自动带 `run_id=<批次>/<任务>`）。宿主没挂 MCP server
-    时才允许 `.venv/bin/python -c "from server.xxx_server import 工具"` 直调——
-    同一份审计包装仍会记录，但派活方必须先修配置（`GOAI_CODEX_PROFILE` /
-    `RUNNER_ARGS="-p <profile>"`），不要让整批子任务都靠直调跑完（正式运行实测：
-    40 个子任务 0 次 MCP、105 次直调，134 条审计全部无法归因到角色）。
+16. **goai 工具走 MCP，先 `tool_search` 再说「没有」**：Codex 宿主把 MCP 工具
+    **延迟加载**（`tool_search_always_defer_mcp_tools` 已固化为默认，不可关闭）——
+    开场工具清单里看不到 goai-* 不等于没挂。先 `tool_search` 搜 `goai-litsearch` /
+    `goai-refcheck` / `goai-figure` / `goai-retro`（或具体工具名），拿到后经 MCP
+    调用：事件流留 `mcp_tool_call`，服务端审计 `state/tool_calls.jsonl` 自动带
+    `run_id=<批次>/<任务>`，网络请求由 server 进程发出、不受 shell 沙箱限制。
+    正式运行实测：子 agent 拿到了 profile 却没有搜索，判定「工具未暴露」后改用
+    `.venv/bin/python -c "from server.xxx_server import 工具"` 直调 105 次、MCP 0 次，
+    134 条审计无法归因，`workspace-write` 沙箱下直调还全部断网。只有 tool_search
+    也搜不到（派活方没传 profile，RUN_INFO.json 会记 `mcp_warning`）才允许直调兜底，
+    并 `loopctl log --event decision` 记录降级；同一份审计包装仍会留痕。
     单条命令输出仍受铁律 8 的 20 KB 上限：编译/大检索/内嵌 `codex exec` 一律
     重定向到文件后只 `tail`，不要把整段日志灌进上下文（实测 61 条命令输出超限，
     最大 950 KB，是 40% 子任务撞 RUNNER_TIMEOUT 的主因之一）。

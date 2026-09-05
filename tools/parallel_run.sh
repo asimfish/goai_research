@@ -206,15 +206,19 @@ JSON
       fi
     done
   fi
+  # 统一附在每个子任务提示词末尾的运行协议。MCP 那一条来自正式运行的教训：Codex 把
+  # MCP 工具延迟加载，子 agent 开场看不到 goai-* 就断定「未暴露」改走 shell 直调。
+  prompt="${prompt}
+
+[parallel runner protocol]
+- The goai MCP servers (goai-litsearch, goai-refcheck, goai-figure, goai-retro) are loaded lazily by Codex: they are NOT in the initial tool list. Call tool_search for the server or tool name before concluding they are unavailable, and prefer these MCP tools over importing server modules in the shell.
+- Do not read any active log under ${LOG_DIR}. Only inspect a prior run log when the prompt names that closed run_id explicitly.
+- Keep every command's printed output under 20 KB: redirect compiles, large searches and nested codex runs to a file and only tail it.
+$( (( RUNNER_TIMEOUT > 0 )) && echo "- Wall-clock budget: ${RUNNER_TIMEOUT}s, then the process is killed; when about half is used, make sure the declared artifacts already hold your best current result." )"
   if [[ -n "$expected" ]]; then
     prompt="${prompt}
-
-[parallel runner delivery protocol]
 - Write the declared artifacts early, then update them incrementally after each completed phase; do not wait for the final chat response.
-- Do not read any active log under ${LOG_DIR}. Only inspect a prior run log when the prompt names that closed run_id explicitly.
 - Before finishing, verify every declared artifact is non-empty and saved inside the requested path.
-- Keep every command's printed output under 20 KB: redirect compiles, large searches and nested codex runs to a file and only tail it.
-$( (( RUNNER_TIMEOUT > 0 )) && echo "- Wall-clock budget: ${RUNNER_TIMEOUT}s, then the process is killed; when about half is used, make sure the declared artifacts already hold your best current result." )
 Declared artifacts: ${expected}"
   fi
   # exec 让子 shell 被后端进程本体替换，$! 就是后端自己的 pid，

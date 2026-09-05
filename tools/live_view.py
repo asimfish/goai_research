@@ -457,7 +457,8 @@ class LedgerWatch:
         open_issues = [i for i in issues if (i.get("status") or "open") == "open"]
         sev = collections.Counter(i.get("severity") for i in open_issues)
         return {
-            "topic": d.get("topic"), "stage": d.get("stage"), "round": d.get("round"),
+            "topic": d.get("topic"), "stage": d.get("stage"), "stages": d.get("stages") or [],
+            "round": d.get("round"), "created": d.get("created"),
             "max_rounds": d.get("max_rounds"), "effort": d.get("effort"), "strictness": d.get("strictness"),
             "gates": {k: {"status": (v or {}).get("status"), "detail": one_line((v or {}).get("detail"), 220),
                           "round": (v or {}).get("round")} for k, v in (d.get("gates") or {}).items()},

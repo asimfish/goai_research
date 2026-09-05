@@ -84,9 +84,11 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    - 在终端环境：写 `tasks.tsv`（任务名 TAB 提示词 TAB 产物 TAB 依赖）后
      `GOAI_CODEX_PROFILE=<你自己所在的 profile> RUNNER=codex tools/parallel_run.sh tasks.tsv 4`
      ——子 agent 不会自动继承你的 MCP 配置，漏掉 profile 它们就只能 shell 直调
-     server 模块（runner 会在启动时告警并写进 RUN_INFO.json）。派出后不要
-     去读正在增长的 `.jsonl`（铁律 11），要看进度用只读的
-     `python3 tools/live_view.py`（快照）或 `--follow`（按角色着色的实时流）。
+     server 模块（runner 会在启动时告警并写进 RUN_INFO.json）。任务书里指明
+     角色 skill 即可，「MCP 工具延迟加载、先 tool_search」这一条 runner 会自动附在
+     每个提示词末尾，不必重复。派出后不要去读正在增长的 `.jsonl`（铁律 11），
+     要看进度用只读的 `python3 tools/live_view.py`（快照）或 `--follow`
+     （按角色着色的实时流）。
    - 并发底线（做不到要记账说明）：lit_search 按子主题切 ≥3 路并发 +
      style_bank 同时进行；figures 按图并发；writing 按章节并发；
      串行执行只允许作为并发失败后的降级路径，且必须

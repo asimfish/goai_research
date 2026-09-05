@@ -40,7 +40,7 @@ description: Use when generating research ideas or experiment plans from a surve
 
 ### 2. 逆合成与实验方案（化学/材料类 idea）
 
-工具来自 MCP server `goai-retro`。**材料/化学类 idea 调用预测工具不是
+工具来自 MCP server `goai-retro`（Codex 宿主把 MCP 工具**延迟加载**：开场工具清单里看不到 goai-* 不等于没挂，先 `tool_search` 搜 server 名或工具名再调用；只有搜也搜不到才按降级记账、走 `.venv/bin/python -c "from server.… import …"` 直调）。**材料/化学类 idea 调用预测工具不是
 可选项**——每个提出的新方向都必须配到「工艺 + 前驱体」级别的实验推荐，
 空谈方向不许过审：
 1. `provider_status()` 先确认后端：`stub` 输出仅演示流程，**禁止**把 stub

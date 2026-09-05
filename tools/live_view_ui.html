@@ -56,6 +56,25 @@
   #modal .mb { overflow:auto; padding:10px 14px; font-size:12.5px; }
   details summary { cursor:pointer; color:var(--dim); }
   pre { white-space:pre-wrap; word-break:break-word; background:#0b0d11; padding:8px; border-radius:6px; font-size:11.5px; }
+  .pipe { display:flex; flex-wrap:wrap; gap:6px; align-items:stretch; }
+  .stage { position:relative; min-width:96px; padding:6px 10px 6px 12px; border:1px solid var(--line); border-radius:6px; background:#11141b; font-size:12px; }
+  .stage.cur { border-color:var(--run); box-shadow:0 0 0 1px var(--run) inset; }
+  .stage .sn { font-weight:600; }
+  .stage .sg { color:var(--dim); font-size:11px; display:block; }
+  .stage .sr { position:absolute; top:-7px; right:-6px; background:var(--run); color:#fff; border-radius:9px; font-size:10px; padding:0 6px; }
+  .stage.PASS { border-left:4px solid var(--ok); } .stage.WARN { border-left:4px solid var(--warn); }
+  .stage.FAIL { border-left:4px solid var(--fail); } .stage.PENDING { border-left:4px solid var(--line); }
+  .stage.par { background:#0f1622; }
+  .arrow { align-self:center; color:var(--dim); }
+  #tlbody { font-size:11px; }
+  .tlrun { color:var(--dim); margin:6px 0 2px; font-family:ui-monospace,monospace; }
+  .tlrow { display:flex; align-items:center; gap:6px; height:18px; }
+  .tlrow .tln { width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-family:ui-monospace,monospace; }
+  .tlrow .tlt { flex:1; position:relative; height:12px; background:#0b0d11; border-radius:3px; }
+  .tlbar { position:absolute; top:0; height:12px; border-radius:3px; opacity:.85; min-width:2px; }
+  .tlbar.RUNNING { background:var(--run); } .tlbar.PASS,.tlbar.DONE { background:var(--ok); } .tlbar.WARN { background:var(--warn); }
+  .tlbar.FAIL { background:var(--fail); } .tlbar.BLOCKED { background:var(--blk); } .tlbar.PENDING,.tlbar.STALE { background:var(--dim); }
+  .tlaxis { display:flex; justify-content:space-between; color:var(--dim); font-size:10px; margin-left:226px; }
   .toggle { margin-left:auto; display:flex; gap:10px; align-items:center; color:var(--dim); font-size:12px; }
   select, input[type=checkbox] { accent-color:var(--acc); }
   select { background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:2px 6px; }
@@ -81,6 +100,8 @@
     <div class="box" id="audit"><h2>MCP 服务端审计</h2><div id="auditbody"></div></div>
   </aside>
   <section>
+    <div class="box" id="pipeline"><h2>流程（账本阶段 → 闸门 → 正在跑的角色）</h2><div id="pipebody" class="pipe"></div></div>
+    <div class="box" id="timeline"><h2>批次时间线</h2><div id="tlbody"></div></div>
     <div id="cards"></div>
   </section>
   <div class="box" id="feed"><h2>实时事件流（全部角色）</h2><div id="feedbody"></div></div>
@@ -141,8 +162,61 @@ function renderCard(tk) {
 }
 const cssId = s => s.replace(/[^a-zA-Z0-9_-]/g, "_");
 
+const DEFAULT_STAGES = ["intake","scoping","lit_search","style_bank","ref_gate","taxonomy","figures","writing","ideas","review","final"];
+const STAGE_GATE = {scoping:"scope_confirmed", lit_search:"lit_coverage", style_bank:"style_bank_ready", ref_gate:"ref_integrity",
+  taxonomy:"taxonomy_ready", figures:"figures_ready", writing:"draft_complete", ideas:"ideas_reviewed", review:"review_pass"};
+const ROLE_STAGE = {"goai-lit-search":"lit_search", "goai-style-bank":"style_bank", "goai-ref-guard":"ref_gate", "goai-survey-writer":"writing",
+  "goai-figure-studio":"figures", "goai-figure-editable":"figures", "goai-idea-forge":"ideas", "goai-reviewer":"review", "goai-orchestrator":"final"};
+const PARALLEL_GROUPS = [["lit_search","style_bank"], ["figures","writing","ideas"]];
+
+function renderPipeline(L, tasks) {
+  // 账本的 stages 是权威顺序；但旧账本可能漏掉 style_bank 之类有闸门的阶段，此时用默认表兜底
+  const stages = (L.stages && L.stages.some(s => !DEFAULT_STAGES.includes(s))) ? L.stages : DEFAULT_STAGES;
+  const running = {};
+  for (const t of tasks) if (t.status_group === "RUNNING") { const s = ROLE_STAGE[t.role] || "?"; running[s] = (running[s]||0) + 1; }
+  let html = "";
+  stages.forEach((s, i) => {
+    const gate = STAGE_GATE[s]; const g = gate && L.gates ? L.gates[gate] : null;
+    const gs = g && g.status ? g.status : (gate ? "PENDING" : "");
+    const par = PARALLEL_GROUPS.some(grp => grp.includes(s));
+    const cur = L.stage === s;
+    html += `<div class="stage ${gs} ${cur ? "cur" : ""} ${par ? "par" : ""}" title="${esc(g && g.detail ? g.detail : "")}">` +
+      `<span class="sn">${esc(s)}${cur ? " ◀" : ""}</span>` +
+      (gate ? `<span class="sg">${esc(gate)}: ${esc(gs)}${g && g.round ? " · r" + g.round : ""}</span>` : `<span class="sg">${s === "final" ? "check-done" : "—"}</span>`) +
+      (running[s] ? `<span class="sr">▶ ${running[s]}</span>` : "") + `</div>`;
+    if (i < stages.length - 1) html += `<span class="arrow">${par && PARALLEL_GROUPS.some(grp => grp.includes(s) && grp.includes(stages[i+1])) ? "∥" : "→"}</span>`;
+  });
+  if (!L.stage) html = `<span class="pill">账本未初始化</span> ` + html;
+  $("#pipebody").innerHTML = html;
+}
+
+function renderTimeline(tasks, now) {
+  const rows = tasks.filter(t => t.started);
+  if (!rows.length) { $("#tlbody").innerHTML = "<span class='pill'>暂无任务</span>"; return; }
+  const t0 = Math.min(...rows.map(t => t.started));
+  const t1 = Math.max(now, ...rows.map(t => t.ended || now));
+  const span = Math.max(1, t1 - t0);
+  const byRun = {};
+  for (const t of rows) (byRun[t.run_id] ||= []).push(t);
+  let html = "";
+  for (const run of Object.keys(byRun).sort()) {
+    html += `<div class="tlrun">${esc(run)}</div>`;
+    for (const t of byRun[run].sort((a,b) => a.started - b.started)) {
+      const end = t.ended || now;
+      const left = (t.started - t0) / span * 100, width = Math.max(0.3, (end - t.started) / span * 100);
+      html += `<div class="tlrow"><span class="tln" title="${esc(t.key)}">${roleLabel(t.role).split(" ")[0]} ${esc(t.name)}</span>` +
+        `<div class="tlt"><div class="tlbar ${t.status_group}" style="left:${left}%;width:${width}%" title="${esc(t.status)} · ${dur(t.elapsed)}"></div></div>` +
+        `<span style="width:64px;text-align:right;color:var(--dim)">${dur(t.elapsed)}</span></div>`;
+    }
+  }
+  html += `<div class="tlaxis"><span>${hms(t0)}</span><span>${hms(t0 + span/2)}</span><span>${hms(t1)}</span></div>`;
+  $("#tlbody").innerHTML = html;
+}
+
 function renderState(st) {
   roleMeta = st.role_meta || {}; roles = st.roles || [];
+  renderPipeline(st.ledger || {}, st.tasks || []);
+  renderTimeline(st.tasks || [], st.now);
   $("#ws").textContent = st.workspace + (st.runs.length ? "  ·  " + st.runs.join(", ") : "");
   const cnt = st.counts || {};
   $("#counts").innerHTML = Object.keys(cnt).sort().map(k => `<span class="pill ${k}">${k} ${cnt[k]}</span>`).join(" ");

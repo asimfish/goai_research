@@ -125,11 +125,13 @@ GOAI_CODEX_PROFILE=<profile> bash tools/parallel_run.sh --backend codex --jobs 3
    全部声明产物已在本轮写出且非空，`.process_exit`保留124，`.status`记
    `WARN_ARTIFACT_PASS_AFTER_TIMEOUT`，有效`.exit`为0；设
    `RUNNER_TIMEOUT_ARTIFACT_POLICY=fail`可恢复严格失败策略。
-9. **子 agent 必须拿到 MCP**：codex 后端下，runner 把 `GOAI_CODEX_PROFILE`
-   自动转成 `-p <profile>`（RUNNER_ARGS 已带 -p 时不重复）；两者都没有且
-   `$CODEX_HOME/config.toml` 无 goai server 时启动前告警并写进 RUN_INFO.json。
-   正式运行（2026-08-31）就是漏了这一步：40 个子任务 0 次 `mcp_tool_call`、
-   105 次 shell 直调 server 模块。
+9. **子 agent 必须拿到 MCP，并且知道 MCP 工具是延迟加载的**：codex 后端下，
+   runner 把 `GOAI_CODEX_PROFILE` 自动转成 `-p <profile>`（RUNNER_ARGS 已带 -p 时
+   不重复）；两者都没有且 `$CODEX_HOME/config.toml` 无 goai server 时启动前告警并
+   写进 RUN_INFO.json。同时 runner 在每个子任务提示词末尾附「goai MCP 工具不在开场
+   清单里，先 `tool_search` 再判定不可用」——正式运行（2026-08-31）profile 传对了，
+   但子 agent 没有搜索就断定「未暴露」，结果 40 个子任务 0 次 `mcp_tool_call`、
+   105 次 shell 直调 server 模块（`workspace-write` 沙箱下直调还全部断网）。
 10. **调用归因**：每个子进程带 `GOAI_RUN_ID=<run_id>/<任务名>`、`GOAI_TASK_NAME`；
     MCP server 配置须声明 `env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]`（codex 默认
     不向 MCP server 透传父进程环境），`server/core/mcp_compat.py` 对全部工具统一记
