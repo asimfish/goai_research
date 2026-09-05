@@ -61,6 +61,8 @@ python3 tools/console_server.py --port 5051 --codex-home /home/gaojing/.codex \
   --private-corpus-env /home/gaojing/goai_console.env      # GOAI_LOCAL_CORPUS_* 三个变量 + HTTPS_PROXY 等代理变量，仓库外文件
 ```
 
+服务单元设 `KillMode=process`：`systemctl --user restart goai-console` 只重启控制台本身，由它发起的研究运行留在原地继续跑，重启后的控制台按 `launcher.pid` 自动接管（进程结束时补写 exit / status）。⚠ 早期版本用默认的 control-group 模式，重启服务会把所有运行一起杀掉——如果看到「控制台服务重启时运行被一并结束」就是那次的记录。
+
 服务环境里没有 `.bashrc`：代理、nvm、`~/.local/bin` 都要在脚本或 env 文件里显式给出，否则 codex 连不上 OpenAI（表现为一直 Reconnecting）、找不到 codex 命令、或 TeX 预检失败导致最终不出 PDF。`reproduce_core.sh` 自己也会把找到的 tectonic / xelatex 目录加进 PATH，并在模型容量不足时退避续跑（最多 6 次；设 `GOAI_MODEL_FALLBACK` 可在第三次后切换模型）。
 
 | 页面 | 内容 |
