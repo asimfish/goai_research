@@ -50,6 +50,7 @@
 - byzso_evidence_map: images/byzso_evidence_map.png | no-crop
 - byzso_latest_taxonomy: images/byzso_latest_taxonomy.png | no-crop
 - recipe_architecture: images/recipe_architecture.png | no-crop
+- console_run: images/console_run.png | no-crop
 
 ## page_rhythm
 - P01: anchor
