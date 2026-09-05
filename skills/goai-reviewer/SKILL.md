@@ -26,7 +26,11 @@ description: Use when artifacts need adversarial review inside the loop — 审�
 
 **审稿留痕（防「声称审过实际没审」）**：跨模型审稿的每轮原始提问与回复
 全文存 `workspace/state/review_traces/round<N>_<seq>.md`，供事后独立性
-审计。`review_pass` 置 PASS 时必须附回执：
+审计。用终端拉起独立模型时让它**直接落盘**——`codex exec ... -o
+workspace/state/review_traces/round<N>_<seq>.md "<审稿提示词>" >/dev/null`
+（事件流如需保留另外重定向到文件），然后只 `wc -l` / `head -c 4000` 读回执；
+**禁止**把内嵌 codex 的整段 stdout 打回自己的上下文（正式运行实测一条命令
+灌入 933 KB，直接把该审稿任务推过超时线）。`review_pass` 置 PASS 时必须附回执：
 
 ```bash
 python3 tools/loopctl.py gate --name review_pass --status PASS \

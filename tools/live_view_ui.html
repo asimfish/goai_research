@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>goai live view · 各角色实时输出</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#0f1115; --panel:#171a21; --line:#262b36; --fg:#d9dde5; --dim:#8a93a6; --acc:#4f8cff;
+          --ok:#3fb950; --warn:#d29922; --fail:#f85149; --run:#58a6ff; --blk:#a371f7; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:13px/1.45 -apple-system,"Segoe UI",Roboto,"PingFang SC","Noto Sans CJK SC",sans-serif; }
+  header { display:flex; gap:16px; align-items:center; padding:8px 14px; border-bottom:1px solid var(--line); background:var(--panel); position:sticky; top:0; z-index:5; flex-wrap:wrap; }
+  header h1 { font-size:15px; margin:0; font-weight:600; }
+  header .ws { color:var(--dim); font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; }
+  .pill { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; border:1px solid var(--line); color:var(--dim); }
+  .pill.RUNNING { color:var(--run); border-color:var(--run); } .pill.PASS,.pill.DONE { color:var(--ok); border-color:var(--ok); }
+  .pill.WARN { color:var(--warn); border-color:var(--warn); } .pill.FAIL { color:var(--fail); border-color:var(--fail); }
+  .pill.BLOCKED { color:var(--blk); border-color:var(--blk); } .pill.STALE,.pill.PENDING { color:var(--dim); }
+  main { display:grid; grid-template-columns: 330px 1fr; gap:10px; padding:10px 14px; }
+  aside { display:flex; flex-direction:column; gap:10px; min-width:0; }
+  .box { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; min-width:0; }
+  .box h2 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); font-weight:600; }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:2px 10px; font-size:12px; }
+  .kv .k { color:var(--dim); }
+  .gate { display:flex; justify-content:space-between; gap:8px; padding:2px 0; border-bottom:1px dashed var(--line); font-size:12px; }
+  .gate .d { color:var(--dim); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .issue { font-size:12px; padding:3px 0; border-bottom:1px dashed var(--line); }
+  .sev-blocker { color:var(--fail); } .sev-major { color:var(--warn); } .sev-minor { color:var(--dim); }
+  #cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:10px; align-content:start; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; display:flex; flex-direction:column; min-height:220px; max-height:520px; }
+  .card.RUNNING { border-color:#2c4f80; box-shadow:0 0 0 1px #1f3a63 inset; }
+  .card .hd { display:flex; align-items:center; gap:8px; padding:8px 10px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .card .hd .role { font-weight:600; white-space:nowrap; }
+  .card .hd .name { color:var(--dim); font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+  .card .meta { display:flex; gap:10px; padding:4px 10px; color:var(--dim); font-size:11px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .card .body { padding:6px 10px; overflow:auto; flex:1; font-size:12px; }
+  .ev { padding:3px 0; border-bottom:1px dashed #20242d; word-break:break-word; white-space:pre-wrap; }
+  .ev .t { color:var(--dim); font-size:11px; margin-right:6px; font-family:ui-monospace,monospace; }
+  .ev.message { color:#e6edf3; } .ev.reasoning { color:var(--dim); font-style:italic; }
+  .ev.command code, .ev.mcp code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; color:#c9d1d9; }
+  .ev.command .out { color:var(--dim); display:block; max-height:6em; overflow:hidden; font-size:11px; font-family:ui-monospace,monospace; }
+  .ev.mcp { color:#d2a8ff; } .ev.web_search { color:#79c0ff; } .ev.file_change { color:#7ee787; } .ev.error { color:var(--fail); }
+  .ev.todo { color:#e3b341; } .ev.usage,.ev.thread,.ev.status { color:var(--dim); font-size:11px; }
+  .card .ft { padding:6px 10px; border-top:1px solid var(--line); color:var(--dim); font-size:11px; white-space:pre-wrap; max-height:5.5em; overflow:hidden; }
+  .card .ft.fail { color:var(--fail); }
+  .rolegroup { grid-column:1/-1; margin-top:4px; color:var(--dim); font-size:12px; letter-spacing:.04em; border-bottom:1px solid var(--line); padding-bottom:3px; }
+  #feed { grid-column:1/-1; }
+  #feedbody { max-height:260px; overflow:auto; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; }
+  #feedbody div { padding:1px 0; white-space:pre-wrap; word-break:break-word; }
+  .role-tag { display:inline-block; min-width:9em; }
+  .audit { font-size:11.5px; font-family:ui-monospace,monospace; padding:2px 0; border-bottom:1px dashed var(--line); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; z-index:20; }
+  #modal .inner { position:absolute; inset:4% 6%; background:var(--panel); border:1px solid var(--line); border-radius:10px; display:flex; flex-direction:column; }
+  #modal .mh { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); }
+  #modal .mh button { margin-left:auto; background:none; color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:3px 10px; cursor:pointer; }
+  #modal .mb { overflow:auto; padding:10px 14px; font-size:12.5px; }
+  details summary { cursor:pointer; color:var(--dim); }
+  pre { white-space:pre-wrap; word-break:break-word; background:#0b0d11; padding:8px; border-radius:6px; font-size:11.5px; }
+  .pipe { display:flex; flex-wrap:wrap; gap:6px; align-items:stretch; }
+  .stage { position:relative; min-width:96px; padding:6px 10px 6px 12px; border:1px solid var(--line); border-radius:6px; background:#11141b; font-size:12px; }
+  .stage.cur { border-color:var(--run); box-shadow:0 0 0 1px var(--run) inset; }
+  .stage .sn { font-weight:600; }
+  .stage .sg { color:var(--dim); font-size:11px; display:block; }
+  .stage .sr { position:absolute; top:-7px; right:-6px; background:var(--run); color:#fff; border-radius:9px; font-size:10px; padding:0 6px; }
+  .stage.PASS { border-left:4px solid var(--ok); } .stage.WARN { border-left:4px solid var(--warn); }
+  .stage.FAIL { border-left:4px solid var(--fail); } .stage.PENDING { border-left:4px solid var(--line); }
+  .stage.par { background:#0f1622; }
+  .arrow { align-self:center; color:var(--dim); }
+  #tlbody { font-size:11px; }
+  .tlrun { color:var(--dim); margin:6px 0 2px; font-family:ui-monospace,monospace; }
+  .tlrow { display:flex; align-items:center; gap:6px; height:18px; }
+  .tlrow .tln { width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-family:ui-monospace,monospace; }
+  .tlrow .tlt { flex:1; position:relative; height:12px; background:#0b0d11; border-radius:3px; }
+  .tlbar { position:absolute; top:0; height:12px; border-radius:3px; opacity:.85; min-width:2px; }
+  .tlbar.RUNNING { background:var(--run); } .tlbar.PASS,.tlbar.DONE { background:var(--ok); } .tlbar.WARN { background:var(--warn); }
+  .tlbar.FAIL { background:var(--fail); } .tlbar.BLOCKED { background:var(--blk); } .tlbar.PENDING,.tlbar.STALE { background:var(--dim); }
+  .tlaxis { display:flex; justify-content:space-between; color:var(--dim); font-size:10px; margin-left:226px; }
+  .toggle { margin-left:auto; display:flex; gap:10px; align-items:center; color:var(--dim); font-size:12px; }
+  select, input[type=checkbox] { accent-color:var(--acc); }
+  select { background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:2px 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>goai live view</h1>
+  <span class="ws" id="ws"></span>
+  <span id="counts"></span>
+  <span class="toggle">
+    批次 <select id="runsel"><option value="">活动集合</option></select>
+    <label><input type="checkbox" id="showReasoning"> 思考</label>
+    <label><input type="checkbox" id="autoscroll" checked> 自动滚动</label>
+    <span id="clock"></span>
+  </span>
+</header>
+<main>
+  <aside>
+    <div class="box" id="ledger"><h2>回环账本</h2><div id="ledgerbody" class="kv"></div></div>
+    <div class="box" id="gates"><h2>闸门</h2><div id="gatesbody"></div></div>
+    <div class="box" id="issues"><h2>Open issues</h2><div id="issuesbody"></div></div>
+    <div class="box" id="audit"><h2>MCP 服务端审计</h2><div id="auditbody"></div></div>
+  </aside>
+  <section>
+    <div class="box" id="pipeline"><h2>流程（账本阶段 → 闸门 → 正在跑的角色）</h2><div id="pipebody" class="pipe"></div></div>
+    <div class="box" id="timeline"><h2>批次时间线</h2><div id="tlbody"></div></div>
+    <div id="cards"></div>
+  </section>
+  <div class="box" id="feed"><h2>实时事件流（全部角色）</h2><div id="feedbody"></div></div>
+</main>
+<div id="modal"><div class="inner"><div class="mh"><strong id="mtitle"></strong><span id="mstatus" class="pill"></span><button onclick="closeModal()">关闭</button></div><div class="mb" id="mbody"></div></div></div>
+<script>
+const $ = s => document.querySelector(s);
+let lastSeq = 0, roleMeta = {}, roles = [], selectedRun = "";
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dur = s => { if (s == null) return "—"; s = Math.max(0, Math.floor(s)); const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60; return h ? `${h}h${String(m).padStart(2,"0")}m` : (m ? `${m}m${String(x).padStart(2,"0")}s` : `${x}s`); };
+const tok = n => { if (!n) return "0"; if (n >= 1e6) return (n/1e6).toFixed(1)+"M"; if (n >= 1e3) return (n/1e3).toFixed(1)+"k"; return String(n); };
+const hms = ts => ts ? new Date(ts*1000).toLocaleTimeString("zh-CN", {hour12:false}) : "";
+const roleLabel = r => { const m = roleMeta[r] || {icon:"•", label:r}; return `${m.icon} ${m.label}`; };
+
+function renderItem(it) {
+  const t = `<span class="t">${hms(it.ts)}</span>`;
+  switch (it.kind) {
+    case "message": return `<div class="ev message">${t}💬 ${esc(it.text)}</div>`;
+    case "reasoning": return $("#showReasoning").checked ? `<div class="ev reasoning">${t}🧠 ${esc(it.text)}</div>` : "";
+    case "command": {
+      const rc = it.exit_code == null ? (it.status === "in_progress" ? "…" : "") : `exit ${it.exit_code}`;
+      const out = it.output ? `<span class="out">${esc(it.output.slice(-600))}</span>` : "";
+      return `<div class="ev command">${t}$ <code>${esc(it.command)}</code> <span class="t">${rc}</span>${out}</div>`;
+    }
+    case "mcp": {
+      const res = it.error ? `⚠ ${esc(it.error)}` : (it.result ? esc(it.result.slice(0, 300)) : (it.status || ""));
+      return `<div class="ev mcp">${t}🔧 <code>${esc(it.server)}.${esc(it.tool)}(${esc((it.arguments||"").slice(0,200))})</code> <span class="t">${res}</span></div>`;
+    }
+    case "web_search": return `<div class="ev web_search">${t}🌐 ${esc(it.query)}</div>`;
+    case "file_change": return `<div class="ev file_change">${t}✎ ${(it.changes||[]).slice(0,8).map(c => esc(c.kind)+":"+esc(String(c.path).split("/").pop())).join(", ")}</div>`;
+    case "todo": { const items = it.items||[]; const done = items.filter(i=>i.completed).length; return `<div class="ev todo">${t}☑ ${done}/${items.length} ${items.map(i => (i.completed?"✓ ":"○ ")+esc(i.text)).join(" · ")}</div>`; }
+    case "usage": { const u = it.usage||{}; return `<div class="ev usage">${t}Σ in ${tok(u.input_tokens)} (cached ${tok(u.cached_input_tokens)}) · out ${tok(u.output_tokens)} · reasoning ${tok(u.reasoning_output_tokens)}</div>`; }
+    case "error": return `<div class="ev error">${t}⚠ ${esc(it.text)}</div>`;
+    case "thread": return `<div class="ev thread">${t}▶ session ${esc(it.text)}</div>`;
+    case "status": return `<div class="ev status">${t}■ ${esc(it.text)}</div>`;
+    case "raw": return `<div class="ev status">${t}· ${esc(it.text)}</div>`;
+    default: return "";
+  }
+}
+
+function renderCard(tk) {
+  const c = tk.counts || {};
+  const stale = tk.status === "RUNNING" && tk.last_activity && (Date.now()/1000 - tk.last_activity > 300);
+  const pill = `<span class="pill ${tk.status_group}">${esc(tk.status)}${stale ? " · 5min 无输出" : ""}</span>`;
+  const meta = `<span>⏱ ${dur(tk.elapsed)}</span><span>tok in ${tok(tk.tokens_in)} / out ${tok(tk.tokens_out)}</span>` +
+    `<span>$ ${c.command||0}</span><span title="Codex 事件流里的 mcp_tool_call / 服务端审计归因到本任务的调用">🔧 ${c.mcp||0}${tk.audit_calls ? "/"+tk.audit_calls : ""}</span><span>🌐 ${c.web_search||0}</span><span>✎ ${c.file_change||0}</span>` +
+    (tk.exit != null ? `<span>exit ${esc(tk.exit)}${tk.process_exit && tk.process_exit !== tk.exit ? " (proc "+esc(tk.process_exit)+")" : ""}</span>` : "");
+  const body = (tk.recent||[]).map(renderItem).join("");
+  let ft = "";
+  if (tk.validation) ft = `<div class="ft fail">⛔ ${esc(tk.validation)}</div>`;
+  else if (tk.status_group === "RUNNING" && tk.current_command) ft = `<div class="ft">$ ${esc(tk.current_command)}</div>`;
+  else if (tk.final) ft = `<div class="ft">${esc(tk.final.slice(-400))}</div>`;
+  else if (tk.expected && tk.expected.length) ft = `<div class="ft">声明产物：${esc(tk.expected.join(", "))}</div>`;
+  return `<div class="card ${tk.status_group}" id="card-${cssId(tk.key)}" data-key="${esc(tk.key)}">
+    <div class="hd" onclick="openTask('${esc(tk.key)}')"><span class="role">${roleLabel(tk.role)}</span><span class="name" title="${esc(tk.key)}">${esc(tk.name)}</span>${pill}</div>
+    <div class="meta">${meta}</div>
+    <div class="body" data-scroll>${body}</div>${ft}</div>`;
+}
+const cssId = s => s.replace(/[^a-zA-Z0-9_-]/g, "_");
+
+const DEFAULT_STAGES = ["intake","scoping","lit_search","style_bank","ref_gate","taxonomy","figures","writing","ideas","review","final"];
+const STAGE_GATE = {scoping:"scope_confirmed", lit_search:"lit_coverage", style_bank:"style_bank_ready", ref_gate:"ref_integrity",
+  taxonomy:"taxonomy_ready", figures:"figures_ready", writing:"draft_complete", ideas:"ideas_reviewed", review:"review_pass"};
+const ROLE_STAGE = {"goai-lit-search":"lit_search", "goai-style-bank":"style_bank", "goai-ref-guard":"ref_gate", "goai-survey-writer":"writing",
+  "goai-figure-studio":"figures", "goai-figure-editable":"figures", "goai-idea-forge":"ideas", "goai-reviewer":"review", "goai-orchestrator":"final"};
+const PARALLEL_GROUPS = [["lit_search","style_bank"], ["figures","writing","ideas"]];
+
+function renderPipeline(L, tasks) {
+  // 账本的 stages 是权威顺序；但旧账本可能漏掉 style_bank 之类有闸门的阶段，此时用默认表兜底
+  const stages = (L.stages && L.stages.some(s => !DEFAULT_STAGES.includes(s))) ? L.stages : DEFAULT_STAGES;
+  const running = {};
+  for (const t of tasks) if (t.status_group === "RUNNING") { const s = ROLE_STAGE[t.role] || "?"; running[s] = (running[s]||0) + 1; }
+  let html = "";
+  stages.forEach((s, i) => {
+    const gate = STAGE_GATE[s]; const g = gate && L.gates ? L.gates[gate] : null;
+    const gs = g && g.status ? g.status : (gate ? "PENDING" : "");
+    const par = PARALLEL_GROUPS.some(grp => grp.includes(s));
+    const cur = L.stage === s;
+    html += `<div class="stage ${gs} ${cur ? "cur" : ""} ${par ? "par" : ""}" title="${esc(g && g.detail ? g.detail : "")}">` +
+      `<span class="sn">${esc(s)}${cur ? " ◀" : ""}</span>` +
+      (gate ? `<span class="sg">${esc(gate)}: ${esc(gs)}${g && g.round ? " · r" + g.round : ""}</span>` : `<span class="sg">${s === "final" ? "check-done" : "—"}</span>`) +
+      (running[s] ? `<span class="sr">▶ ${running[s]}</span>` : "") + `</div>`;
+    if (i < stages.length - 1) html += `<span class="arrow">${par && PARALLEL_GROUPS.some(grp => grp.includes(s) && grp.includes(stages[i+1])) ? "∥" : "→"}</span>`;
+  });
+  if (!L.stage) html = `<span class="pill">账本未初始化</span> ` + html;
+  $("#pipebody").innerHTML = html;
+}
+
+function renderTimeline(tasks, now) {
+  const rows = tasks.filter(t => t.started);
+  if (!rows.length) { $("#tlbody").innerHTML = "<span class='pill'>暂无任务</span>"; return; }
+  const t0 = Math.min(...rows.map(t => t.started));
+  const t1 = Math.max(now, ...rows.map(t => t.ended || now));
+  const span = Math.max(1, t1 - t0);
+  const byRun = {};
+  for (const t of rows) (byRun[t.run_id] ||= []).push(t);
+  let html = "";
+  for (const run of Object.keys(byRun).sort()) {
+    html += `<div class="tlrun">${esc(run)}</div>`;
+    for (const t of byRun[run].sort((a,b) => a.started - b.started)) {
+      const end = t.ended || now;
+      const left = (t.started - t0) / span * 100, width = Math.max(0.3, (end - t.started) / span * 100);
+      html += `<div class="tlrow"><span class="tln" title="${esc(t.key)}">${roleLabel(t.role).split(" ")[0]} ${esc(t.name)}</span>` +
+        `<div class="tlt"><div class="tlbar ${t.status_group}" style="left:${left}%;width:${width}%" title="${esc(t.status)} · ${dur(t.elapsed)}"></div></div>` +
+        `<span style="width:64px;text-align:right;color:var(--dim)">${dur(t.elapsed)}</span></div>`;
+    }
+  }
+  html += `<div class="tlaxis"><span>${hms(t0)}</span><span>${hms(t0 + span/2)}</span><span>${hms(t1)}</span></div>`;
+  $("#tlbody").innerHTML = html;
+}
+
+function renderState(st) {
+  roleMeta = st.role_meta || {}; roles = st.roles || [];
+  renderPipeline(st.ledger || {}, st.tasks || []);
+  renderTimeline(st.tasks || [], st.now);
+  $("#ws").textContent = st.workspace + (st.runs.length ? "  ·  " + st.runs.join(", ") : "");
+  const cnt = st.counts || {};
+  $("#counts").innerHTML = Object.keys(cnt).sort().map(k => `<span class="pill ${k}">${k} ${cnt[k]}</span>`).join(" ");
+  // run selector
+  const sel = $("#runsel"); const cur = sel.value;
+  const opts = ['<option value="">活动集合</option>', '<option value="__all__">全部批次</option>'].concat((st.all_runs||[]).slice().reverse().map(r => `<option value="${esc(r)}">${esc(r)}</option>`));
+  if (sel.innerHTML !== opts.join("")) { sel.innerHTML = opts.join(""); sel.value = cur; }
+  // cards grouped by role order
+  const byRole = {};
+  for (const t of st.tasks) (byRole[t.role] ||= []).push(t);
+  const order = roles.concat(Object.keys(byRole).filter(r => !roles.includes(r)));
+  const scrollPos = {};
+  document.querySelectorAll(".card .body").forEach(b => { scrollPos[b.parentElement.dataset.key] = [b.scrollTop, b.scrollHeight - b.clientHeight - b.scrollTop < 30]; });
+  let html = "";
+  for (const r of order) {
+    if (!byRole[r]) continue;
+    const running = byRole[r].filter(t => t.status_group === "RUNNING").length;
+    html += `<div class="rolegroup">${roleLabel(r)} · ${byRole[r].length} 个任务${running ? " · " + running + " 在跑" : ""}</div>`;
+    html += byRole[r].map(renderCard).join("");
+  }
+  if (!st.tasks.length) html = `<div class="box">还没有任务。等待 parallel_run.sh 在 <code>${esc(st.workspace)}/state/parallel/</code> 落盘…</div>`;
+  $("#cards").innerHTML = html;
+  document.querySelectorAll(".card .body").forEach(b => {
+    const k = b.parentElement.dataset.key; const p = scrollPos[k];
+    if ($("#autoscroll").checked && (!p || p[1])) b.scrollTop = b.scrollHeight; else if (p) b.scrollTop = p[0];
+  });
+  // ledger
+  const L = st.ledger || {};
+  if (L.stage) {
+    $("#ledgerbody").innerHTML = [["主题", L.topic], ["阶段", `${L.stage}`], ["轮次", `${L.round}/${L.max_rounds}`], ["档位", `${L.effort} · ${L.strictness}`], ["issues", `${L.issues_total} 总 / ${L.open_issues.length} open`], ["更新", hms(L.updated)]]
+      .map(([k,v]) => `<span class="k">${k}</span><span>${esc(v)}</span>`).join("");
+    $("#gatesbody").innerHTML = Object.entries(L.gates||{}).map(([k,g]) => `<div class="gate"><span>${esc(k)}</span><span class="d" title="${esc(g.detail)}">${esc(g.detail)}</span><span class="pill ${g.status||"PENDING"}">${esc(g.status||"PENDING")}</span></div>`).join("") || "<span class='pill'>无</span>";
+    $("#issuesbody").innerHTML = (L.open_issues||[]).map(i => `<div class="issue"><span class="sev-${esc(i.severity)}">${esc(i.id)} ${esc(i.severity)}</span> → ${esc(i.target)} <span style="color:var(--dim)">${esc(i.text)}</span></div>`).join("") || "<span class='pill'>0</span>";
+  } else {
+    $("#ledgerbody").innerHTML = `<span class="k">账本</span><span>未初始化（无 state/ledger.json）</span>`; $("#gatesbody").innerHTML = ""; $("#issuesbody").innerHTML = "";
+  }
+  const A = st.audit || {};
+  const tools = Object.entries(A.by_tool||{}).slice(0,8).map(([k,v]) => `${k} ${v}`).join(" · ");
+  const unattr = (A.by_run||{})["(未归因)"] || 0;
+  $("#auditbody").innerHTML = `<div class="kv"><span class="k">总数</span><span>${A.total||0}${unattr ? `（未归因 ${unattr}）` : ""}</span><span class="k">工具</span><span>${esc(tools)||"—"}</span></div>` +
+    (A.recent||[]).slice(-12).reverse().map(r => `<div class="audit" title="${esc(r.request)}">${esc((r.ts||"").slice(11,19))} ${esc(r.tool)} ${r.duration_ms != null ? (r.duration_ms/1000).toFixed(1)+"s" : ""} ${r.ok === false ? "⚠" : ""} ${r.run_id ? "← "+esc(r.run_id) : ""}</div>`).join("");
+  $("#clock").textContent = hms(st.now);
+}
+
+function feedLine(e) {
+  const who = e.task ? `<span class="role-tag">${roleLabel(e.role)}</span> ${esc(e.name)}` : (e.kind === "ledger" ? "📒 账本" : "🔧 MCP审计");
+  let txt = "";
+  switch (e.kind) {
+    case "message": if (e.phase === "started") return ""; txt = "💬 " + esc(e.text); break;
+    case "reasoning": if (!$("#showReasoning").checked || e.phase !== "completed") return ""; txt = "🧠 " + esc(e.text); break;
+    case "command": if (e.phase === "started") txt = "$ " + esc(e.command); else if (e.phase === "completed") txt = `↳ exit ${e.exit_code} ${esc((e.output||"").slice(0,160))}`; else return ""; break;
+    case "mcp": if (e.phase === "started") txt = `🔧 ${esc(e.server)}.${esc(e.tool)}(${esc((e.arguments||"").slice(0,160))})`; else if (e.phase === "completed") txt = `↳ ${esc(e.tool)} ${esc(e.status)} ${esc(e.error || (e.result||"").slice(0,160))}`; else return ""; break;
+    case "web_search": if (e.phase !== "completed") return ""; txt = "🌐 " + esc(e.query); break;
+    case "file_change": if (e.phase !== "completed") return ""; txt = "✎ " + (e.changes||[]).slice(0,6).map(c => esc(c.kind)+":"+esc(String(c.path).split("/").pop())).join(", "); break;
+    case "todo": { const items = e.items||[]; txt = `☑ ${items.filter(i=>i.completed).length}/${items.length}`; break; }
+    case "usage": { const u = e.usage||{}; txt = `Σ in ${tok(u.input_tokens)} · out ${tok(u.output_tokens)}`; break; }
+    case "status": txt = "■ " + esc(e.text); break;
+    case "error": txt = "⚠ " + esc(e.text); break;
+    case "thread": txt = "▶ session " + esc(e.text); break;
+    case "ledger": txt = esc(e.text); break;
+    case "audit": txt = `${esc(e.tool)} ${e.duration_ms != null ? (e.duration_ms/1000).toFixed(1)+"s" : ""} ${e.ok === false ? "⚠" : ""} ${e.run_id ? "← "+esc(e.run_id) : ""} ${esc(e.request||"")}`; break;
+    default: return "";
+  }
+  return `<div><span class="t">${hms(e.ts)}</span> ${who}  ${txt}</div>`;
+}
+
+async function tick() {
+  try {
+    const q = selectedRun === "__all__" ? "?all=1" : (selectedRun ? `?run=${encodeURIComponent(selectedRun)}` : "");
+    const st = await (await fetch("/api/state" + q)).json();
+    if (selectedRun) st.tasks = st.tasks.filter(t => selectedRun === "__all__" || t.run_id === selectedRun || t.kind === "orchestrator");
+    renderState(st);
+    const fd = await (await fetch(`/api/feed?after=${lastSeq}`)).json();
+    if (fd.events.length) {
+      const fb = $("#feedbody"); const atBottom = fb.scrollHeight - fb.clientHeight - fb.scrollTop < 40;
+      fb.insertAdjacentHTML("beforeend", fd.events.map(feedLine).join(""));
+      while (fb.children.length > 800) fb.removeChild(fb.firstChild);
+      if ($("#autoscroll").checked && (atBottom || lastSeq === 0)) fb.scrollTop = fb.scrollHeight;
+      lastSeq = fd.events[fd.events.length-1].seq;
+    }
+  } catch (e) { $("#clock").textContent = "连接中断: " + e; }
+}
+async function openTask(key) {
+  const d = await (await fetch(`/api/task?key=${encodeURIComponent(key)}`)).json();
+  $("#mtitle").textContent = `${roleLabel(d.role)} · ${d.name}  (${d.run_id})`;
+  $("#mstatus").textContent = d.status; $("#mstatus").className = "pill " + d.status_group;
+  const u = `⏱ ${dur(d.elapsed)} · tok in ${tok(d.tokens_in)} (cached ${tok(d.tokens_cached)}) / out ${tok(d.tokens_out)} · exit ${d.exit ?? "—"}`;
+  const prompt = d.prompt_full ? `<details><summary>提示词（${d.prompt_full.length} 字）</summary><pre>${esc(d.prompt_full)}</pre></details>` : "";
+  const final = d.final ? `<details open><summary>最终回复</summary><pre>${esc(d.final)}</pre></details>` : "";
+  const val = d.validation ? `<div class="ev error">⛔ ${esc(d.validation)}</div>` : "";
+  const stderr = d.stderr ? `<details><summary>stderr</summary><pre>${esc(d.stderr)}</pre></details>` : "";
+  const exp = (d.expected||[]).length ? `<div>声明产物：${esc(d.expected.join(", "))}${(d.dependencies||[]).length ? "　依赖：" + esc(d.dependencies.join(", ")) : ""}</div>` : "";
+  const items = (d.items||[]).map(renderItem).join("");
+  $("#mbody").innerHTML = `<div style="color:var(--dim)">${u}</div>${exp}${val}${prompt}${final}${stderr}<h3 style="font-size:12px;color:var(--dim)">事件流（${d.items_total} 条）</h3>${items}`;
+  $("#modal").style.display = "block";
+}
+function closeModal() { $("#modal").style.display = "none"; }
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+$("#runsel").addEventListener("change", e => { selectedRun = e.target.value; tick(); });
+$("#showReasoning").addEventListener("change", tick);
+tick(); setInterval(tick, 1500);
+</script>
+</body>
+</html>

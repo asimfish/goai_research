@@ -25,7 +25,13 @@ mcp = FastMCP("goai-retro")
 
 @mcp.tool()
 def provider_status() -> str:
-    """查询当前逆合成后端配置（provider / API 地址 / 是否可信）。"""
+    """查询当前逆合成后端配置（provider / API 地址 / 是否可信）。
+
+    Returns:
+        JSON {provider: stub|http, trusted, local_inorganic_ready, local_inorganic: {...}, note}。
+        provider=stub 的分子路线只能做流程演示，不得写进交付物；无机材料请看
+        local_inorganic_ready 并改用 predict_precursor_routes。
+    """
     provider = os.environ.get("GOAI_RETRO_PROVIDER", "stub")
     local_status = inorganic_retro.status()
     local_ready = bool(
@@ -48,7 +54,13 @@ def provider_status() -> str:
 
 @mcp.tool()
 def inorganic_model_status() -> str:
-    """检查本地两步无机逆合成模型、checkpoint哈希和依赖。"""
+    """检查本地两步无机逆合成模型、checkpoint哈希和依赖。
+
+    Returns:
+        JSON {available, dependencies{torch,numpy,pandas,pymatgen}, assets{...},
+        checkpoint_sha256, checkpoint_hash_ok, protocol{...}}。available=false 或任一
+        hash_ok=false 时不要调用 predict_precursor_routes，直接在账本记 WARN。
+    """
     return retro.to_json(inorganic_retro.status())
 
 

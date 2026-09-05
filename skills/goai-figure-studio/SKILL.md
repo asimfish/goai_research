@@ -8,7 +8,7 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 方法论四支柱（image-first 流程）：
 **源忠实、edge-label-first、模块化不碎片化、克制配色**。
 执行形态是**自动化回环**：不等人逐步确认，候选生成与审计全自动收敛，
-人只看最终产物。工具来自 MCP server `goai-figure`。
+人只看最终产物。工具来自 MCP server `goai-figure`（Codex 宿主把 MCP 工具**延迟加载**：开场工具清单里看不到 goai-* 不等于没挂，先 `tool_search` 搜 server 名或工具名再调用；只有搜也搜不到才按降级记账、走 `.venv/bin/python -c "from server.… import …"` 直调）。
 
 **image-first 是默认路径**：凡进论文的图，一律先用 AI 生图拿视觉参照、
 再按参照做可编辑化重建（figspec → svg + drawio）。生图可用于探索构图、

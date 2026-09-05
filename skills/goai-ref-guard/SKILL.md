@@ -18,6 +18,10 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
 
 ## 快速档规程
 
+> Codex 宿主把 MCP 工具延迟加载：开场清单里没有 `verify_bib_file` / `verify_entry` 不等于
+> goai-refcheck 没挂，先 `tool_search` 搜 `goai-refcheck` 再调；搜不到才降级直调并记账。
+
+
 1. `verify_bib_file(bib_path="workspace/library/references.bib",
    out_dir="workspace/state")` → 产出 `CITATION_AUDIT.{json,md}`。
 2. 按裁决处理：

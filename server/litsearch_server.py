@@ -14,6 +14,7 @@ from typing import Optional
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from server.core.mcp_compat import FastMCP
+from server.core import jsonout
 
 from server.core import bibtex as bib
 from server.core import http as ghttp
@@ -34,11 +35,20 @@ def _ws(*parts: str) -> str:
 
 
 def _dumps(obj) -> str:
-    return json.dumps(obj, ensure_ascii=False, indent=2)
+    return jsonout.dumps(obj)
 
 
-def _compact_search_records(records: list[dict]) -> list[dict]:
+COMPACT_ABSTRACT_CHARS = 240
+COMPACT_KEEP_FIELDS = ("source", "sources", "id", "doi", "arxiv_id", "title", "authors", "year",
+                       "venue", "url", "pdf_url", "citation_count", "abstract", "abstract_truncated")
+
+
+def _compact_search_records(records: list[dict], compact: bool = False) -> list[dict]:
     """Limit verbose abstracts in MCP search responses.
+
+    compact=True 时只保留识别与入库必需字段、摘要截到 240 字：一次 3 源×15 条的
+    检索结果从约 60–70 KB 降到约 15 KB，用于关键词矩阵扫描；选中的记录再用
+    lookup 拉完整元数据。
 
     Search is a discovery primitive, not a full-text transport.  Returning an
     unbounded abstract for every source/result made a single agent turn exceed
@@ -48,9 +58,13 @@ def _compact_search_records(records: list[dict]) -> list[dict]:
     limit = max(200, int(os.environ.get(
         "GOAI_SEARCH_ABSTRACT_CHARS", str(DEFAULT_SEARCH_ABSTRACT_CHARS)
     )))
+    if compact:
+        limit = COMPACT_ABSTRACT_CHARS
     out = []
     for record in records:
         row = dict(record)
+        if compact:
+            row = {k: v for k, v in row.items() if k in COMPACT_KEEP_FIELDS}
         abstract = row.get("abstract")
         if isinstance(abstract, str) and len(abstract) > limit:
             row["abstract"] = abstract[:limit].rstrip() + " …[truncated]"
@@ -61,19 +75,25 @@ def _compact_search_records(records: list[dict]) -> list[dict]:
 
 @mcp.tool()
 def local_corpus_status() -> str:
-    """检查离线全文语料及 DuckDB-Parquet / ripgrep 后端是否可用。"""
+    """检查离线全文语料及 DuckDB-Parquet / ripgrep 后端是否可用。
+
+    Returns:
+        JSON {ok, engine: duckdb-parquet|ripgrep-markdown, roots, parquet_files|markdown_files,
+        manifest{synthetic, citable, ...}}。ok=false 时跳过 grep_local_corpus /
+        lookup_local_doi，直接走 search_papers；manifest.citable=false 的语料只能做接口测试。
+    """
     return _dumps(local_corpus.corpus_status())
 
 
 @mcp.tool()
-def grep_local_corpus(query: str, max_results: int = 20,
+def grep_local_corpus(query: str, max_results: int = 10,
                       context_lines: int = 1, case_sensitive: bool = False,
                       regex: bool = False, file_glob: str = "*.md") -> str:
     """在私有 NAS 语料或公开裁剪语料中做流式全文检索。
 
     Args:
         query: 文本或正则表达式。
-        max_results: 全局返回上限（1--100）；达到后立即停止扫描。
+        max_results: 全局返回上限（1--100，默认 10 = AGENTS.md 检索预算上限）；达到后立即停止扫描。
         context_lines: 每个命中前后附带的行数（0--10）。
         case_sensitive: 是否区分大小写。
         regex: false 时按字面量检索；true 时使用正则。
@@ -94,7 +114,14 @@ def grep_local_corpus(query: str, max_results: int = 20,
 @mcp.tool()
 def read_local_document(path: str, start_line: int = 1,
                         end_line: int = 200) -> str:
-    """读取全文检索命中的本地文献片段；路径必须位于配置的语料根目录内。"""
+    """读取全文检索命中的本地文献片段；路径必须位于配置的语料根目录内。
+
+    Args:
+        path: grep_local_corpus 返回的 path（Parquet 后端为虚拟路径，原样传回即可）
+        start_line / end_line: 行号区间（默认 1--200；一次不要超过 200 行，按需分页）
+    Returns:
+        JSON {ok, path, lines: [{line, text}], total_lines}；越界路径 ok=false。
+    """
     return _dumps(local_corpus.read_local_document(
         path,
         start_line=start_line,
@@ -105,7 +132,15 @@ def read_local_document(path: str, start_line: int = 1,
 @mcp.tool()
 def lookup_local_doi(doi: str, start_line: int = 1,
                      end_line: int = 200) -> str:
-    """用私有 DOI→UUID→Parquet 分片索引直接读取一篇本地全文；未命中时如实返回。"""
+    """用私有 DOI→UUID→Parquet 分片索引直接读取一篇本地全文；未命中时如实返回。
+
+    Args:
+        doi: 形如 10.xxxx/...（大小写不敏感，可带 https://doi.org/ 前缀）
+        start_line / end_line: 行号区间（默认 1--200）
+    Returns:
+        JSON {ok, found, doi, path, lines: [...], total_lines}；found=false 只说明本地库
+        无全文，不代表文献不存在——此时用 lookup 核元数据、download_pdf 取 OA 副本。
+    """
     return _dumps(local_corpus.lookup_local_doi(
         doi,
         start_line=start_line,
@@ -117,7 +152,8 @@ def lookup_local_doi(doi: str, start_line: int = 1,
 def search_papers(query: str, sources: str = "arxiv,openalex,semanticscholar",
                   limit_per_source: int = 15,
                   year_from: Optional[int] = None,
-                  year_to: Optional[int] = None) -> str:
+                  year_to: Optional[int] = None,
+                  compact: bool = False) -> str:
     """跨源检索文献并合并去重。
 
     Args:
@@ -125,8 +161,11 @@ def search_papers(query: str, sources: str = "arxiv,openalex,semanticscholar",
         sources: 逗号分隔，可选 arxiv/openalex/semanticscholar(别名 s2)/crossref/dblp
         limit_per_source: 每源条数上限
         year_from / year_to: 年份过滤（arxiv/crossref/dblp 不支持时忽略）
+        compact: true 时只返回识别/入库字段 + 240 字摘要（体量约 1/4），适合关键词矩阵
+            逐组扫描；需要完整摘要时对选中记录调 lookup
     Returns:
-        JSON {query, total, papers: [统一 record，含 sources 命中列表]}
+        JSON {query, total, errors: {源: 错误}, papers: [统一 record，含 sources 命中列表]}
+        errors 非空表示该源本次失败，需换源补查并记入 search_log。
     """
     query = (query or "").strip()
     if not query:
@@ -159,19 +198,21 @@ def search_papers(query: str, sources: str = "arxiv,openalex,semanticscholar",
                   or ((not year_from or r["year"] >= year_from)
                       and (not year_to or r["year"] <= year_to))]
     return _dumps({"query": query, "total": len(merged),
-                   "errors": errors, "papers": _compact_search_records(merged)})
+                   "errors": errors, "papers": _compact_search_records(merged, compact)})
 
 
 @mcp.tool()
-def snowball(seed: str, direction: str = "both", limit: int = 30) -> str:
+def snowball(seed: str, direction: str = "both", limit: int = 30,
+             compact: bool = False) -> str:
     """从种子论文做引文滚雪球扩展（查全的关键手段）。
 
     Args:
         seed: DOI（10.xxxx/...）/ arXiv id（2402.xxxxx）/ OpenAlex id（Wxxxx）
         direction: references（它引用谁）| citations（谁引用它）| both
         limit: 每个方向的条数上限
+        compact: true 时只保留识别/入库字段 + 240 字摘要（同 search_papers）
     Returns:
-        JSON {seed, references: [...], citations: [...]}
+        JSON {seed, references: [...], citations: [...], errors, fallback?}
     """
     seed = seed.strip()
     out = {"seed": seed, "references": [], "citations": [], "errors": {}}
@@ -216,14 +257,21 @@ def snowball(seed: str, direction: str = "both", limit: int = 30) -> str:
                     out["fallback"] = f"semanticscholar 不可用，已用 openalex:{wid} 兜底"
             except Exception as exc2:
                 out["errors"]["openalex"] = str(exc2)
-    out["references"] = _compact_search_records(out["references"])
-    out["citations"] = _compact_search_records(out["citations"])
+    out["references"] = _compact_search_records(out["references"], compact)
+    out["citations"] = _compact_search_records(out["citations"], compact)
     return _dumps(out)
 
 
 @mcp.tool()
 def lookup(identifier: str) -> str:
-    """按权威标识精确查元数据。identifier 支持 DOI 或 arXiv id。"""
+    """按权威标识精确查元数据。identifier 支持 DOI 或 arXiv id。
+
+    Args:
+        identifier: DOI（10.xxxx/...，含 arXiv 代发 DOI 10.48550/arxiv.*）或 arXiv id
+    Returns:
+        JSON {identifier, found, records: [统一 record]}；DOI 走 Crossref+OpenAlex 双路由合并，
+        arXiv 走 arXiv API。found=false 视为该标识不存在，不得入库。
+    """
     ident = identifier.strip()
     hits = []
     arxiv_doi = _ARXIV_DOI.match(ident)
@@ -386,14 +434,18 @@ def export_bibtex(library_path: Optional[str] = None,
 
 @mcp.tool()
 def coverage_report(subtopics: str,
-                    library_path: Optional[str] = None) -> str:
+                    library_path: Optional[str] = None,
+                    min_hits: int = 5) -> str:
     """查全率体检：逐子主题统计文献库命中量，暴露覆盖缺口。
 
     Args:
         subtopics: JSON 数组，每项 {name, keywords: [...]}（keywords 用于标题/摘要匹配）
         library_path: 文献库 jsonl（默认 $GOAI_WORKSPACE/library/papers.jsonl）
+        min_hits: 子主题命中数低于此值记为缺口（默认 5；comprehensive 档按 skill 配额传 15）
     Returns:
-        JSON 每个子主题的命中数 / 年份分布 / 缺口告警（<5 视为缺口）
+        JSON {library_size, recent_3y_share, subtopics: [{subtopic, hits, year_span, gap, sample}],
+        gaps, verdict: PASS|GAPS_FOUND, advice}。verdict 只判 min_hits 缺口；库总规模、
+        综述类篇数等档位配额仍需按 goai-lit-search skill 自查后写进 gate detail。
     """
     topics = json.loads(subtopics)
     library_path = library_path or _ws("library", "papers.jsonl")
@@ -410,10 +462,15 @@ def coverage_report(subtopics: str,
         years = sorted({p.get("year") for p in hits if p.get("year")})
         report.append({"subtopic": t.get("name"), "hits": len(hits),
                        "year_span": [years[0], years[-1]] if years else None,
-                       "gap": len(hits) < 5,
+                       "gap": len(hits) < min_hits,
                        "sample": [p.get("title") for p in hits[:3]]})
     gaps = [r["subtopic"] for r in report if r["gap"]]
-    return _dumps({"library_size": len(papers), "subtopics": report,
+    import datetime as _dt
+    _cutoff = _dt.date.today().year - 2
+    _recent = sum(1 for p in papers if isinstance(p.get("year"), int) and p["year"] >= _cutoff)
+    return _dumps({"library_size": len(papers),
+                   "recent_3y_share": round(_recent / len(papers), 3) if papers else None,
+                   "min_hits": min_hits, "subtopics": report,
                    "gaps": gaps,
                    "verdict": "PASS" if not gaps else "GAPS_FOUND",
                    "advice": "对 gaps 子主题换关键词重搜 + 对已命中论文 snowball" if gaps else "覆盖达标"})

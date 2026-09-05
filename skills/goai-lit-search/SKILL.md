@@ -6,7 +6,7 @@ description: Use when the task is comprehensive literature retrieval for a surve
 # GoAI Lit-Search —— 查全导向的文献检索 agent
 
 目标不是「找到一些相关论文」，而是**尽可能全**：对给定子主题，检索到边际新增
-趋近于零，并通过 coverage 闸门。工具来自 MCP server `goai-litsearch`。
+趋近于零，并通过 coverage 闸门。工具来自 MCP server `goai-litsearch`（Codex 宿主把 MCP 工具**延迟加载**：开场工具清单里看不到 goai-* 不等于没挂，先 `tool_search` 搜 server 名或工具名再调用；只有搜也搜不到才按降级记账、走 `.venv/bin/python -c "from server.… import …"` 直调）。
 
 ## 规模档位（开工前先定档，记入账本）
 

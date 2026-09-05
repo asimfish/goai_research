@@ -25,8 +25,9 @@ description: Use when building the domain style bank before figures/writing — 
 ### 1. 经典综述检索（目标 30 篇，25 篇为下限）
 
 - 检索式：`<主题词> + (survey | review | progress | advances)` 的 3-4 组变体，
-  `search_papers` sources 至少 `openalex,semanticscholar,crossref`（综述的
-  被引数据在这些源最全），年份窗放宽到近 15 年。
+  `search_papers`（goai-litsearch MCP 工具；Codex 宿主延迟加载，开场清单没有就先
+  `tool_search` 搜 `goai-litsearch`）sources 至少 `openalex,semanticscholar,crossref`
+  （综述的被引数据在这些源最全），年份窗放宽到近 15 年。
 - 排序与筛选：按被引降序 + venue 加权（Chem Rev / Chem Soc Rev / TPAMI /
   ACM CSUR / Nature Reviews 系 / IJCV 等顶刊综述优先），人工核对标题确为
   综述体裁（排除 perspective/editorial）。相关度分三档记入 jsonl：
