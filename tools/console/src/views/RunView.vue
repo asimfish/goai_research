@@ -226,10 +226,10 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
           <span class="card-h">{{ running.length ? '正在工作的角色' : (info.status === 'running' ? '角色' : '最近工作的角色') }}</span>
           <span class="dim small">{{ running.length ? `${running.length} 个角色活跃 · ` : '' }}{{ doneRoles }} 个角色已完成</span>
         </div>
-        <div v-if="active.length" class="agent-grid">
+        <div v-if="active.length" class="agent-grid" :class="{ wrap: active.length > 3 }">
           <template v-for="(t, i) in active" :key="t.key">
             <ActiveAgentCard :task="t" :now="st.now" @open="(k) => (openKey = k)" />
-            <span v-if="i < active.length - 1" class="conn" />
+            <span v-if="active.length <= 3 && i < active.length - 1" class="conn" />
           </template>
         </div>
         <NEmpty v-else description="编排器完成定范围后会派出第一批角色（文献检索 ∥ 风格库）" style="margin: 30px 0" />
@@ -330,7 +330,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
 .ph { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; gap: 10px; }
 .agent-grid { display: flex; align-items: stretch; gap: 0; }
 .agent-grid > .agent, .agent-grid > :deep(.agent) { flex: 1; min-width: 0; }
-.agent-grid.wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.agent-grid.wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
 .conn { width: 22px; height: 1.5px; background: #C9CCC6; align-self: center; flex: none; }
 .issue-list { display: flex; flex-direction: column; gap: 10px; }
 .issue { border-left: 3px solid var(--amber); background: var(--amber-soft); border-radius: 0 10px 10px 0; padding: 10px 14px; cursor: pointer; }
