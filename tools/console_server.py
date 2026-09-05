@@ -304,7 +304,55 @@ class Workspaces:
         self.monitors: dict[str, live_view.Monitor] = {}
         self.monitor_touch: dict[str, float] = {}
         self.launched: dict[str, subprocess.Popen] = {}
+        self.adopted: set[str] = set()
         self.lock = threading.Lock()
+        self.adopt_orphans()
+
+    # -- 服务重启后接管仍在跑的运行 -------------------------------------------------
+    def adopt_orphans(self) -> None:
+        """控制台重启后，之前由它发起、进程仍存活的运行没有人再给它写 launcher.exit；
+        这里按 launcher.pid 接管：轮询到进程结束时补齐 exit / finished / status（退出码无法得知，
+        以 REPRODUCTION_RECEIPT.json 是否存在判成败）。服务单元用 KillMode=process，重启不再连带杀子进程。"""
+        for path in self.candidate_paths():
+            pid_txt = live_view.read_text(os.path.join(path, "launcher.pid")).strip()
+            if not pid_txt or os.path.exists(os.path.join(path, "launcher.exit")):
+                continue
+            wid = ws_id(path)
+            if wid in self.launched or wid in self.adopted:
+                continue
+            if _pid_alive(pid_txt):
+                self.adopted.add(wid)
+                threading.Thread(target=self._watch_adopted, args=(wid, path, int(pid_txt)), daemon=True).start()
+                print(f"[console] adopted running launcher pid={pid_txt} {os.path.basename(path)}", file=sys.stderr)
+            else:
+                # 进程已不在却没有 exit 记录：上一任服务被杀时把它一起带走了（或机器重启），如实标记
+                self._finalize_dead(path, note="控制台服务重启时运行被一并结束（无退出码）")
+
+    def _watch_adopted(self, wid: str, path: str, pid: int) -> None:
+        while _pid_alive(pid):
+            time.sleep(3)
+        self.adopted.discard(wid)
+        if os.path.exists(os.path.join(path, "launcher.exit")):
+            return
+        ok = os.path.exists(os.path.join(path, "state", "REPRODUCTION_RECEIPT.json"))
+        stopped = os.path.exists(os.path.join(path, "launcher.stopped"))
+        self._finalize_dead(path, exit_code="0" if ok else "1", status="STOPPED" if stopped else ("PASS" if ok else "FAIL"),
+                            note=None if (ok or stopped) else "由重启后的控制台接管；进程结束但未产出复现回执，按失败记录（退出码未知）")
+
+    @staticmethod
+    def _finalize_dead(path: str, exit_code: str = "137", status: str = "FAIL", note: str | None = None) -> None:
+        try:
+            with open(os.path.join(path, "launcher.exit"), "w") as f:
+                f.write(f"{exit_code}\n")
+            with open(os.path.join(path, "launcher.finished"), "w") as f:
+                f.write(dt.datetime.now().astimezone().isoformat(timespec="seconds") + "\n")
+            with open(os.path.join(path, "launcher.status"), "w") as f:
+                f.write(status + "\n")
+            if note:
+                with open(os.path.join(path, "launcher.stderr.log"), "a", encoding="utf-8") as f:
+                    f.write(f"\n[console] {note}\n")
+        except OSError:
+            pass
 
     # -- 发现 -----------------------------------------------------------------
     def candidate_paths(self) -> list[str]:
