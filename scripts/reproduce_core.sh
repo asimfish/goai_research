@@ -82,24 +82,28 @@ model_reasoning_effort = "$EFFORT"
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/litsearch_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_EMAIL = "$GOAI_EMAIL", GOAI_WORKSPACE = "$WORKDIR", GOAI_LOCAL_CORPUS_ROOTS = "$GOAI_LOCAL_CORPUS_ROOTS"${GOAI_LOCAL_CORPUS_EXPECTED_INDEX:+, GOAI_LOCAL_CORPUS_EXPECTED_INDEX = "$GOAI_LOCAL_CORPUS_EXPECTED_INDEX", GOAI_LOCAL_CORPUS_SHARD_ROOT = "$GOAI_LOCAL_CORPUS_SHARD_ROOT"} }
 
 [mcp_servers.goai-refcheck]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/refcheck_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_EMAIL = "$GOAI_EMAIL", GOAI_WORKSPACE = "$WORKDIR" }
 
 [mcp_servers.goai-figure]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/figure_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_WORKSPACE = "$WORKDIR" }
 
 [mcp_servers.goai-retro]
 command = "$REPO/$RETRO_PY"
 args = ["$REPO/server/retro_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_WORKSPACE = "$WORKDIR", GOAI_INORGANIC_RETRO_ROOT = "$GOAI_INORGANIC_RETRO_ROOT", GOAI_RETRO_DEVICE = "$GOAI_RETRO_DEVICE" }
 TOML
 echo "codex profile written: $CODEX_HOME/$PROFILE.config.toml (model=$MODEL, effort=$EFFORT)"
@@ -119,7 +123,9 @@ printf '%s\n' "$TOPIC" > "$WORKDIR/inputs/topic_input.txt"
 # --- the run (identical flags to the formal case; sub-agents inherit RUNNER_* vars) ----
 export RUNNER=codex RUNNER_CWD="$REPO" RUNNER_TIMEOUT=1800 RUNNER_TIMEOUT_ARTIFACT_POLICY=accept
 export RUNNER_SANDBOX=danger-full-access RUNNER_ARGS="-p $PROFILE --ephemeral -c model=\"$MODEL\" -c model_reasoning_effort=\"$EFFORT\""
+export GOAI_CODEX_PROFILE="$PROFILE"   # parallel_run.sh 兜底：RUNNER_ARGS 丢失时仍给子 agent 挂上 MCP profile
 echo "launching orchestrator; events -> $LOGDIR/orchestrator.jsonl"
+echo "live view: GOAI_WORKSPACE=$WORKDIR python3 tools/live_view.py --follow   (or --serve 5051 for the browser dashboard)"
 codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
   -C "$REPO" -o "$LOGDIR/orchestrator.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.jsonl" >/dev/null
 

@@ -18,6 +18,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from server.core.mcp_compat import FastMCP
+from server.core import jsonout
 
 from server.core import figspec as fs
 from server.core import render_drawio, render_svg
@@ -33,7 +34,7 @@ DRAWIO_CLI_CANDIDATES = [
 
 
 def _dumps(obj) -> str:
-    return json.dumps(obj, ensure_ascii=False, indent=2)
+    return jsonout.dumps(obj)
 
 
 def _default_out_dir() -> str:
@@ -217,7 +218,15 @@ def svg_file_to_drawio(svg_path: str, out_path: str = "") -> str:
 
 @mcp.tool()
 def drawio_export(drawio_path: str, fmt: str = "png") -> str:
-    """用 draw.io Desktop CLI 把 .drawio 导出为 png/svg/pdf（需本机安装 draw.io）。"""
+    """用 draw.io Desktop CLI 把 .drawio 导出为 png/svg/pdf（需本机安装 draw.io）。
+
+    Args:
+        drawio_path: render_figure 产出的 .drawio 路径
+        fmt: png | svg | pdf | jpg（论文 \\includegraphics 用 pdf；对照自检用 png）
+    Returns:
+        JSON {ok, out, returncode, stderr}；找不到 CLI 时 ok=false 并给出安装/降级提示，
+        此时 render_figure 的 SVG 仍可直接用于论文。
+    """
     cli = _find_drawio_cli()
     if not cli:
         return _dumps({"ok": False,

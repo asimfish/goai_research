@@ -219,4 +219,6 @@ def experiment_plan_skeleton(route: dict[str, Any],
 
 
 def to_json(obj: Any) -> str:
-    return json.dumps(obj, ensure_ascii=False, indent=2)
+    from .jsonout import dumps  # 与其余 server 共用：GOAI_MCP_COMPACT_JSON=1 时紧凑输出
+
+    return dumps(obj)

@@ -79,6 +79,20 @@
     蓝色引用全部走样而账本记 PASS）。编译后必须过 `tools/pdf_guard.py`
     （Producer/字体/时效/摘要/编号五项）——`loopctl gate draft_complete PASS` 会自动
     调用它，不带 PDF 或不过闸直接拒绝；`check-done` 再核一遍。
+16. **goai 工具走 MCP，先 `tool_search` 再说「没有」**：Codex 宿主把 MCP 工具
+    **延迟加载**（`tool_search_always_defer_mcp_tools` 已固化为默认，不可关闭）——
+    开场工具清单里看不到 goai-* 不等于没挂。先 `tool_search` 搜 `goai-litsearch` /
+    `goai-refcheck` / `goai-figure` / `goai-retro`（或具体工具名），拿到后经 MCP
+    调用：事件流留 `mcp_tool_call`，服务端审计 `state/tool_calls.jsonl` 自动带
+    `run_id=<批次>/<任务>`，网络请求由 server 进程发出、不受 shell 沙箱限制。
+    正式运行实测：子 agent 拿到了 profile 却没有搜索，判定「工具未暴露」后改用
+    `.venv/bin/python -c "from server.xxx_server import 工具"` 直调 105 次、MCP 0 次，
+    134 条审计无法归因，`workspace-write` 沙箱下直调还全部断网。只有 tool_search
+    也搜不到（派活方没传 profile，RUN_INFO.json 会记 `mcp_warning`）才允许直调兜底，
+    并 `loopctl log --event decision` 记录降级；同一份审计包装仍会留痕。
+    单条命令输出仍受铁律 8 的 20 KB 上限：编译/大检索/内嵌 `codex exec` 一律
+    重定向到文件后只 `tail`，不要把整段日志灌进上下文（实测 61 条命令输出超限，
+    最大 950 KB，是 40% 子任务撞 RUNNER_TIMEOUT 的主因之一）。
 
 ## 环境速查
 
@@ -91,7 +105,13 @@
   终稿 PDF 来源闸门：`python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`；
   排版修补：`tools/bib_polish.py <bib> --write`（bib 卫生）、`tools/tex_polish.py <drafts> --write`（可断斜杠/路径归一）；
   一键编译 + 闸门：`bash scripts/build_tex.sh workspace/drafts`（无 TeX 即 fail-closed 退出）。
-- 并行派活：`bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`；
-  TSV 第三列填预期产物，第四列填前序依赖。超时但产物验收通过时保留
-  `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。
+- 并行派活：`GOAI_CODEX_PROFILE=<profile> bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`
+  （profile = `$CODEX_HOME/<profile>.config.toml`，含四个 goai MCP server 与
+  `env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]`，样例 `configs/codex.config.toml.example`；
+  reproduce_core.sh 已自动设置）。TSV 第三列填预期产物，第四列填前序依赖。超时但产物
+  验收通过时保留 `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。
+- **实时查看各角色输出**：`python3 tools/live_view.py --follow`（终端流，按角色着色）、
+  `python3 tools/live_view.py --serve 5051`（浏览器看板 http://127.0.0.1:5051，每个角色一张卡：
+  消息 / 命令 / MCP 调用 / 文件改动 / token / 账本闸门 / 审计归因）、不带参数为快照表；
+  `--all` 回放历史批次，`GOAI_WORKSPACE` 或 `--workspace` 指定工作区。只读，不影响运行。
 - 回环协议细节（阶段/闸门/路由表/终止条件）：`docs/LOOP_PROTOCOL.md`。
