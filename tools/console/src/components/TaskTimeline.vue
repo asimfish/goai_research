@@ -43,15 +43,15 @@ function width(t: TaskSummary) { return Math.max(0.3, (((t.ended || props.now) -
 
 <style scoped>
 .tl { font-size: 11.5px; }
-.run { color: #8a93a6; margin: 6px 0 2px; }
+.run { color: var(--slate); margin: 6px 0 2px; }
 .row { display: flex; align-items: center; gap: 8px; height: 18px; cursor: pointer; }
-.row:hover { background: rgba(255,255,255,.04); }
+.row:hover { background: #F3F1EA; }
 .name { width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-.track { flex: 1; position: relative; height: 12px; background: rgba(0,0,0,.35); border-radius: 3px; }
+.track { flex: 1; position: relative; height: 12px; background: #E7E8E3; border-radius: 3px; }
 .bar { position: absolute; top: 0; height: 12px; border-radius: 3px; opacity: .85; min-width: 2px; }
 .bar.FAIL, .bar.BLOCKED { opacity: .45; background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.45) 4px 8px); }
-.bar.RUNNING { box-shadow: 0 0 6px rgba(91,141,239,.8); }
+.bar.RUNNING { box-shadow: 0 0 6px rgba(45,116,104,.6); }
 .d { width: 64px; text-align: right; }
 .axis { display: flex; justify-content: space-between; margin-left: 248px; font-size: 10.5px; margin-top: 2px; }
 </style>

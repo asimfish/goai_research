@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import {
-  NAlert, NButton, NCard, NIcon, NInput, NRadioButton, NRadioGroup, NSelect, NSpace, NText, NTooltip, useMessage,
-} from 'naive-ui'
+import { NAlert, NButton, NCollapse, NCollapseItem, NInput, NSelect, NSwitch, useMessage } from 'naive-ui'
 import type { SelectOption } from 'naive-ui'
-import { PlayOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { ConsoleConfig } from '../types'
 
+/** 「发起一项研究」纸张（DESIGN.md 页面 03）：一行主题 + 交付语言 + 私有语料开关；模型等放进高级选项。 */
 const props = defineProps<{ config: ConsoleConfig | null; focus?: boolean }>()
 const emit = defineEmits<{ (e: 'launched', id: string): void }>()
 const message = useMessage()
 
 const topic = ref('')
-const corpus = ref<'public' | 'private'>('public')
+const language = ref<'zh' | 'en'>('zh')
+const privateCorpus = ref(false)
 const model = ref('')
 const effort = ref('')
 const slug = ref('')
@@ -24,23 +23,25 @@ function fillDefaults() {
   if (!props.config) return
   model.value = model.value || props.config.model
   effort.value = effort.value || props.config.effort
-  if (props.config.private_corpus_available && !topic.value) corpus.value = 'private'
+  if (props.config.private_corpus_available && !topic.value) privateCorpus.value = true
 }
 watch(() => props.config, fillDefaults, { immediate: true })
-watch(() => props.focus, (f) => { if (f) input.value?.focus() }, { immediate: true })
+watch(() => props.focus, (f) => { if (f) setTimeout(() => input.value?.focus(), 50) }, { immediate: true })
 
 const modelOptions = computed(() => (props.config?.models || []).map((m) => ({ label: m, value: m })))
 const effortOptions = computed(() => (props.config?.efforts || []).map((m) => ({ label: m, value: m })))
-const loggedIn = computed(() => (props.config?.codex_login || '').includes('Logged in'))
 const effortLabel = (o: SelectOption) => `推理强度 ${o.label}`
-const cmd = computed(() => `GOAI_CORPUS=${corpus.value} GOAI_MODEL=${model.value} GOAI_REASONING_EFFORT=${effort.value} bash scripts/reproduce_core.sh --topic "…" --workdir ${props.config?.runs_root || 'workspace_runs/console'}/<时间戳>_${slug.value || '<主题前40字>'}`)
+const loggedIn = computed(() => (props.config?.codex_login || '').includes('Logged in'))
+const preview = computed(() => topic.value.trim().replace(/^调研主题：/, '').replace(/[。．.]$/, ''))
 
 async function submit() {
-  if (!topic.value.trim()) { message.warning('先填研究主题'); input.value?.focus(); return }
+  if (!preview.value) { message.warning('先填研究主题'); input.value?.focus(); return }
   submitting.value = true
   try {
-    const r = await api.launch({ topic: topic.value.trim(), corpus: corpus.value, model: model.value, effort: effort.value, slug: slug.value || undefined })
-    message.success(`已启动：${r.path.split('/').pop()}（pid ${r.pid}）`)
+    // 交付语言写进主题行：编排器定范围时以用户指定为准（skills/goai-orchestrator 语言契约）
+    const topicLine = language.value === 'en' && !/english|英文/i.test(preview.value) ? `${preview.value}（English delivery）` : preview.value
+    const r = await api.launch({ topic: topicLine, corpus: privateCorpus.value ? 'private' : 'public', model: model.value, effort: effort.value, slug: slug.value || undefined })
+    message.success(`研究已开始：${r.path.split('/').pop()}`)
     emit('launched', r.id)
     topic.value = ''; slug.value = ''
   } catch (e) {
@@ -52,33 +53,57 @@ async function submit() {
 </script>
 
 <template>
-  <NCard size="small" class="launch">
-    <template #header><span style="font-weight: 600">发起新研究</span> <NText depth="3" style="font-size: 12px; margin-left: 8px">一行主题就是发给编排器的全部输入</NText></template>
-    <NAlert v-if="config && !loggedIn" type="warning" :bordered="false" style="margin-bottom: 10px">
-      当前 CODEX_HOME（{{ config.codex_home }}）{{ config.codex_login || '未探测到登录状态' }}，启动后编排器可能立刻退出；5090 上请用 <code>--codex-home ~/.codex_rev</code> 启动控制台。
+  <div class="sheet panel launch">
+    <h2 class="serif">发起一项研究</h2>
+    <NAlert v-if="config && !loggedIn" type="warning" :bordered="false" style="margin-bottom: 12px">
+      Codex 尚未登录（{{ config.codex_home }}），启动后编排器可能立刻退出。
     </NAlert>
-    <NInput ref="input" v-model:value="topic" size="large" clearable
-      placeholder="输入一行研究主题，例如：Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件" @keyup.enter="submit" />
-    <div class="controls">
-      <NRadioGroup v-model:value="corpus" size="small">
-        <NRadioButton value="public">公开精简包</NRadioButton>
-        <NTooltip :disabled="!!config?.private_corpus_available"><template #trigger>
-          <NRadioButton value="private" :disabled="!config?.private_corpus_available">私有全库</NRadioButton>
-        </template>服务端未配置私有语料（--private-corpus-env）</NTooltip>
-      </NRadioGroup>
-      <NSelect v-model:value="model" :options="modelOptions" size="small" filterable tag style="width: 170px" />
-      <NSelect v-model:value="effort" :options="effortOptions" size="small" style="width: 150px" :render-label="effortLabel" />
-      <NInput v-model:value="slug" size="small" placeholder="目录名后缀（可选）" style="width: 180px" />
-      <span style="flex: 1" />
-      <NButton type="primary" :loading="submitting" @click="submit">
-        <template #icon><NIcon><PlayOutline /></NIcon></template>启动编排器
-      </NButton>
+    <label class="lbl">研究主题</label>
+    <NInput ref="input" v-model:value="topic" size="large" clearable placeholder="例如：钙钛矿太阳能电池的稳定性机制与表征方法" @keyup.enter="submit" />
+    <div class="small dim preview">预览标题：{{ preview ? `${preview}综述` : '—' }}</div>
+
+    <div class="seg">
+      <button type="button" :class="{ on: language === 'zh' }" @click="language = 'zh'">中文交付</button>
+      <button type="button" :class="{ on: language === 'en' }" @click="language = 'en'">English delivery</button>
     </div>
-    <NText depth="3" class="mono hint">等价命令：{{ cmd }}</NText>
-  </NCard>
+
+    <div class="sheet toggle">
+      <div>
+        <div class="card-h" style="font-size: 14px">接入私有语料</div>
+        <div class="dim small">{{ config?.private_corpus_available ? '使用 NAS 上的全文 Parquet 库；仅在本次运行中使用，不会上传' : '服务端未配置私有语料，将使用随仓库提交的公开精简包' }}</div>
+      </div>
+      <NSwitch v-model:value="privateCorpus" :disabled="!config?.private_corpus_available" />
+    </div>
+
+    <NCollapse class="adv" arrow-placement="right">
+      <NCollapseItem title="高级选项：模型与目录" name="adv">
+        <div class="adv-row">
+          <NSelect v-model:value="model" :options="modelOptions" size="small" filterable tag style="width: 180px" />
+          <NSelect v-model:value="effort" :options="effortOptions" size="small" style="width: 150px" :render-label="effortLabel" />
+          <NInput v-model:value="slug" size="small" placeholder="目录名后缀（可选）" style="width: 170px" />
+        </div>
+        <div class="mono small dim" style="margin-top: 8px; word-break: break-all">bash scripts/reproduce_core.sh --topic "…" --workdir {{ config?.runs_root }}/&lt;时间戳&gt;_&lt;后缀&gt;</div>
+      </NCollapseItem>
+    </NCollapse>
+
+    <div class="facts small dim">
+      <span>11 个研究阶段</span><span>9 项质量检查</span><span>可随时终止，过程可回放</span>
+    </div>
+    <NButton type="primary" size="large" block :loading="submitting" @click="submit" style="height: 48px; font-size: 16px">开始研究</NButton>
+  </div>
 </template>
 
 <style scoped>
-.controls { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-.hint { display: block; font-size: 11.5px; margin-top: 8px; word-break: break-all; }
+.launch { padding: 26px 28px 24px; }
+.launch h2 { margin: 0 0 18px; font-size: 22px; line-height: 30px; }
+.lbl { display: block; font-size: 13px; color: var(--slate); margin-bottom: 6px; }
+.preview { margin: 6px 0 14px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+.seg button { border: 0; background: transparent; padding: 10px 0; font: inherit; color: var(--slate); cursor: pointer; }
+.seg button.on { background: var(--verdigris-soft); color: var(--ink); font-weight: 600; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 16px; margin-bottom: 12px; }
+.adv { margin-bottom: 8px; }
+.adv-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.facts { display: flex; gap: 18px; margin: 14px 0 12px; }
+.facts span::before { content: '◦ '; }
 </style>

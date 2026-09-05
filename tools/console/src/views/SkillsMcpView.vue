@@ -1,113 +1,151 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { NAlert, NCard, NGi, NGrid, NIcon, NSpin, NTag, NText, NTooltip, useMessage } from 'naive-ui'
-import { ServerOutline } from '@vicons/ionicons5'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { NButton, NEmpty, NIcon, NInput, NSpin, NTooltip, useMessage } from 'naive-ui'
+import { ChevronForwardOutline, SearchOutline, ServerOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { McpServer, Role } from '../types'
 import { roleVisual } from '../roles'
+import { renderSkill } from '../md'
+import RoleBadge from '../components/RoleBadge.vue'
 
+/** 技能与工具（DESIGN.md 页面 05）：左侧技能索引 / 中间规程正文 / 右侧 MCP 服务与工具清单。 */
 const router = useRouter()
+const route = useRoute()
 const message = useMessage()
 const roles = ref<Role[]>([])
 const servers = ref<McpServer[]>([])
+const selected = ref<string>('')
+const html = ref('')
+const headings = ref<string[]>([])
 const loading = ref(true)
+const toolQuery = ref('')
+const expanded = ref<string | null>(null)
 
+const role = computed(() => roles.value.find((r) => r.id === selected.value) || null)
+const relatedServers = computed(() => servers.value.filter((s) => !role.value || s.used_by.includes(role.value.id) || !role.value.server))
+const filteredServers = computed(() => {
+  const q = toolQuery.value.trim().toLowerCase()
+  if (!q) return servers.value
+  return servers.value.map((s) => ({ ...s, tools: s.tools.filter((t) => (t.name + t.summary).toLowerCase().includes(q)) })).filter((s) => s.tools.length)
+})
+const SERVER_LABEL: Record<string, string> = { 'goai-litsearch': '文献检索服务', 'goai-refcheck': '引用核查服务', 'goai-figure': '图纸渲染服务', 'goai-retro': '逆合成与方案服务' }
+
+async function select(id: string) {
+  selected.value = id
+  const r = await renderSkill((await api.skill(id)).markdown)
+  html.value = r.html
+  headings.value = r.headings
+}
 onMounted(async () => {
   try {
     const [r, m] = await Promise.all([api.roles(), api.mcp()])
     roles.value = r.roles
     servers.value = m.servers
+    await select(String(route.query.role || r.roles[1]?.id || r.roles[0]?.id))
   } catch (e) {
     message.error(`加载失败：${(e as Error).message}`)
   } finally {
     loading.value = false
   }
 })
-function roleLabel(id: string) { return roleVisual(id).label }
-function sig(t: { params: { name: string; default: string | null }[] }) {
-  return t.params.map((p) => (p.default != null ? `${p.name}=${p.default}` : p.name)).join(', ')
-}
+watch(() => route.query.role, (v) => { if (v && v !== selected.value) select(String(v)) })
+function jump(i: number) { document.getElementById(`h-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 </script>
 
 <template>
   <div class="page">
-    <div class="page-title">
-      <div>
-        <h1>技能与 MCP 服务</h1>
-        <NText depth="3">九份技能规程告诉角色「怎么做」，四个 MCP 服务提供「能用什么」。规程是 <code>skills/&lt;role&gt;/SKILL.md</code>，服务是 <code>server/*.py</code>，两者都随仓库开源。</NText>
-      </div>
-    </div>
-
+    <div class="page-title"><div><h1>技能与工具</h1><div class="lead">九份技能规程告诉角色「怎么做」，四个 MCP 服务提供「能用什么」。规程与服务都随仓库开源。</div></div></div>
     <NSpin :show="loading">
-      <div class="sec-title">技能 <NTag size="small" round :bordered="false">{{ roles.length }}</NTag> <span class="dim" style="font-size: 12px">skills/</span></div>
-      <NGrid cols="1 s:2 m:3" responsive="screen" :x-gap="12" :y-gap="12" style="margin-bottom: 20px">
-        <NGi v-for="r in roles" :key="r.id">
-          <NCard size="small" hoverable class="skill" @click="router.push(`/roles/${r.id}`)">
-            <div class="sk-hd">
-              <span class="dot" :style="{ background: roleVisual(r.id).color }" />
-              <span style="font-weight: 600">{{ r.label }}</span>
-              <span class="mono dim" style="font-size: 11.5px">{{ r.id }}</span>
-              <NTag size="tiny" round :bordered="false" style="margin-left: auto">{{ r.skill_lines }} 行</NTag>
-            </div>
-            <div class="mono dim" style="font-size: 11.5px; margin: 4px 0 6px">{{ r.skill_path }}</div>
-            <div class="dim" style="font-size: 12px; line-height: 1.6">{{ r.skill_headings.slice(0, 5).join(' · ') }}</div>
-            <div style="margin-top: 8px; font-size: 12.5px; color: #8fb1ff">查看规程 →</div>
-          </NCard>
-        </NGi>
-      </NGrid>
+      <div class="layout">
+        <aside class="sheet panel index">
+          <div class="card-h" style="margin-bottom: 8px">九个角色技能</div>
+          <div v-for="r in roles" :key="r.id" class="idx" :class="{ on: r.id === selected }" @click="select(r.id)">
+            <RoleBadge :role="r.id" :size="30" />
+            <span class="nm">{{ r.label }}</span>
+            <span class="dim small mono">{{ r.skill_lines }} 行</span>
+          </div>
+          <div class="dim small" style="margin-top: 12px">规程随版本更新；点角色名进入角色页可看输入 / 输出与近期任务。</div>
+        </aside>
 
-      <div class="sec-title">MCP 服务 <NTag size="small" round :bordered="false">{{ servers.length }}</NTag> <span class="dim" style="font-size: 12px">server/</span></div>
-      <NAlert type="info" :bordered="false" style="margin-bottom: 12px">
-        Codex 延迟加载 MCP 工具：角色开场看不到这些工具，需要先 <code>tool_search</code> 再调用（每个子任务的提示词末尾已附说明）。
-        所有调用由服务端写入工作区的 <code>state/tool_calls.jsonl</code>，并按 <code>run_id=批次/任务</code> 归因到角色。
-      </NAlert>
-      <NCard v-for="s in servers" :key="s.id" size="small" class="server" style="margin-bottom: 12px">
-        <template #header>
-          <div class="sv-hd">
-            <span class="sv-icon"><NIcon :size="20"><ServerOutline /></NIcon></span>
-            <div>
-              <div><span style="font-weight: 600">{{ s.id }}</span> <span class="dim">· {{ s.tools.length }} 个工具</span></div>
-              <div class="mono dim" style="font-size: 11.5px">python {{ s.file }}</div>
+        <section class="sheet panel reader" v-if="role">
+          <div class="r-hd">
+            <RoleBadge :role="role.id" :size="44" />
+            <div style="flex: 1">
+              <h2 class="serif">{{ role.label }} / 技能规程</h2>
+              <div class="chips small">
+                <span class="chip">适用阶段：{{ role.stage }}</span>
+                <span class="chip">完成标准：{{ role.gate }}</span>
+                <span v-if="role.server" class="chip mono">{{ role.server }}</span>
+              </div>
             </div>
-            <div class="dim" style="font-size: 12.5px; margin-left: 14px; flex: 1">{{ s.summary.replace(/^[^—]*——\s*/, '') }}</div>
-            <div class="users"><span class="dim" style="font-size: 12px">使用者</span>
-              <NTag v-for="rid in s.used_by" :key="rid" size="small" :bordered="false" round style="cursor: pointer" @click="router.push(`/roles/${rid}`)">
-                <span class="dot" :style="{ background: roleVisual(rid).color, marginRight: '6px' }" />{{ roleLabel(rid) }}
-              </NTag>
+            <NButton size="small" quaternary @click="router.push(`/roles/${role.id}`)">角色页 <NIcon><ChevronForwardOutline /></NIcon></NButton>
+          </div>
+          <div class="r-body">
+            <div class="markdown body" v-html="html" />
+            <nav class="toc">
+              <div v-for="(h, i) in headings" :key="h" class="toc-item" @click="jump(i)">{{ h }}</div>
+            </nav>
+          </div>
+        </section>
+
+        <aside class="sheet panel services">
+          <div class="card-h" style="display: flex; justify-content: space-between; align-items: center">MCP 服务 <span class="dim small">{{ servers.filter((s) => s.exists).length }} / {{ servers.length }} 在线</span></div>
+          <NInput v-model:value="toolQuery" size="small" clearable placeholder="搜索工具" style="margin: 10px 0 12px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
+          <div v-for="s in filteredServers" :key="s.id" class="svc" :class="{ dim: role && role.server && s.id !== role.server && !relatedServers.includes(s) }">
+            <div class="svc-hd" @click="expanded = expanded === s.id ? null : s.id">
+              <span class="svc-icon"><NIcon :size="22"><ServerOutline /></NIcon></span>
+              <div style="flex: 1; min-width: 0">
+                <div class="card-h" style="font-size: 14px">{{ SERVER_LABEL[s.id] || s.id }} <span class="dim small mono">{{ s.id }}</span></div>
+                <div class="dim small ellipsis">{{ s.summary.replace(/^[^—]*——\s*/, '') }}</div>
+              </div>
+              <span class="small"><span class="st-dot" :class="s.exists ? 'ok' : 'bad'" />{{ s.exists ? '在线' : '缺失' }}</span>
+            </div>
+            <div class="tools small">
+              <span class="dim">工具：</span>
+              <template v-for="t in s.tools" :key="t.name">
+                <NTooltip><template #trigger><span class="mono tool" @click="expanded = s.id">{{ t.name }}</span></template>
+                  <div style="max-width: 420px; font-size: 12.5px"><b>{{ t.name }}</b>（{{ t.params.map((p) => p.name).join(', ') || '无参数' }}）<div>{{ t.summary }}</div><div class="dim" v-if="t.used_by.length">使用者：{{ t.used_by.map((u) => roleVisual(u).label).join('、') }}</div></div>
+                </NTooltip>
+              </template>
+            </div>
+            <div v-if="expanded === s.id" class="detail">
+              <div v-for="t in s.tools" :key="t.name" class="trow small">
+                <div class="mono">{{ t.name }}<span class="dim">({{ t.params.map((p) => (p.default != null ? `${p.name}=${p.default}` : p.name)).join(', ') }})</span></div>
+                <div class="dim">{{ t.summary }}</div>
+              </div>
             </div>
           </div>
-        </template>
-        <table class="tools">
-          <thead><tr><th style="width: 200px">工具</th><th>参数</th><th style="width: 38%">说明</th><th style="width: 130px">使用角色</th></tr></thead>
-          <tbody>
-            <tr v-for="t in s.tools" :key="t.name">
-              <td class="mono tn">{{ t.name }}</td>
-              <td class="mono params">{{ sig(t) || '—' }}</td>
-              <td>
-                <NTooltip :disabled="t.doc.split('\n').length < 2"><template #trigger><span>{{ t.summary }}</span></template>
-                  <pre style="max-width: 520px; white-space: pre-wrap; font-size: 12px; margin: 0">{{ t.doc }}</pre></NTooltip>
-              </td>
-              <td><span v-for="rid in t.used_by" :key="rid" class="user"><span class="dot" :style="{ background: roleVisual(rid).color }" />{{ roleLabel(rid) }}</span><span v-if="!t.used_by.length" class="dim">—</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </NCard>
+          <NEmpty v-if="!filteredServers.length" description="没有匹配的工具" size="small" />
+          <div class="dim small" style="margin-top: 10px">工具由 Codex 延迟加载，角色先 tool_search 再调用；每次调用记录在运行的工具调用审计里。</div>
+        </aside>
+      </div>
     </NSpin>
   </div>
 </template>
 
 <style scoped>
-.sec-title { font-size: 15px; font-weight: 600; margin: 4px 0 10px; display: flex; align-items: center; gap: 8px; }
-.skill { cursor: pointer; height: 100%; }
-.sk-hd { display: flex; align-items: center; gap: 8px; }
-.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: none; }
-.sv-hd { display: flex; align-items: center; gap: 12px; }
-.sv-icon { width: 36px; height: 36px; border-radius: 9px; background: rgba(167,139,250,.16); color: #c4b5fd; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-.users { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.tools { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-.tools th { text-align: left; color: #8a93a6; font-weight: 500; font-size: 12px; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
-.tools td { padding: 7px 8px; border-bottom: 1px dashed rgba(255,255,255,.07); vertical-align: top; }
-.tn { color: #c9d1d9; } .params { color: #9aa3b5; font-size: 11.5px; word-break: break-word; }
-.user { display: inline-flex; align-items: center; gap: 5px; margin-right: 8px; font-size: 12px; }
+.layout { display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
+.index, .services { padding: 16px 16px 14px; position: sticky; top: 16px; }
+.idx { display: flex; align-items: center; gap: 10px; padding: 8px 8px; border-radius: 10px; cursor: pointer; }
+.idx:hover { background: #EFEDE6; } .idx.on { background: var(--verdigris-soft); }
+.idx .nm { flex: 1; font-size: 14px; } .idx.on .nm { font-weight: 600; }
+.reader { padding: 22px 26px; }
+.r-hd { display: flex; align-items: flex-start; gap: 14px; border-bottom: 1px solid var(--line-soft); padding-bottom: 14px; margin-bottom: 10px; }
+.r-hd h2 { margin: 0 0 6px; font-size: 22px; line-height: 30px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; color: var(--slate); }
+.r-body { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 20px; align-items: start; }
+.body { max-height: calc(100vh - 300px); overflow: auto; padding-right: 8px; }
+.toc { position: sticky; top: 0; border-left: 1px solid var(--line-soft); padding-left: 12px; }
+.toc-item { font-size: 12.5px; padding: 3px 0; color: var(--slate); cursor: pointer; } .toc-item:hover { color: var(--ink); }
+.svc { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; background: #FBFAF7; }
+.svc.dim { opacity: .6; }
+.svc-hd { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.svc-icon { width: 38px; height: 38px; border-radius: 10px; background: #EFEDE6; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.tools { margin-top: 8px; line-height: 20px; }
+.tool { cursor: pointer; margin-right: 8px; color: var(--ink); } .tool:hover { text-decoration: underline; }
+.detail { margin-top: 8px; border-top: 1px dashed var(--line-soft); padding-top: 6px; }
+.trow { padding: 5px 0; border-bottom: 1px dashed var(--line-soft); }
+@media (max-width: 1200px) { .layout { grid-template-columns: 220px 1fr; } .services { grid-column: 1 / -1; position: static; } }
 </style>

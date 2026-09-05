@@ -1,5 +1,5 @@
 import type {
-  Artifacts, ConsoleConfig, FeedEvent, McpServer, Role, RoleTask, RolesStats, StateResponse, TaskDetail, WorkspaceInfo,
+  Artifacts, Chain, ConsoleConfig, FeedEvent, McpServer, Role, RoleTask, RolesStats, StateResponse, TaskDetail, WorkspaceInfo,
 } from './types'
 
 async function get<T>(url: string): Promise<T> {
@@ -24,7 +24,7 @@ async function post<T>(url: string, body?: unknown): Promise<T> {
 
 export const api = {
   config: () => get<ConsoleConfig>('/api/config'),
-  roles: () => get<{ roles: Role[]; stats: RolesStats }>('/api/roles'),
+  roles: () => get<{ roles: Role[]; stats: RolesStats; chains: Chain[] }>('/api/roles'),
   skill: (id: string) => get<{ id: string; markdown: string }>(`/api/roles/${encodeURIComponent(id)}/skill`),
   roleTasks: (id: string, limit = 30) => get<{ tasks: RoleTask[] }>(`/api/roles/${encodeURIComponent(id)}/tasks?limit=${limit}`),
   mcp: () => get<{ servers: McpServer[] }>('/api/mcp'),
@@ -37,6 +37,7 @@ export const api = {
   artifacts: (id: string) => get<Artifacts>(`/api/workspaces/${id}/artifacts`),
   file: (id: string, path: string) => get<{ path: string; text: string }>(`/api/workspaces/${id}/file?path=${encodeURIComponent(path)}`),
   pdfUrl: (id: string) => `/api/workspaces/${id}/pdf`,
+  bundleUrl: (id: string) => `/api/workspaces/${id}/bundle.zip`,
   launch: (body: { topic: string; corpus: 'public' | 'private'; model?: string; effort?: string; slug?: string }) =>
     post<{ ok: boolean; id: string; path: string; pid: number }>('/api/runs', body),
   stop: (id: string) => post<{ ok: boolean; message: string; pid?: number }>(`/api/workspaces/${id}/stop`),

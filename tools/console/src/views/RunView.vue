@@ -2,20 +2,20 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  NAlert, NButton, NCard, NCollapse, NCollapseItem, NEmpty, NGi, NGrid, NIcon, NPopconfirm, NSelect, NSpace, NSwitch, NTabPane, NTabs, NTag,
-  NText, NTooltip, useMessage,
+  NAlert, NButton, NCollapse, NCollapseItem, NDrawer, NDrawerContent, NEmpty, NIcon, NPopconfirm, NSelect, NSwitch, NTabPane, NTabs, NTag,
+  NTooltip, useMessage,
 } from 'naive-ui'
-import { ArrowBackOutline, DocumentTextOutline, StopCircleOutline } from '@vicons/ionicons5'
+import { ChevronDownOutline, ChevronUpOutline, DocumentTextOutline, GitNetworkOutline, StopOutline, TimeOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { Artifacts, FeedEvent, StateResponse, TaskSummary, WorkspaceInfo } from '../types'
-import { WS_STATUS_LABEL, ago, bytes, dateTime, hms, oneLine, statusType, tok } from '../format'
-import { ROLE_ORDER, roleVisual } from '../roles'
-import { commandLabel, gateLabel } from '../labels'
-import StageStepper from '../components/StageStepper.vue'
+import { WS_STATUS_LABEL, ago, bytes, dateTime, dur, hms, oneLine, statusType, tok } from '../format'
+import { STAGE_LABEL, roleVisual } from '../roles'
+import { SEVERITY_LABEL, commandLabel, gateLabel, taskStatus } from '../labels'
+import StageSpine from '../components/StageSpine.vue'
+import QualityStampGrid from '../components/QualityStampGrid.vue'
+import ActiveAgentCard from '../components/ActiveAgentCard.vue'
 import TaskTimeline from '../components/TaskTimeline.vue'
-import TaskCard from '../components/TaskCard.vue'
 import TaskDrawer from '../components/TaskDrawer.vue'
-import QualityRail from '../components/QualityRail.vue'
 import RoleBadge from '../components/RoleBadge.vue'
 
 const props = defineProps<{ id: string }>()
@@ -28,11 +28,12 @@ const error = ref('')
 const showReasoning = ref(false)
 const runFilter = ref<string>('')
 const openKey = ref<string | null>(null)
+const showDone = ref(false)
+const showEvents = ref(false)
 const feed = ref<FeedEvent[]>([])
 const feedEl = ref<HTMLElement | null>(null)
 const artifacts = ref<Artifacts | null>(null)
 const launcherLog = ref<{ stdout: string; stderr: string; orchestrator_final: string } | null>(null)
-const showTimeline = ref(false)
 let lastSeq = 0
 let timer: number | undefined
 let ticking = false
@@ -56,11 +57,7 @@ async function tick() {
       await nextTick()
       if (nearBottom && el) el.scrollTop = el.scrollHeight
     }
-  } catch (e) {
-    error.value = (e as Error).message
-  } finally {
-    ticking = false
-  }
+  } catch (e) { error.value = (e as Error).message } finally { ticking = false }
 }
 function schedule() { if (timer) clearInterval(timer); timer = window.setInterval(tick, interval.value) }
 onMounted(async () => { await tick(); schedule(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
@@ -68,75 +65,76 @@ watch(interval, schedule)
 watch(() => props.id, async () => { st.value = null; feed.value = []; lastSeq = 0; await tick(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
-/** 工作区已结束时，残留的 RUNNING / STALE 改成中性标签 */
 function normalize(t: TaskSummary): TaskSummary {
   if (info.value?.status === 'running') return t
-  if (t.status === 'RUNNING' || t.status === 'STALE') {
-    if (info.value?.status === 'stopped') return { ...t, status: 'STOPPED', status_group: 'ENDED' }
-    return { ...t, status: 'ENDED', status_group: 'ENDED' }
-  }
+  if (t.status === 'RUNNING' || t.status === 'STALE') return { ...t, status: info.value?.status === 'stopped' ? 'STOPPED' : 'ENDED', status_group: 'ENDED' }
   return t
 }
-const visibleTasks = computed<TaskSummary[]>(() => {
-  const tasks = (st.value?.tasks || []).map(normalize)
-  if (!runFilter.value) return tasks
-  return tasks.filter((t) => t.run_id === runFilter.value || t.kind === 'orchestrator')
+const allTasks = computed<TaskSummary[]>(() => (st.value?.tasks || []).map(normalize))
+const scoped = computed(() => runFilter.value ? allTasks.value.filter((t) => t.run_id === runFilter.value || t.kind === 'orchestrator') : allTasks.value)
+const parallel = computed(() => scoped.value.filter((t) => t.kind === 'parallel'))
+const running = computed(() => scoped.value.filter((t) => t.status_group === 'RUNNING'))
+const latestRun = computed(() => [...parallel.value].sort((a, b) => (b.started || 0) - (a.started || 0))[0]?.run_id)
+/** 「正在工作的角色」：运行中的任务；没有在跑的（已结束 / 编排器阶段）就显示最近一批 */
+const active = computed<TaskSummary[]>(() => {
+  if (running.value.length) return running.value
+  if (runFilter.value) return parallel.value
+  const latest = parallel.value.filter((t) => t.run_id === latestRun.value)
+  if (latest.length) return latest
+  return scoped.value.filter((t) => t.kind === 'orchestrator').slice(-1)
 })
-/** 默认只展示“正在跑 + 最近一批”的卡片，历史批次折叠在时间线里，避免几十张卡堆一屏 */
-const focusTasks = computed<TaskSummary[]>(() => {
-  const all = visibleTasks.value
-  if (runFilter.value || all.length <= 9) return all
-  const running = all.filter((t) => t.status_group === 'RUNNING')
-  const latestRun = [...all].filter((t) => t.kind === 'parallel').sort((a, b) => (b.started || 0) - (a.started || 0))[0]?.run_id
-  const orch = all.filter((t) => t.kind === 'orchestrator').slice(-1)
-  const picked = new Map<string, TaskSummary>()
-  for (const t of [...orch, ...running, ...all.filter((t) => t.run_id === latestRun)]) picked.set(t.key, t)
-  return [...picked.values()]
+const doneTasks = computed(() => scoped.value.filter((t) => !active.value.includes(t) && t.kind === 'parallel'))
+const doneRoles = computed(() => new Set(doneTasks.value.filter((t) => ['PASS', 'WARN'].includes(t.status_group)).map((t) => t.role)).size)
+const ledger = computed(() => st.value?.ledger || {})
+const openIssues = computed(() => ledger.value.open_issues || [])
+const checksPassed = computed(() => Object.values(ledger.value.gates || {}).filter((g) => g.status === 'PASS' || g.status === 'WARN').length)
+
+/** 一句话总状态：先自然语言，再证据 */
+const headline = computed(() => {
+  const w = info.value
+  if (!w) return ''
+  const stage = ledger.value.stage ? (STAGE_LABEL[ledger.value.stage] || ledger.value.stage) : ''
+  const blockers = openIssues.value.filter((i) => i.severity === 'blocker').length
+  if (w.status === 'running') {
+    if (!ledger.value.stage) return '编排器正在读取规程、准备定范围'
+    if (blockers) return `${stage}阶段有 ${blockers} 条阻断性审稿意见待处理`
+    if (running.value.length) return `正在${stage}：${running.value.length} 个角色在工作${openIssues.value.length ? `，${openIssues.value.length} 条审稿意见待处理` : '，未发现阻塞'}`
+    return `${stage}阶段进行中，编排器正在派发或验收`
+  }
+  if (w.status === 'done') return `研究已交付：质量检查 ${checksPassed.value} / 9 通过`
+  if (w.status === 'stopped') return `运行已被手动终止，停在${stage || '起点'}`
+  if (w.status === 'failed') return `运行失败，停在${stage || '起点'}${w.launcher.exit ? `（退出码 ${w.launcher.exit}）` : ''}`
+  return `运行已结束，停在${stage || '起点'}`
 })
-const byRole = computed(() => {
-  const m: Record<string, TaskSummary[]> = {}
-  for (const t of focusTasks.value) (m[t.role] ||= []).push(t)
-  const order = ROLE_ORDER.concat(Object.keys(m).filter((r) => !ROLE_ORDER.includes(r)))
-  return order.filter((r) => m[r]).map((r) => ({ role: r, tasks: m[r] }))
+const headlineKind = computed(() => { const s = info.value?.status; return s === 'running' ? (openIssues.value.some((i) => i.severity === 'blocker') ? 'warn' : 'run') : s === 'done' ? 'ok' : s === 'failed' ? 'bad' : 'wait' })
+const elapsedText = computed(() => {
+  const w = info.value
+  if (!w) return ''
+  if (w.status !== 'running') return ''
+  const start = w.launcher.started ? Date.parse(w.launcher.started.split('\t').pop() || '') / 1000 : (w.created ? Date.parse(w.created) / 1000 : null)
+  const end = st.value?.now || Date.now() / 1000
+  return start && end > start ? `已运行 ${dur(end - start)}` : ''
 })
-const hiddenCount = computed(() => visibleTasks.value.length - focusTasks.value.length)
-const runOptions = computed(() => [{ label: `全部批次（${st.value?.all_runs.length || 0}）`, value: '' }]
-  .concat((st.value?.all_runs || []).slice().reverse().map((r) => ({ label: r, value: r }))))
-const summary = computed(() => {
-  const c: Record<string, number> = {}
-  for (const t of visibleTasks.value) if (t.kind === 'parallel') c[t.status_group] = (c[t.status_group] || 0) + 1
-  const parts = []
-  if (c.RUNNING) parts.push(`${c.RUNNING} 个运行中`)
-  if (c.PASS) parts.push(`${c.PASS} 个通过`)
-  if (c.WARN) parts.push(`${c.WARN} 个有警告`)
-  if (c.FAIL) parts.push(`${c.FAIL} 个失败`)
-  if (c.BLOCKED) parts.push(`${c.BLOCKED} 个被阻塞`)
-  if (c.ENDED) parts.push(`${c.ENDED} 个已结束`)
-  return parts.join(' · ') || '尚无子任务'
-})
+const runOptions = computed(() => [{ label: `全部批次（${st.value?.all_runs.length || 0}）`, value: '' }].concat((st.value?.all_runs || []).slice().reverse().map((r) => ({ label: r, value: r }))))
 
 async function stopRun() {
-  try {
-    const r = await api.stop(props.id)
-    r.ok ? message.success(r.message) : message.warning(r.message)
-    await tick()
-  } catch (e) { message.error(`终止失败：${(e as Error).message}`) }
+  try { const r = await api.stop(props.id); r.ok ? message.success(r.message) : message.warning(r.message); await tick() }
+  catch (e) { message.error(`终止失败：${(e as Error).message}`) }
 }
 async function loadLauncherLog() { launcherLog.value = await api.launcherLog(props.id).catch(() => null) }
 
 function feedLine(e: FeedEvent): string {
   switch (e.kind) {
-    case 'message': return e.phase === 'started' ? '' : `${oneLine(e.text, 400)}`
+    case 'message': return e.phase === 'started' ? '' : oneLine(e.text, 400)
     case 'reasoning': return showReasoning.value && e.phase === 'completed' ? `思考：${oneLine(e.text, 240)}` : ''
     case 'command': return e.phase === 'started' ? `执行命令 · ${commandLabel(e.command)}` : e.phase === 'completed' ? `命令结束 · 退出码 ${e.exit_code}${e.output ? ' · ' + oneLine(e.output, 120) : ''}` : ''
-    case 'mcp': return e.phase === 'started' ? `调用工具 · ${e.server}.${e.tool}` : e.phase === 'completed' ? `工具返回 · ${e.tool} ${e.error ? '失败：' + oneLine(e.error, 120) : ''}` : ''
+    case 'mcp': return e.phase === 'started' ? `调用工具 · ${e.server}.${e.tool}` : e.phase === 'completed' ? `工具返回 · ${e.tool}${e.error ? ' 失败：' + oneLine(e.error, 120) : ''}` : ''
     case 'web_search': return e.phase === 'completed' ? `检索网页 · ${oneLine(e.query, 160)}` : ''
     case 'file_change': return e.phase === 'completed' ? `写入文件 · ${(e.changes || []).slice(0, 4).map((c) => String(c.path).split('/').pop()).join(', ')}` : ''
     case 'todo': { const it = e.items || []; return `计划 ${it.filter((i) => i.completed).length}/${it.length}` }
     case 'usage': return `用量 · 输入 ${tok(e.usage?.input_tokens)} · 输出 ${tok(e.usage?.output_tokens)}`
-    case 'status': return `状态 · ${e.text}`
+    case 'status': return `状态 · ${taskStatus(e.text || '', e.text)}`
     case 'error': return `出错 · ${oneLine(e.text, 300)}`
-    case 'thread': return ''
     case 'ledger': return `账本 · ${e.text}`
     case 'audit': return `工具审计 · ${e.tool} ${e.duration_ms != null ? (e.duration_ms / 1000).toFixed(1) + 's' : ''} ${e.ok === false ? '⚠' : ''} ${e.run_id ? '← ' + e.run_id : ''}`
     default: return ''
@@ -146,128 +144,136 @@ const feedRows = computed(() => feed.value.map((e) => ({ e, text: feedLine(e) })
 const artifactFiles = computed(() => {
   if (!artifacts.value) return [] as { label: string; path: string; bytes: number }[]
   const out: { label: string; path: string; bytes: number }[] = []
-  for (const [k, v] of Object.entries(artifacts.value)) if (v && !Array.isArray(v)) out.push({ label: k, path: v.path, bytes: v.bytes })
+  for (const [k, v] of Object.entries(artifacts.value)) if (v && !Array.isArray(v) && 'path' in (v as object) && 'bytes' in (v as object)) out.push({ label: k, ...(v as { path: string; bytes: number }) })
   return out
 })
+function issueStage(target: string) { return STAGE_LABEL[target] || gateLabel(target) || target }
+function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', ref_gate: 'goai-ref-guard', taxonomy: 'goai-survey-writer', writing: 'goai-survey-writer', figures: 'goai-figure-studio', ideas: 'goai-idea-forge', style_bank: 'goai-style-bank' } as Record<string, string>)[target] || 'goai-orchestrator' }
 </script>
 
 <template>
   <div class="page" v-if="st && info">
     <div class="hd">
-      <NButton quaternary size="small" @click="router.push('/history')"><template #icon><NIcon><ArrowBackOutline /></NIcon></template>运行与历史</NButton>
-      <h1 class="ellipsis" :title="info.topic">{{ info.topic || info.label }}</h1>
-      <NTag :type="statusType(info.status)" round :bordered="false" :class="{ pulse: info.status === 'running' }">{{ WS_STATUS_LABEL[info.status] || info.status }}</NTag>
+      <h1>运行实时观察</h1>
+      <span class="dim">·</span>
+      <span class="topic ellipsis" :title="info.topic">{{ info.topic || info.label }}</span>
+      <span class="small"><span class="st-dot" :class="headlineKind" />{{ WS_STATUS_LABEL[info.status] || info.status }}</span>
       <span style="flex: 1" />
-      <NSpace align="center" :size="10">
-        <NSelect v-model:value="runFilter" :options="runOptions" size="small" style="width: 240px" />
-        <NTooltip><template #trigger><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #9aa3b5">思考 <NSwitch v-model:value="showReasoning" size="small" /></span></template>在事件流里显示模型的思考摘要</NTooltip>
-        <NButton v-if="info.final_pdf" size="small" type="success" ghost tag="a" :href="api.pdfUrl(id)" target="_blank">
-          <template #icon><NIcon><DocumentTextOutline /></NIcon></template>综述 PDF · {{ bytes(info.final_pdf_bytes) }}
-        </NButton>
-        <NPopconfirm v-if="isLive && info.launcher.alive" @positive-click="stopRun">
-          <template #trigger><NButton type="error" size="small" ghost><template #icon><NIcon><StopCircleOutline /></NIcon></template>终止运行</NButton></template>
-          将结束编排器、所有子 agent 和 MCP 服务进程；已落盘的产物与账本保留，这个工作区留在历史里可回放。
-        </NPopconfirm>
-      </NSpace>
-    </div>
-    <div class="sub dim">
-      <span class="mono">{{ info.path }}</span>
-      <span>· 创建 {{ dateTime(info.created) }}</span>
-      <span>· 最近活动 {{ ago(info.last_activity, st.now) }}</span>
-      <span v-if="info.launcher.pid">· 进程 {{ info.launcher.pid }}{{ info.launcher.alive ? '（存活）' : info.launcher.exit != null ? `（退出码 ${info.launcher.exit}）` : '' }}</span>
-      <span v-if="info.receipt">· 复现回执 {{ info.receipt.status }}（{{ info.receipt.model }} / {{ info.receipt.reasoning_effort }}）</span>
+      <NSelect v-if="(st.all_runs.length || 0) > 1" v-model:value="runFilter" :options="runOptions" size="small" style="width: 220px" />
+      <NButton v-if="info.final_pdf" size="small" tag="a" :href="api.pdfUrl(id)" target="_blank"><template #icon><NIcon><DocumentTextOutline /></NIcon></template>综述 PDF</NButton>
+      <NPopconfirm v-if="isLive && info.launcher.alive" @positive-click="stopRun">
+        <template #trigger><NButton size="small" type="error" ghost><template #icon><NIcon><StopOutline /></NIcon></template>终止运行</NButton></template>
+        将结束编排器、所有子 agent 与 MCP 服务进程；已落盘的产物与账本保留，可回放。
+      </NPopconfirm>
     </div>
 
     <NAlert v-if="error" type="error" :bordered="false" style="margin-bottom: 10px">连接后端失败：{{ error }}</NAlert>
-    <NAlert v-if="info.launcher.stopped" type="warning" :bordered="false" style="margin-bottom: 10px">该运行于 {{ info.launcher.stopped }} 被手动终止。</NAlert>
-    <template v-for="(ri, rid) in st.run_info" :key="rid">
-      <NAlert v-if="ri.mcp_warning" type="warning" :bordered="false" style="margin-bottom: 10px">批次 {{ rid }}：{{ ri.mcp_warning }}</NAlert>
-    </template>
+    <template v-for="(ri, rid) in st.run_info" :key="rid"><NAlert v-if="ri.mcp_warning" type="warning" :bordered="false" style="margin-bottom: 10px">批次 {{ rid }}：{{ ri.mcp_warning }}</NAlert></template>
 
-    <NCard size="small" class="stepper-card">
-      <template #header>
-        <span style="font-weight: 600">研究进度</span>
-        <span class="dim" style="font-size: 12px; margin-left: 10px">
-          <template v-if="st.ledger.stage">当前阶段 <b class="mono">{{ st.ledger.stage }}</b> · 第 {{ st.ledger.round }}/{{ st.ledger.max_rounds }} 轮 · {{ summary }}</template>
-          <template v-else>账本尚未初始化 · {{ summary }}</template>
-        </span>
-      </template>
-      <template #header-extra>
-        <NButton size="tiny" quaternary @click="showTimeline = !showTimeline">{{ showTimeline ? '收起时间线' : `批次时间线（${st.all_runs.length} 批）` }}</NButton>
-      </template>
-      <StageStepper :ledger="st.ledger" :tasks="visibleTasks" />
-      <div v-if="showTimeline" style="margin-top: 12px; max-height: 340px; overflow: auto; border-top: 1px solid rgba(255,255,255,.08); padding-top: 10px">
-        <TaskTimeline :tasks="visibleTasks" :now="st.now" @open="(k) => (openKey = k)" />
+    <div class="sheet banner">
+      <span class="banner-icon" :class="headlineKind"><NIcon :size="26"><GitNetworkOutline /></NIcon></span>
+      <div>
+        <div class="banner-text">{{ headline }}</div>
+        <div class="small dim">{{ elapsedText }}<template v-if="elapsedText"> · </template>最近更新 {{ ago(info.last_activity, st.now) }}<template v-if="info.launcher.stopped"> · 于 {{ info.launcher.stopped }} 终止</template></div>
       </div>
-    </NCard>
-
-    <div class="main">
-      <div class="left">
-        <template v-for="g in byRole" :key="g.role">
-          <div class="role-head">
-            <RoleBadge :role="g.role" :size="24" />
-            <span class="rh-name">{{ roleVisual(g.role).label }}</span>
-            <span class="dim" style="font-size: 12px">{{ g.tasks.length }} 个任务<template v-if="g.tasks.filter((t) => t.status_group === 'RUNNING').length">，{{ g.tasks.filter((t) => t.status_group === 'RUNNING').length }} 个在跑</template></span>
-            <NButton size="tiny" quaternary @click="router.push(`/roles/${g.role}`)">角色说明</NButton>
-          </div>
-          <NGrid cols="1 m:2 xl:3" responsive="screen" :x-gap="12" :y-gap="12" class="cards">
-            <NGi v-for="t in g.tasks" :key="t.key"><TaskCard :task="t" :now="st.now" @open="(k) => (openKey = k)" /></NGi>
-          </NGrid>
-        </template>
-        <NEmpty v-if="!focusTasks.length" description="还没有子 agent 任务。编排器完成范围确认后会派出第一批（文献检索 ∥ 风格库）。" style="margin: 40px 0" />
-        <NText v-if="hiddenCount > 0" depth="3" style="font-size: 12px; display: block; margin-top: 4px">
-          只显示正在运行和最近一批的 {{ focusTasks.length }} 个任务；另有 {{ hiddenCount }} 个历史任务，在上方选择具体批次或展开时间线查看。
-        </NText>
-      </div>
-      <div class="right"><QualityRail :ledger="st.ledger" /></div>
     </div>
 
-    <NCard size="small" style="margin-top: 14px" content-style="padding-top: 4px">
-      <NTabs type="line" size="small" @update:value="(v: string) => v === 'launcher' && loadLauncherLog()">
-        <NTabPane name="feed" :tab="`事件流（${feedRows.length}）`">
-          <div ref="feedEl" class="feed">
-            <div v-for="r in feedRows" :key="r.e.seq" class="feed-row">
-              <span class="dim mono">{{ hms(r.e.ts) }}</span>
-              <span class="who" :style="{ color: r.e.task ? roleVisual(r.e.role).color : '#9aa3b5' }">{{ r.e.task ? `${roleVisual(r.e.role).label} · ${r.e.name}` : (r.e.kind === 'ledger' ? '运行账本' : '工具审计') }}</span>
-              <span class="pre">{{ r.text }}</span>
-            </div>
-            <NText v-if="!feedRows.length" depth="3">打开页面后新到达的事件会出现在这里；历史事件请点任务卡查看。</NText>
-          </div>
-        </NTabPane>
-        <NTabPane name="audit" :tab="`工具调用审计（${st.audit.total}）`">
-          <NSpace :size="6" style="margin-bottom: 8px"><NTag v-for="(v, k) in st.audit.by_tool" :key="k" size="small" :bordered="false">{{ k }} {{ v }}</NTag>
-            <NTag v-if="st.audit.by_run['(未归因)']" size="small" type="warning" :bordered="false">未归因到任务 {{ st.audit.by_run['(未归因)'] }}</NTag></NSpace>
-          <div v-for="(r, i) in st.audit.recent.slice().reverse()" :key="i" class="audit mono">
-            <span class="dim">{{ (r.ts || '').slice(11, 19) }}</span> {{ r.tool }} <span class="dim">{{ r.duration_ms != null ? (r.duration_ms / 1000).toFixed(1) + 's' : '' }}</span>
-            <span v-if="r.ok === false" style="color: #f0a020">⚠</span> <span v-if="r.run_id" class="dim">← {{ r.run_id }}</span> <span class="dim">{{ r.request }}</span>
-          </div>
-        </NTabPane>
-        <NTabPane name="ledger" :tab="`运行账本（${st.ledger.log_tail?.length || 0}）`">
-          <div v-for="(g, name) in st.ledger.gates" :key="name" class="audit"><span class="mono">{{ name }}</span> {{ gateLabel(String(name)) }} · {{ g.status || 'PENDING' }} <span class="dim">{{ g.detail }}</span></div>
-          <div class="dim" style="margin: 8px 0 4px; font-size: 12px">最近日志</div>
-          <div v-for="(l, i) in st.ledger.log_tail" :key="i" class="audit mono">{{ l }}</div>
-        </NTabPane>
-        <NTabPane name="artifacts" tab="产物">
-          <NSpace vertical :size="6">
-            <div v-for="f in artifactFiles" :key="f.path" class="mono" style="font-size: 12.5px"><span class="dim" style="display: inline-block; width: 130px">{{ f.label }}</span>{{ f.path }} <span class="dim">{{ bytes(f.bytes) }}</span></div>
-            <div v-if="artifacts?.sections.length" class="mono" style="font-size: 12.5px"><span class="dim" style="display: inline-block; width: 130px">sections</span>{{ artifacts.sections.join(', ') }}</div>
-            <div v-if="artifacts?.figures_svg.length" class="mono" style="font-size: 12.5px"><span class="dim" style="display: inline-block; width: 130px">figures</span>{{ artifacts.figures_svg.join(', ') }}</div>
-            <div v-if="artifacts?.reviews.length" class="mono" style="font-size: 12.5px"><span class="dim" style="display: inline-block; width: 130px">reviews</span>{{ artifacts.reviews.join(', ') }}</div>
-            <NText v-if="!artifactFiles.length" depth="3">尚无产物文件。</NText>
-          </NSpace>
-        </NTabPane>
-        <NTabPane name="launcher" tab="启动日志">
-          <NButton size="tiny" @click="loadLauncherLog" style="margin-bottom: 8px">刷新</NButton>
-          <NCollapse v-if="launcherLog" :default-expanded-names="['stdout']">
-            <NCollapseItem title="标准输出（reproduce_core.sh）" name="stdout"><pre class="box">{{ launcherLog.stdout || '（空）' }}</pre></NCollapseItem>
-            <NCollapseItem title="错误输出" name="stderr"><pre class="box">{{ launcherLog.stderr || '（空）' }}</pre></NCollapseItem>
-            <NCollapseItem title="编排器最终回复" name="final"><pre class="box">{{ launcherLog.orchestrator_final || '（尚无）' }}</pre></NCollapseItem>
-          </NCollapse>
-          <NText v-else depth="3">点「刷新」读取启动器日志与编排器最终回复。</NText>
-        </NTabPane>
-      </NTabs>
-    </NCard>
+    <div class="row1">
+      <div class="sheet panel progress">
+        <div class="ph"><span class="card-h">研究推进</span><span class="dim small">{{ ledger.stage ? `第 ${ledger.round}/${ledger.max_rounds} 轮` : '账本尚未初始化' }}</span></div>
+        <StageSpine :ledger="ledger" :tasks="scoped" />
+      </div>
+      <div class="sheet panel checks">
+        <div class="ph"><span class="card-h">质量检查</span></div>
+        <QualityStampGrid :ledger="ledger" />
+      </div>
+    </div>
 
+    <div class="row2">
+      <div class="sheet panel agents">
+        <div class="ph">
+          <span class="card-h">{{ running.length ? '正在工作的角色' : (info.status === 'running' ? '角色' : '最近工作的角色') }}</span>
+          <span class="dim small">{{ running.length ? `${running.length} 个角色活跃 · ` : '' }}{{ doneRoles }} 个角色已完成</span>
+        </div>
+        <div v-if="active.length" class="agent-grid">
+          <template v-for="(t, i) in active" :key="t.key">
+            <ActiveAgentCard :task="t" :now="st.now" @open="(k) => (openKey = k)" />
+            <span v-if="i < active.length - 1" class="conn" />
+          </template>
+        </div>
+        <NEmpty v-else description="编排器完成定范围后会派出第一批角色（文献检索 ∥ 风格库）" style="margin: 30px 0" />
+      </div>
+      <div class="sheet panel issues">
+        <div class="ph"><span class="card-h">待处理审稿意见</span><span class="dim small">{{ openIssues.length }} 条 / 共 {{ ledger.issues_total || 0 }}</span></div>
+        <div v-if="openIssues.length" class="issue-list">
+          <div v-for="i in openIssues" :key="i.id" class="issue" :class="i.severity" @click="router.push(`/roles/${issueRole(i.target)}`)">
+            <div class="i-title">{{ oneLine(i.text, 80) }}</div>
+            <div class="small dim"><RoleBadge :role="issueRole(i.target)" :size="18" style="vertical-align: -4px; margin-right: 4px" />责任角色：{{ roleVisual(issueRole(i.target)).label }} · 回到 {{ issueStage(i.target) }} · {{ SEVERITY_LABEL[i.severity] || i.severity }}</div>
+          </div>
+        </div>
+        <div v-else class="dim small" style="padding: 18px 0">{{ ledger.stage ? '目前没有待处理的审稿意见。' : '审稿意见会在审稿阶段出现。' }}</div>
+      </div>
+    </div>
+
+    <div class="sheet done-row" @click="showDone = !showDone">
+      <span class="card-h">已完成 {{ doneTasks.length }} 个任务 · {{ doneRoles }} 个角色</span>
+      <span style="flex: 1" />
+      <NButton size="small" quaternary @click.stop="showEvents = true"><template #icon><NIcon><TimeOutline /></NIcon></template>查看事件记录</NButton>
+      <NIcon :size="18" class="dim"><component :is="showDone ? ChevronUpOutline : ChevronDownOutline" /></NIcon>
+    </div>
+    <div v-if="showDone" class="sheet done-body">
+      <div class="dim small" style="margin-bottom: 8px">批次时间线（点任务查看它的完整记录）</div>
+      <TaskTimeline :tasks="scoped" :now="st.now" @open="(k) => (openKey = k)" />
+      <div class="agent-grid wrap" style="margin-top: 14px">
+        <ActiveAgentCard v-for="t in doneTasks" :key="t.key" :task="t" :now="st.now" @open="(k) => (openKey = k)" />
+      </div>
+    </div>
+
+    <NDrawer v-model:show="showEvents" :width="880" placement="right">
+      <NDrawerContent title="事件记录" closable :native-scrollbar="false">
+        <div class="small dim" style="margin-bottom: 8px"><span class="mono">{{ info.path }}</span> · 创建 {{ dateTime(info.created) }}<span v-if="info.launcher.pid"> · 进程 {{ info.launcher.pid }}</span>
+          <span style="margin-left: 12px; display: inline-flex; align-items: center; gap: 6px">思考 <NSwitch v-model:value="showReasoning" size="small" /></span></div>
+        <NTabs type="line" size="small" @update:value="(v: string) => v === 'launcher' && loadLauncherLog()">
+          <NTabPane name="feed" :tab="`事件流（${feedRows.length}）`">
+            <div ref="feedEl" class="feed">
+              <div v-for="r in feedRows" :key="r.e.seq" class="feed-row">
+                <span class="dim mono">{{ hms(r.e.ts) }}</span>
+                <span class="who ellipsis" :style="{ color: r.e.task ? roleVisual(r.e.role).color : '#66737B' }">{{ r.e.task ? `${roleVisual(r.e.role).label} · ${r.e.name}` : (r.e.kind === 'ledger' ? '运行账本' : '工具审计') }}</span>
+                <span class="pre">{{ r.text }}</span>
+              </div>
+              <div v-if="!feedRows.length" class="dim">打开页面后新到达的事件会出现在这里；历史事件请点角色卡查看。</div>
+            </div>
+          </NTabPane>
+          <NTabPane name="audit" :tab="`工具调用审计（${st.audit.total}）`">
+            <div style="margin-bottom: 8px; display: flex; gap: 6px; flex-wrap: wrap"><NTag v-for="(v, k) in st.audit.by_tool" :key="k" size="small" :bordered="false">{{ k }} {{ v }}</NTag>
+              <NTag v-if="st.audit.by_run['(未归因)']" size="small" type="warning" :bordered="false">未归因到任务 {{ st.audit.by_run['(未归因)'] }}</NTag></div>
+            <div v-for="(r, i) in st.audit.recent.slice().reverse()" :key="i" class="audit mono">
+              <span class="dim">{{ (r.ts || '').slice(11, 19) }}</span> {{ r.tool }} <span class="dim">{{ r.duration_ms != null ? (r.duration_ms / 1000).toFixed(1) + 's' : '' }}</span>
+              <span v-if="r.ok === false" style="color: #B98032">⚠</span> <span v-if="r.run_id" class="dim">← {{ r.run_id }}</span> <span class="dim">{{ r.request }}</span>
+            </div>
+          </NTabPane>
+          <NTabPane name="ledger" :tab="`运行账本（${ledger.log_tail?.length || 0}）`">
+            <div v-for="(g, name) in ledger.gates" :key="name" class="audit"><span class="mono">{{ name }}</span> {{ gateLabel(String(name)) }} · {{ g.status || 'PENDING' }} <span class="dim">{{ g.detail }}</span></div>
+            <div class="dim small" style="margin: 8px 0 4px">最近日志</div>
+            <div v-for="(l, i) in ledger.log_tail" :key="i" class="audit mono">{{ l }}</div>
+          </NTabPane>
+          <NTabPane name="artifacts" tab="产物">
+            <div v-for="f in artifactFiles" :key="f.path" class="mono small"><span class="dim" style="display: inline-block; width: 130px">{{ f.label }}</span>{{ f.path }} <span class="dim">{{ bytes(f.bytes) }}</span></div>
+            <div v-if="artifacts?.sections.length" class="mono small"><span class="dim" style="display: inline-block; width: 130px">sections</span>{{ artifacts.sections.join(', ') }}</div>
+            <div v-if="artifacts?.figures_svg.length" class="mono small"><span class="dim" style="display: inline-block; width: 130px">figures</span>{{ artifacts.figures_svg.join(', ') }}</div>
+            <div v-if="!artifactFiles.length" class="dim">尚无产物文件。</div>
+          </NTabPane>
+          <NTabPane name="launcher" tab="启动日志">
+            <NButton size="tiny" @click="loadLauncherLog" style="margin-bottom: 8px">刷新</NButton>
+            <NCollapse v-if="launcherLog" :default-expanded-names="['stdout']">
+              <NCollapseItem title="标准输出（reproduce_core.sh）" name="stdout"><pre class="box">{{ launcherLog.stdout || '（空）' }}</pre></NCollapseItem>
+              <NCollapseItem title="错误输出" name="stderr"><pre class="box">{{ launcherLog.stderr || '（空）' }}</pre></NCollapseItem>
+              <NCollapseItem title="编排器最终回复" name="final"><pre class="box">{{ launcherLog.orchestrator_final || '（尚无）' }}</pre></NCollapseItem>
+            </NCollapse>
+          </NTabPane>
+        </NTabs>
+      </NDrawerContent>
+    </NDrawer>
     <TaskDrawer :ws-id="id" :task-key="openKey" :show-reasoning="showReasoning" @close="openKey = null" />
   </div>
   <div class="page" v-else>
@@ -277,21 +283,30 @@ const artifactFiles = computed(() => {
 </template>
 
 <style scoped>
-.hd { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.hd h1 { font-size: 20px; margin: 0; font-weight: 600; max-width: 640px; }
-.sub { font-size: 12px; margin: 6px 0 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-.stepper-card { margin-bottom: 14px; }
-.main { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }
-.right { position: sticky; top: 0; }
-.role-head { display: flex; align-items: center; gap: 10px; margin: 6px 0 10px; }
-.rh-name { font-weight: 600; font-size: 14px; }
-.cards { margin-bottom: 18px; }
-.feed { max-height: 320px; overflow: auto; font-size: 12px; }
-.feed-row { display: grid; grid-template-columns: 64px 200px 1fr; gap: 10px; padding: 2px 0; border-bottom: 1px dashed rgba(255,255,255,.06); }
-.feed-row .who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.audit { font-size: 11.5px; padding: 3px 0; border-bottom: 1px dashed rgba(255,255,255,.08); }
-.box { white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,.35); padding: 8px 10px; border-radius: 6px; font-size: 12px; max-height: 360px; overflow: auto; }
-.pulse { animation: pulse 1.6s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
-@media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .right { position: static; } }
+.hd { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.hd h1 { font-size: 22px; line-height: 30px; margin: 0; font-weight: 600; }
+.topic { font-weight: 600; max-width: 480px; }
+.banner { display: flex; align-items: center; gap: 16px; padding: 14px 20px; margin-bottom: 16px; }
+.banner-icon { width: 44px; height: 44px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: #EFEDE6; color: var(--slate); flex: none; }
+.banner-icon.run, .banner-icon.ok { background: var(--verdigris-soft); color: var(--verdigris); } .banner-icon.warn { background: var(--amber-soft); color: var(--amber); } .banner-icon.bad { background: var(--cinnabar-soft); color: var(--cinnabar); }
+.banner-text { font-size: 18px; line-height: 26px; font-weight: 600; }
+.row1 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
+.row2 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
+.progress, .checks, .agents, .issues { padding: 18px 22px; }
+.ph { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; gap: 10px; }
+.agent-grid { display: flex; align-items: stretch; gap: 0; }
+.agent-grid > .agent, .agent-grid > :deep(.agent) { flex: 1; min-width: 0; }
+.agent-grid.wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.conn { width: 22px; height: 1.5px; background: #C9CCC6; align-self: center; flex: none; }
+.issue-list { display: flex; flex-direction: column; gap: 10px; }
+.issue { border-left: 3px solid var(--amber); background: var(--amber-soft); border-radius: 0 10px 10px 0; padding: 10px 14px; cursor: pointer; }
+.issue.blocker { border-left-color: var(--cinnabar); background: var(--cinnabar-soft); }
+.i-title { font-weight: 600; font-size: 13.5px; margin-bottom: 4px; }
+.done-row { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; }
+.done-body { padding: 16px 20px; margin-top: 10px; }
+.feed { max-height: 60vh; overflow: auto; font-size: 12.5px; }
+.feed-row { display: grid; grid-template-columns: 64px 180px 1fr; gap: 10px; padding: 3px 0; border-bottom: 1px dashed var(--line-soft); }
+.audit { font-size: 12px; padding: 3px 0; border-bottom: 1px dashed var(--line-soft); }
+.box { white-space: pre-wrap; word-break: break-word; background: #EEEDE6; padding: 8px 10px; border-radius: 6px; font-size: 12px; max-height: 360px; overflow: auto; }
+@media (max-width: 1100px) { .row1, .row2 { grid-template-columns: 1fr; } .agent-grid { flex-direction: column; } .conn { display: none; } }
 </style>

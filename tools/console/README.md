@@ -8,5 +8,5 @@ pnpm run dev        # http://127.0.0.1:5173，/api 代理到 GOAI_CONSOLE_API（
 pnpm run build      # vue-tsc 类型检查 + 产物到 dist/（已提交，服务端直接托管，不需要 node）
 ```
 
-页面：`/#/roles` 角色说明（读 `skills/*/SKILL.md`）· `/#/history` 运行与历史（发起 / 终止 / 列表）· `/#/run/<id>` 运行详情（流程条、时间线、角色卡、闸门、事件流、审计、产物）。
+页面：`/#/roles` 首页与角色总览 · `/#/roles/<id>` 角色详情 · `/#/history` 研究（发起 / 最近运行）· `/#/run` 与 `/#/run/<id>` 运行实时观察 · `/#/skills` 技能与工具 · `/#/results` 成果与历史回看 · `/#/settings`。视觉系统见 `design/round3/DESIGN.md`。
 数据契约见 `src/types.ts`，与 `console_server.py` / `live_view.py` 的 JSON 一致。

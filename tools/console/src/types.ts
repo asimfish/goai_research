@@ -2,6 +2,14 @@
 
 export interface Role {
   id: string
+  index: number
+  verb: string
+  inputs: string[]
+  outputs: string[]
+  wont: string[]
+  chain: string
+  upstream: string | null
+  downstream: string | null
   label: string
   icon: string
   name: string
@@ -210,12 +218,16 @@ export interface ConsoleConfig {
   efforts: string[]
 }
 
+export interface ArtifactSummary { checks_passed: number; checks_total: number; citations: number; figures: number; review_rounds: number; sections: number; pdf_pages: number | null; papers: number }
 export interface Artifacts {
-  [k: string]: { path: string; bytes: number; mtime: number } | string[] | undefined
+  [k: string]: { path: string; bytes: number; mtime: number } | string[] | ArtifactSummary | { path: string; label: string; exists: boolean }[] | undefined
   figures_svg: string[]
   sections: string[]
   reviews: string[]
+  summary: ArtifactSummary
+  bundle_items: { path: string; label: string; exists: boolean }[]
 }
+export interface Chain { name: string; desc: string; roles: string[] }
 
 export interface McpTool { name: string; params: { name: string; default: string | null }[]; summary: string; doc: string; used_by: string[] }
 export interface McpServer { id: string; file: string; summary: string; tools: McpTool[]; used_by: string[]; exists: boolean }

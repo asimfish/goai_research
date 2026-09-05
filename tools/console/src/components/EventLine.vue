@@ -49,12 +49,12 @@ const fileList = computed(() => (props.ev.changes || []).slice(0, 8).map((c) => 
 </template>
 
 <style scoped>
-.ev { padding: 3px 0; border-bottom: 1px dashed rgba(255,255,255,.08); font-size: 12.5px; word-break: break-word; line-height: 1.5; }
-.t { color: #8a93a6; font-size: 11px; margin-right: 6px; }
-.ev.message { color: #e6edf3; } .ev.reasoning { color: #9aa3b5; font-style: italic; }
-.ev.command .mono { color: #c9d1d9; font-size: 12px; }
-.out { color: #8a93a6; display: block; max-height: 7em; overflow: hidden; font-size: 11px; white-space: pre-wrap; margin-top: 2px; }
-.ev.mcp { color: #d2a8ff; } .ev.web_search { color: #79c0ff; } .ev.file_change { color: #7ee787; } .ev.error { color: #f2726f; }
-.ev.todo { color: #e3b341; } .todo-item { display: block; margin-left: 1.5em; font-size: 12px; }
-.ev.usage, .ev.thread, .ev.status, .ev.raw { color: #8a93a6; font-size: 11.5px; }
+.ev { padding: 3px 0; border-bottom: 1px dashed var(--line-soft); font-size: 12.5px; word-break: break-word; line-height: 1.5; }
+.t { color: var(--slate); font-size: 11px; margin-right: 6px; }
+.ev.message { color: var(--ink); } .ev.reasoning { color: var(--slate); font-style: italic; }
+.ev.command .mono { color: #2F3F4A; font-size: 12px; }
+.out { color: var(--slate); display: block; max-height: 7em; overflow: hidden; font-size: 11px; white-space: pre-wrap; margin-top: 2px; background: #EEEDE6; padding: 4px 8px; border-radius: 6px; }
+.ev.mcp { color: #5B3E8C; } .ev.web_search { color: #2A5D8F; } .ev.file_change { color: var(--verdigris); } .ev.error { color: var(--cinnabar); }
+.ev.todo { color: var(--amber); } .todo-item { display: block; margin-left: 1.5em; font-size: 12px; }
+.ev.usage, .ev.thread, .ev.status, .ev.raw { color: var(--slate); font-size: 11.5px; }
 </style>

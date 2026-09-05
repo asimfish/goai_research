@@ -1,17 +1,42 @@
+/* 「循证台」视觉系统（tools/console/design/round3/DESIGN.md）：纸张白 / 深墨蓝 / 铜绿 / 琥珀 / 朱砂 */
+:root {
+  --paper: #F5F3ED; --mist: #FBFAF7; --ink: #172B3A; --slate: #66737B; --verdigris: #2D7468; --verdigris-soft: #DDEBE7;
+  --amber: #B98032; --amber-soft: #F3E8D5; --cinnabar: #A94D45; --cinnabar-soft: #F1DDDA; --line: #D8DAD6; --line-soft: #E7E8E3;
+  --radius-panel: 16px; --radius-card: 12px; --radius-ctl: 10px;
+  --shadow-float: 0 12px 36px rgba(23, 43, 58, .10);
+}
 html, body, #app { height: 100%; margin: 0; }
-body { font-family: -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; }
-.mono { font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace; }
-.dim { color: var(--n-text-color-3, #8a93a6); }
+body { background: var(--paper); color: var(--ink); font-family: Inter, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif; font-size: 14px; line-height: 22px; }
+.serif { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif; }
+.mono { font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; font-size: 12.5px; }
+.dim { color: var(--slate); }
 .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pre { white-space: pre-wrap; word-break: break-word; }
-.page { padding: 16px 20px 32px; max-width: 1600px; margin: 0 auto; }
-.page-title { display: flex; align-items: baseline; gap: 12px; margin: 4px 0 14px; }
-.page-title h1 { font-size: 20px; margin: 0; font-weight: 600; }
-.markdown { font-size: 13.5px; line-height: 1.65; }
-.markdown h1 { font-size: 20px; } .markdown h2 { font-size: 17px; margin-top: 22px; } .markdown h3 { font-size: 15px; }
-.markdown pre { background: rgba(255,255,255,.06); padding: 10px 12px; border-radius: 6px; overflow: auto; font-size: 12.5px; }
-.markdown code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+.page { padding: 24px 40px 40px; max-width: 1520px; margin: 0 auto; }
+.page-title { display: flex; align-items: flex-start; gap: 16px; margin: 0 0 20px; }
+.page-title h1 { font-size: 28px; line-height: 36px; margin: 0 0 4px; font-weight: 600; letter-spacing: .01em; }
+.page-title .lead { color: var(--slate); font-size: 14px; max-width: 760px; }
+/* 纸张卡片：细边、无渐变 */
+.sheet { background: var(--mist); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.sheet.panel { border-radius: var(--radius-panel); }
+.sec-h { font-size: 18px; line-height: 26px; font-weight: 600; margin: 0 0 12px; }
+.card-h { font-size: 15px; line-height: 22px; font-weight: 600; }
+.small { font-size: 12px; line-height: 18px; }
+/* 状态：颜色 + 形状 */
+.st-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; margin-right: 6px; }
+.st-dot.run { background: var(--verdigris); animation: breathe 1.8s ease-in-out infinite; }
+.st-dot.ok { background: var(--verdigris); } .st-dot.wait { background: transparent; border: 1.5px solid var(--slate); box-sizing: border-box; }
+.st-dot.warn { background: var(--amber); } .st-dot.bad { background: var(--cinnabar); }
+@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .st-dot.run { animation: none; } }
+/* 规程阅读区 */
+.markdown { font-size: 14px; line-height: 1.75; color: var(--ink); }
+.markdown h1 { font-size: 22px; line-height: 30px; } .markdown h2 { font-size: 18px; margin-top: 28px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); } .markdown h3 { font-size: 15px; margin-top: 20px; }
+.markdown p, .markdown li { max-width: 760px; }
+.markdown pre { background: #EEEDE6; padding: 10px 12px; border-radius: 8px; overflow: auto; font-size: 12.5px; }
+.markdown code { background: #ECEBE4; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
 .markdown pre code { background: none; padding: 0; }
-.markdown table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
-.markdown th, .markdown td { border: 1px solid rgba(255,255,255,.14); padding: 5px 8px; text-align: left; vertical-align: top; }
-.markdown blockquote { border-left: 3px solid rgba(255,255,255,.2); margin: 8px 0; padding: 2px 12px; color: #9aa3b5; }
+.markdown table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.markdown th, .markdown td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+.markdown th { background: #EEEDE6; font-weight: 600; }
+.markdown blockquote { border-left: 3px solid var(--amber); margin: 10px 0; padding: 4px 14px; color: var(--slate); background: var(--amber-soft); border-radius: 0 8px 8px 0; }

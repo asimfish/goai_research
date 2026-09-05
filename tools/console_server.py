@@ -78,6 +78,37 @@ ROLE_EXTRA = {
 }
 ROLE_ORDER = ["goai-orchestrator", "goai-lit-search", "goai-style-bank", "goai-ref-guard", "goai-survey-writer",
               "goai-figure-studio", "goai-figure-editable", "goai-idea-forge", "goai-reviewer"]
+# 角色页「身份面板」：输入 / 输出 / 不会做什么 / 一句动词（面向读者的措辞，不用运行词汇）
+ROLE_IDENTITY = {
+    "goai-orchestrator": {"verb": "设计检索与写作路径，规划证据路线", "inputs": ["一行研究主题", "运行账本的当前状态"],
+                          "outputs": ["范围说明", "各阶段的任务书", "阶段验收结论"], "wont": ["不自己检索、写作或画图", "不越过质量检查宣布完成"],
+                          "chain": "发现与证据"},
+    "goai-lit-search": {"verb": "执行系统检索，收集并去重相关文献", "inputs": ["范围说明与子主题", "本地全文语料 / 在线数据库"],
+                        "outputs": ["文献库 papers.jsonl", "检索日志与覆盖报告", "参考文献草稿"], "wont": ["不凭记忆补文献", "不绕过付费墙"],
+                        "chain": "发现与证据"},
+    "goai-style-bank": {"verb": "分析目标期刊与学科文体，制定写作规范", "inputs": ["主题所在学科的经典综述"],
+                        "outputs": ["写作风格卡", "图纸风格卡", "范图库"], "wont": ["不把范文内容当作证据引用"], "chain": "写作与表达"},
+    "goai-ref-guard": {"verb": "核验引用与关键数据，确保来源可靠", "inputs": ["待核验的参考文献条目", "正文中的引用上下文"],
+                       "outputs": ["逐条核验结果", "修正建议与来源证据", "不确定项清单"], "wont": ["不凭记忆补全条目", "不放行查无此文的引用"],
+                       "chain": "发现与证据"},
+    "goai-survey-writer": {"verb": "整合证据，撰写结构清晰、论证严谨的综述", "inputs": ["已核验的文献库", "分类法与风格卡", "图纸与想法"],
+                           "outputs": ["分类法与章节蓝图", "各章节正文", "编译好的综述 PDF"], "wont": ["不引用库外文献", "不用回退渲染器造 PDF"],
+                           "chain": "写作与表达"},
+    "goai-figure-studio": {"verb": "将复杂关系与机制，设计为可理解的图示", "inputs": ["分类法与正文主线", "图纸风格卡"],
+                           "outputs": ["可编辑的 SVG + draw.io 图纸", "图注草稿", "候选与审计记录"], "wont": ["不把位图当交付物", "不画没有证据支撑的箭头"],
+                           "chain": "写作与表达"},
+    "goai-figure-editable": {"verb": "优化图形表达与分辨率，确保准确而一致", "inputs": ["现成的矢量图或位图"],
+                             "outputs": ["可编辑的 draw.io 文件"], "wont": ["不改变图的科学内容"], "chain": "写作与表达"},
+    "goai-idea-forge": {"verb": "基于证据发现空白与机会，提出假说与思路", "inputs": ["文献库与覆盖缺口", "矛盾信号与组合空位"],
+                        "outputs": ["研究提案", "含前驱体预测的实验方案", "毙掉提案的记录"], "wont": ["不输出无证据的想法", "不自审自批"],
+                        "chain": "审阅与创新"},
+    "goai-reviewer": {"verb": "以挑剔视角审阅全文，提出批评与改进建议", "inputs": ["综述稿与最终 PDF", "图纸与想法提案"],
+                      "outputs": ["结构化审稿意见（含责任角色与返工阶段）", "审稿回执"], "wont": ["不动稿", "不为显得严格而编造问题"],
+                      "chain": "审阅与创新"},
+}
+ROLE_CHAINS = [("发现与证据", "系统性寻找、筛选与核验可靠证据。", ["goai-orchestrator", "goai-lit-search", "goai-ref-guard"]),
+               ("写作与表达", "将证据转化为清晰、可信的学术表达。", ["goai-style-bank", "goai-survey-writer", "goai-figure-studio", "goai-figure-editable"]),
+               ("审阅与创新", "发现问题、提出新思路，提升研究的价值与边界。", ["goai-idea-forge", "goai-reviewer"])]
 # 工具面一句话说明（与 server/*.py 的 docstring 首句一致；前端角色抽屉展示）
 TOOL_DESC = {
     "local_corpus_status": "检查离线全文语料与 DuckDB / ripgrep 后端", "grep_local_corpus": "私有 / 公开语料全文检索（默认 ≤10 条）",
@@ -120,7 +151,12 @@ def load_roles(repo: str) -> list[dict]:
         icon, label, _ = live_view.ROLE_META.get(rid, live_view.ROLE_META["unknown"])
         extra = ROLE_EXTRA.get(rid, {})
         tools = extra.get("tools", [])
+        ident = ROLE_IDENTITY.get(rid, {})
+        order = ROLE_ORDER.index(rid)
         roles.append({
+            "index": order + 1, "verb": ident.get("verb", ""), "inputs": ident.get("inputs", []), "outputs": ident.get("outputs", []),
+            "wont": ident.get("wont", []), "chain": ident.get("chain", ""),
+            "upstream": ROLE_ORDER[order - 1] if order > 0 else None, "downstream": ROLE_ORDER[order + 1] if order + 1 < len(ROLE_ORDER) else None,
             "id": rid, "label": label, "icon": icon, "name": fm.get("name", rid),
             "description": fm.get("description", ""), "brief": extra.get("brief", ""),
             "stage": extra.get("stage", ""), "gate": extra.get("gate", ""), "server": extra.get("server"),
@@ -419,8 +455,12 @@ class Workspaces:
         os.makedirs(os.path.join(ws, "state"), exist_ok=True)
         with open(os.path.join(ws, "topic_only.txt"), "w", encoding="utf-8") as f:
             f.write(topic + "\n")
+        codex_bin = resolve_codex_path()
+        if not codex_bin:
+            raise ValueError("服务端找不到 codex CLI（PATH 与 ~/.nvm 下都没有）；请在启动控制台的 shell 里加载 nvm 或安装 @openai/codex")
         env = {**os.environ, "CODEX_HOME": os.path.expanduser(codex_home), "GOAI_CORPUS": corpus,
-               "GOAI_MODEL": model, "GOAI_REASONING_EFFORT": effort}
+               "GOAI_MODEL": model, "GOAI_REASONING_EFFORT": effort,
+               "PATH": os.path.dirname(codex_bin) + os.pathsep + os.environ.get("PATH", "")}
         if corpus == "private":
             env.update(private_env)
         cmd = ["bash", "scripts/reproduce_core.sh", "--topic", topic, "--workdir", ws]
@@ -552,7 +592,8 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                     return self._json(cfg_public(cfg))
                 if parts[1:] == ["roles"]:
                     return self._json({"roles": load_roles(ws.repo), "stats": {**roles_stats(ws.repo), "stages": STAGE_ORDER,
-                                                                             "runs": len(ws.candidate_paths())}})
+                                                                             "runs": len(ws.candidate_paths())},
+                                       "chains": [{"name": n, "desc": d, "roles": r} for n, d, r in ROLE_CHAINS]})
                 if len(parts) == 4 and parts[1] == "roles" and parts[3] == "skill":
                     rid = parts[2]
                     if rid not in ROLE_ORDER:
@@ -610,6 +651,12 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                         return self._send(200, data, "application/pdf", {"Content-Disposition": "inline; filename=main.pdf"})
                     if sub == "artifacts":
                         return self._json(list_artifacts(path))
+                    if sub == "bundle.zip":
+                        data = build_bundle(path)
+                        name = re.sub(r"[^0-9A-Za-z_-]+", "_", os.path.basename(path))[:60] or "bundle"
+                        return self._send(200, data, "application/zip", {"Content-Disposition": f"attachment; filename={name}.zip"})
+                    if sub == "services":
+                        return self._json({"servers": [{"id": m["id"], "online": m["exists"], "tools": len(m["tools"])} for m in load_mcp(ws.repo)]})
                     if sub == "file":
                         rel = q.get("path", [""])[0]
                         full = os.path.normpath(os.path.join(path, rel))
@@ -646,6 +693,57 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
     return Handler
 
 
+def _pdf_pages(pdf: str) -> int | None:
+    try:
+        r = subprocess.run(["pdfinfo", pdf], capture_output=True, text=True, timeout=10)
+        m = re.search(r"^Pages:\s+(\d+)", r.stdout, re.M)
+        return int(m.group(1)) if m else None
+    except Exception:
+        return None
+
+
+def artifact_summary(path: str) -> dict:
+    """成果页的可核验摘要：检查通过数 / 引用条数 / 图表数 / 审稿轮次 / PDF 页数。"""
+    ledger = _read_json(os.path.join(path, "state", "ledger.json")) or {}
+    gates = {k: (v or {}).get("status") for k, v in (ledger.get("gates") or {}).items()}
+    bib = live_view.read_text(os.path.join(path, "library", "references.bib"))
+    pdf = os.path.join(path, "drafts", "main.pdf")
+    return {
+        "checks_passed": sum(1 for v in gates.values() if v in ("PASS", "WARN")), "checks_total": max(9, len(gates)) if gates else 9,
+        "citations": len(re.findall(r"^@\w+\s*\{", bib, re.M)),
+        "figures": len(glob.glob(os.path.join(path, "figures", "svg", "*.svg"))),
+        "review_rounds": len(glob.glob(os.path.join(path, "state", "review_round*.md"))),
+        "sections": len(glob.glob(os.path.join(path, "drafts", "sections", "*.tex"))),
+        "pdf_pages": _pdf_pages(pdf) if os.path.exists(pdf) else None,
+        "papers": sum(1 for _ in open(os.path.join(path, "library", "papers.jsonl"), encoding="utf-8")) if os.path.exists(os.path.join(path, "library", "papers.jsonl")) else 0,
+    }
+
+
+BUNDLE_ITEMS = [("drafts/main.pdf", "论文 PDF"), ("drafts/main.tex", "TeX 主文件"), ("drafts/sections", "章节源稿"),
+                ("library/references.bib", "参考文献"), ("figures/svg", "图纸 SVG"), ("figures/drawio", "图纸 draw.io"),
+                ("state/CITATION_AUDIT.md", "引用核验报告"), ("ideas", "研究提案"), ("state/ledger.json", "运行账本")]
+
+
+def build_bundle(path: str) -> bytes:
+    """把成果打成一个 zip（只收 BUNDLE_ITEMS，单文件 ≤ 50 MB）。"""
+    import io
+    import zipfile
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for rel, _ in BUNDLE_ITEMS:
+            full = os.path.join(path, rel)
+            if os.path.isfile(full):
+                if os.path.getsize(full) <= 50_000_000:
+                    z.write(full, rel)
+            elif os.path.isdir(full):
+                for root, _, files in os.walk(full):
+                    for f in files:
+                        fp = os.path.join(root, f)
+                        if os.path.getsize(fp) <= 50_000_000:
+                            z.write(fp, os.path.relpath(fp, path))
+    return buf.getvalue()
+
+
 def list_artifacts(path: str) -> dict:
     out = {}
     for label, rel in (("final_pdf", "drafts/main.pdf"), ("main_tex", "drafts/main.tex"),
@@ -659,12 +757,14 @@ def list_artifacts(path: str) -> dict:
     out["figures_svg"] = sorted(os.path.basename(p) for p in glob.glob(os.path.join(path, "figures", "svg", "*.svg")))
     out["sections"] = sorted(os.path.basename(p) for p in glob.glob(os.path.join(path, "drafts", "sections", "*.tex")))
     out["reviews"] = sorted(os.path.basename(p) for p in glob.glob(os.path.join(path, "state", "review_round*.md")))
+    out["summary"] = artifact_summary(path)
+    out["bundle_items"] = [{"path": rel, "label": lab, "exists": os.path.exists(os.path.join(path, rel))} for rel, lab in BUNDLE_ITEMS]
     return out
 
 
 def cfg_public(cfg: dict) -> dict:
     return {
-        "repo": cfg["repo"], "runs_root": cfg["runs_root"], "codex_home": cfg["codex_home"],
+        "repo": cfg["repo"], "runs_root": cfg["runs_root"], "codex_home": cfg["codex_home"], "codex_path": resolve_codex_path(),
         "codex_login": cfg.get("codex_login"), "codex_version": cfg.get("codex_version"),
         "model": cfg["model"], "effort": cfg["effort"],
         "private_corpus_available": bool(cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS")),
@@ -675,8 +775,24 @@ def cfg_public(cfg: dict) -> dict:
     }
 
 
+def resolve_codex_path() -> str | None:
+    """找 codex CLI：先 PATH，再常见的 nvm / npm 全局目录（服务进程常在非交互 shell 里，PATH 没加载 nvm）。"""
+    import shutil
+    found = shutil.which("codex")
+    if found:
+        return found
+    for pat in ("~/.nvm/versions/node/*/bin/codex", "~/.npm-global/bin/codex", "/usr/local/bin/codex", "~/.local/bin/codex"):
+        hits = sorted(glob.glob(os.path.expanduser(pat)))
+        if hits:
+            return hits[-1]
+    return None
+
+
 def codex_probe(codex_home: str) -> tuple[str | None, str | None]:
     env = {**os.environ, "CODEX_HOME": os.path.expanduser(codex_home)}
+    cb = resolve_codex_path()
+    if cb:
+        env["PATH"] = os.path.dirname(cb) + os.pathsep + env.get("PATH", "")
     try:
         ver = subprocess.run(["bash", "-lc", "codex --version"], capture_output=True, text=True, env=env, timeout=20).stdout.strip()
     except Exception:

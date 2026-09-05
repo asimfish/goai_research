@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { computed, h, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {
-  NButton, NCard, NDataTable, NEmpty, NIcon, NInput, NPopconfirm, NSpace, NTag, NText, NTooltip, useMessage,
-} from 'naive-ui'
-import type { DataTableColumns } from 'naive-ui'
-import { CheckmarkCircleOutline, FolderOpenOutline, LayersOutline, PulseOutline } from '@vicons/ionicons5'
+import { NButton, NEmpty, NIcon, NInput, NPopconfirm, NTooltip, useMessage } from 'naive-ui'
+import { CheckmarkCircleOutline, PauseCircleOutline, SearchOutline, SyncOutline, CloseCircleOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { ConsoleConfig, WorkspaceInfo } from '../types'
-import { WS_STATUS_LABEL, ago, dateTime, statusType } from '../format'
 import { GATE_ORDER, STAGE_LABEL } from '../roles'
-import { checkStatus, gateLabel } from '../labels'
+import { ago, dateTime } from '../format'
 import LaunchPanel from '../components/LaunchPanel.vue'
 
 const router = useRouter()
@@ -20,6 +16,7 @@ const rows = ref<WorkspaceInfo[]>([])
 const now = ref(Date.now() / 1000)
 const loading = ref(true)
 const filter = ref('')
+const tab = ref<'all' | 'running' | 'done'>('all')
 const config = ref<ConsoleConfig | null>(null)
 let timer: number | undefined
 
@@ -29,7 +26,7 @@ async function refresh() {
     rows.value = r.workspaces
     now.value = r.now
   } catch (e) {
-    message.error(`读取工作区失败：${(e as Error).message}`)
+    message.error(`读取运行失败：${(e as Error).message}`)
   } finally {
     loading.value = false
   }
@@ -43,122 +40,100 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
 const filtered = computed(() => {
   const q = filter.value.trim().toLowerCase()
-  if (!q) return rows.value
-  return rows.value.filter((w) => [w.topic, w.label, w.parent, w.path, w.status, w.stage || ''].join(' ').toLowerCase().includes(q))
+  return rows.value.filter((w) => {
+    if (tab.value === 'running' && w.status !== 'running') return false
+    if (tab.value === 'done' && w.status !== 'done') return false
+    if (!q) return true
+    return [w.topic, w.label, w.parent, w.status, w.stage || ''].join(' ').toLowerCase().includes(q)
+  })
 })
-const kpis = computed(() => [
-  { label: '运行中', value: rows.value.filter((w) => w.status === 'running').length, icon: PulseOutline, color: '#5b8def' },
-  { label: '已完成', value: rows.value.filter((w) => w.status === 'done').length, icon: CheckmarkCircleOutline, color: '#63c26b' },
-  { label: '工作区', value: rows.value.length, icon: FolderOpenOutline, color: '#a78bfa' },
-  { label: '子 agent 任务累计', value: rows.value.reduce((a, w) => a + w.tasks, 0), icon: LayersOutline, color: '#e0b060' },
-])
-
+function checks(w: WorkspaceInfo) { return GATE_ORDER.filter((g) => ['PASS', 'WARN'].includes(w.gates[g] || '')).length }
+function stageNo(w: WorkspaceInfo) { const i = ['intake', 'scoping', 'lit_search', 'style_bank', 'ref_gate', 'taxonomy', 'figures', 'writing', 'ideas', 'review', 'final'].indexOf(w.stage || ''); return i >= 0 ? String(i + 1).padStart(2, '0') : '—' }
+function statusText(w: WorkspaceInfo) {
+  if (w.status === 'running') return `运行中 · ${stageNo(w)} / 11 ${STAGE_LABEL[w.stage || ''] || ''}`
+  if (w.status === 'done') return `已交付 · ${checks(w)} / 9`
+  if (w.status === 'stopped') return `已终止 · ${stageNo(w)} / 11 ${STAGE_LABEL[w.stage || ''] || ''}`
+  if (w.status === 'failed') return `失败 · ${stageNo(w)} / 11`
+  if (w.open_issues) return `待处理意见 · ${w.open_issues} 条`
+  return `已结束 · ${stageNo(w)} / 11`
+}
+function statusKind(w: WorkspaceInfo) { return w.status === 'running' ? 'run' : w.status === 'done' ? 'ok' : w.status === 'failed' ? 'bad' : w.open_issues ? 'warn' : 'wait' }
 async function stop(w: WorkspaceInfo) {
-  try {
-    const r = await api.stop(w.id)
-    r.ok ? message.success(r.message) : message.warning(r.message)
-    await refresh()
-  } catch (e) {
-    message.error(`终止失败：${(e as Error).message}`)
-  }
+  try { const r = await api.stop(w.id); r.ok ? message.success(r.message) : message.warning(r.message); await refresh() }
+  catch (e) { message.error(`终止失败：${(e as Error).message}`) }
 }
-
-const GATE_COLOR: Record<string, string> = { PASS: '#63c26b', WARN: '#f0a020', FAIL: '#f2726f', PENDING: 'rgba(255,255,255,.14)' }
-function gateBar(w: WorkspaceInfo) {
-  return h('div', { class: 'gates' }, GATE_ORDER.map((g) => {
-    const s = w.gates[g] || (g in w.gates ? 'PENDING' : '')
-    return h(NTooltip, { key: g }, {
-      trigger: () => h('span', { class: 'seg', style: { background: GATE_COLOR[s] || 'rgba(255,255,255,.06)' } }),
-      default: () => `${gateLabel(g)}（${g}）：${s ? checkStatus(s) : '未记录'}`,
-    })
-  }))
-}
-
-const columns: DataTableColumns<WorkspaceInfo> = [
-  {
-    title: '状态', key: 'status', width: 92,
-    render: (w) => h(NTag, { size: 'small', type: statusType(w.status), round: true, bordered: false, class: w.status === 'running' ? 'pulse' : '' },
-      { default: () => WS_STATUS_LABEL[w.status] || w.status }),
-  },
-  {
-    title: '研究主题', key: 'topic', minWidth: 340,
-    render: (w) => h('div', { style: 'cursor:pointer;min-width:0', onClick: () => router.push(`/run/${w.id}`) }, [
-      h('div', { class: 'ellipsis', style: 'font-weight:600', title: w.topic }, w.topic || '（无主题记录）'),
-      h('div', { class: 'dim mono ellipsis', style: 'font-size:11.5px', title: w.path }, `${w.parent}/${w.label}`),
-    ]),
-  },
-  {
-    title: '阶段 / 轮次', key: 'stage', width: 140,
-    render: (w) => w.stage ? h('div', [h('span', {}, STAGE_LABEL[w.stage] || w.stage), h('span', { class: 'dim' }, ` · 第 ${w.round}/${w.max_rounds} 轮`)]) : h('span', { class: 'dim' }, '尚未开始'),
-  },
-  { title: '质量检查（9 项）', key: 'gates', width: 150, render: gateBar },
-  { title: '批次 / 任务', key: 'tasks', width: 104, render: (w) => `${w.batches} / ${w.tasks}${w.tasks_running ? ` (▶${w.tasks_running})` : ''}` },
-  {
-    title: '最近活动', key: 'last_activity', width: 120,
-    render: (w) => h(NTooltip, {}, { trigger: () => h('span', ago(w.last_activity, now.value)), default: () => dateTime(w.last_activity) }),
-  },
-  { title: '创建', key: 'created', width: 112, render: (w) => dateTime(w.created) },
-  {
-    title: '产物', key: 'final_pdf', width: 84,
-    render: (w) => w.final_pdf
-      ? h('a', { href: api.pdfUrl(w.id), target: '_blank', style: 'color:#63c26b' }, 'PDF ↗')
-      : h('span', { class: 'dim' }, w.open_issues ? `${w.open_issues} 条意见待处理` : '—'),
-  },
-  {
-    title: '操作', key: 'actions', width: 176,
-    render: (w) => h(NSpace, { size: 6 }, {
-      default: () => [
-        h(NButton, { size: 'tiny', type: w.status === 'running' ? 'primary' : 'default', ghost: w.status === 'running', onClick: () => router.push(`/run/${w.id}`) },
-          { default: () => w.status === 'running' ? '实时观察' : '回放' }),
-        w.status === 'running' && w.launcher.alive
-          ? h(NPopconfirm, { onPositiveClick: () => stop(w) }, {
-              trigger: () => h(NButton, { size: 'tiny', type: 'error', ghost: true }, { default: () => '终止' }),
-              default: () => `将结束编排器、所有子 agent 和 MCP 服务进程；已落盘的产物与账本保留，工作区留在历史里可回放。`,
-            })
-          : null,
-      ],
-    }),
-  },
-]
 </script>
 
 <template>
   <div class="page">
-    <div class="page-title">
-      <div>
-        <h1>运行与历史</h1>
-        <NText depth="3">每一行是一个工作区：正式案例、历史运行、控制台新发起的运行都在这里；点主题进入按角色的实时观察 / 回放。</NText>
+    <div class="page-title"><div><h1>研究</h1><div class="lead">发起一项研究，或回到最近的运行。</div></div></div>
+    <div class="layout">
+      <LaunchPanel :config="config" :focus="!!route.query.new" @launched="(id: string) => router.push(`/run/${id}`)" />
+
+      <div class="sheet panel recent">
+        <div class="hd">
+          <h2 class="serif">最近运行</h2>
+          <div class="tools">
+            <NInput v-model:value="filter" size="small" clearable placeholder="搜索研究主题" style="width: 200px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
+            <div class="seg">
+              <button :class="{ on: tab === 'all' }" @click="tab = 'all'">全部</button>
+              <button :class="{ on: tab === 'running' }" @click="tab = 'running'">运行中</button>
+              <button :class="{ on: tab === 'done' }" @click="tab = 'done'">已交付</button>
+            </div>
+          </div>
+        </div>
+        <div class="list" v-if="filtered.length">
+          <div v-for="w in filtered" :key="w.id" class="row" @click="router.push(`/run/${w.id}`)">
+            <span class="icon" :class="statusKind(w)">
+              <NIcon :size="20">
+                <SyncOutline v-if="w.status === 'running'" /><CheckmarkCircleOutline v-else-if="w.status === 'done'" /><CloseCircleOutline v-else-if="w.status === 'failed'" /><PauseCircleOutline v-else />
+              </NIcon>
+            </span>
+            <div class="main">
+              <div class="topic ellipsis" :title="w.topic">{{ w.topic || '（无主题记录）' }}</div>
+              <div class="meta small dim">
+                <span>{{ dateTime(w.created) }}</span>
+                <NTooltip><template #trigger><span>· 最近活动 {{ ago(w.last_activity, now) }}</span></template>{{ dateTime(w.last_activity) }}</NTooltip>
+                <span class="mono">· {{ w.parent }}/{{ w.label }}</span>
+              </div>
+            </div>
+            <div class="status small"><span class="st-dot" :class="statusKind(w)" />{{ statusText(w) }}</div>
+            <div class="act" @click.stop>
+              <NButton size="small" quaternary @click="router.push(`/run/${w.id}`)">{{ w.status === 'running' ? '打开观察 ›' : '回放过程 ›' }}</NButton>
+              <NButton v-if="w.final_pdf" size="small" quaternary tag="a" :href="api.pdfUrl(w.id)" target="_blank">查看成果 ›</NButton>
+              <NPopconfirm v-if="w.status === 'running' && w.launcher.alive" @positive-click="stop(w)">
+                <template #trigger><NButton size="small" quaternary type="error">终止</NButton></template>
+                将结束编排器、所有子 agent 与 MCP 服务进程；已落盘的产物与账本保留，可回放。
+              </NPopconfirm>
+            </div>
+          </div>
+        </div>
+        <NEmpty v-else :description="loading ? '加载中…' : '没有匹配的运行'" style="margin: 40px 0" />
+        <div class="foot small dim">每次研究都会留下可回放的过程记录与完整成果清单。</div>
       </div>
     </div>
-
-    <LaunchPanel :config="config" :focus="!!route.query.new" @launched="(id: string) => router.push(`/run/${id}`)" style="margin-bottom: 14px" />
-
-    <div class="kpis">
-      <NCard v-for="k in kpis" :key="k.label" size="small" class="kpi">
-        <span class="kpi-icon" :style="{ background: k.color + '22', color: k.color }"><NIcon :size="22"><component :is="k.icon" /></NIcon></span>
-        <div><div class="kpi-value">{{ k.value }}</div><div class="kpi-label">{{ k.label }}</div></div>
-      </NCard>
-      <NCard size="small" class="kpi search">
-        <NInput v-model:value="filter" clearable placeholder="按主题 / 目录 / 状态 / 阶段过滤" />
-      </NCard>
-    </div>
-
-    <NCard size="small" content-style="padding: 0">
-      <NDataTable :columns="columns" :data="filtered" :loading="loading" :bordered="false" size="small" :row-key="(w: WorkspaceInfo) => w.id"
-        :pagination="{ pageSize: 20 }" striped>
-        <template #empty><NEmpty description="还没有任何工作区。在上方发起新研究，或用 --workspace-glob 把历史目录挂进来。" /></template>
-      </NDataTable>
-    </NCard>
   </div>
 </template>
 
 <style scoped>
-.kpis { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)) minmax(280px, 1.6fr); gap: 12px; margin-bottom: 12px; }
-.kpi :deep(.n-card__content) { display: flex; align-items: center; gap: 12px; }
-.kpi.search :deep(.n-card__content) { display: block; }
-.kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-.kpi-value { font-size: 22px; font-weight: 700; line-height: 1.1; } .kpi-label { font-size: 12px; color: #9aa3b5; }
-:deep(.gates) { display: flex; gap: 3px; } :deep(.seg) { display: inline-block; width: 12px; height: 8px; border-radius: 2px; }
-:deep(.pulse) { animation: pulse 1.6s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+.layout { display: grid; grid-template-columns: 5fr 7fr; gap: 24px; align-items: start; }
+.recent { padding: 22px 24px; }
+.hd { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.hd h2 { margin: 0; font-size: 20px; }
+.tools { display: flex; gap: 10px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: transparent; padding: 5px 12px; font: inherit; font-size: 13px; color: var(--slate); cursor: pointer; }
+.seg button.on { background: var(--verdigris-soft); color: var(--ink); font-weight: 600; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 200px auto; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #FBFAF7; cursor: pointer; }
+.row:hover { box-shadow: var(--shadow-float); }
+.icon { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: #EFEDE6; color: var(--slate); }
+.icon.run { background: var(--verdigris-soft); color: var(--verdigris); } .icon.ok { background: var(--verdigris-soft); color: var(--verdigris); }
+.icon.warn { background: var(--amber-soft); color: var(--amber); } .icon.bad { background: var(--cinnabar-soft); color: var(--cinnabar); }
+.topic { font-weight: 600; font-size: 14.5px; }
+.meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.status { color: var(--ink); }
+.act { display: flex; gap: 2px; }
+.foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
+@media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } .row { grid-template-columns: 40px 1fr; } }
 </style>

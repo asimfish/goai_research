@@ -1,118 +1,140 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { NButton, NCard, NEmpty, NGi, NGrid, NIcon, NSpin, NTag, NText, useMessage } from 'naive-ui'
-import { CheckmarkCircleOutline, GitNetworkOutline, HardwareChipOutline, LayersOutline, PeopleOutline } from '@vicons/ionicons5'
+import { NButton, NIcon, NSpin, useMessage } from 'naive-ui'
+import { AddOutline, DocumentTextOutline } from '@vicons/ionicons5'
 import { api } from '../api'
-import type { Role, RolesStats } from '../types'
-import { STAGE_LABEL, roleVisual } from '../roles'
-import { gateLabel } from '../labels'
-import StageStepper from '../components/StageStepper.vue'
+import type { Role, StateResponse, WorkspaceInfo } from '../types'
+import { DEFAULT_STAGES, STAGE_LABEL, roleVisual } from '../roles'
+import { ago } from '../format'
+import StageSpine from '../components/StageSpine.vue'
 import RoleBadge from '../components/RoleBadge.vue'
 
 const router = useRouter()
 const message = useMessage()
 const roles = ref<Role[]>([])
-const stats = ref<RolesStats | null>(null)
+const chains = ref<{ name: string; desc: string; roles: string[] }[]>([])
+const current = ref<WorkspaceInfo | null>(null)
+const state = ref<StateResponse | null>(null)
 const loading = ref(true)
+let timer: number | undefined
 
+async function loadCurrent() {
+  const w = await api.workspaces()
+  current.value = w.workspaces.find((x) => x.status === 'running') || w.workspaces.find((x) => x.topic) || null
+  state.value = current.value ? await api.state(current.value.id, 0).catch(() => null) : null
+}
 onMounted(async () => {
   try {
     const r = await api.roles()
     roles.value = r.roles
-    stats.value = r.stats
+    chains.value = r.chains
+    await loadCurrent()
   } catch (e) {
-    message.error(`加载角色失败：${(e as Error).message}`)
+    message.error(`加载失败：${(e as Error).message}`)
   } finally {
     loading.value = false
   }
+  timer = window.setInterval(loadCurrent, 6000)
 })
+onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
-const kpis = computed(() => stats.value ? [
-  { label: '角色', value: stats.value.roles, icon: PeopleOutline, sub: '每个角色一份工作规程' },
-  { label: 'MCP 服务 · 工具', value: `${stats.value.mcp_servers} · ${stats.value.mcp_tools}`, icon: HardwareChipOutline, sub: stats.value.servers.join(' / ') },
-  { label: '质量检查项', value: stats.value.gates, icon: CheckmarkCircleOutline, sub: '全部通过才算交付' },
-  { label: '工作区', value: stats.value.runs, icon: LayersOutline, sub: '含历史与正在运行' },
-] : [])
-function stageName(r: Role) { const s = roleVisual(r.id).stage; return STAGE_LABEL[s] || r.stage }
-function gateNames(r: Role) { return r.gate.split('·').map((g) => gateLabel(g.trim())).join(' · ') }
+const byId = computed(() => Object.fromEntries(roles.value.map((r) => [r.id, r])))
+const ledger = computed(() => state.value?.ledger || {})
+const stageList = computed(() => { const s = ledger.value.stages; return s && s.some((x) => !DEFAULT_STAGES.includes(x)) ? s : DEFAULT_STAGES })
+const stageNo = computed(() => { const idx = stageList.value.indexOf(ledger.value.stage || ''); return idx >= 0 ? idx + 1 : null })
+const checks = computed(() => Object.values(ledger.value.gates || {}).filter((g) => g.status === 'PASS' || g.status === 'WARN').length)
+/** 每个角色的实时状态：正在工作 / 已完成（本次运行里有通过的任务）/ 空闲 */
+function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
+  const tasks = (state.value?.tasks || []).filter((t) => t.role === id)
+  if (current.value?.status === 'running' && tasks.some((t) => t.status_group === 'RUNNING')) return { key: 'run', label: '正在工作' }
+  if (tasks.some((t) => t.status_group === 'PASS' || t.status_group === 'WARN')) return { key: 'ok', label: '已完成' }
+  return { key: 'wait', label: '空闲' }
+}
 </script>
 
 <template>
   <div class="page">
-    <div class="page-title">
-      <div>
-        <h1>九个角色，一条账本驱动的回环</h1>
-        <NText depth="3">SAGE-Mat 由九个专职角色组成：每个角色一份工作规程（<code>skills/&lt;role&gt;/SKILL.md</code>）和一组可用工具。编排器按阶段派活、按完成标准验收、把审稿意见路由回对应角色返工，直到全部检查通过。</NText>
+    <section class="top">
+      <div class="hero">
+        <h1 class="serif">让九个角色，共同写出<br>一篇可核验的综述</h1>
+        <p class="dim">从一个研究主题出发，过程清楚，证据可追溯。</p>
+        <div class="actions">
+          <NButton type="primary" size="large" @click="router.push('/history?new=1')"><template #icon><NIcon><AddOutline /></NIcon></template>发起一项研究</NButton>
+          <NButton size="large" @click="router.push('/results')"><template #icon><NIcon><DocumentTextOutline /></NIcon></template>查看最近成果</NButton>
+        </div>
       </div>
-    </div>
-
-    <NGrid cols="2 m:4" responsive="screen" :x-gap="12" :y-gap="12" style="margin-bottom: 14px">
-      <NGi v-for="k in kpis" :key="k.label">
-        <NCard size="small">
-          <div class="kpi-row">
-            <span class="kpi-icon"><NIcon :size="22"><component :is="k.icon" /></NIcon></span>
-            <div><div class="kpi-value">{{ k.value }}</div><div class="kpi-label">{{ k.label }}</div></div>
+      <div class="sheet panel ledger">
+        <div class="card-h">共享运行账本</div>
+        <template v-if="current">
+          <StageSpine :ledger="ledger" :tasks="state?.tasks || []" compact />
+          <div class="ledger-row">
+            <div><span class="dim small">当前</span><span class="big">{{ stageNo ? String(stageNo).padStart(2, '0') : '—' }}</span><span class="dim"> / {{ stageList.length }}</span>
+              <span class="stage-name">{{ ledger.stage ? (STAGE_LABEL[ledger.stage] || ledger.stage) : '尚未开始' }}</span></div>
+            <div><span class="dim small">质量检查</span><span class="big amber">{{ checks }}</span><span class="dim"> / 9</span></div>
           </div>
-          <div class="kpi-sub dim ellipsis" :title="k.sub">{{ k.sub }}</div>
-        </NCard>
-      </NGi>
-    </NGrid>
-
-    <NCard size="small" style="margin-bottom: 14px" title="研究回环的阶段">
-      <template #header-extra><NText depth="3" style="font-size: 12px">虚线框内为并行阶段；每个阶段有一项完成标准，审稿意见会路由回源头阶段</NText></template>
-      <StageStepper :ledger="{}" :static="true" />
-    </NCard>
+          <div class="ledger-foot small">
+            <span class="ellipsis" style="max-width: 360px" :title="current.topic">{{ current.topic }}</span>
+            <span><span class="st-dot" :class="current.status === 'running' ? 'run' : current.status === 'done' ? 'ok' : 'wait'" />{{ current.status === 'running' ? '运行中' : current.status === 'done' ? '已交付' : current.status === 'stopped' ? '已终止' : '已结束' }}</span>
+            <span class="dim">更新于 {{ ago(current.last_activity, Date.now() / 1000) }}</span>
+            <NButton size="tiny" quaternary @click="router.push(`/run/${current.id}`)">打开观察 ›</NButton>
+          </div>
+        </template>
+        <div v-else class="dim" style="padding: 20px 0">还没有研究运行。发起一项研究后，这里会显示它的阶段与质量检查。</div>
+      </div>
+    </section>
 
     <NSpin :show="loading">
-      <NGrid cols="1 s:2 m:3" responsive="screen" :x-gap="14" :y-gap="14">
-        <NGi v-for="r in roles" :key="r.id">
-          <NCard hoverable size="small" class="role-card" :style="{ '--accent': roleVisual(r.id).color }" @click="router.push(`/roles/${r.id}`)">
-            <div class="role-hd">
-              <RoleBadge :role="r.id" :size="40" />
-              <div class="role-titles">
-                <div class="role-name">{{ r.label }}</div>
-                <div class="role-id mono">{{ r.id }}</div>
+      <section v-for="c in chains" :key="c.name" class="chain">
+        <div class="sheet chain-label">
+          <div class="card-h"><span class="st-dot ok" />{{ c.name }}</div>
+          <div class="dim small">{{ c.desc }}</div>
+        </div>
+        <div class="chain-roles">
+          <template v-for="(rid, i) in c.roles" :key="rid">
+            <div class="sheet role" @click="router.push(`/roles/${rid}`)">
+              <RoleBadge :role="rid" :size="48" :status="roleStatus(rid).key" />
+              <div class="role-body">
+                <div class="role-name">{{ roleVisual(rid).label }}</div>
+                <div class="dim small verb">{{ byId[rid]?.verb }}</div>
+                <div class="small status"><span class="st-dot" :class="roleStatus(rid).key" />{{ roleStatus(rid).label }}</div>
               </div>
             </div>
-            <p class="brief">{{ r.brief }}</p>
-            <div class="facts">
-              <div><span class="dim">阶段</span>{{ stageName(r) }}</div>
-              <div><span class="dim">完成标准</span>{{ gateNames(r) }}</div>
-              <div><span class="dim">工具</span>{{ r.server ? `MCP ${r.server} · ` : '' }}{{ r.tools.length }} 个</div>
-            </div>
-            <div class="more">查看角色 →</div>
-          </NCard>
-        </NGi>
-      </NGrid>
-      <NEmpty v-if="!loading && !roles.length" description="没有读到 skills/ 目录" style="margin-top: 40px" />
+            <span v-if="i < c.roles.length - 1" class="link" />
+          </template>
+        </div>
+      </section>
     </NSpin>
 
-    <NCard size="small" style="margin-top: 16px">
-      <div class="cta-row">
-        <NIcon :size="26" color="#8fb1ff"><GitNetworkOutline /></NIcon>
-        <div style="flex: 1">
-          <div style="font-weight: 600">准备好了就发起一个研究主题</div>
-          <NText depth="3" style="font-size: 12.5px">一行主题即可，编排器会走完整个回环并把每一步落账；运行过程按角色实时可见，随时可终止；历史工作区可回放。</NText>
-        </div>
-        <NButton type="primary" @click="router.push('/history?new=1')">发起新研究</NButton>
-        <NButton @click="router.push('/skills')">技能与 MCP</NButton>
-      </div>
-    </NCard>
+    <div class="sheet deliver small">
+      <NIcon :size="18" color="#66737B"><DocumentTextOutline /></NIcon>
+      研究最终交付：论文 PDF、TeX 源稿、经核验的参考文献与可编辑图纸；每一步都记录在共享运行账本里，可以回看。
+    </div>
   </div>
 </template>
 
 <style scoped>
-.kpi-row { display: flex; align-items: center; gap: 12px; }
-.kpi-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(91,141,239,.14); color: #8fb1ff; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-.kpi-value { font-size: 22px; font-weight: 700; line-height: 1.1; } .kpi-label { font-size: 12px; color: #9aa3b5; } .kpi-sub { font-size: 11.5px; margin-top: 8px; }
-.role-card { cursor: pointer; height: 100%; position: relative; overflow: hidden; }
-.role-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--accent); }
-.role-hd { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.role-name { font-weight: 600; font-size: 15px; } .role-id { font-size: 11.5px; color: #8a93a6; }
-.brief { margin: 0 0 10px; line-height: 1.6; font-size: 13.5px; min-height: 3.2em; }
-.facts { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; }
-.facts .dim { display: inline-block; width: 64px; }
-.more { margin-top: 10px; font-size: 12.5px; color: #8fb1ff; }
-.cta-row { display: flex; align-items: center; gap: 14px; }
+.top { display: grid; grid-template-columns: 5fr 7fr; gap: 24px; margin-bottom: 24px; align-items: stretch; }
+.hero h1 { font-size: 34px; line-height: 44px; margin: 6px 0 10px; font-weight: 600; }
+.hero p { margin: 0 0 22px; font-size: 15px; }
+.actions { display: flex; gap: 12px; }
+.ledger { padding: 18px 22px; }
+.ledger .card-h { margin-bottom: 10px; }
+.ledger-row { display: flex; gap: 40px; align-items: baseline; margin-top: 8px; }
+.ledger-row .small { margin-right: 8px; }
+.big { font-size: 32px; line-height: 40px; font-weight: 600; color: var(--verdigris); }
+.big.amber { color: var(--amber); }
+.stage-name { font-size: 18px; font-weight: 600; margin-left: 14px; }
+.ledger-foot { display: flex; align-items: center; gap: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+.chain { display: grid; grid-template-columns: 160px 1fr; gap: 16px; margin-bottom: 14px; }
+.chain-label { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+.chain-roles { display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.role { flex: 1; min-width: 200px; display: flex; gap: 14px; padding: 16px 18px; cursor: pointer; transition: box-shadow .18s; }
+.role:hover { box-shadow: var(--shadow-float); }
+.role-name { font-size: 15px; font-weight: 600; }
+.verb { margin: 2px 0 8px; line-height: 18px; }
+.status { color: var(--slate); }
+.link { width: 26px; height: 1.5px; background: #C9CCC6; flex: none; }
+.deliver { display: flex; align-items: center; gap: 10px; padding: 12px 18px; margin-top: 10px; color: var(--slate); }
+@media (max-width: 1100px) { .top { grid-template-columns: 1fr; } .chain { grid-template-columns: 1fr; } }
 </style>

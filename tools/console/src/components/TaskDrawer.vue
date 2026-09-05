@@ -50,7 +50,7 @@ watch(() => props.taskKey, async (k) => {
             <NCollapseItem v-if="detail.final" title="最终回复" name="final"><pre class="box">{{ detail.final }}</pre></NCollapseItem>
             <NCollapseItem v-if="detail.stderr" title="stderr" name="stderr"><pre class="box">{{ detail.stderr }}</pre></NCollapseItem>
           </NCollapse>
-          <h4 style="margin: 6px 0; font-size: 12.5px; color: #8a93a6">完整事件流（含原始命令与工具返回）</h4>
+          <h4 style="margin: 6px 0; font-size: 12.5px; color: var(--slate)">完整事件流（含原始命令与工具返回）</h4>
           <EventLine v-for="(ev, i) in detail.items" :key="ev.item_id || i" :ev="ev" :show-reasoning="showReasoning" />
         </template>
       </NSpin>
@@ -59,5 +59,5 @@ watch(() => props.taskKey, async (k) => {
 </template>
 
 <style scoped>
-.box { white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,.35); padding: 8px 10px; border-radius: 6px; font-size: 12px; max-height: 420px; overflow: auto; }
+.box { white-space: pre-wrap; word-break: break-word; background: #EEEDE6; padding: 8px 10px; border-radius: 6px; font-size: 12px; max-height: 420px; overflow: auto; }
 </style>
