@@ -180,7 +180,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
 
     <div class="row1">
       <div class="sheet panel progress">
-        <div class="ph"><span class="card-h">研究推进</span><span class="dim small">{{ ledger.stage ? `第 ${ledger.round}/${ledger.max_rounds} 轮` : '账本尚未初始化' }}</span></div>
+        <div class="ph"><span class="card-h">研究推进 <span class="dim small" style="font-weight: 400">阶段 · 负责角色</span></span><span class="dim small">{{ ledger.stage ? `第 ${ledger.round}/${ledger.max_rounds} 轮` : '账本尚未初始化' }}</span></div>
         <StageSpine :ledger="ledger" :tasks="scoped" />
       </div>
       <div class="sheet panel checks">

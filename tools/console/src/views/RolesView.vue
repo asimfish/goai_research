@@ -67,7 +67,8 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
       <div class="sheet panel ledger">
         <div class="card-h">共享运行账本</div>
         <template v-if="current">
-          <StageSpine :ledger="ledger" :tasks="state?.tasks || []" compact />
+          <StageSpine :ledger="ledger" :tasks="state?.tasks || []" dense />
+          <div class="small dim" style="margin-top: 6px">11 个阶段，由下方三条链上的 9 个角色承担；节点下的色点是负责角色，悬停可看完成标准。</div>
           <div class="ledger-row">
             <div><span class="dim small">当前</span><span class="big">{{ stageNo ? String(stageNo).padStart(2, '0') : '—' }}</span><span class="dim"> / {{ stageList.length }}</span>
               <span class="stage-name">{{ ledger.stage ? (STAGE_LABEL[ledger.stage] || ledger.stage) : '尚未开始' }}</span></div>

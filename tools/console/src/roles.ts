@@ -40,5 +40,12 @@ export const STAGE_LABEL: Record<string, string> = {
 
 export const PARALLEL_GROUPS: string[][] = [['lit_search', 'style_bank'], ['figures', 'writing', 'ideas']]
 
+/** 每个阶段由哪些角色承担（11 个阶段 ≠ 11 个角色：编排贯穿接收 / 定范围 / 交付，写作负责分类法与写作） */
+export const STAGE_ROLES: Record<string, string[]> = {
+  intake: ['goai-orchestrator'], scoping: ['goai-orchestrator'], lit_search: ['goai-lit-search'], style_bank: ['goai-style-bank'],
+  ref_gate: ['goai-ref-guard'], taxonomy: ['goai-survey-writer'], figures: ['goai-figure-studio', 'goai-figure-editable'],
+  writing: ['goai-survey-writer'], ideas: ['goai-idea-forge'], review: ['goai-reviewer'], final: ['goai-orchestrator'],
+}
+
 /** 账本的 9 个必需闸门，按阶段顺序（历史表的分段进度条用） */
 export const GATE_ORDER = ['scope_confirmed', 'lit_coverage', 'style_bank_ready', 'ref_integrity', 'taxonomy_ready', 'figures_ready', 'draft_complete', 'ideas_reviewed', 'review_pass']
