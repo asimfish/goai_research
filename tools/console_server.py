@@ -78,6 +78,25 @@ ROLE_EXTRA = {
 }
 ROLE_ORDER = ["goai-orchestrator", "goai-lit-search", "goai-style-bank", "goai-ref-guard", "goai-survey-writer",
               "goai-figure-studio", "goai-figure-editable", "goai-idea-forge", "goai-reviewer"]
+# 工具面一句话说明（与 server/*.py 的 docstring 首句一致；前端角色抽屉展示）
+TOOL_DESC = {
+    "local_corpus_status": "检查离线全文语料与 DuckDB / ripgrep 后端", "grep_local_corpus": "私有 / 公开语料全文检索（默认 ≤10 条）",
+    "read_local_document": "读取命中文献的行区间", "lookup_local_doi": "按 DOI 直接取本地全文",
+    "search_papers": "跨源检索并去重（arXiv/OpenAlex/S2/Crossref/DBLP）", "snowball": "引文滚雪球（references / citations）",
+    "lookup": "按 DOI / arXiv id 精确查元数据", "save_to_library": "入库去重到 papers.jsonl", "coverage_report": "查全率体检，暴露子主题缺口",
+    "download_pdf": "下载 OA PDF（fail-closed）", "export_bibtex": "导出 references.bib",
+    "verify_bib_file": "批量核验 bib，产出 CITATION_AUDIT", "verify_entry": "核验单条引用（三轴）", "deep_audit_info": "super_ref 深度审计可用性",
+    "figspec_schema": "figspec 结构说明与示例", "validate_figspec": "结构 + 排版 + 美学校验", "render_figure": "figspec → SVG + drawio",
+    "drawio_export": "draw.io CLI 导出 png/svg/pdf", "list_figures": "盘点图纸三件套", "svg_file_to_drawio": "SVG 逆向为 figspec / drawio",
+    "provider_status": "逆合成后端配置与可信度", "inorganic_model_status": "无机两步模型与 checkpoint 哈希",
+    "predict_precursor_routes": "化学式 → Top-K 前驱体组合", "predict_retro": "分子逆合成路线", "make_experiment_plan": "路线 → 实验方案骨架",
+    "tools/loopctl.py": "账本：init / advance / gate / issue / log / check-done", "tools/parallel_run.sh": "并行派活 runner（TSV → codex exec）",
+    "tools/bank_check.py": "引用支持库校验", "tools/bib_guard.py": "\\cite 与 bib 一致性 / 整合率", "tools/tex_guard.py": "组稿完整性闸门",
+    "tools/academic_language_guard.py": "内部术语不入正文", "scripts/build_tex.sh": "xelatex→bibtex→xelatex×2 + pdf_guard",
+    "tools/pdf_guard.py": "PDF 来源五项核验", "codex exec（独立模型）": "跨模型审稿通道，-o 落盘回执",
+    "tools/loopctl.py issue add": "结构化 issue 写回账本并路由",
+}
+STAGE_ORDER = ["intake", "scoping", "lit_search", "style_bank", "ref_gate", "taxonomy", "figures", "writing", "ideas", "review", "final"]
 
 
 def parse_frontmatter(text: str) -> dict:
@@ -100,14 +119,27 @@ def load_roles(repo: str) -> list[dict]:
         fm = parse_frontmatter(text)
         icon, label, _ = live_view.ROLE_META.get(rid, live_view.ROLE_META["unknown"])
         extra = ROLE_EXTRA.get(rid, {})
+        tools = extra.get("tools", [])
         roles.append({
             "id": rid, "label": label, "icon": icon, "name": fm.get("name", rid),
             "description": fm.get("description", ""), "brief": extra.get("brief", ""),
             "stage": extra.get("stage", ""), "gate": extra.get("gate", ""), "server": extra.get("server"),
-            "tools": extra.get("tools", []), "skill_path": os.path.relpath(path, repo),
-            "skill_lines": text.count("\n"), "exists": bool(text),
+            "tools": tools, "tools_detail": [{"name": t, "desc": TOOL_DESC.get(t, "")} for t in tools],
+            "skill_path": os.path.relpath(path, repo), "skill_lines": text.count("\n"), "exists": bool(text),
+            "skill_headings": re.findall(r"^##\s+(.+)$", text, re.M)[:12],
         })
     return roles
+
+
+def roles_stats(repo: str) -> dict:
+    """角色页 KPI：角色数 / MCP server 数 / MCP 工具数 / 闸门数（从 loopctl 的必需 gate 表读，读不到用协议默认 9）。"""
+    servers = sorted({r["server"] for r in ROLE_EXTRA.values() if r.get("server")})
+    mcp_tools = {t for r in ROLE_EXTRA.values() if r.get("server") for t in r.get("tools", [])}
+    loopctl = live_view.read_text(os.path.join(repo, "tools", "loopctl.py"))
+    m = re.search(r"REQUIRED_GATES\s*=\s*[\[\(]([^\]\)]*)[\]\)]", loopctl)
+    gates = len(re.findall(r"\"[a-z_]+\"", m.group(1))) if m else 9
+    return {"roles": len(ROLE_ORDER), "mcp_servers": len(servers), "mcp_tools": len(mcp_tools), "gates": gates or 9,
+            "servers": servers}
 
 
 # ----------------------------------------------------------------------------- 工作区
@@ -428,7 +460,8 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                 if parts[1:] == ["config"]:
                     return self._json(cfg_public(cfg))
                 if parts[1:] == ["roles"]:
-                    return self._json({"roles": load_roles(ws.repo)})
+                    return self._json({"roles": load_roles(ws.repo), "stats": {**roles_stats(ws.repo), "stages": STAGE_ORDER,
+                                                                             "runs": len(ws.candidate_paths())}})
                 if len(parts) == 4 and parts[1] == "roles" and parts[3] == "skill":
                     rid = parts[2]
                     if rid not in ROLE_ORDER:

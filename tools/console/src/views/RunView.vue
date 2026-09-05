@@ -13,6 +13,7 @@ import PipelineStrip from '../components/PipelineStrip.vue'
 import TaskTimeline from '../components/TaskTimeline.vue'
 import TaskCard from '../components/TaskCard.vue'
 import TaskDrawer from '../components/TaskDrawer.vue'
+import RoleBadge from '../components/RoleBadge.vue'
 
 const props = defineProps<{ id: string }>()
 const router = useRouter()
@@ -198,7 +199,7 @@ const artifactFiles = computed(() => {
 
     <template v-for="g in byRole" :key="g.role">
       <div class="role-head">
-        <span style="font-size: 16px">{{ roleVisual(g.role).icon }}</span>
+        <RoleBadge :role="g.role" :size="28" />
         <span style="font-weight: 600">{{ roleVisual(g.role).label }}</span>
         <NText depth="3" class="mono" style="font-size: 12px">{{ g.role }}</NText>
         <NText depth="3" style="font-size: 12px">· {{ g.tasks.length }} 个任务<template v-if="g.tasks.filter((t) => t.status_group === 'RUNNING').length"> · {{ g.tasks.filter((t) => t.status_group === 'RUNNING').length }} 在跑</template></NText>
@@ -216,7 +217,7 @@ const artifactFiles = computed(() => {
         <div ref="feedEl" class="feed mono">
           <div v-for="r in feedRows" :key="r.e.seq" class="feed-row">
             <span class="dim">{{ hms(r.e.ts) }}</span>
-            <span class="who" :style="{ color: roleVisual(r.e.role).color }">{{ r.e.task ? `${roleVisual(r.e.role).icon} ${r.e.name}` : (r.e.kind === 'ledger' ? '📒 账本' : '🔧 审计') }}</span>
+            <span class="who" :style="{ color: r.e.task ? roleVisual(r.e.role).color : '#9aa3b5' }">{{ r.e.task ? `● ${r.e.name}` : (r.e.kind === 'ledger' ? '▣ 账本' : '◆ 审计') }}</span>
             <span class="pre">{{ r.text }}</span>
           </div>
           <NText v-if="!feedRows.length" depth="3">打开页面后新到达的事件会出现在这里（历史事件请点任务卡查看）。</NText>

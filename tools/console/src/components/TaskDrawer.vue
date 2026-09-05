@@ -6,6 +6,7 @@ import type { TaskDetail } from '../types'
 import { dur, statusType, tok } from '../format'
 import { roleVisual } from '../roles'
 import EventLine from './EventLine.vue'
+import RoleBadge from './RoleBadge.vue'
 
 const props = defineProps<{ wsId: string; taskKey: string | null; showReasoning: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -25,7 +26,7 @@ watch(() => props.taskKey, async (k) => {
     <NDrawerContent closable :native-scrollbar="false">
       <template #header>
         <NSpace align="center" v-if="detail">
-          <span style="font-size: 20px">{{ roleVisual(detail.role).icon }}</span>
+          <RoleBadge :role="detail.role" :size="36" />
           <span>{{ roleVisual(detail.role).label }} · <span class="mono">{{ detail.name }}</span></span>
           <NTag size="small" :type="statusType(detail.status_group)" round :bordered="false">{{ detail.status }}</NTag>
           <NText depth="3" class="mono" style="font-size: 12px">{{ detail.run_id }}</NText>

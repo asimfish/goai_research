@@ -26,7 +26,7 @@ function width(t: TaskSummary) { return Math.max(0.3, (((t.ended || props.now) -
     <template v-for="g in byRun" :key="g.run">
       <div class="run mono">{{ g.run }}</div>
       <div v-for="t in g.tasks" :key="t.key" class="row" @click="emit('open', t.key)">
-        <span class="name mono" :title="t.key">{{ roleVisual(t.role).icon }} {{ t.name }}</span>
+        <span class="name mono" :title="t.key"><span class="dot" :style="{ background: roleVisual(t.role).color }" />{{ t.name }}</span>
         <div class="track">
           <NTooltip>
             <template #trigger><div class="bar" :class="t.status_group" :style="{ left: left(t) + '%', width: width(t) + '%', background: roleVisual(t.role).color }" /></template>
@@ -47,6 +47,7 @@ function width(t: TaskSummary) { return Math.max(0.3, (((t.ended || props.now) -
 .row { display: flex; align-items: center; gap: 8px; height: 18px; cursor: pointer; }
 .row:hover { background: rgba(255,255,255,.04); }
 .name { width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 .track { flex: 1; position: relative; height: 12px; background: rgba(0,0,0,.35); border-radius: 3px; }
 .bar { position: absolute; top: 0; height: 12px; border-radius: 3px; opacity: .85; min-width: 2px; }
 .bar.FAIL, .bar.BLOCKED { opacity: .45; background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.45) 4px 8px); }

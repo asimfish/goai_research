@@ -1,5 +1,5 @@
 import type {
-  Artifacts, ConsoleConfig, FeedEvent, Role, StateResponse, TaskDetail, WorkspaceInfo,
+  Artifacts, ConsoleConfig, FeedEvent, Role, RolesStats, StateResponse, TaskDetail, WorkspaceInfo,
 } from './types'
 
 async function get<T>(url: string): Promise<T> {
@@ -24,7 +24,7 @@ async function post<T>(url: string, body?: unknown): Promise<T> {
 
 export const api = {
   config: () => get<ConsoleConfig>('/api/config'),
-  roles: () => get<{ roles: Role[] }>('/api/roles'),
+  roles: () => get<{ roles: Role[]; stats: RolesStats }>('/api/roles'),
   skill: (id: string) => get<{ id: string; markdown: string }>(`/api/roles/${encodeURIComponent(id)}/skill`),
   workspaces: () => get<{ workspaces: WorkspaceInfo[]; now: number }>('/api/workspaces'),
   info: (id: string) => get<WorkspaceInfo>(`/api/workspaces/${id}`),

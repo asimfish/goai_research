@@ -11,10 +11,14 @@ export interface Role {
   gate: string
   server: string | null
   tools: string[]
+  tools_detail: { name: string; desc: string }[]
   skill_path: string
   skill_lines: number
   exists: boolean
+  skill_headings: string[]
 }
+
+export interface RolesStats { roles: number; mcp_servers: number; mcp_tools: number; gates: number; servers: string[]; stages: string[]; runs: number }
 
 export interface Launcher {
   started: string | null
