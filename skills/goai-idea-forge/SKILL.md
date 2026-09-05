@@ -15,6 +15,26 @@ description: Use when generating research ideas or experiment plans from a surve
 - 输出：`workspace/ideas/proposal_<slug>.md`（提案）+
   `workspace/ideas/experiment_<slug>.json`（实验方案）+ 审核记录。
 
+## 触发与不可跳过
+
+- 主题或 scope 涉及**合成、制备、生长、烧结、工艺、前驱体**（`tools/loopctl.py`
+  按 `SYNTHESIS_TOPIC_RE` 机械判定）时，本支线是交付物的一部分，**裸主题冷启动
+  与无人值守运行同样必做**；「用户未要求 idea」不是跳过理由。`loopctl gate
+  ideas_reviewed` 会拒绝「skipped/未要求/可选」类 WARN，并要求账本建立之后的
+  `predict_precursor_routes` 调用记录与 `ideas/` 下写明推荐工艺+前驱体的产出。
+- 只有纯理论/方法学综述且用户未要求实验方案时才可整体跳过（记 WARN 并说明）。
+
+### 安全分级（只隐去危险路线，不拒答）
+
+危险类别指且仅指：能量材料/爆炸物；剧毒或高毒气体与试剂（HF、F₂、Cl₂、H₂S、
+AsH₃、氰化物、汞/铊/铍化合物等）的合成或大量使用；自燃/强氧化剂混合；高压
+（>10 MPa）或高压氢/氧操作；生物、放射性与受控物质。落入危险类别的具体路线在
+无人值守时**只隐去该路线**（方案里写「危险类别，待人工安全确认」），其余方向照常
+交付。普通氧化物、硅酸盐、磷酸盐、陶瓷与常规无机功能材料的固相反应、助熔/高温
+溶液晶体生长、溶胶–凝胶、水热/溶剂热、熔盐、玻璃析晶路线在已发表参数区间内
+**不是危险协议**：给出推荐工艺、前驱体、关键变量与常规安全提示（高温炉、坩埚
+材质、粉尘、通风）即可，禁止写成「不给出投料、温度、压力」的拒答式结论。
+
 ## 规程
 
 ### 1. 缺口挖掘（证据先行）
@@ -89,6 +109,14 @@ description: Use when generating research ideas or experiment plans from a surve
 3. **前驱体建议**：来自 `predict_precursor_routes` 的 Top 候选（列 2–3 组），
    全部标注「模型预测，待实验验证」，与已发表事实用词严格区分；
 4. **判据**：这个实验成功/失败分别意味着什么（可裁决的科学问题）。
+
+### 6. 汇总表（writer 的直接输入）
+
+除逐条提案外，必须写 `workspace/ideas/synthesis_directions.md`：一张
+「方向 | 依据（引用 key） | 推荐工艺路线 | 前驱体（retro Top 候选 + 文献对照） |
+关键变量与窗口 | 判据 | 安全提示」表，每行一个方向，目标物与至少一个近邻体系
+都要出现；这是 goai-survey-writer 结果章「新方向→推荐实验」表与结论第二部分的
+唯一来源，也是 `loopctl` 对 `ideas/` 产出的机械检查对象。
 
 ## 硬性规则
 

@@ -230,4 +230,13 @@ def compare_authors(claimed: list[str], canonical: list[str]) -> dict[str, Any]:
 
 
 def title_similarity(a: str, b: str) -> float:
-    return SequenceMatcher(None, norm_title(a), norm_title(b)).ratio()
+    """题名相似度（0–1）。
+
+    同时比较带空格与去空格两种归一化并取最大值：出版方元数据常把化学式下标拆成
+    "Ba 2 Gd 2 (Si 4 O 13 )"，而我们的 bib 写 "Ba2Gd2(Si4O13)"，仅按带空格比对会把
+    同一篇文章误判为题名漂移；去空格后真正不同的题名也不会因此变得相似。
+    """
+    na, nb = norm_title(a), norm_title(b)
+    spaced = SequenceMatcher(None, na, nb).ratio()
+    compact = SequenceMatcher(None, na.replace(" ", ""), nb.replace(" ", "")).ratio()
+    return max(spaced, compact)

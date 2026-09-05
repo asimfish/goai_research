@@ -80,6 +80,14 @@ comprehensive 档不足 100 篇时 coverage gate 不得记 PASS（确属新兴�
 - 每篇有 `pdf_url` 或 arXiv id 的入库论文调 `download_pdf`，文件名用未来的
   citation key（一作姓+年+首词）。付费墙/反爬返回失败就记录跳过，
   **禁止**伪造 PDF 或用二手站点绕过。
+- **访问级别必须落库**：每条 papers.jsonl 记录写 `access` 字段，取值
+  `fulltext`（本地语料/开放获取 PDF/官方全文已读）、`si`（仅官方附件）、
+  `abstract`（仅摘要）、`metadata`（仅题录）。目标物直接文献与核心证据
+  文献必须穷尽合法全文渠道（本地语料 `grep_local_corpus`、OpenAlex/Unpaywall
+  开放版本、出版方 SI、作者页/机构库），仍拿不到全文时在 coverage_report
+  与 `lit_coverage` gate detail 里点名「<key> 全文未获取」。下游 writer 只能
+  对 `access=fulltext` 的文献写「未报道」；其余只能写「全文未获取，摘要/附件
+  未见」——这是实跑中把付费墙论文的实验节写成「未披露」的直接对策。
 - 全部子主题过闸后 `export_bibtex` 产出 `workspace/library/references.bib`，
   这是下游唯一允许引用的池子。
 - **返工轮警示**：ref_gate 会直接修 references.bib（修复不回流 papers.jsonl），

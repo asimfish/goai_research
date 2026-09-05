@@ -31,7 +31,7 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 | ref_gate | goai-ref-guard | `ref_integrity`（verify_bib_file gate=PASS） |
 | taxonomy | goai-survey-writer（阶段一） | `taxonomy_ready`（分类法 + 每叶 ≥3 篇支撑） |
 | figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；**含行文路线图**；主图走 image-first 两轮候选制） |
-| ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验；材料 idea 带 retro MCP 前驱体预测） |
+| ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验；材料 idea 带 retro MCP 前驱体预测。**合成/制备/生长/烧结/工艺类主题必做**：`loopctl` 拒绝「跳过」类 WARN，并要求账本建立后的 `predict_precursor_routes` 调用记录 + `ideas/` 下写明推荐工艺与前驱体的产出） |
 | writing | goai-survey-writer | `draft_complete`（bib_guard + tex_guard + academic_language_guard + **pdf_guard** PASS + 全节完成 + 骨架强制项齐；缺 TeX 环境 = FAIL，不许回退渲染器冒充 PDF） |
 | review | goai-reviewer | `review_pass`（无 open blocker/major；终审含制作质量逐页 PDF 审计） |
 
@@ -61,17 +61,27 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
      `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后
      直接继续，不等人；
    - 歧义会改变研究对象（同名缩写跨学科、目标物指代不清等）→ 停下来问；
-   - 涉及生成可直接执行的危险实验协议 → 停下来问，安全停点永不自动确认。
+   - 涉及生成**危险类别**的可执行实验协议 → 停下来问，安全停点永不自动确认。
+     危险类别指且仅指：能量材料/爆炸物；剧毒或高毒气体与试剂（HF、F₂、Cl₂、
+     H₂S、AsH₃、氰化物、汞/铊/铍化合物等）的合成或大量使用；自燃/强氧化剂
+     混合；高压（>10 MPa）或高压氢气/氧气操作；生物、放射性与受控物质。
+     普通氧化物、硅酸盐、磷酸盐、陶瓷与常规无机功能材料的固相反应、
+     助熔/高温溶液晶体生长、溶胶–凝胶、水热/溶剂热、熔盐、玻璃析晶等路线，
+     在已发表参数区间内**不是危险协议**——给出目标物与近邻体系的推荐工艺、
+     前驱体、关键变量与常规安全提示（高温炉、坩埚材质、粉尘、通风）是
+     交付物的一部分，无人值守时照常产出，不设停点。
    等人的点共三处，均适用上述「用户不可达降级」逻辑：scope 定稿（按分级
    自动确认）、taxonomy 阶段的贡献声明确认（用户不可达时按 writer skill
-   的降级规则记录后继续）、化学安全方案（不可自动确认；用户不可达时该
-   支线记 WARN skipped 并在终报如实说明，不得输出可执行危险协议）。
+   的降级规则记录后继续）、危险类别路线的安全确认（不可自动确认；用户不
+   可达时**只隐去落入危险类别的那条路线**并在终报如实说明，其余方向与
+   路线照常交付；不得把整条 ideas 支线记 WARN skipped）。
    通过非交互式 `codex exec` 运行的裸主题冷启动，以及用户已明确要求“只给主题、
    无人值守完成全部任务”的运行，均视为用户在阶段中不可达：自动采用
    `contribution.md` 给出的推荐组合，将 `taxonomy_ready` 置为 PASS，并在账本和
    最终汇报注明“贡献声明未经用户逐项确认”；不得停下来要求回复选项。
-   化学安全方案只有在 ideas 支线生成新的、可执行实验方案时才要求人工确认；
-   对已发表合成条件的文献综述只需标注证据等级和安全边界，不构成人工停点。
+   化学安全确认只针对落入上述危险类别的具体路线；对已发表合成条件的综述
+   以及常规无机材料的推荐工艺/前驱体，只需标注证据等级与常规安全提示，
+   不构成人工停点，也不得写成「不给出新的投料、温度、压力」之类的拒答式结论。
    用户已明确要求客户端无人值守完成时，ref_gate 连续三次仍只剩非核心背景条目
    MISMATCH/UNVERIFIED，不得因需要选择处置方案而退出：确认目标论文与核心证据
    均为 PASS 后，删除这些背景条目及依赖它们的非必要论述，记录 decision，并重新
@@ -154,4 +164,10 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 - 任何 agent 报错/超时：记 `loopctl log --event error`，重试 1 次，仍失败则
   降级为串行执行并如实汇报，不得静默跳过阶段。
 - 禁止跳过 ref_gate 和 review 直接出稿——引用完整性与对抗审稿是本系统的底线。
-- ideas 支线可选：用户没提「idea/实验方案/逆合成」时跳过（gate 记 WARN skipped）。
+- ideas 支线默认必做。主题或 scope 涉及合成、制备、生长、烧结、工艺、前驱体
+  （`loopctl` 按 `SYNTHESIS_TOPIC_RE` 机械判定）时**不可跳过**：必须对目标物及
+  近邻体系调用 goai-retro `predict_precursor_routes`，写出 `ideas/` 方向→依据→
+  推荐工艺→前驱体→关键变量→安全提示 表，并由 writer 写进结果与结论；
+  `loopctl gate ideas_reviewed` 会拒绝「skipped/未要求/可选」类 WARN，
+  `draft_complete` 会拒绝正文没有前驱体推荐的终稿。只有纯理论/方法学综述
+  且用户未要求实验方案时，才可记 WARN skipped 并在终报说明。
