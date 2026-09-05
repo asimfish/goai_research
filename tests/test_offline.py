@@ -1385,10 +1385,14 @@ def test_preflight_tex_accepts_tectonic_via_smoke_compile(tmp_path, monkeypatch)
     from tools import preflight
     fake = tmp_path / "bin" / "tectonic"
     fake.parent.mkdir()
-    fake.write_text("#!/usr/bin/env bash\n# 假 tectonic：见到 ctexart 就失败（模拟缺中文宏包），其余写出 pdf\n"
+    fake.write_text("#!/bin/bash\n# 假 tectonic：见到 ctexart 就失败（模拟缺中文宏包），其余写出 pdf\n"
                     "grep -q ctexart t.tex && exit 1; echo pdf > t.pdf\n", encoding="utf-8")
     fake.chmod(0o755)
-    monkeypatch.setenv("PATH", str(fake.parent))
+    # 假引擎目录放在 PATH 最前；保留系统目录让 grep/echo 可用，并遮住真机可能存在的 xelatex
+    monkeypatch.setenv("PATH", f"{fake.parent}:/usr/bin:/bin")
+    import shutil
+    real_which = shutil.which
+    monkeypatch.setattr(shutil, "which", lambda n, *a, **k: None if n in ("xelatex", "pdflatex", "kpsewhich") else real_which(n, *a, **k))
     monkeypatch.setattr(preflight, "ROOT", tmp_path)          # 缓存写到临时目录
     result = preflight._check_tex()
     assert result["engines"]["tectonic"] == str(fake)
