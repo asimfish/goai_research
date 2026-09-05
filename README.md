@@ -36,6 +36,7 @@ bash scripts/smoke_test.sh --with-retro    # 无网络、无 LLM，1–2 分钟�
 bash tools/check.sh --tex                  # TeX 工具链预检：缺 xelatex/模板宏包时流水线 fail-closed，不产假 PDF
 bash scripts/reproduce_core.sh             # 核心复现：一行主题 → 综述 PDF（需 Codex 登录、网络、TeX）
 bash scripts/package_submission.sh "科学无极"   # 生成官方命名的两个 zip 到 dist/
+python3 tools/live_view.py --follow        # 运行中按角色实时看各子 agent 的消息/命令/MCP 调用/账本闸门（--serve 5051 开浏览器看板；--all 回放历史）
 ```
 
 ## 声明摘要

@@ -15,6 +15,12 @@
 #   RUNNER=codex|claude   （默认 codex；--backend 优先）
 #   GOAI_WORKSPACE        工作区目录（默认 workspace，作为 agent 的 cwd）
 #   RUNNER_ARGS           追加给 runner 的参数
+#   GOAI_CODEX_PROFILE    codex 后端：RUNNER_ARGS 未带 -p/--profile 时自动追加
+#                         `-p $GOAI_CODEX_PROFILE`（子 agent 才能拿到 goai MCP server；
+#                         reproduce_core.sh 会设置）。两者都没有且 $CODEX_HOME/config.toml
+#                         里也没有 goai MCP server 时，启动前打印告警并记入 RUN_INFO.json——
+#                         正式运行实测：子 agent 无 MCP 时会改用 shell 直接 import server 模块，
+#                         轨迹里 0 次 mcp_tool_call、审计无法按任务归因。
 #   RUNNER_TIMEOUT        单任务超时秒数（默认 0=不限）；超时任务被强杀并记 exit=124
 #   RUNNER_TIMEOUT_ARTIFACT_POLICY  accept|fail（默认 accept）。超时但声明产物全部
 #                         本轮更新且非空时，accept 将有效退出码记 0、状态记 WARN；
@@ -24,6 +30,11 @@
 #
 # 产物: <workspace>/state/parallel/<run_id>/<任务名>.jsonl + .stderr.log +
 #       .final.md + .process_exit + .status + .exit
+#       + .prompt.txt（完整提示词）+ .meta.json（任务名/声明产物/依赖/skill/启动时间）
+#       + 批次级 RUN_INFO.json（backend/jobs/profile/model/sandbox/timeout/告警）
+#       每个子进程另导出 GOAI_RUN_ID=<run_id>/<任务名>、GOAI_TASK_NAME=<任务名>：
+#       shell 内直接调用的 server 模块与（配置了 env_vars 透传的）MCP server 都会把
+#       它写进 state/tool_calls.jsonl 的 run_id 字段，tools/live_view.py 据此按角色归因。
 set -uo pipefail
 
 RUNNER="${RUNNER:-codex}"
@@ -111,6 +122,52 @@ RUN_ID="$(date +%Y%m%d_%H%M%S)_$$"
 LOG_DIR="$WS/state/parallel/$RUN_ID"
 mkdir -p "$LOG_DIR"
 
+# codex 子 agent 的 MCP 可用性：profile 透传 + 缺失告警（详见文件头）。
+MCP_WARNING=""
+CODEX_PROFILE=""
+if [[ "$RUNNER" == "codex" ]]; then
+  if [[ " ${RUNNER_ARGS:-} " == *" -p "* || " ${RUNNER_ARGS:-} " == *" --profile "* ]]; then
+    CODEX_PROFILE="$(printf '%s\n' "${RUNNER_ARGS:-}" | sed -nE 's/.*(-p|--profile)[ =]+([^ ]+).*/\2/p')"
+  elif [[ -n "${GOAI_CODEX_PROFILE:-}" ]]; then
+    CODEX_PROFILE="$GOAI_CODEX_PROFILE"
+    RUNNER_ARGS="${RUNNER_ARGS:-} -p $GOAI_CODEX_PROFILE"
+  fi
+  if [[ -z "$CODEX_PROFILE" ]] \
+      && ! grep -qs '^\[mcp_servers\.goai-' "${CODEX_HOME:-$HOME/.codex}/config.toml"; then
+    MCP_WARNING="子 agent 未指定 codex profile，且 ${CODEX_HOME:-$HOME/.codex}/config.toml 无 goai MCP server：子任务将拿不到 goai-* 工具（设 GOAI_CODEX_PROFILE 或在 RUNNER_ARGS 传 -p）"
+    echo "[parallel_run] 警告: $MCP_WARNING" >&2
+  fi
+fi
+
+# JSON 字串转义（仅反斜杠/双引号/控制字符；任务名与 TSV 字段足够）。
+_json_str() {
+  printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' | tr -d '\r' | awk 'BEGIN{ORS=""} NR>1{print "\\n"} {print}'
+}
+_json_list() {  # 逗号分隔 → JSON 数组
+  local out="" item first=1
+  IFS=',' read -r -a _items <<<"$1"
+  for item in "${_items[@]}"; do
+    item="${item#${item%%[![:space:]]*}}"; item="${item%${item##*[![:space:]]}}"
+    [[ -z "$item" ]] && continue
+    (( first )) || out+=", "
+    out+="\"$(_json_str "$item")\""
+    first=0
+  done
+  printf '[%s]' "$out"
+}
+
+# 批次信息：live_view 看板与事后审计读它判断子 agent 到底用了什么后端/模型/沙箱。
+_model_from_args="$(printf '%s\n' "${RUNNER_ARGS:-}" | sed -nE 's/.*(-m|--model)[ =]+"?([^ "]+)"?.*/\2/p; t; s/.*model="([^"]+)".*/\1/p')"
+cat >"$LOG_DIR/RUN_INFO.json" <<JSON
+{"run_id": "$RUN_ID", "tasks_file": "$(_json_str "$TASKS_FILE")", "backend": "$RUNNER", "jobs": $MAX_PAR,
+ "runner_args": "$(_json_str "${RUNNER_ARGS:-}")", "profile": "$(_json_str "$CODEX_PROFILE")",
+ "model": "$(_json_str "${_model_from_args:-${GOAI_MODEL:-}}")", "sandbox": "$RUNNER_SANDBOX",
+ "timeout": $RUNNER_TIMEOUT, "timeout_artifact_policy": "$RUNNER_TIMEOUT_ARTIFACT_POLICY",
+ "cwd": "$(_json_str "$RUNNER_CWD")", "workspace": "$(_json_str "$WS")",
+ "started_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", "mcp_warning": "$(_json_str "$MCP_WARNING")"}
+JSON
+echo "[parallel_run] run_id=$RUN_ID backend=$RUNNER jobs=$MAX_PAR profile=${CODEX_PROFILE:-无} → 实时查看: GOAI_WORKSPACE=$WS python3 tools/live_view.py --follow（或 --serve 5051）"
+
 run_one() {
   local name="$1" prompt="$2" expected="${3:-}" dependencies="${4:-}"
   local log="$LOG_DIR/$name.jsonl"
@@ -121,6 +178,15 @@ run_one() {
   local status="PASS" expected_checked=0 expected_ok=1 missing=()
   echo "[start] ${name} → ${log}"
   : >"$marker"
+  # 提示词与元数据落盘：live_view 用 skill 名识别角色、显示声明产物/依赖；事后审计不必再翻 TSV。
+  printf '%s\n' "$prompt" >"$LOG_DIR/$name.prompt.txt"
+  local skill_hint
+  skill_hint="$(printf '%s\n' "$prompt" | grep -oE 'goai-(orchestrator|lit-search|style-bank|ref-guard|survey-writer|figure-studio|figure-editable|idea-forge|reviewer)' | head -1)"
+  cat >"$LOG_DIR/$name.meta.json" <<JSON
+{"task": "$(_json_str "$name")", "run_id": "$RUN_ID", "skill": "$skill_hint",
+ "expected": $(_json_list "$expected"), "dependencies": $(_json_list "$dependencies"),
+ "started_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", "backend": "$RUNNER"}
+JSON
   if [[ -n "$dependencies" ]]; then
     IFS=',' read -r -a dependency_items <<<"$dependencies"
     for dep in "${dependency_items[@]}"; do
@@ -147,21 +213,28 @@ run_one() {
 - Write the declared artifacts early, then update them incrementally after each completed phase; do not wait for the final chat response.
 - Do not read any active log under ${LOG_DIR}. Only inspect a prior run log when the prompt names that closed run_id explicitly.
 - Before finishing, verify every declared artifact is non-empty and saved inside the requested path.
+- Keep every command's printed output under 20 KB: redirect compiles, large searches and nested codex runs to a file and only tail it.
+$( (( RUNNER_TIMEOUT > 0 )) && echo "- Wall-clock budget: ${RUNNER_TIMEOUT}s, then the process is killed; when about half is used, make sure the declared artifacts already hold your best current result." )
 Declared artifacts: ${expected}"
   fi
   # exec 让子 shell 被后端进程本体替换，$! 就是后端自己的 pid，
   # 超时看护才能真正杀到它（实测杀掉 codex 的 node 入口会连带回收原生子进程）。
+  # GOAI_RUN_ID / GOAI_TASK_NAME 进入子进程环境：shell 内直接调用的 server 模块直接继承；
+  # MCP server 需在 codex 配置里声明 env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]（codex
+  # 默认不把父进程 env 传给 MCP server，实测只带 HOME/PATH 等 9 个变量）。
   case "$RUNNER" in
     codex)
       # shellcheck disable=SC2086
-      ( exec codex exec --skip-git-repo-check --json -s "$RUNNER_SANDBOX" \
+      ( export GOAI_RUN_ID="$RUN_ID/$name" GOAI_TASK_NAME="$name"
+        exec codex exec --skip-git-repo-check --json -s "$RUNNER_SANDBOX" \
           -c 'approval_policy="never"' -o "$final" \
           -C "$RUNNER_CWD" ${RUNNER_ARGS:-} \
           "$prompt" ) >"$log" 2>"$stderr_log" &
       ;;
     claude)
       # shellcheck disable=SC2086
-      ( cd "$RUNNER_CWD" && exec claude -p ${RUNNER_ARGS:-} "$prompt" ) >"$log" 2>"$stderr_log" &
+      ( export GOAI_RUN_ID="$RUN_ID/$name" GOAI_TASK_NAME="$name"
+        cd "$RUNNER_CWD" && exec claude -p ${RUNNER_ARGS:-} "$prompt" ) >"$log" 2>"$stderr_log" &
       ;;
   esac
   pid=$!

@@ -79,6 +79,16 @@
     蓝色引用全部走样而账本记 PASS）。编译后必须过 `tools/pdf_guard.py`
     （Producer/字体/时效/摘要/编号五项）——`loopctl gate draft_complete PASS` 会自动
     调用它，不带 PDF 或不过闸直接拒绝；`check-done` 再核一遍。
+16. **工具调用走 MCP，直调只是兜底，且都要留痕**：goai-litsearch / refcheck /
+    figure / retro 的工具优先经 MCP 调用（事件流里留 `mcp_tool_call`，服务端审计
+    `state/tool_calls.jsonl` 自动带 `run_id=<批次>/<任务>`）。宿主没挂 MCP server
+    时才允许 `.venv/bin/python -c "from server.xxx_server import 工具"` 直调——
+    同一份审计包装仍会记录，但派活方必须先修配置（`GOAI_CODEX_PROFILE` /
+    `RUNNER_ARGS="-p <profile>"`），不要让整批子任务都靠直调跑完（正式运行实测：
+    40 个子任务 0 次 MCP、105 次直调，134 条审计全部无法归因到角色）。
+    单条命令输出仍受铁律 8 的 20 KB 上限：编译/大检索/内嵌 `codex exec` 一律
+    重定向到文件后只 `tail`，不要把整段日志灌进上下文（实测 61 条命令输出超限，
+    最大 950 KB，是 40% 子任务撞 RUNNER_TIMEOUT 的主因之一）。
 
 ## 环境速查
 
@@ -91,7 +101,13 @@
   终稿 PDF 来源闸门：`python3 tools/pdf_guard.py workspace/drafts/main.pdf --tex workspace/drafts/main.tex --bib workspace/library/references.bib`；
   排版修补：`tools/bib_polish.py <bib> --write`（bib 卫生）、`tools/tex_polish.py <drafts> --write`（可断斜杠/路径归一）；
   一键编译 + 闸门：`bash scripts/build_tex.sh workspace/drafts`（无 TeX 即 fail-closed 退出）。
-- 并行派活：`bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`；
-  TSV 第三列填预期产物，第四列填前序依赖。超时但产物验收通过时保留
-  `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。
+- 并行派活：`GOAI_CODEX_PROFILE=<profile> bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv`
+  （profile = `$CODEX_HOME/<profile>.config.toml`，含四个 goai MCP server 与
+  `env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]`，样例 `configs/codex.config.toml.example`；
+  reproduce_core.sh 已自动设置）。TSV 第三列填预期产物，第四列填前序依赖。超时但产物
+  验收通过时保留 `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。
+- **实时查看各角色输出**：`python3 tools/live_view.py --follow`（终端流，按角色着色）、
+  `python3 tools/live_view.py --serve 5051`（浏览器看板 http://127.0.0.1:5051，每个角色一张卡：
+  消息 / 命令 / MCP 调用 / 文件改动 / token / 账本闸门 / 审计归因）、不带参数为快照表；
+  `--all` 回放历史批次，`GOAI_WORKSPACE` 或 `--workspace` 指定工作区。只读，不影响运行。
 - 回环协议细节（阶段/闸门/路由表/终止条件）：`docs/LOOP_PROTOCOL.md`。

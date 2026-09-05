@@ -1,11 +1,15 @@
 # Codex CLI 配置片段 —— 拷进 ~/.codex/config.toml
 # 四个 MCP server 都是 stdio 传输，command 用绝对路径最稳。
+# 用 parallel_run.sh 派发子 agent 时，把本文件另存为 ~/.codex/<name>.config.toml 并设
+# GOAI_CODEX_PROFILE=<name>（或 RUNNER_ARGS="-p <name>"），子 agent 才能拿到这些工具；
+# env_vars 让 server 收到 GOAI_RUN_ID/GOAI_TASK_NAME，tool_calls.jsonl 才能按任务归因。
 # 把 /ABSOLUTE/PATH/TO/goai_research 换成你的仓库路径（install.sh 会自动生成一份填好的）。
 
 [mcp_servers.goai-litsearch]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/litsearch_server.py"]
 default_tools_approval_mode = "approve" # 非交互codex exec批次自动执行本项目工具
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # 从 parallel_run.sh 子进程透传任务归因（codex 默认不传父进程 env）
 env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
 # 私有全文库运行时，把上面的 env 扩展为：
 # env = { GOAI_EMAIL = "you@example.com", GOAI_LOCAL_CORPUS_ROOTS = "/path/markdown-v1-final", GOAI_LOCAL_CORPUS_EXPECTED_INDEX = "/path/markdown_expected.sqlite", GOAI_LOCAL_CORPUS_SHARD_ROOT = "/path/markdown-v1/shards" }
@@ -17,12 +21,14 @@ env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/refcheck_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
 env = { GOAI_EMAIL = "you@example.com" }
 
 [mcp_servers.goai-figure]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/figure_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
 # macOS + brew cairo：让 cairosvg 找到 libcairo（png 自检输出用，可选）
 env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 
@@ -30,6 +36,7 @@ env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
 default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
 # 无机两步模型默认读取仓库内vendor/two_stage_retro，输入化学式并返回Top-5前驱体组合。
 # env = { GOAI_RETRO_DEVICE = "cuda:0" }
 # 接真实逆合成后端时打开：

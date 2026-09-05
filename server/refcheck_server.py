@@ -20,6 +20,7 @@ from typing import Any, Optional
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from server.core.mcp_compat import FastMCP
+from server.core import jsonout
 
 from server.core import bibtex as bib
 from server.core import sources as src
@@ -31,7 +32,7 @@ TITLE_SUSPECT = 0.75
 
 
 def _dumps(obj) -> str:
-    return json.dumps(obj, ensure_ascii=False, indent=2)
+    return jsonout.dumps(obj)
 
 
 def _author_overlap(claimed: list[str], candidate: dict[str, Any]) -> float:
