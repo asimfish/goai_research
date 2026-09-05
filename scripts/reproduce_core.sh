@@ -126,6 +126,9 @@ export RUNNER_SANDBOX=danger-full-access RUNNER_ARGS="-p $PROFILE --ephemeral -c
 export GOAI_CODEX_PROFILE="$PROFILE"   # parallel_run.sh 兜底：RUNNER_ARGS 丢失时仍给子 agent 挂上 MCP profile
 echo "launching orchestrator; events -> $LOGDIR/orchestrator.jsonl"
 echo "live view: GOAI_WORKSPACE=$WORKDIR python3 tools/live_view.py --follow   (or --serve 5051 for the browser dashboard)"
+# GOAI_RUN_ID 让编排器自己的 MCP 调用也能在 state/tool_calls.jsonl 归因（key 与 live_view 的编排器任务一致）；
+# parallel_run.sh 派出的子任务会在各自子进程里覆盖成 <run_id>/<task>。
+export GOAI_RUN_ID="orchestrator/orchestrator" GOAI_TASK_NAME="orchestrator"
 codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
   -C "$REPO" -o "$LOGDIR/orchestrator.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.jsonl" >/dev/null
 
@@ -134,6 +137,7 @@ codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --j
 for attempt in 2 3 4 5; do
   if .venv/bin/python tools/loopctl.py check-done >/dev/null 2>&1; then break; fi
   echo "ledger not DONE after run $((attempt-1)); resuming (attempt $attempt)"
+  export GOAI_RUN_ID="orchestrator/orchestrator.resume$attempt" GOAI_TASK_NAME="orchestrator.resume$attempt"
   codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
     -C "$REPO" -o "$LOGDIR/orchestrator.resume$attempt.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.resume$attempt.jsonl" >/dev/null
 done

@@ -109,7 +109,7 @@ python3 $T check-done                      # 退出码 0=可交付（重算指�
 GOAI_CODEX_PROFILE=<profile> bash tools/parallel_run.sh --backend codex --jobs 3 tasks.tsv
 # 产物：workspace/state/parallel/<run_id>/<任务名>.{jsonl,stderr.log,final.md,process_exit,status,exit,prompt.txt,meta.json}
 #       + 批次级 RUN_INFO.json（backend/jobs/profile/model/sandbox/timeout/mcp_warning）
-# 观察：python3 tools/live_view.py --follow | --serve 5051 | （快照）   ← 只读，按角色归并事件流/账本/审计
+# 观察：python3 tools/console_server.py --port 5051（控制台：角色/发起/终止/历史/实时）或 tools/live_view.py --follow（终端）  ← 只读解析
 ```
 规约：
 1. 并行任务**只写自己的分片文件**（sections/NN_*.tex、figures/<name>.*）；

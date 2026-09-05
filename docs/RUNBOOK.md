@@ -14,11 +14,14 @@ bash install.sh --retro                     # 首次；已装过可跳过
 bash scripts/smoke_test.sh --with-retro     # 无网络无 LLM，末行 SMOKE TEST PASSED
 bash tools/check.sh --servers --corpus --retro --tex
 
-# 一行主题 → 综述 PDF + 证据链（公开精简语料；私有全库见 §3）
+# 控制台（推荐）：浏览器里发起主题 / 终止 / 看历史 / 按角色实时观察
+screen -dmS goai_console bash -lc '~/goai_console.sh'     # 5090 已放好这个启动脚本（内容见 §2.0）
+#   本机：ssh -L 5051:127.0.0.1:5051 -p 4009 ubuntu@nas.zgca.com → http://127.0.0.1:5051
+
+# 命令行等价：一行主题 → 综述 PDF + 证据链（公开精简语料；私有全库见 §3）
 screen -S goai_run
 bash scripts/reproduce_core.sh --topic "Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件"
-# 另开一个终端看各角色在干什么
-GOAI_WORKSPACE=$(ls -dt workspace_repro_* | head -1) python3 tools/live_view.py --serve 5051
+GOAI_WORKSPACE=$(ls -dt workspace_repro_* | head -1) python3 tools/live_view.py --follow   # 终端里看
 ```
 
 ## 1. 环境
@@ -41,6 +44,28 @@ bash tools/check.sh --servers --corpus --retro --tex     # 四个 server 可导�
 ```
 
 ## 2. 运行方式
+
+### 2.0 控制台（`tools/console_server.py` + `tools/console/`）
+
+```bash
+# 5090 上的常驻方式（~/goai_console.sh 就是这几行）
+cd /home/gaojing/goai_research && export CODEX_HOME=/home/gaojing/.codex_rev
+python3 tools/console_server.py --port 5051 --codex-home /home/gaojing/.codex_rev \
+  --workspace-glob "/home/gaojing/goai_cold_*/workspace" \
+  --workspace-glob "/home/gaojing/goai_synthesis_runs/*/0*" \
+  --private-corpus-env /home/gaojing/goai_console.env      # 三个 GOAI_LOCAL_CORPUS_* 变量，仓库外文件
+```
+
+| 页面 | 内容 |
+|---|---|
+| 角色说明 | 九个角色卡（阶段 / 闸门 / MCP server / 工具面 / 一句话职责），点开看完整 `SKILL.md`；顶部是阶段状态机 |
+| 运行与历史 | 所有工作区一张表（正式案例、历史运行、控制台新发起的），状态 / 阶段 / 闸门 / 批次 / 最近活动 / 最终 PDF；「＋ 发起新研究」填一行主题、选语料与模型即可；运行中的行可「终止」 |
+| 运行详情 | 流程条（阶段→闸门→正在跑的角色）、批次时间线、按角色分组的任务卡（消息 / 命令 / MCP 调用 / 文件 / token，点开看完整事件流与提示词）、闸门与 issue、全局事件流、MCP 审计、账本日志、产物清单、启动器日志；运行中可终止，完成后可直接打开综述 PDF |
+
+发起 = 后台以独立会话运行 `bash scripts/reproduce_core.sh --topic <主题> --workdir workspace_runs/console/<时间戳>_<后缀>`，
+落盘 `topic_only.txt` 与 `launcher.{started,pid,json,exit,finished,status,stdout.log,stderr.log}`（与 `run_three_synthesis_topics.sh` 同一约定）；
+终止 = 向整个进程组发 SIGTERM，8 秒后仍在则 SIGKILL，账本与已落盘产物保留，工作区留在历史里可回放。
+服务端只绑定 127.0.0.1，纯标准库；前端源码在 `tools/console/`（`pnpm install && pnpm run build` 重新构建，产物 `dist/` 已提交）。
 
 ### 2.1 一行主题 → 全流程（正式案例的复现路径）
 
@@ -120,7 +145,13 @@ GOAI_CORPUS=private CODEX_HOME=$HOME/.codex_rev bash scripts/reproduce_core.sh -
 
 ## 4. 可视化整个流程
 
-### 4.1 运行中：`tools/live_view.py`（只读，纯标准库）
+### 4.0 控制台（浏览器，推荐）
+
+§2.0 的控制台就是可视化入口：运行详情页的**流程条**按账本把 11 个阶段排开（并行段标 ∥），每格显示闸门状态、当前阶段和该阶段正在跑的角色数；
+**批次时间线**每个子任务一根按角色着色的时间条；下面是按角色分组的任务卡，右侧闸门与 open issue，底部全局事件流 / MCP 审计（按 `run_id` 归到角色）/ 账本日志 / 产物。
+历史工作区同样进这一页回放（批次下拉可只看一批）。
+
+### 4.1 终端：`tools/live_view.py`（只读，纯标准库）
 
 ```bash
 WS=$(ls -dt workspace_repro_* | head -1)       # 或 workspace / 任何 GOAI_WORKSPACE

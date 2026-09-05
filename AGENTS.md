@@ -85,6 +85,10 @@
     `goai-refcheck` / `goai-figure` / `goai-retro`（或具体工具名），拿到后经 MCP
     调用：事件流留 `mcp_tool_call`，服务端审计 `state/tool_calls.jsonl` 自动带
     `run_id=<批次>/<任务>`，网络请求由 server 进程发出、不受 shell 沙箱限制。
+    `tool_search` 一次只返回与查询匹配的若干工具——搜到 `search_papers` 不代表
+    `save_to_library` / `export_bibtex` 也在手边，需要哪个就按工具名再搜一次，
+    不要因为「清单里没看到」就退回 shell 直调（09-06 实测：编排器搜到检索工具后
+    误以为「没有入库接口」）。
     正式运行实测：子 agent 拿到了 profile 却没有搜索，判定「工具未暴露」后改用
     `.venv/bin/python -c "from server.xxx_server import 工具"` 直调 105 次、MCP 0 次，
     134 条审计无法归因，`workspace-write` 沙箱下直调还全部断网。只有 tool_search
@@ -110,8 +114,12 @@
   `env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]`，样例 `configs/codex.config.toml.example`；
   reproduce_core.sh 已自动设置）。TSV 第三列填预期产物，第四列填前序依赖。超时但产物
   验收通过时保留 `.process_exit=124`，有效状态记 WARN，不再误判为内容失败。
-- **实时查看各角色输出**：`python3 tools/live_view.py --follow`（终端流，按角色着色）、
-  `python3 tools/live_view.py --serve 5051`（浏览器看板 http://127.0.0.1:5051，每个角色一张卡：
-  消息 / 命令 / MCP 调用 / 文件改动 / token / 账本闸门 / 审计归因）、不带参数为快照表；
-  `--all` 回放历史批次，`GOAI_WORKSPACE` 或 `--workspace` 指定工作区。只读，不影响运行。
+- **控制台（推荐）**：`python3 tools/console_server.py --port 5051 --codex-home ~/.codex_rev`
+  → http://127.0.0.1:5051 ：角色说明（点开看完整 skill）、发起新研究主题 / 终止运行、历史工作区
+  浏览与回放、按角色的实时观察（流程条 / 批次时间线 / 角色卡 / 闸门 / 审计归因）。前端在
+  `tools/console/`（Vite + Vue 3 + Naive UI，构建产物已提交，服务端纯标准库），历史目录用
+  `--workspace-glob` 挂入，私有语料用 `--private-corpus-env <KEY=VALUE 文件>`。
+- **终端版**：`python3 tools/live_view.py --follow`（按角色着色的实时流）/ 不带参数快照 /
+  `--serve 5051` 无需构建的单页看板；`--all` 回放历史批次，`GOAI_WORKSPACE` 或 `--workspace`
+  指定工作区。两者都只读，不影响运行。
 - 回环协议细节（阶段/闸门/路由表/终止条件）：`docs/LOOP_PROTOCOL.md`。

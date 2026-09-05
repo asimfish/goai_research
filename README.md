@@ -36,7 +36,8 @@ bash scripts/smoke_test.sh --with-retro    # 无网络、无 LLM，1–2 分钟�
 bash tools/check.sh --tex                  # TeX 工具链预检：缺 xelatex/模板宏包时流水线 fail-closed，不产假 PDF
 bash scripts/reproduce_core.sh             # 核心复现：一行主题 → 综述 PDF（需 Codex 登录、网络、TeX）
 bash scripts/package_submission.sh "科学无极"   # 生成官方命名的两个 zip 到 dist/
-python3 tools/live_view.py --follow        # 运行中按角色实时看各子 agent 的消息/命令/MCP 调用/账本闸门（--serve 5051 开浏览器看板；--all 回放历史）
+python3 tools/console_server.py --port 5051 --codex-home ~/.codex_rev   # 控制台：角色说明 / 发起新研究 / 终止 / 历史浏览 / 按角色实时观察（http://127.0.0.1:5051）
+python3 tools/live_view.py --follow        # 终端版：按角色实时看各子 agent 的消息/命令/MCP 调用/账本闸门（--all 回放历史）
 ```
 
 ## 声明摘要
@@ -47,7 +48,7 @@ python3 tools/live_view.py --follow        # 运行中按角色实时看各子 a
 
 ## 系统与框架文档
 
-- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) **运行手册**：怎么跑（全流程 / 单批子任务 / 无 LLM 验证）、怎么接真实 Parquet 全库、怎么用 `tools/live_view.py` 看整个流程
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) **运行手册**：怎么跑（控制台 / 全流程脚本 / 单批子任务 / 无 LLM 验证）、怎么接真实 Parquet 全库、怎么看整个流程（控制台与 `tools/live_view.py`）
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) 三层架构 · [`docs/LOOP_PROTOCOL.md`](docs/LOOP_PROTOCOL.md) 账本驱动回环协议 · [`docs/FAILURE_MODE_FIXES.md`](docs/FAILURE_MODE_FIXES.md) 失效模式与守卫
 - [`docs/FRAMEWORK_CN.md`](docs/FRAMEWORK_CN.md) / [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) 开源框架使用指南（宿主接入、配置、测试、FAQ）
 - [`docs/live-tests/`](docs/live-tests/) 实测报告 · [`docs/audits/`](docs/audits/) 需求验收审计

@@ -1,0 +1,17 @@
+html, body, #app { height: 100%; margin: 0; }
+body { font-family: -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; }
+.mono { font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace; }
+.dim { color: var(--n-text-color-3, #8a93a6); }
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pre { white-space: pre-wrap; word-break: break-word; }
+.page { padding: 16px 20px 32px; max-width: 1600px; margin: 0 auto; }
+.page-title { display: flex; align-items: baseline; gap: 12px; margin: 4px 0 14px; }
+.page-title h1 { font-size: 20px; margin: 0; font-weight: 600; }
+.markdown { font-size: 13.5px; line-height: 1.65; }
+.markdown h1 { font-size: 20px; } .markdown h2 { font-size: 17px; margin-top: 22px; } .markdown h3 { font-size: 15px; }
+.markdown pre { background: rgba(255,255,255,.06); padding: 10px 12px; border-radius: 6px; overflow: auto; font-size: 12.5px; }
+.markdown code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+.markdown pre code { background: none; padding: 0; }
+.markdown table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.markdown th, .markdown td { border: 1px solid rgba(255,255,255,.14); padding: 5px 8px; text-align: left; vertical-align: top; }
+.markdown blockquote { border-left: 3px solid rgba(255,255,255,.2); margin: 8px 0; padding: 2px 12px; color: #9aa3b5; }

@@ -38,3 +38,6 @@ configs/claude.mcp.json
 
 # submission archives built by scripts/package_submission.sh
 dist/
+# 控制台前端（Vite）构建产物随仓库提交，python3 tools/console_server.py 直接托管，不需要 node
+!tools/console/dist/
+tools/console/node_modules/
