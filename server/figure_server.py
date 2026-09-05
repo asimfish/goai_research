@@ -252,7 +252,12 @@ def drawio_export(drawio_path: str, fmt: str = "png") -> str:
         with contextlib.suppress(ProcessLookupError):
             os.killpg(proc.pid, signal.SIGKILL)
         proc.wait()
-        return _dumps({"ok": False, "error": f"drawio CLI 导出超时（{timeout:g}s）"})
+        # 实测常态：文件早已写完，Electron 进程却不退出。产物在且非空 = 成功
+        # （与 parallel_run 的「超时但产物验收通过」同一原则），只把挂起记为提示。
+        if os.path.exists(out_path) and os.path.getsize(out_path) > 0:
+            return _dumps({"ok": True, "out": out_path, "returncode": None,
+                           "note": f"drawio CLI 写出文件后未在 {timeout:g}s 内退出，已强制结束进程；产物有效"})
+        return _dumps({"ok": False, "error": f"drawio CLI 导出超时（{timeout:g}s）且无产物"})
     ok = os.path.exists(out_path)
     return _dumps({"ok": ok, "out": out_path if ok else None,
                    "returncode": proc.returncode,

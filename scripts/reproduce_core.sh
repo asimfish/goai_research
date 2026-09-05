@@ -121,7 +121,7 @@ export RUNNER=codex RUNNER_CWD="$REPO" RUNNER_TIMEOUT=1800 RUNNER_TIMEOUT_ARTIFA
 export RUNNER_SANDBOX=danger-full-access RUNNER_ARGS="-p $PROFILE --ephemeral -c model=\"$MODEL\" -c model_reasoning_effort=\"$EFFORT\""
 echo "launching orchestrator; events -> $LOGDIR/orchestrator.jsonl"
 codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
-  -C "$REPO" -o "$LOGDIR/orchestrator.final.md" "$TOPIC" | tee "$LOGDIR/orchestrator.jsonl" >/dev/null
+  -C "$REPO" -o "$LOGDIR/orchestrator.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.jsonl" >/dev/null
 
 # --- the orchestrator may stop at a human gate (scope / citation mismatches / contribution).
 # Re-invoke with the same topic to resume from the ledger until check-done exits 0.
@@ -129,7 +129,7 @@ for attempt in 2 3 4 5; do
   if .venv/bin/python tools/loopctl.py check-done >/dev/null 2>&1; then break; fi
   echo "ledger not DONE after run $((attempt-1)); resuming (attempt $attempt)"
   codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
-    -C "$REPO" -o "$LOGDIR/orchestrator.resume$attempt.final.md" "$TOPIC" | tee "$LOGDIR/orchestrator.resume$attempt.jsonl" >/dev/null
+    -C "$REPO" -o "$LOGDIR/orchestrator.resume$attempt.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.resume$attempt.jsonl" >/dev/null
 done
 else
   [[ -n "$WORKDIR" ]] || { echo "--verify-only requires --workdir" >&2; exit 2; }
@@ -186,6 +186,9 @@ run_guard bib_guard .venv/bin/python tools/bib_guard.py \
 run_guard tex_guard .venv/bin/python tools/tex_guard.py "$WORKDIR/drafts"
 run_guard academic_language_guard .venv/bin/python tools/academic_language_guard.py \
   "$WORKDIR/drafts"
+# 终稿 PDF 必须是 TeX 从模板编译的产物（Producer/字体/时效/摘要块/编号标题）
+run_guard pdf_guard .venv/bin/python tools/pdf_guard.py "$WORKDIR/drafts/main.pdf" \
+  --tex "$WORKDIR/drafts/main.tex" --bib "$WORKDIR/library/references.bib"
 
 .venv/bin/python - "$WORKDIR" "$TOPIC" "$MODEL" "$EFFORT" <<'PY'
 from __future__ import annotations
