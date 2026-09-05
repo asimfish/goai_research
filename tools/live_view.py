@@ -557,6 +557,10 @@ class Monitor:
             if key not in self.tasks:
                 t = Task("orchestrator", name, path, kind="orchestrator")
                 t.role = "goai-orchestrator"
+                # 编排器没有 .started 标记：主运行以 topic_input.txt 的写入时间为起点（reproduce_core.sh 在
+                # 启动 codex 前一刻写它）；resume 流没有可靠起点，保持首次观察到的时间。
+                if ".resume" not in name:
+                    t.started = mtime(os.path.join(self.ws, "inputs", "topic_input.txt")) or t.started
                 self.tasks[key] = t
 
     def _active_runs(self) -> set[str]:
