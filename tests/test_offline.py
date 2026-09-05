@@ -1703,3 +1703,19 @@ def test_reproduce_core_matches_protocol_guard_scope_and_audit_semantics():
     assert 'academic_language_guard.py \\\n  "$WORKDIR/drafts"\n' not in text
     assert 'audit.get("gate") != "PASS"' in text
     assert 'counts.get("PASS", 0) != audit.get("total")' not in text
+
+
+def test_parallel_run_json_helpers_survive_empty_lists_under_bash32_set_u():
+    """实跑失效（续跑 round 3）：macOS /bin/bash 3.2 在 set -u 下把空数组的 "${arr[@]}" 当未绑定
+    变量，空的依赖/产物列让整批并行 ideas 任务在启动时崩掉。抽出 _json_str/_json_list 在
+    /bin/bash -u 下直接执行（Linux 上是 bash 5，仍验证语义）。"""
+    script = os.path.join(ROOT, "tools", "parallel_run.sh")
+    bash = "/bin/bash" if os.path.exists("/bin/bash") else "bash"
+    cmd = ('eval "$(sed -n "/^_json_str()/,/^}/p; /^_json_list()/,/^}/p" "$0")"; '
+           'printf "%s|%s|%s" "$(_json_list "")" "$(_json_list "a.md")" "$(_json_list " x, y ")"')
+    r = subprocess.run([bash, "-uc", cmd, script], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout == '[]|["a.md"]|["x", "y"]', r.stdout
+    text = open(script, encoding="utf-8").read()
+    for arr in ("_items", "dependency_items", "expected_items", "launched"):
+        assert f'"${{{arr}[@]}}"; do' not in text, f"{arr} 仍用不兼容 bash 3.2 的空数组展开"

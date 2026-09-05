@@ -145,8 +145,11 @@ _json_str() {
 }
 _json_list() {  # 逗号分隔 → JSON 数组
   local out="" item first=1
+  # bash 3.2（macOS /bin/bash）在 set -u 下把空数组的 "${arr[@]}" 当未绑定变量：
+  # 空的依赖/产物列曾让整批并行任务在启动时崩掉。${arr[@]+"${arr[@]}"} 是兼容写法。
+  local _items=()
   IFS=',' read -r -a _items <<<"$1"
-  for item in "${_items[@]}"; do
+  for item in ${_items[@]+"${_items[@]}"}; do
     item="${item#${item%%[![:space:]]*}}"; item="${item%${item##*[![:space:]]}}"
     [[ -z "$item" ]] && continue
     (( first )) || out+=", "
@@ -189,7 +192,7 @@ run_one() {
 JSON
   if [[ -n "$dependencies" ]]; then
     IFS=',' read -r -a dependency_items <<<"$dependencies"
-    for dep in "${dependency_items[@]}"; do
+    for dep in ${dependency_items[@]+"${dependency_items[@]}"}; do
       dep="${dep#${dep%%[![:space:]]*}}"
       dep="${dep%${dep##*[![:space:]]}}"
       [[ -z "$dep" ]] && continue
@@ -268,7 +271,7 @@ Declared artifacts: ${expected}"
   if [[ -n "$expected" ]]; then
     expected_checked=1
     IFS=',' read -r -a expected_items <<<"$expected"
-    for artifact in "${expected_items[@]}"; do
+    for artifact in ${expected_items[@]+"${expected_items[@]}"}; do
       artifact="${artifact#${artifact%%[![:space:]]*}}"
       artifact="${artifact%${artifact##*[![:space:]]}}"
       [[ -z "$artifact" ]] && continue
@@ -356,7 +359,7 @@ echo "===== 并行批次汇总 ====="
 # 按「真正启动过的任务」逐个对账，而不是 glob .exit 文件：
 # 退出码没落盘的任务必须显式报失败，否则它会从汇总里消失、整批假绿。
 fail=0
-for name in "${launched[@]}"; do
+for name in ${launched[@]+"${launched[@]}"}; do
   f="$LOG_DIR/$name.exit"
   if [[ ! -f "$f" ]]; then
     echo "FAIL  $name (退出码未落盘: $f 缺失，任务未正常收尾)"

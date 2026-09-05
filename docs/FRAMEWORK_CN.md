@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](../pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-80%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
+[![Tests](https://img.shields.io/badge/tests-81%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](../server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](../skills/)
 
