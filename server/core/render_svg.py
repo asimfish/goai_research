@@ -163,7 +163,7 @@ def render(spec: dict[str, Any]) -> str:
                      f'stroke-width="{width}" stroke-linecap="round" '
                      f'stroke-linejoin="round"{dash}{marker}/>')
         if e.get("label"):
-            mid = edge_label_point(pts)
+            mid = edge_label_point(pts, e)
             fs = style_of(e, spec, "font_size", 12.5)
             lab_lines = e["label"].split("\n")
             est_w = max(text_units(ln) * fs for ln in lab_lines) + 8

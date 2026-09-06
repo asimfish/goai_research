@@ -1439,14 +1439,29 @@ def test_bib_polish_fixes_hygiene_without_touching_meaning(tmp_path):
     out, changes = polish(bib.read_text(encoding="utf-8"))
     assert "url" not in out.split("@article{b2020y")[0]          # a2024x 的 url 被删（已有 doi）
     assert "https://arxiv.org/abs/1" in out                       # 无 doi 的条目保留 url
-    assert "{Li7La3Zr2O12}" in out and "{Al}-substituted" in out and "{LLZO}" in out
-    assert "{AlN}" in out and "{TiO2}" in out and r"\&" in out
-    assert out.count("{Li7La3Zr2O12}") == 2 and "{{Li7La3Zr2O12}}" not in out   # 已保护的不重复包裹
+    # 化学式：合并空格、下标化并整体加花括号（审稿 I20：约 18 条题名化学式无下标）
+    llzo = "{Li$_7$La$_3$Zr$_2$O$_{12}$}"
+    assert llzo in out and "{Al}-substituted" in out and "{LLZO}" in out
+    assert "{AlN}" in out and "{TiO$_2$}" in out and r"\&" in out
+    assert out.count(llzo) == 2 and "{{Li" not in out   # 已保护的 {Li7La3Zr2O12} 也补下标，不重复包裹
     # 幂等：再跑一遍无变化
     out2, changes2 = polish(out)
     assert changes2 == [] and out2 == out
     # 不误伤：年份、普通词、单元素词
     assert _protect_title("A review in 2021 of In and As deposition") == "A review in 2021 of In and As deposition"
+    # 审稿 I20/I35 的卫生规则：全大写姓名与标题、x-ray、专名、连字系统名内的下标
+    hyg, _ = polish("""@article{c1,
+  title = {CRYSTAL CHEMISTRY AND TOPOLOGY OF THE Y2O3-SIO2 SYSTEM DIAGRAM},
+  author = {DOE, John and SMITH-JONES, Jane and van der Berg, Piet}, year = {2001}, journal = {J},
+}
+@article{c2,
+  title = {Quantitative x-ray rietveld analysis of the {BaO-YO1.5} system},
+  author = {Ann One}, year = {2002}, journal = {J},
+}""")
+    assert "Doe, John and Smith-Jones, Jane and van der Berg, Piet" in hyg
+    assert "Crystal chemistry and topology of the {Y$_2$O$_3$}-{SiO$_2$} system diagram" in hyg
+    assert "Quantitative {X}-ray {Rietveld} analysis of the {BaO-YO$_{1.5}$} system" in hyg
+    assert polish(hyg)[1] == []
 
 
 def test_tex_polish_slash_and_bibliography_path(tmp_path):
@@ -1862,3 +1877,23 @@ def test_parallel_run_model_parsing_is_bsd_sed_safe():
     # 复现回执按批次汇总实际模型
     core = open(os.path.join(ROOT, "scripts", "reproduce_core.sh"), encoding="utf-8").read()
     assert '"sub_agent_models"' in core and "RUN_INFO.json" in core
+
+
+def test_refcheck_manual_verdict_for_grey_literature():
+    """审稿发现（2026-09-07 round 5, I14）：会议摘要无 DOI 必然 UNVERIFIED，上一轮为过闸把条目
+    改成整本摘要集的题名与 DOI，读者无法定位被引摘要。现在灰色文献用 verified={manual: who date
+    locator} + 官方 url 走 MANUAL 裁决（闸门放行、报告单列）；带 DOI / 无 url / 期刊类型 / 格式不对
+    一律仍为 UNVERIFIED。不访问网络。"""
+    from server.refcheck_server import _manual_verdict
+    base = {"entrytype": "inproceedings", "author": "Wierzbicka-Wieczorek, M. and Kolitsch, U.",
+            "title": "A novel crystal structure type ...", "year": "2011",
+            "url": "https://www.dmg-home.org/fileadmin/user_upload/Konferenzen/JointMeeting2011_Abstracts.pdf",
+            "verified": "manual: goai-orchestrator 2026-09-07 official abstract volume PDF page 102"}
+    r = _manual_verdict(base)
+    assert r["verdict"] == "MANUAL" and "page 102" in r["locator"], r
+    assert _manual_verdict({k: v for k, v in base.items() if k != "verified"}) is None   # 无标记 → 常规路由
+    assert _manual_verdict({**base, "doi": "10.1524/zksu.2011.0000"})["verdict"] == "UNVERIFIED"
+    assert _manual_verdict({**base, "url": "abstract volume p.102"})["verdict"] == "UNVERIFIED"
+    assert _manual_verdict({**base, "entrytype": "article"})["verdict"] == "UNVERIFIED"
+    assert _manual_verdict({**base, "verified": "manually checked"})["verdict"] == "UNVERIFIED"
+    assert _manual_verdict({**base, "author": ""})["verdict"] == "UNVERIFIED"

@@ -35,6 +35,21 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
    - **UNVERIFIED**：疑似幻觉引用。fail-closed：先用 `lookup` 补 DOI/arXiv id
      重试一次；仍找不到 → 从 bib 移除并开 blocker issue 通知 writer 换真实
      文献支撑该 claim。**绝不允许**为了让稿子好看而保留查无此文的引用。
+   - **灰色文献（会议摘要、学位论文、技术报告、无 DOI 的会议集）→ MANUAL**：
+     这类条目不入 Crossref/OpenAlex 索引，常规路由必然 UNVERIFIED。正确做法是
+     **实读官方来源**（摘要集 PDF、机构库、出版社页面），把实读回执写进
+     papers.jsonl（access ≥ abstract + 定位），条目写成本身的 author/title/
+     booktitle 或 school/year，`url` 给官方主机，`note` 说明来源与页码，并加
+     `verified = {manual: <who> <YYYY-MM-DD> <locator>}`——refcheck 返回 MANUAL，
+     闸门放行、报告单列，终审须人眼复核。**禁止**为了让检查通过把条目改成
+     整卷/整集的 DOI 与题名（实跑中会议摘要被改写成整本摘要集的题名与 DOI，
+     两轮审计放行，终审才发现读者根本找不到被引用的那篇摘要）；带 DOI 的
+     条目不接受 manual 标记，DOI 若指向整卷就删掉写进 note。
+   - **卷期页码补齐**：检索工具导出的 BibTeX 只有 title/author/journal/year/doi，
+     终稿参考文献无法定位到具体一期（审稿实抓：80 篇里 79 篇缺卷期页码）。修完
+     裁决后运行 `.venv/bin/python tools/bib_enrich.py <bib> --write --fix-year`
+     （Crossref 按 DOI 只补缺、年份统一为出版年），再跑 `tools/bib_polish.py --write`
+     （化学式下标与花括号保护、X-ray、全大写姓名/标题、Rietveld 等专名）。
 3. 修完后**复跑** `verify_bib_file` 直到 gate=PASS，然后
    `loopctl gate --name ref_integrity --status PASS --detail "<N条全过>"`。
    - **不收敛 fallback**：应用 suggested_bibtex 后复跑仍是同一条 MISMATCH，
@@ -64,5 +79,5 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
 - 付费墙、反爬 challenge、来源冲突 = 保持阻塞并如实报告，禁止绕过。
 - venue 口径只认出版方权威通道；arXiv 路由通常只能证实作者与标题。
 - 每轮收工：`loopctl log --stage ref_gate --agent goai-ref-guard --event done
-  --detail "PASS x/FIX y/MISMATCH z/UNVERIFIED w"`；存在未收敛高危项时
+  --detail "PASS x/FIX y/MANUAL m/MISMATCH z/UNVERIFIED w"`；存在未收敛高危项时
   gate 只能记 FAIL，不许美化。

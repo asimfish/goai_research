@@ -162,11 +162,18 @@ def render(spec: dict[str, Any], page_name: str = "Page-1") -> str:
             points = (f'\n            <Array as="points">\n{pts}\n'
                       f'            </Array>')
         label_html = "<br/>".join(escape(ln) for ln in (e.get("label") or "").split("\n"))
+        off = e.get("label_offset") or None
+        offset_xml = ""
+        if off:
+            try:
+                offset_xml = f'\n            <mxPoint x="{float(off[0]):g}" y="{float(off[1]):g}" as="offset" />'
+            except (TypeError, ValueError, IndexError):
+                offset_xml = ""
         cells.append(
             f'        <mxCell id={quoteattr(eid)} value={quoteattr(label_html)} '
             f'style={quoteattr(style)} edge="1" parent="1" '
             f'source={quoteattr(e["from"])} target={quoteattr(e["to"])}>\n'
-            f'          <mxGeometry relative="1" as="geometry">{points}\n'
+            f'          <mxGeometry relative="1" as="geometry">{points}{offset_xml}\n'
             f'          </mxGeometry>\n'
             f'        </mxCell>')
 
