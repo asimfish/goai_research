@@ -332,7 +332,7 @@ receipt = {
     ).strip(),
     "gates": {
         "loopctl_check_done": "PASS",
-        "citation_audit": f"PASS (PASS={counts.get('PASS', 0)}, FIX={counts.get('FIX', 0)})",
+        "citation_audit": f"PASS (PASS={counts.get('PASS', 0)}, FIX={counts.get('FIX', 0)}, MANUAL={counts.get('MANUAL', 0)})",
         "bib_guard": "PASS",
         "tex_guard": "PASS",
         "academic_language_guard": "PASS",

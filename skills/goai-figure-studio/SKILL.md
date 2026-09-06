@@ -129,7 +129,12 @@ AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重
    `edge_color`/`edge_width`；自动折行按宽度硬切会切词——多词 label
    一律手工 `\n` 控行；边只能连 node 不能连 group——「连到分组带」的
    合同边用组边缘的隐形锚点小节点（`label:"", fill/stroke 同组底色`）
-   落点；超长 edge label 改用 texts 独立摆放。
+   落点；超长 edge label 改用 texts 独立摆放。**边标签默认压在线段中点上**：
+   水平边的标签会盖住箭杆、穿过组边框的边其标签会骑在虚线框/组标题上（审稿
+   实抓：'assign' 压箭杆、'route class only' 骑在容器边框上）——用边的
+   `label_offset: [dx, dy]`（画布像素）把标签抬到箭杆上方或挪进空白区，SVG、
+   draw.io 与 lint 共用同一锚点；或把两组之间的纵向间隙留够标签高度（行数×
+   1.25×字号 + 20px）。
    **美学 lint（机械化的合同条款）**：`validate_figspec` / `render_figure` 除排版
    项外还跑 `server/core/aesthetics.py`——配色色系数、彩虹泳道、饱和色块比例、
    近失对齐（1–8px）、兄弟节点尺寸一致性、越界/留白失衡、间距过密、连线穿

@@ -17,7 +17,7 @@ schema（JSON）：
               "font_size","dashed","group","stroke_width","arc","shadow",
               "label_color","label_bold","sublabel_color"}],
   "edges":  [{"id","from","to","label","dashed","color","width","arrow",
-              "waypoints": [[x,y],...]}],
+              "waypoints": [[x,y],...], "label_offset": [dx,dy]}],
   "texts":  [{"id","text","x","y","font_size","color","bold",
               "align": "left|center|right"}]
 }
@@ -361,7 +361,7 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
         pts = edge_points(e, nodes_by_id)
         if not pts:
             continue
-        mid = edge_label_point(pts)      # 与渲染器同一锚点算法
+        mid = edge_label_point(pts, e)   # 与渲染器同一锚点算法（含 label_offset）
         lab_w = _est_text_w(e["label"], e_fs)
         lab_h = e_fs * 1.25 * len(str(e["label"]).split("\n"))
         if not wps:
@@ -450,10 +450,20 @@ def edge_points(e: dict[str, Any], nodes_by_id: dict[str, dict[str, Any]]
     return [p_start, *wps, p_end]
 
 
-def edge_label_point(pts: list[tuple[float, float]]) -> tuple[float, float]:
-    """标签锚点：点数为奇取中间点，为偶取中间两点均值（与渲染器一致）。"""
+def edge_label_point(pts: list[tuple[float, float]], e: dict[str, Any] | None = None) -> tuple[float, float]:
+    """标签锚点：点数为奇取中间点，为偶取中间两点均值（与渲染器一致）。
+
+    边可带 label_offset: [dx, dy]（画布像素）把标签推离线段——水平边把标签抬到
+    箭杆上方、穿过组边框的边把标签挪进空白区；SVG、draw.io 与 lint 共用此锚点。
+    """
     n = len(pts)
     if n % 2 == 1:
-        return pts[n // 2]
-    a, b = pts[n // 2 - 1], pts[n // 2]
-    return (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+        x, y = pts[n // 2]
+    else:
+        a, b = pts[n // 2 - 1], pts[n // 2]
+        x, y = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+    off = (e or {}).get("label_offset") or (0, 0)
+    try:
+        return x + float(off[0]), y + float(off[1])
+    except (TypeError, ValueError, IndexError):
+        return x, y

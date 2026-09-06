@@ -9,11 +9,17 @@ Crossref（DOI）/ arXiv / OpenAlex / DBLP。
   FIX         元数据漂移（作者缩写/年份±1/venue 记法），给出修正后 BibTeX
   MISMATCH    标题能对上但作者名单严重不符（遗漏/伪造/乱序）——高危
   UNVERIFIED  找不到权威记录（可能是幻觉引用）——fail-closed，不猜测
+  MANUAL      灰色文献（会议摘要、学位论文、技术报告等）无 DOI 且不入索引，由人/agent
+              对照官方来源实读后在条目里写 verified = {manual: <who> <date> <locator>}
+              并给 url（官方主机）——闸门放行但报告单列，供终审人眼复核。
+              禁止为了让检查通过而把条目改成整卷/整集的 DOI 与题名（实跑中发生过：
+              会议摘要被改写成整本摘要集的题名与 DOI，两轮审计都放行了）。
 """
 from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from typing import Any, Optional
 
@@ -132,7 +138,43 @@ def _authoritative_lookup(
     return None, near, id_conflict
 
 
+MANUAL_ENTRY_TYPES = {"inproceedings", "phdthesis", "mastersthesis", "techreport", "misc",
+                      "unpublished", "booklet", "proceedings", "incollection"}
+RE_MANUAL = re.compile(r"^\s*manual\s*[:：]\s*(?P<who>\S+)\s+(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<locator>\S.*)$",
+                       re.I | re.S)
+
+
+def _manual_verdict(fields: dict[str, str]) -> dict[str, Any] | None:
+    """灰色文献的人工核验裁决；不满足全部条件时返回 None（走常规权威路由）。"""
+    marker = (fields.get("verified") or "").strip()
+    if not marker:
+        return None
+    problems = []
+    m = RE_MANUAL.match(marker)
+    if not m:
+        problems.append("verified 字段格式须为 'manual: <who> <YYYY-MM-DD> <locator>'")
+    if fields.get("doi"):
+        problems.append("带 DOI 的条目不得走人工核验；DOI 指向的若不是本条目本身（如整卷/整集），请删掉 DOI 写进 note")
+    url = (fields.get("url") or "").strip()
+    if not url.lower().startswith(("http://", "https://")):
+        problems.append("人工核验须给官方来源 url")
+    if (fields.get("ENTRYTYPE") or fields.get("entrytype") or "").lower() not in MANUAL_ENTRY_TYPES:
+        problems.append("人工核验只用于灰色文献类型（inproceedings/phdthesis/techreport/misc…），期刊论文须走 DOI")
+    if not fields.get("author") or not fields.get("title") or not fields.get("year"):
+        problems.append("人工核验条目仍须有 author/title/year")
+    if problems:
+        return {"verdict": "UNVERIFIED", "reason": "verified=manual 标记不合规：" + "；".join(problems),
+                "action": "按 goai-ref-guard 的灰色文献规则补全后重试"}
+    return {"verdict": "MANUAL",
+            "reason": f"灰色文献，人工核验：{m.group('who')} 于 {m.group('date')} 对照 {m.group('locator').strip()}",
+            "locator": m.group("locator").strip(), "url": url,
+            "action": "终审人眼复核该来源与定位；报告单列"}
+
+
 def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
+    manual = _manual_verdict(fields)
+    if manual is not None:
+        return manual
     claimed_title = fields.get("title", "")
     claimed_authors = bib.split_authors(fields.get("author", ""))
     claimed_year = fields.get("year", "")
@@ -244,14 +286,14 @@ def verify_entry(bibtex_entry: str) -> str:
     Args:
         bibtex_entry: 完整 @xxx{key, ...} 条目文本
     Returns:
-        JSON {key, verdict: PASS|FIX|MISMATCH|UNVERIFIED, issues, canonical,
+        JSON {key, verdict: PASS|FIX|MANUAL|MISMATCH|UNVERIFIED, issues, canonical,
               suggested_bibtex}
     """
     entries = bib.parse_bibtex(bibtex_entry)
     if not entries:
         return _dumps({"verdict": "ERROR", "error": "无法解析 BibTeX 条目"})
     e = entries[0]
-    result = _verify_fields(e["fields"])
+    result = _verify_fields({**e["fields"], "entrytype": e.get("entry_type", "")})
     return _dumps({"key": e["key"], **result})
 
 
@@ -277,10 +319,10 @@ def verify_bib_file(bib_path: str, out_dir: str = "workspace/state") -> str:
                        "error": "bib 文件为空或未解析出任何条目；"
                                 "fail-closed：空引用库不发 PASS 闸门"})
     per_entry = []
-    counts = {"PASS": 0, "FIX": 0, "MISMATCH": 0, "UNVERIFIED": 0, "ERROR": 0}
+    counts = {"PASS": 0, "FIX": 0, "MANUAL": 0, "MISMATCH": 0, "UNVERIFIED": 0, "ERROR": 0}
     for e in entries:
         try:
-            r = _verify_fields(e["fields"])
+            r = _verify_fields({**e["fields"], "entrytype": e.get("entry_type", "")})
         except Exception as exc:
             r = {"verdict": "ERROR", "reason": f"{type(exc).__name__}: {exc}"}
         counts[r["verdict"]] = counts.get(r["verdict"], 0) + 1
@@ -315,7 +357,8 @@ def verify_bib_file(bib_path: str, out_dir: str = "workspace/state") -> str:
     return _dumps({"total": len(entries), "counts": counts, "gate": gate,
                    "report_json": json_path, "report_md": md_path,
                    "next": "MISMATCH/UNVERIFIED 条目必须人工处理或走 super_ref 深度审计；"
-                           "FIX 条目可用 suggested_bibtex 替换后复跑"})
+                           "FIX 条目可用 suggested_bibtex 替换后复跑；"
+                           "MANUAL 条目须在终审时人眼复核其官方来源与定位"})
 
 
 @mcp.tool()
