@@ -13,6 +13,9 @@
 8. \\texttt 密度过高（正文大量打字机体是内部术语泄漏的信号）＝告警
 9. 中文稿套英文模板（CJK 占比高但 documentclass 非 ctex 系，Abstract/
    Table 等标签会是英文）＝告警
+10. 竖版密表：≥6 列且有长单元格（CJK 计 2 单位，> 40 单位）或 ≥8 列的竖版
+    tabular/longtable ＝阻塞（转横版 landscape/sidewaystable、拆表或合并列；
+    实跑中 7 列 P{0.12\textwidth} 的中文条件表把每行挤成 4–5 个字）
 
 用法：
   python3 tools/tex_guard.py <draft_dir_or_main.tex>
@@ -56,6 +59,20 @@ RE_TEXTTT = re.compile(r"\\texttt\{")
 RE_CJK = re.compile(r"[\u4e00-\u9fff]")
 RE_DOCCLASS = re.compile(r"\\documentclass(?:\[[^\]]*\])?\{([^}]+)\}")
 # 中文支持既可来自 ctex 文档类，也可来自 \usepackage{ctex}/xeCJK 等
+RE_TABLE_BEGIN = re.compile(
+    r"\\begin\{(tabular\*?|tabularx|longtable|tabulary)\}"
+    r"(?:\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\})?"      # tabularx/tabular* 的宽度参数
+    r"\s*(?:\[[^\]]*\])?\s*\{")               # 到列格式的左花括号
+RE_COLSPEC_TOKEN = re.compile(
+    r"\*\{(\d+)\}\{([^{}]*)\}"                   # *{n}{spec}
+    r"|[>@!<]\{(?:[^{}]|\{[^{}]*\})*\}"           # 装饰项，不计列
+    r"|[pmbPLCRS]\s*(?:\[[^\]]*\])?\{[^{}]*\}"  # 定宽列
+    r"|[lcrXY]"                                  # 单字母列
+    r"|\|")
+LANDSCAPE_ENVS = {"landscape", "sidewaystable", "sidewaystable*", "sidewaysfigure"}
+DENSE_MIN_COLS = 6          # 竖版 ≥6 列才检查单元格长度
+DENSE_MAX_COLS = 8          # 竖版 ≥8 列一律阻塞
+DENSE_MAX_UNITS = 40        # 最长单元格：CJK 字符计 2、其他计 1，> 40 即"读不下去"
 RE_CJK_PKG = re.compile(
     r"\\usepackage(?:\[[^\]]*\])?\{[^}]*(?:ctex|xeCJK|luatexja|CJKutf8|CJK)[^}]*\}")
 TEXTTT_WARN_MIN_COUNT = 8       # 少量合法用法（命令/代码名）不告警
@@ -190,6 +207,65 @@ def check_typography(files: list[str]) -> list[str]:
     return warnings
 
 
+def _count_columns(spec: str) -> int:
+    n = 0
+    for m in RE_COLSPEC_TOKEN.finditer(spec):
+        if m.group(1) is not None:
+            n += int(m.group(1)) * _count_columns(m.group(2))
+        elif m.group(0) in ("|",) or m.group(0)[0] in ">@!<":
+            continue
+        else:
+            n += 1
+    return n
+
+
+def _cell_units(cell: str) -> int:
+    """单元格的印刷长度估计：去掉 \cite/\ref 与命令名，CJK 计 2、其余计 1。"""
+    s = re.sub(r"\\(?:cite[pt]?\*?|ref|autoref|cref|label)(?:\[[^\]]*\])?\{[^}]*\}", "", cell)
+    s = re.sub(r"\\[A-Za-z]+\*?", "", s)
+    s = re.sub(r"[{}$^_~\\]", "", s)
+    s = " ".join(s.split())
+    return sum(2 if RE_CJK.match(ch) else 1 for ch in s)
+
+
+def check_table_density(path: str) -> list[str]:
+    """竖版密表阻塞：≥6 列且最长单元格 > 40 单位，或 ≥8 列。横排环境内的表不计。"""
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        lines = [strip_comment(l) for l in fh]
+    text = "\n".join(lines)
+    problems: list[str] = []
+    for m in RE_TABLE_BEGIN.finditer(text):
+        env = m.group(1)
+        # 列格式：从 m.end() 起到配对的右花括号
+        depth, i = 1, m.end()
+        while i < len(text) and depth:
+            depth += {"{": 1, "}": -1}.get(text[i], 0)
+            i += 1
+        spec = text[m.end():i - 1]
+        cols = _count_columns(spec)
+        if cols < DENSE_MIN_COLS:
+            continue
+        # 是否在横排环境内
+        before = text[:m.start()]
+        landscape = any(
+            before.count(f"\\begin{{{e}}}") > before.count(f"\\end{{{e}}}")
+            for e in LANDSCAPE_ENVS)
+        if landscape:
+            continue
+        end_tag = f"\\end{{{env}}}"
+        j = text.find(end_tag, i)
+        body = text[i:j if j != -1 else len(text)]
+        cells = [c for row in re.split(r"\\\\", body) for c in re.split(r"(?<!\\)&", row)]
+        longest = max((_cell_units(c) for c in cells), default=0)
+        line_no = text.count("\n", 0, m.start()) + 1
+        if cols >= DENSE_MAX_COLS or longest > DENSE_MAX_UNITS:
+            problems.append(
+                f"竖版密表: {path}:{line_no} {env} {cols} 列，最长单元格 ≈{longest} 单位"
+                f"（CJK 计 2）——顶刊做法：≤5 列，或转横版（pdflscape 的 landscape / "
+                f"rotating 的 sidewaystable），或拆表、合并列、把长说明挪到表注")
+    return problems
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("draft", help="稿件目录或 main.tex")
@@ -217,6 +293,7 @@ def main() -> None:
         all_labels |= ls
         all_refs |= rs
         blocking += check_bibkey_leak(fp)
+        blocking += check_table_density(fp)
     warnings += check_typography(files)
 
     dangling = sorted(all_refs - all_labels)

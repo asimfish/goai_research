@@ -72,6 +72,7 @@ TEX_REQUIRED_FILES = {
     "enumitem.sty": "enumitem", "fancyhdr.sty": "fancyhdr", "booktabs.sty": "booktabs",
     "caption.sty": "caption", "natbib.sty": "natbib", "microtype.sty": "microtype",
     "hyperref.sty": "hyperref", "geometry.sty": "geometry", "textcomp.sty": "textcomp",
+    "pdflscape.sty": "pdflscape", "longtable.sty": "tools",
 }
 TEX_CJK_FILES = {"ctexart.cls": "ctex", "FandolSong-Regular.otf": "fandol"}
 

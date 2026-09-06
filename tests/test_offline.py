@@ -219,14 +219,28 @@ def test_figspec_validate_catches_parallel_edges():
 
 
 def test_figspec_lint_font_floor():
-    # 1500px 画布上 10px ≈ 3.1pt 印刷 → error;15.5px ≈ 4.8pt → 通过
+    """字号地板按印刷等效 pt 检查。实跑教训（2026-09-05 BYZSO）：1680px 画布 + 19.5px 字号
+    排入 451pt 版心只有 5.2pt，旧地板 4.5pt 放行，PDF 里图文是一团小字。现在 < 6.5pt 报错、
+    < 7.5pt 告警；figspec 可用 canvas.target_width_mm 声明双栏/半宽图。"""
     spec = {"canvas": {"width": 1500, "height": 400},
             "nodes": [{"id": "a", "label": "Small text", "x": 10, "y": 10,
-                       "w": 200, "h": 60, "font_size": 10}]}
+                       "w": 300, "h": 90, "font_size": 19.5}]}
+    r = figspec.lint(spec)                       # 19.5 * 451/1500 ≈ 5.9pt → error
+    assert any("印刷不可读" in e and "画布宽压到" in e for e in r["errors"]), r
+    spec["nodes"][0]["font_size"] = 23            # ≈ 6.9pt → 放行但 warning
     r = figspec.lint(spec)
-    assert any("印刷不可读" in e for e in r["errors"])
-    spec["nodes"][0]["font_size"] = 15.5
-    assert figspec.lint(spec)["errors"] == []
+    assert r["errors"] == [] and any("偏小" in w for w in r["warnings"]), r
+    spec["nodes"][0]["font_size"] = 26            # ≈ 7.8pt → 字号项干净（留白告警另算）
+    r = figspec.lint(spec)
+    assert r["errors"] == [] and not any("偏小" in w or "pt" in w for w in r["warnings"]), r
+    # 同一画布若只排到双栏单列（84mm ≈ 238pt），26px 只剩 4.1pt → 必须报错
+    spec["canvas"]["target_width_mm"] = 84
+    assert any("印刷不可读" in e for e in figspec.lint(spec)["errors"])
+    # 1000px 画布 + 16px 字号（单栏满宽 ≈ 7.2pt）是推荐的设计区间
+    small = {"canvas": {"width": 1000, "height": 300},
+             "nodes": [{"id": "a", "label": "Small text", "x": 10, "y": 10,
+                        "w": 260, "h": 80, "font_size": 16}]}
+    assert figspec.lint(small)["errors"] == []
 
 
 def test_figspec_lint_text_overflow():
@@ -869,6 +883,8 @@ def pass_all_gates(tmpdir, *, except_for=(), overrides=None, seed=True):
                 extra = ["--receipt", f"model=x;trace={trace}"]
             elif g == "draft_complete":
                 extra = ["--inputs", pdf]
+            elif g == "scope_confirmed":
+                extra = ["--detail", "8 子主题；交付语言 English（默认）"]
         r = run_loopctl(tmpdir, "gate", "--name", g, "--status", "PASS", *extra)
         assert r.returncode == 0, f"{g}: {r.stderr}"
 
@@ -879,7 +895,8 @@ def test_loopctl_full_cycle(tmp_path):
     assert run_loopctl(tmp_path, "advance", "--to", "lit_search").returncode == 0
     assert run_loopctl(tmp_path, "advance", "--to", "bogus").returncode != 0
     seed_process_evidence(tmp_path)
-    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS").returncode == 0
+    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                       "--detail", "交付语言 English（默认）").returncode == 0
     assert run_loopctl(
         tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS",
         "--detail", "48 papers").returncode == 0
@@ -936,7 +953,8 @@ def test_loopctl_check_done_semantics(tmp_path):
 def test_loopctl_check_done_requires_every_gate_recorded(tmp_path):
     """审计发现的漏洞：只记 scope_confirmed 就 check-done 曾返回 DONE。"""
     run_loopctl(tmp_path, "init", "--topic", "t")
-    run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS")
+    run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                "--detail", "交付语言 English（默认）")
     r = run_loopctl(tmp_path, "check-done")
     assert r.returncode != 0
     payload = json.loads(r.stdout)
@@ -1025,7 +1043,8 @@ def test_loopctl_enforces_pipeline_order_concurrency_and_review_rounds(tmp_path)
     # 1) 跳过 scoping 直接记 lit_coverage → 拒绝（前置 gate 未过）
     r = run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
     assert r.returncode != 0 and "上游 gate" in r.stderr and "scope_confirmed" in r.stderr
-    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS").returncode == 0
+    assert run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                       "--detail", "交付语言 English（默认）").returncode == 0
     # 2) scope 过了，但 lit_search 没有 ≥3 路分片 done 日志 → 拒绝（缺并发证据）
     r = run_loopctl(tmp_path, "gate", "--name", "lit_coverage", "--status", "PASS")
     assert r.returncode != 0 and "并发证据" in r.stderr
@@ -1741,3 +1760,76 @@ def test_parallel_run_json_helpers_survive_empty_lists_under_bash32_set_u():
     text = open(script, encoding="utf-8").read()
     for arr in ("_items", "dependency_items", "expected_items", "launched"):
         assert f'"${{{arr}[@]}}"; do' not in text, f"{arr} 仍用不兼容 bash 3.2 的空数组展开"
+
+
+def test_loopctl_delivery_language_defaults_to_english_and_blocks_drift(tmp_path):
+    """实跑失效：主题行是中文 → orchestrator 自动选了中文交付，用户并不想要。现在：
+    scope_confirmed 必须声明语言；声明中文必须带「用户要求」依据；draft_complete 按 scope.md
+    声明核对正文 CJK 占比，语言漂移拒绝。"""
+    run_loopctl(tmp_path, "init", "--topic", "Ba5Y12Zn[O(SiO4)]8及其结构相近化合物的合成条件")
+    # 未声明语言 → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                    "--detail", "8 个子主题")
+    assert r.returncode != 0 and "交付语言" in r.stderr, r.stderr
+    # 声明中文但无用户要求依据 → 拒绝
+    r = run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                    "--detail", "8 个子主题；交付语言中文")
+    assert r.returncode != 0 and "用户要求" in r.stderr, r.stderr
+    # 带依据的中文声明 → 接受
+    r = run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                    "--detail", "8 个子主题；交付语言 中文（用户要求：请用中文写）")
+    assert r.returncode == 0, r.stderr
+    # 默认英文声明 → 接受
+    r = run_loopctl(tmp_path, "gate", "--name", "scope_confirmed", "--status", "PASS",
+                    "--detail", "8 个子主题；交付语言 English（默认）")
+    assert r.returncode == 0, r.stderr
+    # scope.md 声明英文，但正文是中文 → draft_complete 拒绝
+    (tmp_path / "inputs").mkdir()
+    (tmp_path / "inputs" / "scope.md").write_text("# scope\n- 交付语言: English（默认）\n", encoding="utf-8")
+    pass_all_gates(tmp_path, except_for=("scope_confirmed", "ideas_reviewed", "draft_complete", "review_pass"))
+    (tmp_path / "drafts" / "main.tex").write_text(
+        "\\section{引言}" + "这是一段中文正文，讨论前驱体与合成条件。" * 200, encoding="utf-8")
+    pdf = str(tmp_path / "drafts" / "main.pdf")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode != 0 and "语言漂移" in r.stderr, r.stderr
+    (tmp_path / "drafts" / "main.tex").write_text(
+        "\\section{Introduction}" + "This English body discusses precursor routes and conditions. " * 100,
+        encoding="utf-8")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode == 0, r.stderr
+
+
+def test_tex_guard_blocks_dense_portrait_tables(tmp_path):
+    """实跑失效（2026-09-05 BYZSO）：7 列 P{0.12\\textwidth} 的中文条件表把每行挤成 4–5 个字，
+    一页叠两张表，读者感知就是"排版乱"。规则 10：竖版 ≥6 列且有长单元格 / ≥8 列 → 阻塞；
+    横版 landscape 里的同一张表放行；≤5 列放行。"""
+    d = tmp_path / "drafts"; d.mkdir()
+    dense = ("\\begin{table}\\begin{tabular}{P{0.12\\textwidth}P{0.12\\textwidth}P{0.12\\textwidth}"
+             "P{0.12\\textwidth}P{0.12\\textwidth}P{0.12\\textwidth}P{0.12\\textwidth}}\n"
+             "体系 & 路线 & 原料 & 容器 & 热程 & 产物 & 边界 \\\\\n"
+             "Ba5Y12Zn & MoO3 助熔生长 & 摘要与官方附件未载所标信息，不能判断原文是否报告 & 松盖铂坩埚 "
+             "& 1000--1150 °C 保温两小时后以每小时两开尔文降温 & 单晶 & 无 Zn 的近邻只能提示变量 \\\\\n"
+             "\\end{tabular}\\end{table}\n")
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + dense + "\\end{document}", encoding="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(d)],
+                       capture_output=True, text=True)
+    assert r.returncode == 1 and "竖版密表" in r.stdout and "7 列" in r.stdout, r.stdout
+    # 同一张表放进横版 → 放行
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}\\begin{landscape}" + dense
+                                + "\\end{landscape}\\end{document}", encoding="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(d)],
+                       capture_output=True, text=True)
+    assert "竖版密表" not in r.stdout, r.stdout
+    # 五列 + 短单元格 → 放行
+    five = ("\\begin{tabular}{lllll}\n体系 & 路线 & 关键条件 & 产物 & 来源 \\\\\n"
+            "Ba5Y12Zn & 助熔 & Pt；空气；1150 °C & 单晶 & \\cite{a2024b} \\\\\n\\end{tabular}\n")
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + five + "\\end{document}", encoding="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(d)],
+                       capture_output=True, text=True)
+    assert "竖版密表" not in r.stdout, r.stdout
+    # 8 列即使单元格很短也阻塞
+    eight = "\\begin{tabular}{*{8}{c}}\n" + " & ".join("a" for _ in range(8)) + " \\\\\n\\end{tabular}\n"
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + eight + "\\end{document}", encoding="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(d)],
+                       capture_output=True, text=True)
+    assert "竖版密表" in r.stdout and "8 列" in r.stdout, r.stdout

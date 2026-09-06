@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](../pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-81%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
+[![Tests](https://img.shields.io/badge/tests-83%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](../server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](../skills/)
 
@@ -181,8 +181,9 @@ prompt 注入 style_bank 领域风格卡与范图参照）→ 测量驱动重建
 - `figures/png/<name>.png` —— 供 agent 自己走「渲染 → 自检 → 修正」回环（≤ 3 轮）
 
 **排版是强制的，不是靠运气。** 每次渲染都有内置 lint 把关：印刷等效字号
-地板（`pt = px × 468 / 画布宽`，正文低于 4.5pt 直接拒绝——小字永远到不了
-PDF）、形状感知的文字溢出检查（菱形只有外框 ~55% 的有效宽度、六边形
+地板（`pt = px × 目标版心宽 / 画布宽`，默认 451pt = A4 单栏 `\textwidth`，可按图
+用 `canvas.target_width_mm` 指定双栏宽；正文低于 6.5pt 直接拒绝、低于 7.5pt 告警——
+1680px 画布配 19.5px 字号印出来只有 5.2pt，这种图再也到不了 PDF）、形状感知的文字溢出检查（菱形只有外框 ~55% 的有效宽度、六边形
 ~70%）、遮挡检查（组标签 vs 成员节点、边标签 vs 节点）、层级检查（组
 标签比组内节点小会直接告警）。节点主标**默认加粗**（单节点可用
 `label_bold: false` 取消）。lint 报 error 时 `render_figure` 拒绝出图；

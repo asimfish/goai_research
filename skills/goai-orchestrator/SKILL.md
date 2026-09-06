@@ -53,9 +53,14 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
    排除项写入 `workspace/inputs/scope.md`；材料/实验科学主题的子主题
    分解**必须包含**「近邻/同型体系」与「相图与热力学数据」两个子主题
    （精确目标文献稀少时它们就是主证据来源，lit-search 侧有对应的
-   强制检索面）；**交付语言**同时定死写入 scope.md（用户指定为准，
-   未指定跟随主题语言；它决定 writer 用哪份模板——中文 ctexart、
-   英文 article——中途不得漂移）；`loopctl gate --name scope_confirmed --status PASS`。
+   强制检索面）；**交付语言**同时定死写入 scope.md：用户**明确**指定为准，
+   未指定时**一律英文**（顶刊口径；主题行用中文写**不构成**指定——实跑中
+   中文主题行触发了中文交付，用户并不想要）。scope.md 写成
+   `交付语言: English（默认）` 或 `交付语言: 中文（用户要求：<原话>）`，
+   `loopctl gate scope_confirmed` 的 `--detail` 必须同样写明语言与依据，
+   声明中文而无「用户要求」字样会被拒绝；它决定 writer 用哪份模板——英文
+   article、中文 ctexart——中途不得漂移（`draft_complete` 会按 scope.md 核对
+   正文 CJK 占比）；`loopctl gate --name scope_confirmed --status PASS`。
    **scope 确认分级**（非交互客户端不能卡死在无条件停点上）：
    - 裸主题且范围无实质歧义 → 按 scope.md 已写明的默认值**自动确认**，
      `loopctl log --event decision` 记「scope 自动确认 + 默认值摘要」后
