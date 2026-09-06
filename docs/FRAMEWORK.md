@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](../pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-81%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
+[![Tests](https://img.shields.io/badge/tests-83%20offline%20%2B%20100%20live-brightgreen.svg)](../tests/)
 [![MCP](https://img.shields.io/badge/MCP-4%20servers%20%C2%B7%2025%20tools-8A2BE2.svg)](../server/)
 [![Skills](https://img.shields.io/badge/skills-9%20agents-orange.svg)](../skills/)
 
@@ -189,8 +189,11 @@ a small JSON describing nodes, groups, edges, and texts. One render call emits:
 - `figures/png/<name>.png` — for the agent's own render → self-check → fix loop (≤ 3 rounds)
 
 **Typography is enforced, not hoped for.** A built-in lint guards every render:
-print-equivalent font floors (`pt = px × 468 / canvas_width`, body text below
-4.5 pt is rejected — tiny labels never survive to the PDF), shape-aware text
+print-equivalent font floors (`pt = px × target_width_pt / canvas_width`, default
+target 451 pt = A4 single-column `\textwidth`, overridable per figure via
+`canvas.target_width_mm`; body text below 6.5 pt is rejected and below 7.5 pt
+warned, so a 1680 px canvas with 19.5 px labels — 5.2 pt in print — can no
+longer reach the PDF), shape-aware text
 overflow (a diamond only holds ~55 % of its bounding width, a hexagon ~70 %),
 occlusion checks (group labels vs. member nodes, edge labels vs. nodes), and a
 hierarchy check that flags any group label smaller than its member nodes.
@@ -380,7 +383,7 @@ in-IDE subagents.
 ## 11. 🧪 Testing
 
 ```bash
-.venv/bin/python -m pytest tests/ -q            # 81 offline tests — no network, no LLM
+.venv/bin/python -m pytest tests/ -q            # 83 offline tests — no network, no LLM
 .venv/bin/python -m pytest -m live tests/live/  # live suite — real APIs, real draw.io CLI
 ```
 

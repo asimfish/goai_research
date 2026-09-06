@@ -8,7 +8,7 @@
 
 | # | 阶段 | 执行者 | 出口闸门 | 闸门判据 |
 |---|------|--------|---------|---------|
-| 0 | scoping | orchestrator+人 | `scope_confirmed` | scope.md 有主题/边界/子主题清单/目标篇幅/**交付语言**；材料主题含「近邻/同型体系」「相图与热力学」子主题 |
+| 0 | scoping | orchestrator+人 | `scope_confirmed` | scope.md 有主题/边界/子主题清单/目标篇幅/**交付语言**（默认 English，用户明确要求才中文；`loopctl` 核对声明依据与终稿 CJK 占比）；材料主题含「近邻/同型体系」「相图与热力学」子主题 |
 | 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；档位配额达标（comprehensive ≥100）；材料主题两条强制检索面已做 |
 | 2 | ref_gate | goai-ref-guard | `ref_integrity` | references.bib 零 UNVERIFIED/MISMATCH |
 | 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置；贡献声明经用户确认（不可达时降级记录） |

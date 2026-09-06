@@ -18,7 +18,9 @@ description: Use when drafting the survey manuscript — 综述写作 agent：�
 
 ## 语言契约（scoping 定死，全程一致）
 
-交付语言在 scope.md 里显式记录：用户指定为准；未指定时跟随主题语言。
+交付语言在 scope.md 里显式记录：用户明确指定为准；未指定时**默认英文**
+（主题行是中文不算指定）。`loopctl gate draft_complete` 会按 scope.md 的声明核对
+正文 CJK 占比，语言漂移直接拒绝。
 语言决定模板与排版规范，**禁止中文正文套英文模板**（Abstract/Table 标签
 混排是杂交文档，tex_guard 会告警）：
 - 英文交付 → `templates/survey_main.tex`（article + newtx + pdflatex/xelatex）；
@@ -193,7 +195,16 @@ Open Problems（含 idea-forge 产出） → Conclusion。
 - **表格设计规范**（数据表是综述的门面，按数据形状设计而不是硬塞）：
   - 一张逻辑表**禁止拆成上下两半共享行号**让读者自己拼——列太多时按
     「主题分组拆成多张完整子表」（各自带表头与 caption）、转置、或
-    `landscape` 横排；正文表列数指导线 ≤7，超线必须重新设计；
+    `landscape` 横排；
+  - **列数与单元格长度是硬约束**（tex_guard 规则 10 阻塞）：竖版正文表
+    ≤5 列；6–7 列只能放进 `\begin{landscape}…\end{landscape}`（模板已装
+    pdflscape）或按主题拆成多张子表；≥8 列一律拆。单元格 ≤20 个汉字或
+    ≤40 个拉丁字符，更长的限定语进表注或正文。实跑中 7 列
+    `P{0.12\textwidth}` 的中文条件表把每行挤成 4–5 个字、一页叠两张表，
+    是「排版乱」的主因；
+  - 条件–结果对照表用固定五列：体系/关系 | 路线 | 关键条件（原料·容器/
+    气氛·热程合并一列，分号分隔）| 产物与表征 | 来源；来源关系、比较边界、
+    复现判据一类**元信息不做成表**，写成正文或 ≤3 列的小表；
   - 单元格内容是**读者语言**：禁止出现裸 BibTeX key（tex_guard 直接
     阻塞），来源一律 `\cite{key}` 或「作者 (年份) \cite{key}」；
   - 缺失值统一 — 或「未报道」，禁止整表铺 `\texttt{NA}`；一行内

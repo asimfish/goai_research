@@ -44,6 +44,8 @@ gate 状态语义：
   并发证据   lit_coverage 需 ≥3 条 lit_search done 分片日志、figures_ready ≥2 条
              figures、draft_complete ≥2 条 writing；确属串行须先记 decision 说明
   审稿轮次   review_pass 需回执 trace 所在目录 ≥2 份非占位 trace（对抗审稿两轮起）
+  交付语言   scope_confirmed 的 detail 必须声明语言（默认 English；声明中文须带「用户
+             要求」依据）；draft_complete 按 scope.md 声明核对正文 CJK 占比，漂移拒绝
   合成主题   主题/scope 含合成、制备、生长、烧结、工艺、前驱体等字样时，ideas_reviewed
              不可记「跳过」类 WARN；记 PASS/WARN 需 state/tool_calls.jsonl 里有账本
              建立之后的 predict_precursor_routes 调用，且 ideas/ 下有写明推荐工艺与
@@ -111,6 +113,15 @@ IDEAS_SKIP_RE = re.compile(r"skip|跳过|未要求|可选|不生成|不给出", 
 IDEAS_OUTPUT_RE = (re.compile(r"前驱体|precursor", re.I),
                    re.compile(r"工艺|路线|route|process", re.I))
 SCOPE_FILES = ("notes/scope.md", "inputs/scope.md", "state/scope.md")
+
+# 交付语言：用户明确要求才出中文，未指定一律英文（主题行是中文不算要求）。
+# 实跑中中文主题行触发了中文交付而用户并不想要。scope_confirmed 的 detail 必须声明
+# 语言；声明中文必须带「用户要求」依据；draft_complete 按 scope.md 声明核对正文 CJK 占比。
+LANG_DECL_RE = re.compile(r"English|英文|中文|Chinese|语言|language", re.I)
+LANG_ZH_RE = re.compile(r"中文|Chinese", re.I)
+LANG_ZH_EVIDENCE_RE = re.compile(r"用户要求|用户指定|user (?:asked|requested|specified)|per user", re.I)
+CJK_CHAR_RE = re.compile(r"[\u4e00-\u9fff]")
+CJK_RATIO_ZH_DOC = 0.05
 
 
 def _topic_text(lg: dict) -> str:
@@ -182,6 +193,64 @@ def _ideas_problem(lg: dict, name: str, status: str, detail: str) -> str | None:
     if not _ideas_outputs():
         return ("缺 ideas 产出：ideas/ 下没有同时写明推荐工艺与前驱体的 .md/.json"
                 "（方向→依据→推荐工艺→前驱体→关键变量→安全提示 表）")
+    return None
+
+
+def _language_decl_problem(name: str, status: str, detail: str) -> str | None:
+    if name != "scope_confirmed" or status not in ("PASS", "WARN"):
+        return None
+    if not LANG_DECL_RE.search(detail or ""):
+        return ("scope_confirmed 的 --detail 必须写明交付语言（默认 English；用户明确要求才中文），"
+                "例如 \"…；交付语言 English（默认）\"")
+    if LANG_ZH_RE.search(detail) and not LANG_ZH_EVIDENCE_RE.search(detail):
+        return ("声明中文交付必须带依据「用户要求：<原话>」——主题行是中文不构成要求，"
+                "未指定一律英文（顶刊口径）")
+    return None
+
+
+def _scope_language() -> str | None:
+    """从 scope.md 读交付语言声明：'zh' / 'en' / None（未声明）。"""
+    for rel in SCOPE_FILES:
+        path = os.path.join(_ws(), rel)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if re.search(r"交付语言|delivery language", line, re.I):
+                        return "zh" if LANG_ZH_RE.search(line) else "en"
+        except OSError:
+            pass
+    return None
+
+
+def _language_drift_problem(name: str, status: str) -> str | None:
+    """终稿语言必须与 scope.md 声明一致：英文稿 CJK 占比 > 5% 或中文稿 < 5% 都拒绝。"""
+    if name != "draft_complete" or status != "PASS":
+        return None
+    declared = _scope_language()
+    if declared is None:
+        return None
+    drafts = os.path.join(_ws(), "drafts")
+    body = []
+    for root, _dirs, files in os.walk(drafts):
+        for f in files:
+            if f.lower().endswith(".tex"):
+                try:
+                    with open(os.path.join(root, f), encoding="utf-8", errors="replace") as fh:
+                        body.append("\n".join(l.split("%", 1)[0] for l in fh))
+                except OSError:
+                    pass
+    text = "\n".join(body)
+    letters = [ch for ch in text if ch.isalpha()]
+    if len(letters) < 2000:
+        return None   # 稿件太短，不足以判断
+    ratio = sum(1 for ch in letters if CJK_CHAR_RE.match(ch)) / len(letters)
+    if declared == "en" and ratio > CJK_RATIO_ZH_DOC:
+        return (f"语言漂移：scope.md 声明英文交付，正文字母中 CJK 占 {ratio:.0%}——"
+                "按声明重写正文/图注/表格，或先修正 scope.md（需用户明确要求中文）")
+    if declared == "zh" and ratio < CJK_RATIO_ZH_DOC:
+        return (f"语言漂移：scope.md 声明中文交付，正文 CJK 仅占 {ratio:.0%}")
     return None
 
 
@@ -428,7 +497,9 @@ def cmd_gate(args) -> None:
     for check in (_prereq_problem(lg, args.name, args.status),
                   _concurrency_problem(lg, args.name, args.status),
                   _ideas_problem(lg, args.name, args.status, args.detail or ""),
-                  _synthesis_draft_problem(lg, args.name, args.status)):
+                  _synthesis_draft_problem(lg, args.name, args.status),
+                  _language_decl_problem(args.name, args.status, args.detail or ""),
+                  _language_drift_problem(args.name, args.status)):
         if check:
             sys.exit(f"拒绝: gate {args.name} 记 {args.status} —— {check}")
     if args.name == "review_pass" and args.status == "PASS":

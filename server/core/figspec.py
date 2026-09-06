@@ -134,12 +134,15 @@ def loads(text: str) -> dict[str, Any]:
 
 # ---------------------------------------------------------------- typography
 # 排版 lint：字号按「印刷等效 pt」检查（图以 target_width_pt 排入论文时的实际
-# 字号 = px * target_width_pt / canvas_width）。地板对应顶会图最低可读性。
+# 字号 = px * target_width_pt / canvas_width）。地板对应顶刊示意图的可读字号：
+# 节点/边标/脚注 ≥ 7.5pt 才与脚注字号相当，< 6.5pt 印出来就是一团小字。
+# 实跑教训：4.5/5.2pt 的旧地板放过了 1680px 画布 + 19.5px 字号（印刷 5.2pt）的三张图。
+# 双栏图或半宽图在 figspec 里写 canvas.target_width_mm（84 = 双栏单列）/ target_width_pt。
 TYPO = {
-    "target_width_pt": 468,      # \textwidth（1in margin US letter）
-    "body_min_pt": 4.5,          # 正文/边标/脚注：低于此值 = error
-    "body_good_pt": 5.2,         # 低于此值 = warning（建议加大）
-    "title_min_pt": 7.0,         # 标题 warning 线
+    "target_width_pt": 451,      # \textwidth（A4，1in margin）；US letter 为 468，取小者保守
+    "body_min_pt": 6.5,          # 正文/边标/脚注/副文：低于此值 = error
+    "body_good_pt": 7.5,         # 低于此值 = warning（建议加大）
+    "title_min_pt": 9.0,         # 标题 warning 线
     # 各形状的有效文本区（宽比例 × 高比例），与 render_svg.TEXT_WIDTH_RATIO 对齐
     "text_area": {
         "diamond": (0.55, 0.52), "hexagon": (0.70, 0.76), "ellipse": (0.72, 0.70),
@@ -248,6 +251,17 @@ def _est_text_w(s: str, fs: float, bold: bool = False) -> float:
     return max((text_units(ln, bold) for ln in (s or "").split("\n")), default=0) * fs
 
 
+def target_width_pt(spec: dict[str, Any]) -> float:
+    """图排入论文后的目标宽度（pt）。figspec 的 canvas.target_width_pt / target_width_mm
+    优先（双栏单列 84mm、半宽图等），否则按单栏满宽 \textwidth。"""
+    canvas = spec.get("canvas") or {}
+    if isinstance(canvas.get("target_width_pt"), (int, float)) and canvas["target_width_pt"] > 0:
+        return float(canvas["target_width_pt"])
+    if isinstance(canvas.get("target_width_mm"), (int, float)) and canvas["target_width_mm"] > 0:
+        return float(canvas["target_width_mm"]) * 72 / 25.4
+    return float(TYPO["target_width_pt"])
+
+
 def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
     """排版质量检查 → {"errors": [...], "warnings": [...]}。
 
@@ -259,8 +273,10 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
     """
     errors: list[str] = []
     warnings: list[str] = []
-    W = (spec.get("canvas") or {}).get("width") or 1
-    scale = TYPO["target_width_pt"] / W
+    canvas = spec.get("canvas") or {}
+    W = canvas.get("width") or 1
+    target_pt = target_width_pt(spec)
+    scale = target_pt / W
     d = spec.get("defaults") or {}
 
     def check_pt(px: float, what: str, is_title: bool = False) -> None:
@@ -271,8 +287,10 @@ def lint(spec: dict[str, Any]) -> dict[str, list[str]]:
                                 f"（标题建议 ≥{TYPO['title_min_pt']}pt）")
             return
         if pt < TYPO["body_min_pt"]:
-            errors.append(f"{what}: {px}px ≈ {pt:.1f}pt 印刷不可读"
-                          f"（下限 {TYPO['body_min_pt']}pt，请加大字号或缩小画布）")
+            max_w = int(px * target_pt / TYPO["body_min_pt"])
+            errors.append(f"{what}: {px}px 排入 {target_pt:.0f}pt 版心后 ≈ {pt:.1f}pt，印刷不可读"
+                          f"（下限 {TYPO['body_min_pt']}pt：把画布宽压到 ≤{max_w}px，"
+                          f"或把字号加到 ≥{TYPO['body_min_pt'] * W / target_pt:.0f}px）")
         elif pt < TYPO["body_good_pt"]:
             warnings.append(f"{what}: {px}px ≈ {pt:.1f}pt 偏小"
                             f"（建议 ≥{TYPO['body_good_pt']}pt）")

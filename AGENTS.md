@@ -66,7 +66,9 @@
     “文献依据、实验项目、结构关系、合成条件、表征方法、可外推范围”等学科
     表达；组稿后必须运行 `tools/academic_language_guard.py`。裸 BibTeX key
     同样不得进入读者可见文本（`tex_guard` 直接阻塞）。交付语言以 scope.md
-    为准，中文稿用 `templates/survey_main_zh.tex`，禁止套英文模板。
+    为准：用户明确要求才出中文，**未指定一律英文**（主题行是中文不算要求）；
+    `loopctl` 拒绝无「用户要求」依据的中文声明，并按声明核对终稿 CJK 占比。
+    中文稿用 `templates/survey_main_zh.tex`，禁止套英文模板。
 14. **图纸美学是闸门**：`render_figure` 对配色 ≥4 色系、彩虹泳道、越界直接
     拒绝；其余美学告警（近失对齐、尺寸漂移、间距、连线穿节点、描边档数…）
     要么改 figspec 消掉，要么在 figure_plan.md 逐条写明保留理由，否则不得置
