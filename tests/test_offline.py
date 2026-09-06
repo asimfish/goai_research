@@ -1393,9 +1393,31 @@ def test_preflight_tex_check_reports_shape():
     for key in ("ok", "english_template_ok", "chinese_template_ok", "engines",
                 "packages", "cjk", "missing_packages", "missing_cjk"):
         assert key in result, result
-    assert set(result["engines"]) == {"xelatex", "pdflatex", "latexmk", "bibtex"}
+    assert set(result["engines"]) == {"xelatex", "pdflatex", "latexmk", "bibtex", "tectonic"}
+    assert "tectonic_smoke" in result
     if not result["ok"]:
         assert result["hint"] and "禁止" in result["hint"]
+
+
+def test_preflight_tex_accepts_tectonic_via_smoke_compile(tmp_path, monkeypatch):
+    """只有 tectonic（无 kpsewhich）的机器：预检用真实编译判定，而不是因缺 xelatex 直接判无 TeX。"""
+    from tools import preflight
+    fake = tmp_path / "bin" / "tectonic"
+    fake.parent.mkdir()
+    fake.write_text("#!/bin/bash\n# 假 tectonic：见到 ctexart 就失败（模拟缺中文宏包），其余写出 pdf\n"
+                    "grep -q ctexart t.tex && exit 1; echo pdf > t.pdf\n", encoding="utf-8")
+    fake.chmod(0o755)
+    # 假引擎目录放在 PATH 最前；保留系统目录让 grep/echo 可用，并遮住真机可能存在的 xelatex
+    monkeypatch.setenv("PATH", f"{fake.parent}:/usr/bin:/bin")
+    import shutil
+    real_which = shutil.which
+    monkeypatch.setattr(shutil, "which", lambda n, *a, **k: None if n in ("xelatex", "pdflatex", "kpsewhich") else real_which(n, *a, **k))
+    monkeypatch.setattr(preflight, "ROOT", tmp_path)          # 缓存写到临时目录
+    result = preflight._check_tex()
+    assert result["engines"]["tectonic"] == str(fake)
+    assert result["english_template_ok"] is True and result["ok"] is True
+    assert result["chinese_template_ok"] is False
+    assert result["tectonic_smoke"]["en"] is True and result["tectonic_smoke"]["zh"] is False
 
 
 # ---------- bib_polish / tex_polish：确定性排版修补 ----------

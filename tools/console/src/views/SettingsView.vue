@@ -24,7 +24,10 @@ onMounted(async () => {
           <NDescriptionsItem label="仓库"><span class="mono">{{ config.repo }}</span></NDescriptionsItem>
           <NDescriptionsItem label="新运行目录"><span class="mono">{{ config.runs_root }}</span><NText depth="3">（--runs-root；每次发起新建 &lt;时间戳&gt;_&lt;后缀&gt;）</NText></NDescriptionsItem>
           <NDescriptionsItem label="CODEX_HOME"><span class="mono">{{ config.codex_home }}</span> <NTag size="small" :type="(config.codex_login || '').includes('Logged in') ? 'success' : 'warning'" :bordered="false">{{ config.codex_login || '未探测' }}</NTag> <NTag size="small" :bordered="false">{{ config.codex_version || '?' }}</NTag></NDescriptionsItem>
+          <NDescriptionsItem label="Codex 账号"><span class="mono">{{ config.codex_email || '未读到（auth.json 缺失或格式不同）' }}</span></NDescriptionsItem>
           <NDescriptionsItem label="默认模型 / 推理强度"><span class="mono">{{ config.model }} / {{ config.effort }}</span><NText depth="3">（--model / --effort，发起时可改）</NText></NDescriptionsItem>
+          <NDescriptionsItem label="备用模型"><span class="mono">{{ config.model_fallback || '不切换' }}</span><NText depth="3">（--model-fallback；编排器连续三次容量不足后切换）</NText></NDescriptionsItem>
+          <NDescriptionsItem label="出网代理"><span class="mono">{{ config.proxy || '未设置' }}</span><NText depth="3">（来自 --private-corpus-env 文件里的 HTTPS_PROXY）</NText></NDescriptionsItem>
           <NDescriptionsItem label="公开精简语料"><span class="mono">{{ config.public_corpus }}</span></NDescriptionsItem>
           <NDescriptionsItem label="私有全库语料">
             <template v-if="config.private_corpus_available"><span class="mono">{{ config.private_corpus_roots }}</span> <NTag size="small" type="success" :bordered="false">可用</NTag></template>

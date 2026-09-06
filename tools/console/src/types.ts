@@ -211,6 +211,10 @@ export interface ConsoleConfig {
   codex_version: string | null
   model: string
   effort: string
+  model_fallback?: string | null
+  codex_email?: string | null
+  codex_path?: string | null
+  proxy?: string | null
   private_corpus_available: boolean
   private_corpus_roots: string | null
   public_corpus: string

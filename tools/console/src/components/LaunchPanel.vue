@@ -16,6 +16,7 @@ const privateCorpus = ref(false)
 const model = ref('')
 const effort = ref('')
 const slug = ref('')
+const fallback = ref('')
 const submitting = ref(false)
 const input = ref<InstanceType<typeof NInput> | null>(null)
 
@@ -23,6 +24,7 @@ function fillDefaults() {
   if (!props.config) return
   model.value = model.value || props.config.model
   effort.value = effort.value || props.config.effort
+  fallback.value = fallback.value || props.config.model_fallback || ''
   if (props.config.private_corpus_available && !topic.value) privateCorpus.value = true
 }
 watch(() => props.config, fillDefaults, { immediate: true })
@@ -31,6 +33,7 @@ watch(() => props.focus, (f) => { if (f) setTimeout(() => input.value?.focus(), 
 const modelOptions = computed(() => (props.config?.models || []).map((m) => ({ label: m, value: m })))
 const effortOptions = computed(() => (props.config?.efforts || []).map((m) => ({ label: m, value: m })))
 const effortLabel = (o: SelectOption) => `推理强度 ${o.label}`
+const fallbackOptions = computed(() => [{ label: '不切换模型', value: '' }].concat((props.config?.models || []).filter((m) => m !== model.value).map((m) => ({ label: `容量不足时改用 ${m}`, value: m }))))
 const loggedIn = computed(() => (props.config?.codex_login || '').includes('Logged in'))
 const preview = computed(() => topic.value.trim().replace(/^调研主题：/, '').replace(/[。．.]$/, ''))
 
@@ -40,7 +43,7 @@ async function submit() {
   try {
     // 交付语言写进主题行：编排器定范围时以用户指定为准（skills/goai-orchestrator 语言契约）
     const topicLine = language.value === 'en' && !/english|英文/i.test(preview.value) ? `${preview.value}（English delivery）` : preview.value
-    const r = await api.launch({ topic: topicLine, corpus: privateCorpus.value ? 'private' : 'public', model: model.value, effort: effort.value, slug: slug.value || undefined })
+    const r = await api.launch({ topic: topicLine, corpus: privateCorpus.value ? 'private' : 'public', model: model.value, effort: effort.value, slug: slug.value || undefined, model_fallback: fallback.value || undefined })
     message.success(`研究已开始：${r.path.split('/').pop()}`)
     emit('launched', r.id)
     topic.value = ''; slug.value = ''
@@ -82,12 +85,17 @@ async function submit() {
           <NSelect v-model:value="effort" :options="effortOptions" size="small" style="width: 150px" :render-label="effortLabel" />
           <NInput v-model:value="slug" size="small" placeholder="目录名后缀（可选）" style="width: 170px" />
         </div>
+        <div class="adv-row" style="margin-top: 8px; align-items: center">
+          <NSelect v-model:value="fallback" :options="fallbackOptions" size="small" style="width: 280px" />
+          <span class="dim small">编排器连续三次遇到「模型容量不足」才切换，切换会记入账本</span>
+        </div>
+        <div class="dim small" style="margin-top: 8px">Codex 账号：<span class="mono">{{ config?.codex_email || '未知' }}</span> · {{ config?.codex_home }}</div>
         <div class="mono small dim" style="margin-top: 8px; word-break: break-all">bash scripts/reproduce_core.sh --topic "…" --workdir {{ config?.runs_root }}/&lt;时间戳&gt;_&lt;后缀&gt;</div>
       </NCollapseItem>
     </NCollapse>
 
     <div class="facts small dim">
-      <span>11 个研究阶段</span><span>9 项质量检查</span><span>可随时终止，过程可回放</span>
+      <span>11 个研究阶段</span><span>9 项质量检查</span><span>{{ model }} / {{ effort }}</span><span>可随时终止，过程可回放</span>
     </div>
     <NButton type="primary" size="large" block :loading="submitting" @click="submit" style="height: 48px; font-size: 16px">开始研究</NButton>
   </div>

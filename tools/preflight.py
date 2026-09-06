@@ -83,7 +83,7 @@ def _check_tex() -> dict[str, Any]:
     import shutil
     import subprocess
 
-    engines = {name: shutil.which(name) for name in ("xelatex", "pdflatex", "latexmk", "bibtex")}
+    engines = {name: shutil.which(name) for name in ("xelatex", "pdflatex", "latexmk", "bibtex", "tectonic")}
     kpsewhich = shutil.which("kpsewhich")
 
     def found(fname: str) -> bool:
@@ -99,21 +99,72 @@ def _check_tex() -> dict[str, Any]:
     cjk = {f: found(f) for f in TEX_CJK_FILES}
     missing_pkgs = sorted({TEX_REQUIRED_FILES[f] for f, ok in packages.items() if not ok})
     missing_cjk = sorted({TEX_CJK_FILES[f] for f, ok in cjk.items() if not ok})
-    ok_en = bool(engines["xelatex"] or engines["pdflatex"]) and bool(engines["bibtex"]) and not missing_pkgs
-    ok_zh = bool(engines["xelatex"]) and ok_en and not missing_cjk
+    # tectonic 是自带 XeTeX + BibTeX、按需从网络拉宏包的单二进制：没有 kpsewhich，宏包/字体检查
+    # 无法本地回答，改用「真的编译一次模板」来判定（scripts/build_tex.sh 也走这条路径）。
+    tectonic_en = tectonic_zh = False
+    tectonic_log = None
+    if engines["tectonic"] and not (engines["xelatex"] or engines["pdflatex"]):
+        tectonic_en, tectonic_zh, tectonic_log = _tectonic_smoke(engines["tectonic"])
+        if tectonic_en:
+            missing_pkgs = []
+        if tectonic_zh:
+            missing_cjk = []
+    ok_en = (bool(engines["xelatex"] or engines["pdflatex"]) and bool(engines["bibtex"]) and not missing_pkgs) or tectonic_en
+    ok_zh = (bool(engines["xelatex"]) and ok_en and not missing_cjk) or tectonic_zh
     hint = None
     if not ok_en:
         hint = ("TeX 工具链不完整：draft_complete 不得 PASS，交付 main.tex+bib+figures 并在终报"
                 "写明『PDF 未编译』；禁止用 groff/HTML→Chrome 渲染 PDF 冒充。安装：TeX Live 完整版，"
                 "或用户级 install-tl 后 `tlmgr install " + " ".join(missing_pkgs or ["newtx"]) +
-                "`，或 tectonic（单二进制、自动拉包）。")
+                "`，或 tectonic（单二进制、自动拉包；在 PATH 上即可被本预检识别）。")
     elif not ok_zh:
         hint = ("英文模板可编译；中文模板还缺 " + ", ".join(missing_cjk) +
                 "（`tlmgr install ctex fandol`），且必须用 xelatex。")
     return {"ok": ok_en, "english_template_ok": ok_en, "chinese_template_ok": ok_zh,
             "engines": engines, "kpsewhich": kpsewhich, "packages": packages,
             "cjk": cjk, "missing_packages": missing_pkgs, "missing_cjk": missing_cjk,
-            "hint": hint}
+            "tectonic_smoke": tectonic_log, "hint": hint}
+
+
+def _tectonic_smoke(tectonic: str) -> tuple[bool, bool, dict[str, Any]]:
+    """用 templates/ 的两份模板各编一个最小文档；成功即视为该语言的工具链齐全。结果缓存 24 小时
+    （宏包拉取后本地有缓存，之后每次几秒）。"""
+    import json as _json
+    import subprocess
+    import tempfile
+    import time
+
+    cache = ROOT / ".cache" / "tectonic_smoke.json"
+    try:
+        c = _json.loads(cache.read_text(encoding="utf-8"))
+        if time.time() - c.get("ts", 0) < 86400 and c.get("tectonic") == tectonic:
+            return bool(c.get("en")), bool(c.get("zh")), c
+    except (OSError, ValueError):
+        pass
+    res: dict[str, Any] = {"ts": time.time(), "tectonic": tectonic, "en": False, "zh": False, "errors": {}}
+    docs = {
+        "en": ("\\documentclass{article}\\usepackage{amsmath}\\usepackage{newtxtext}\\usepackage[nonewtxmathopt]{newtxmath}"
+               "\\usepackage{booktabs}\\usepackage{titlesec}\\usepackage{fancyhdr}\\usepackage[colorlinks]{hyperref}"
+               "\\begin{document}\\section{Test}Hello $x^2$.\\end{document}"),
+        "zh": ("\\documentclass{ctexart}\\usepackage{amsmath}\\usepackage{booktabs}\\usepackage[colorlinks]{hyperref}"
+               "\\begin{document}\\section{测试}中文 $x^2$。\\end{document}"),
+    }
+    for lang, src in docs.items():
+        with tempfile.TemporaryDirectory() as td:
+            Path(td, "t.tex").write_text(src, encoding="utf-8")
+            try:
+                out = subprocess.run([tectonic, "-X", "compile", "t.tex"], cwd=td, capture_output=True, text=True, timeout=900)
+                res[lang] = out.returncode == 0 and Path(td, "t.pdf").exists()
+                if not res[lang]:
+                    res["errors"][lang] = (out.stderr or out.stdout)[-600:]
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                res["errors"][lang] = str(exc)
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(_json.dumps(res, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
+    return bool(res["en"]), bool(res["zh"]), res
 
 
 def main() -> int:

@@ -105,8 +105,8 @@ const themeOverrides = {
                 <span><span class="st-dot" :class="services && services.online === services.total ? 'ok' : 'warn'" />{{ services ? `${services.online} 项服务在线` : '服务状态…' }}</span>
               </template>四个 MCP 服务（文献检索 / 引用核查 / 图纸 / 逆合成）的源码是否就位</NTooltip>
               <NTooltip v-if="config"><template #trigger>
-                <span><span class="st-dot" :class="loggedIn ? 'ok' : 'warn'" />Codex {{ loggedIn ? '已登录' : '未登录' }}</span>
-              </template>{{ config.codex_version }} · CODEX_HOME={{ config.codex_home }} · 默认 {{ config.model }} / {{ config.effort }}</NTooltip>
+                <span><span class="st-dot" :class="loggedIn ? 'ok' : 'warn'" />Codex {{ loggedIn ? (config.codex_email ? config.codex_email.split(' · ')[0] : '已登录') : '未登录' }}</span>
+              </template>{{ config.codex_version }} · {{ config.codex_email || '未读到账号' }} · CODEX_HOME={{ config.codex_home }} · 默认 {{ config.model }} / {{ config.effort }}<template v-if="config.model_fallback"> · 备用 {{ config.model_fallback }}</template><template v-if="config.proxy"> · 代理 {{ config.proxy }}</template></NTooltip>
               <NTooltip v-if="config"><template #trigger>
                 <span><span class="st-dot" :class="config.private_corpus_available ? 'ok' : 'wait'" />{{ config.private_corpus_available ? '私有全库可用' : '公开精简语料' }}</span>
               </template>{{ config.private_corpus_roots || config.public_corpus }}</NTooltip>

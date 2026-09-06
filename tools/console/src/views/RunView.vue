@@ -63,11 +63,32 @@ function schedule() { if (timer) clearInterval(timer); timer = window.setInterva
 onMounted(async () => { await tick(); schedule(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
 /** 失败 / 终止的运行：自动读启动日志，把最后一条错误直接放到横幅下 */
 watch(() => info.value?.status, async (s) => { if ((s === 'failed' || s === 'stopped' || s === 'ended') && !launcherLog.value) await loadLauncherLog() }, { immediate: true })
+/** 编排器事件流里最近的错误（容量不足 / 网络 / 用量上限），比 stderr 更接近真实原因 */
+const orchError = computed(() => {
+  const orch = (st.value?.tasks || []).filter((t) => t.kind === 'orchestrator')
+  for (const t of orch.slice().reverse()) {
+    for (let i = t.recent.length - 1; i >= 0; i--) {
+      const ev = t.recent[i]
+      if (ev.kind === 'error' && ev.text) return ev.text
+      if (['message', 'command', 'mcp'].includes(ev.kind)) break
+    }
+  }
+  return ''
+})
 const failReason = computed(() => {
-  if (info.value?.status !== 'failed' || !launcherLog.value) return ''
+  if (info.value?.status !== 'failed') return ''
+  if (orchError.value) return /at capacity/i.test(orchError.value) ? `模型容量不足：${orchError.value}（换一个模型，或在高级选项里设置备用模型后重新发起）` : orchError.value.slice(0, 300)
+  if (!launcherLog.value) return ''
   const lines = (launcherLog.value.stderr || '').replace(/\x1b\[[0-9;]*m/g, '').split('\n').map((l) => l.trim()).filter((l) => l && !/^Reading additional input/.test(l))
   const err = lines.find((l) => /error|失败|not found|denied|Traceback|退出|拒绝/i.test(l)) || lines[0] || ''
   return err.slice(0, 300)
+})
+/** 运行中但编排器正在重连 / 等容量：横幅下给一句提示 */
+const transient = computed(() => {
+  if (info.value?.status !== 'running' || !orchError.value) return ''
+  if (/at capacity|usage limit|rate limit/i.test(orchError.value)) return '模型容量不足：编排器已退出，脚本会等待约 3 分钟后从账本续跑（最多 6 次）'
+  if (/Reconnecting|waiting for network|timed out/i.test(orchError.value)) return `网络不稳定，Codex 正在重连：${oneLine(orchError.value, 120)}`
+  return ''
 })
 watch(interval, schedule)
 watch(() => props.id, async () => { st.value = null; feed.value = []; lastSeq = 0; await tick(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
@@ -184,6 +205,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
         <div class="banner-text">{{ headline }}</div>
         <div class="small dim">{{ elapsedText }}<template v-if="elapsedText"> · </template>最近更新 {{ ago(info.last_activity, st.now) }}<template v-if="info.launcher.stopped"> · 于 {{ info.launcher.stopped }} 终止</template></div>
         <div v-if="failReason" class="fail-reason small"><span class="mono">{{ failReason }}</span> <a @click="showEvents = true">查看启动日志 ›</a></div>
+        <div v-else-if="transient" class="fail-reason small warn">{{ transient }}</div>
       </div>
     </div>
 
@@ -204,10 +226,10 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
           <span class="card-h">{{ running.length ? '正在工作的角色' : (info.status === 'running' ? '角色' : '最近工作的角色') }}</span>
           <span class="dim small">{{ running.length ? `${running.length} 个角色活跃 · ` : '' }}{{ doneRoles }} 个角色已完成</span>
         </div>
-        <div v-if="active.length" class="agent-grid">
+        <div v-if="active.length" class="agent-grid" :class="{ wrap: active.length > 3 }">
           <template v-for="(t, i) in active" :key="t.key">
             <ActiveAgentCard :task="t" :now="st.now" @open="(k) => (openKey = k)" />
-            <span v-if="i < active.length - 1" class="conn" />
+            <span v-if="active.length <= 3 && i < active.length - 1" class="conn" />
           </template>
         </div>
         <NEmpty v-else description="编排器完成定范围后会派出第一批角色（文献检索 ∥ 风格库）" style="margin: 30px 0" />
@@ -301,13 +323,14 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
 .banner-text { font-size: 18px; line-height: 26px; font-weight: 600; }
 .fail-reason { margin-top: 6px; color: var(--cinnabar); background: var(--cinnabar-soft); border-radius: 8px; padding: 6px 10px; word-break: break-all; }
 .fail-reason a { cursor: pointer; color: var(--ink); text-decoration: underline; margin-left: 6px; }
+.fail-reason.warn { color: var(--amber); background: var(--amber-soft); }
 .row1 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
 .row2 { display: grid; grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr); gap: 16px; margin-bottom: 16px; }
 .progress, .checks, .agents, .issues { padding: 18px 22px; }
 .ph { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; gap: 10px; }
 .agent-grid { display: flex; align-items: stretch; gap: 0; }
 .agent-grid > .agent, .agent-grid > :deep(.agent) { flex: 1; min-width: 0; }
-.agent-grid.wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.agent-grid.wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
 .conn { width: 22px; height: 1.5px; background: #C9CCC6; align-self: center; flex: none; }
 .issue-list { display: flex; flex-direction: column; gap: 10px; }
 .issue { border-left: 3px solid var(--amber); background: var(--amber-soft); border-radius: 0 10px 10px 0; padding: 10px 14px; cursor: pointer; }

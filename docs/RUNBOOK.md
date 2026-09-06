@@ -33,7 +33,7 @@ GOAI_WORKSPACE=$(ls -dt workspace_repro_* | head -1) python3 tools/live_view.py 
 | Codex | `codex-cli 0.153.4`（`~/.nvm/versions/node/v24.19.0/bin/codex`） | **`~/.codex` 未登录，`~/.codex_rev` 已登录（ChatGPT）**，运行前 `export CODEX_HOME=$HOME/.codex_rev`；模型默认 `gpt-5.6-sol` / `xhigh` |
 | MCP profile | `$CODEX_HOME/<name>.config.toml`（profile v2，`-p <name>` 叠加到基础配置上） | `reproduce_core.sh` 每次自动生成 `goai_repro_<时间戳>.config.toml`；手工跑参考 `configs/codex.config.toml.example` |
 | 语料 | NAS 已挂载（CIFS `//truenas/nas` → `/mnt/nas/data`） | 私有全库路径见 §3 |
-| TeX | `tools/check.sh --tex` 通过才允许进 writing | 缺 TeX 时流水线 fail-closed，不会用回退渲染器造假 PDF |
+| TeX | `tools/check.sh --tex` 通过才允许进 writing；5090 上是用户级 `~/.local/bin/tectonic 0.17`（自带 XeTeX/BibTeX，按需拉宏包），预检用真实编译两份模板判定并缓存 24h | 缺 TeX 时流水线 fail-closed，不会用回退渲染器造假 PDF |
 
 预检一次说清所有依赖：
 
@@ -48,13 +48,22 @@ bash tools/check.sh --servers --corpus --retro --tex     # 四个 server 可导�
 ### 2.0 控制台（`tools/console_server.py` + `tools/console/`）
 
 ```bash
-# 5090 上的常驻方式（~/goai_console.sh 就是这几行）
-cd /home/gaojing/goai_research && export CODEX_HOME=/home/gaojing/.codex_rev
-python3 tools/console_server.py --port 5051 --codex-home /home/gaojing/.codex_rev \
+# 5090 上由 systemd 用户服务常驻：~/.config/systemd/user/goai-console.service → /bin/bash ~/goai_console.sh
+systemctl --user status goai-console      # 看状态；改了 ~/goai_console.sh 后 systemctl --user restart goai-console
+# ~/goai_console.sh 的内容（账号 / 模型 / PATH / 历史目录 / 私有语料与代理都在这一处）：
+cd /home/gaojing/goai_research
+export CODEX_HOME=/home/gaojing/.codex                                   # 当前账号（2026-09-06 起）；旧账号在 ~/.codex_rev
+export PATH="$(ls -d /home/gaojing/.nvm/versions/node/*/bin | tail -1):/home/gaojing/.local/bin:$PATH"   # nvm 的 codex + 用户级 tectonic
+python3 tools/console_server.py --port 5051 --codex-home /home/gaojing/.codex \
+  --model gpt-5.6-luna --effort max --model-fallback gpt-5.6-sol \
   --workspace-glob "/home/gaojing/goai_cold_*/workspace" \
   --workspace-glob "/home/gaojing/goai_synthesis_runs/*/0*" \
-  --private-corpus-env /home/gaojing/goai_console.env      # 三个 GOAI_LOCAL_CORPUS_* 变量，仓库外文件
+  --private-corpus-env /home/gaojing/goai_console.env      # GOAI_LOCAL_CORPUS_* 三个变量 + HTTPS_PROXY 等代理变量，仓库外文件
 ```
+
+服务单元设 `KillMode=process`：`systemctl --user restart goai-console` 只重启控制台本身，由它发起的研究运行留在原地继续跑，重启后的控制台按 `launcher.pid` 自动接管（进程结束时补写 exit / status）。⚠ 早期版本用默认的 control-group 模式，重启服务会把所有运行一起杀掉——如果看到「控制台服务重启时运行被一并结束」就是那次的记录。
+
+服务环境里没有 `.bashrc`：代理、nvm、`~/.local/bin` 都要在脚本或 env 文件里显式给出，否则 codex 连不上 OpenAI（表现为一直 Reconnecting）、找不到 codex 命令、或 TeX 预检失败导致最终不出 PDF。`reproduce_core.sh` 自己也会把找到的 tectonic / xelatex 目录加进 PATH，并在模型容量不足时退避续跑（最多 6 次；设 `GOAI_MODEL_FALLBACK` 可在第三次后切换模型）。
 
 | 页面 | 内容 |
 |---|---|

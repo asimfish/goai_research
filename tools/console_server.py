@@ -304,7 +304,55 @@ class Workspaces:
         self.monitors: dict[str, live_view.Monitor] = {}
         self.monitor_touch: dict[str, float] = {}
         self.launched: dict[str, subprocess.Popen] = {}
+        self.adopted: set[str] = set()
         self.lock = threading.Lock()
+        self.adopt_orphans()
+
+    # -- 服务重启后接管仍在跑的运行 -------------------------------------------------
+    def adopt_orphans(self) -> None:
+        """控制台重启后，之前由它发起、进程仍存活的运行没有人再给它写 launcher.exit；
+        这里按 launcher.pid 接管：轮询到进程结束时补齐 exit / finished / status（退出码无法得知，
+        以 REPRODUCTION_RECEIPT.json 是否存在判成败）。服务单元用 KillMode=process，重启不再连带杀子进程。"""
+        for path in self.candidate_paths():
+            pid_txt = live_view.read_text(os.path.join(path, "launcher.pid")).strip()
+            if not pid_txt or os.path.exists(os.path.join(path, "launcher.exit")):
+                continue
+            wid = ws_id(path)
+            if wid in self.launched or wid in self.adopted:
+                continue
+            if _pid_alive(pid_txt):
+                self.adopted.add(wid)
+                threading.Thread(target=self._watch_adopted, args=(wid, path, int(pid_txt)), daemon=True).start()
+                print(f"[console] adopted running launcher pid={pid_txt} {os.path.basename(path)}", file=sys.stderr)
+            else:
+                # 进程已不在却没有 exit 记录：上一任服务被杀时把它一起带走了（或机器重启），如实标记
+                self._finalize_dead(path, note="控制台服务重启时运行被一并结束（无退出码）")
+
+    def _watch_adopted(self, wid: str, path: str, pid: int) -> None:
+        while _pid_alive(pid):
+            time.sleep(3)
+        self.adopted.discard(wid)
+        if os.path.exists(os.path.join(path, "launcher.exit")):
+            return
+        ok = os.path.exists(os.path.join(path, "state", "REPRODUCTION_RECEIPT.json"))
+        stopped = os.path.exists(os.path.join(path, "launcher.stopped"))
+        self._finalize_dead(path, exit_code="0" if ok else "1", status="STOPPED" if stopped else ("PASS" if ok else "FAIL"),
+                            note=None if (ok or stopped) else "由重启后的控制台接管；进程结束但未产出复现回执，按失败记录（退出码未知）")
+
+    @staticmethod
+    def _finalize_dead(path: str, exit_code: str = "137", status: str = "FAIL", note: str | None = None) -> None:
+        try:
+            with open(os.path.join(path, "launcher.exit"), "w") as f:
+                f.write(f"{exit_code}\n")
+            with open(os.path.join(path, "launcher.finished"), "w") as f:
+                f.write(dt.datetime.now().astimezone().isoformat(timespec="seconds") + "\n")
+            with open(os.path.join(path, "launcher.status"), "w") as f:
+                f.write(status + "\n")
+            if note:
+                with open(os.path.join(path, "launcher.stderr.log"), "a", encoding="utf-8") as f:
+                    f.write(f"\n[console] {note}\n")
+        except OSError:
+            pass
 
     # -- 发现 -----------------------------------------------------------------
     def candidate_paths(self) -> list[str]:
@@ -441,7 +489,7 @@ class Workspaces:
 
     # -- 运行控制 ---------------------------------------------------------------
     def launch(self, topic: str, corpus: str, model: str, effort: str, codex_home: str,
-               private_env: dict, slug: str | None = None) -> dict:
+               private_env: dict, slug: str | None = None, model_fallback: str | None = None) -> dict:
         topic = topic.strip()
         if not topic:
             raise ValueError("主题不能为空")
@@ -461,6 +509,8 @@ class Workspaces:
         env = {**os.environ, "CODEX_HOME": os.path.expanduser(codex_home), "GOAI_CORPUS": corpus,
                "GOAI_MODEL": model, "GOAI_REASONING_EFFORT": effort,
                "PATH": os.path.dirname(codex_bin) + os.pathsep + os.environ.get("PATH", "")}
+        if model_fallback and model_fallback != model:
+            env["GOAI_MODEL_FALLBACK"] = model_fallback   # reproduce_core.sh：第三次容量不足后切换
         if corpus == "private":
             env.update(private_env)
         cmd = ["bash", "scripts/reproduce_core.sh", "--topic", topic, "--workdir", ws]
@@ -473,7 +523,7 @@ class Workspaces:
         with open(os.path.join(ws, "launcher.pid"), "w") as f:
             f.write(f"{proc.pid}\n")
         with open(os.path.join(ws, "launcher.json"), "w", encoding="utf-8") as f:
-            json.dump({"topic": topic, "corpus": corpus, "model": model, "effort": effort, "codex_home": codex_home,
+            json.dump({"topic": topic, "corpus": corpus, "model": model, "effort": effort, "model_fallback": model_fallback, "codex_home": codex_home,
                        "cmd": cmd, "pid": proc.pid, "started_at": _iso(time.time()), "launched_by": "console"},
                       f, ensure_ascii=False, indent=2)
         wid = ws_id(ws)
@@ -680,6 +730,7 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                         topic=body.get("topic", ""), corpus=body.get("corpus", "public"),
                         model=body.get("model") or cfg["model"], effort=body.get("effort") or cfg["effort"],
                         codex_home=cfg["codex_home"], private_env=cfg["private_env"], slug=body.get("slug"),
+                        model_fallback=body.get("model_fallback") or cfg.get("model_fallback") or None,
                     )
                     return self._json({"ok": True, **res})
                 if len(parts) == 4 and parts[1] == "workspaces" and parts[3] == "stop":
@@ -767,7 +818,8 @@ def cfg_public(cfg: dict) -> dict:
         "repo": cfg["repo"], "runs_root": cfg["runs_root"], "codex_home": cfg["codex_home"], "codex_path": resolve_codex_path(),
         "proxy": os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or None,
         "codex_login": cfg.get("codex_login"), "codex_version": cfg.get("codex_version"),
-        "model": cfg["model"], "effort": cfg["effort"],
+        "model": cfg["model"], "effort": cfg["effort"], "model_fallback": cfg.get("model_fallback"),
+        "codex_email": cfg.get("codex_email"),
         "private_corpus_available": bool(cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS")),
         "private_corpus_roots": cfg["private_env"].get("GOAI_LOCAL_CORPUS_ROOTS"),
         "public_corpus": os.path.join(cfg["repo"], "submission", "02_研究数据与证据包", "corpus_release"),
@@ -787,6 +839,21 @@ def resolve_codex_path() -> str | None:
         if hits:
             return hits[-1]
     return None
+
+
+def codex_email(codex_home: str) -> str | None:
+    """从 $CODEX_HOME/auth.json 的 id_token 里读邮箱（只读 claims，不输出 token）。"""
+    import base64
+    try:
+        a = json.load(open(os.path.join(os.path.expanduser(codex_home), "auth.json"), encoding="utf-8"))
+        tok = (a.get("tokens") or {}).get("id_token", "")
+        seg = tok.split(".")[1]
+        seg += "=" * (-len(seg) % 4)
+        claims = json.loads(base64.urlsafe_b64decode(seg))
+        plan = (claims.get("https://api.openai.com/auth") or {}).get("chatgpt_plan_type")
+        return f"{claims.get('email')}" + (f" · {plan}" if plan else "")
+    except Exception:
+        return None
 
 
 def codex_probe(codex_home: str) -> tuple[str | None, str | None]:
@@ -818,6 +885,7 @@ def main(argv=None) -> int:
                     help="KEY=VALUE 文件：GOAI_LOCAL_CORPUS_* 作为私有语料配置；其余变量（如 HTTPS_PROXY）注入服务进程环境（不入库）")
     ap.add_argument("--model", default=os.environ.get("GOAI_MODEL", "gpt-5.6-sol"))
     ap.add_argument("--effort", default=os.environ.get("GOAI_REASONING_EFFORT", "xhigh"))
+    ap.add_argument("--model-fallback", default=os.environ.get("GOAI_MODEL_FALLBACK", ""), help="模型连续容量不足时的备用模型（空=不切换）")
     ap.add_argument("--dist", default=os.path.join(HERE, "console", "dist"))
     ap.add_argument("--interval", type=float, default=1.0)
     ap.add_argument("--no-probe", action="store_true", help="启动时不探测 codex 版本/登录状态")
@@ -837,9 +905,10 @@ def main(argv=None) -> int:
                 # codex 直连 OpenAI 会一直 "Reconnecting... waiting for network"（2026-09-06 实测）。
                 os.environ[k] = v
     cfg = {"repo": repo, "runs_root": runs_root, "codex_home": args.codex_home, "model": args.model,
-           "effort": args.effort, "private_env": private_env}
+           "effort": args.effort, "private_env": private_env, "model_fallback": args.model_fallback or None}
     if not args.no_probe:
         cfg["codex_version"], cfg["codex_login"] = codex_probe(args.codex_home)
+    cfg["codex_email"] = codex_email(args.codex_home)
     ws = Workspaces(repo, runs_root, args.workspace_glob)
     fallback = live_view.read_text(os.path.join(HERE, "live_view_ui.html")) or "<p>console dist 未构建</p>"
     httpd = ThreadingHTTPServer((args.host, args.port), make_handler(ws, cfg, os.path.abspath(args.dist), fallback))

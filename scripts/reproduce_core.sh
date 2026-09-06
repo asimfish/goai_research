@@ -28,6 +28,9 @@
 # Model pinning: model and reasoning effort are passed explicitly so the run matches the
 # declared configuration (gpt-5.6-sol, reasoning effort xhigh). Override with
 # GOAI_MODEL / GOAI_REASONING_EFFORT if your account exposes different model ids.
+# Transient failures (model at capacity, network) do not abort the run: the orchestrator is
+# re-invoked from the ledger with back-off (up to 6 attempts). Set GOAI_MODEL_FALLBACK=<model>
+# to switch models after three capacity failures (opt-in; the switch is logged in the ledger).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 REPO="$PWD"
@@ -44,6 +47,15 @@ while (( $# )); do
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
+
+# TeX engine discovery: services / cron / screen shells often lack ~/.local/bin, so a user-level
+# tectonic (the engine build_tex.sh falls back to) would be invisible and the run would end without
+# a PDF. Put the first directory that holds one on PATH before preflight and before the agents start.
+if ! command -v xelatex >/dev/null 2>&1 && ! command -v tectonic >/dev/null 2>&1; then
+  for d in "$HOME/.local/bin" "$HOME/.cargo/bin" /usr/local/texlive/*/bin/* "$HOME/miniforge3/bin" "$HOME/miniconda3/bin"; do
+    if [[ -x "$d/tectonic" || -x "$d/xelatex" ]]; then export PATH="$d:$PATH"; echo "tex engine: $d"; break; fi
+  done
+fi
 
 if [[ $VERIFY_ONLY == 0 ]]; then
 command -v codex >/dev/null || { echo "codex CLI not found; install with: npm i -g @openai/codex" >&2; exit 2; }
@@ -149,18 +161,49 @@ echo "launching orchestrator; events -> $LOGDIR/orchestrator.jsonl"
 echo "live view: GOAI_WORKSPACE=$WORKDIR python3 tools/live_view.py --follow   (or --serve 5051 for the browser dashboard)"
 # GOAI_RUN_ID 让编排器自己的 MCP 调用也能在 state/tool_calls.jsonl 归因（key 与 live_view 的编排器任务一致）；
 # parallel_run.sh 派出的子任务会在各自子进程里覆盖成 <run_id>/<task>。
-export GOAI_RUN_ID="orchestrator/orchestrator" GOAI_TASK_NAME="orchestrator"
-codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
-  -C "$REPO" -o "$LOGDIR/orchestrator.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.jsonl" >/dev/null
-
-# --- the orchestrator may stop at a human gate (scope / citation mismatches / contribution).
-# Re-invoke with the same topic to resume from the ledger until check-done exits 0.
-for attempt in 2 3 4 5; do
-  if .venv/bin/python tools/loopctl.py check-done >/dev/null 2>&1; then break; fi
-  echo "ledger not DONE after run $((attempt-1)); resuming (attempt $attempt)"
-  export GOAI_RUN_ID="orchestrator/orchestrator.resume$attempt" GOAI_TASK_NAME="orchestrator.resume$attempt"
+# 一次编排器调用：捕获退出码而不是让 set -e 在管道失败时直接杀掉整个脚本
+# （2026-09-06 实测：模型 "at capacity" 导致 codex 非零退出，脚本在续跑循环之前就死了）。
+run_orchestrator() {   # $1 = 事件流/回执文件名后缀（"" 或 ".resumeN"）
+  local suffix="$1" rc
+  export GOAI_RUN_ID="orchestrator/orchestrator${suffix}" GOAI_TASK_NAME="orchestrator${suffix}"
+  set +e
   codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
-    -C "$REPO" -o "$LOGDIR/orchestrator.resume$attempt.final.md" "$TOPIC" </dev/null | tee "$LOGDIR/orchestrator.resume$attempt.jsonl" >/dev/null
+    -C "$REPO" -o "$LOGDIR/orchestrator${suffix}.final.md" "$TOPIC" </dev/null \
+    | tee "$LOGDIR/orchestrator${suffix}.jsonl" >/dev/null
+  rc=${PIPESTATUS[0]}
+  set -e
+  return "$rc"
+}
+# 事件流末尾的错误摘要（容量不足 / 网络 / 用量上限）
+last_error() { grep -o '"message": *"[^"]*"' "$1" 2>/dev/null | tail -1 | sed 's/"message": *//'; }
+
+run_orchestrator "" && echo "orchestrator finished (attempt 1)" || echo "orchestrator exited rc=$? (attempt 1): $(last_error "$LOGDIR/orchestrator.jsonl")"
+
+# --- the orchestrator may stop at a human gate (scope / citation mismatches / contribution),
+# or die on a transient error (model at capacity, network). Re-invoke with the same topic to
+# resume from the ledger until check-done exits 0. Capacity errors get a longer back-off; with
+# GOAI_MODEL_FALLBACK set (opt-in), the third capacity failure switches the orchestrator and
+# sub-agents to that model for the rest of the run (the change is logged in the ledger).
+capacity_hits=0
+for attempt in 2 3 4 5 6; do
+  if .venv/bin/python tools/loopctl.py check-done >/dev/null 2>&1; then break; fi
+  prev="$LOGDIR/orchestrator$([[ $attempt -eq 2 ]] && echo "" || echo ".resume$((attempt-1))").jsonl"
+  err="$(last_error "$prev")"
+  wait_s=30
+  if [[ "$err" == *"at capacity"* || "$err" == *"usage limit"* || "$err" == *"rate limit"* ]]; then
+    capacity_hits=$((capacity_hits+1)); wait_s=180
+    if [[ -n "${GOAI_MODEL_FALLBACK:-}" && "$capacity_hits" -ge 3 && "$MODEL" != "$GOAI_MODEL_FALLBACK" ]]; then
+      echo "model $MODEL at capacity ${capacity_hits}x; falling back to $GOAI_MODEL_FALLBACK for the rest of the run"
+      MODEL="$GOAI_MODEL_FALLBACK"
+      sed -i "s/^model = .*/model = \"$MODEL\"/" "$CODEX_HOME/$PROFILE.config.toml"
+      export RUNNER_ARGS="-p $PROFILE --ephemeral -c model=\"$MODEL\" -c model_reasoning_effort=\"$EFFORT\""
+      .venv/bin/python tools/loopctl.py log --stage "$(.venv/bin/python -c 'import json;print(json.load(open("'"$WORKDIR"'/state/ledger.json")).get("stage","intake"))' 2>/dev/null || echo intake)" \
+        --agent orchestrator --event decision --detail "model fallback: $GOAI_MODEL_FALLBACK (previous model at capacity ${capacity_hits}x)" >/dev/null 2>&1 || true
+    fi
+  fi
+  echo "ledger not DONE after run $((attempt-1))${err:+ (last error: $err)}; resuming in ${wait_s}s (attempt $attempt)"
+  sleep "$wait_s"
+  run_orchestrator ".resume$attempt" && echo "orchestrator finished (attempt $attempt)" || echo "orchestrator exited rc=$? (attempt $attempt): $(last_error "$LOGDIR/orchestrator.resume$attempt.jsonl")"
 done
 else
   [[ -n "$WORKDIR" ]] || { echo "--verify-only requires --workdir" >&2; exit 2; }
@@ -182,7 +225,7 @@ echo
 echo "==> final ledger gate"
 if ! .venv/bin/python tools/loopctl.py check-done; then
   .venv/bin/python tools/loopctl.py status >&2 || true
-  fail "ledger did not reach DONE after 5 orchestrator attempts"
+  fail "ledger did not reach DONE after 6 orchestrator attempts"
 fi
 
 require_nonempty "$WORKDIR/drafts/main.pdf"

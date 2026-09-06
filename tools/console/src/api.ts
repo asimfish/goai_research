@@ -38,7 +38,7 @@ export const api = {
   file: (id: string, path: string) => get<{ path: string; text: string }>(`/api/workspaces/${id}/file?path=${encodeURIComponent(path)}`),
   pdfUrl: (id: string) => `/api/workspaces/${id}/pdf`,
   bundleUrl: (id: string) => `/api/workspaces/${id}/bundle.zip`,
-  launch: (body: { topic: string; corpus: 'public' | 'private'; model?: string; effort?: string; slug?: string }) =>
+  launch: (body: { topic: string; corpus: 'public' | 'private'; model?: string; effort?: string; slug?: string; model_fallback?: string }) =>
     post<{ ok: boolean; id: string; path: string; pid: number }>('/api/runs', body),
   stop: (id: string) => post<{ ok: boolean; message: string; pid?: number }>(`/api/workspaces/${id}/stop`),
 }
