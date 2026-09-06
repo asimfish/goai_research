@@ -301,6 +301,24 @@ required = [
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
+# 子 agent 实际使用的模型：来自各并行批次的 RUN_INFO.json（parallel_run.sh 记录）。
+# 运行中模型可能因供给侧变化被替换（实跑：gpt-5.6-sol 中途对账户不可用 → 子任务改 gpt-5.5），
+# 回执必须写实际值而不是钉死的期望值。
+import collections
+import re as _re
+sub_models: collections.Counter[str] = collections.Counter()
+for info_path in sorted((workspace / "state" / "parallel").glob("*/RUN_INFO.json")):
+    try:
+        info = json.loads(info_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        continue
+    name = info.get("model") or ""
+    if not name:
+        m = _re.search(r'(?:^|\s)(?:-m|--model)[\s=]+"?([^\s"]+)"?', info.get("runner_args") or "") \
+            or _re.search(r'\smodel=("?)([^\s"]+)', info.get("runner_args") or "")
+        name = (m.group(m.lastindex) if m else "") or "unknown"
+    sub_models[name] += 1
+
 receipt = {
     "status": "PASS",
     "verified_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -308,6 +326,7 @@ receipt = {
     "topic": topic,
     "model": model,
     "reasoning_effort": effort,
+    "sub_agent_models": dict(sub_models),          # {模型: 批次数}；与 model 不一致时说明中途替换
     "git_commit": subprocess.check_output(
         ["git", "rev-parse", "HEAD"], text=True
     ).strip(),

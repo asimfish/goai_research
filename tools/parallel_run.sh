@@ -160,7 +160,14 @@ _json_list() {  # 逗号分隔 → JSON 数组
 }
 
 # 批次信息：live_view 看板与事后审计读它判断子 agent 到底用了什么后端/模型/沙箱。
-_model_from_args="$(printf '%s\n' "${RUNNER_ARGS:-}" | sed -nE 's/.*(-m|--model)[ =]+"?([^ "]+)"?.*/\2/p; t; s/.*model="([^"]+)".*/\1/p')"
+# 两条独立 sed：BSD sed（macOS）把 GNU 写法 `t; s/…/` 里的 "; s/…" 当标签名报错，
+# 曾让所有批次 RUN_INFO.json 的 model 为空、子 agent 换模型后审计无法归因。
+_model_from_args="$(printf '%s\n' "${RUNNER_ARGS:-}" \
+  | sed -nE 's/.*(^|[[:space:]])(-m|--model)[[:space:]=]+"?([^[:space:]"]+)"?.*/\3/p' | head -1)"
+if [[ -z "$_model_from_args" ]]; then
+  _model_from_args="$(printf '%s\n' "${RUNNER_ARGS:-}" \
+    | sed -nE 's/.*[[:space:]]model=("?)([^[:space:]"]+)"?.*/\2/p' | head -1)"
+fi
 cat >"$LOG_DIR/RUN_INFO.json" <<JSON
 {"run_id": "$RUN_ID", "tasks_file": "$(_json_str "$TASKS_FILE")", "backend": "$RUNNER", "jobs": $MAX_PAR,
  "runner_args": "$(_json_str "${RUNNER_ARGS:-}")", "profile": "$(_json_str "$CODEX_PROFILE")",

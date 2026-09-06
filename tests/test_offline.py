@@ -1833,3 +1833,32 @@ def test_tex_guard_blocks_dense_portrait_tables(tmp_path):
     r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"), str(d)],
                        capture_output=True, text=True)
     assert "竖版密表" in r.stdout and "8 列" in r.stdout, r.stdout
+
+
+def test_parallel_run_model_parsing_is_bsd_sed_safe():
+    """实跑失效：parallel_run.sh 用 GNU sed 的 `t; s/…/` 解析 RUNNER_ARGS 里的模型名，BSD sed
+    （macOS）把 "; s/…" 当标签名报错，所有批次 RUN_INFO.json 的 model 为空，子 agent 中途换模型
+    （gpt-5.6-sol → gpt-5.5）后审计无法归因。抽出解析段在 /bin/bash 下执行五种参数形态。"""
+    import re
+    script = os.path.join(ROOT, "tools", "parallel_run.sh")
+    code_lines = [l for l in open(script, encoding="utf-8") if not l.lstrip().startswith("#")]
+    assert not any(re.search(r"sed[^\n]*\bt;", l) for l in code_lines), \
+        "GNU-only sed label syntax `t;` present"
+    snippet = subprocess.run(["sed", "-n", "/^_model_from_args=/,/^fi$/p", script],
+                             capture_output=True, text=True).stdout
+    assert "_model_from_args" in snippet
+    bash = "/bin/bash" if os.path.exists("/bin/bash") else "bash"
+    cases = {
+        '-p prof --ephemeral -c model="gpt-5.5" -c model_reasoning_effort="xhigh"': "gpt-5.5",
+        "-m gpt-5.6-sol --ephemeral": "gpt-5.6-sol",
+        "--model=gpt-6-astra": "gpt-6-astra",
+        "-c model=gpt-5.5": "gpt-5.5",
+        "-p prof": "",
+    }
+    for args, want in cases.items():
+        r = subprocess.run([bash, "-c", snippet + '\nprintf "%s" "$_model_from_args"'],
+                           capture_output=True, text=True, env=dict(os.environ, RUNNER_ARGS=args))
+        assert r.returncode == 0 and r.stdout == want, (args, r.stdout, r.stderr)
+    # 复现回执按批次汇总实际模型
+    core = open(os.path.join(ROOT, "scripts", "reproduce_core.sh"), encoding="utf-8").read()
+    assert '"sub_agent_models"' in core and "RUN_INFO.json" in core
