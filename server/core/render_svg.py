@@ -7,7 +7,10 @@ from xml.sax.saxutils import escape
 from .figspec import (DEFAULTS, center, edge_label_point, edge_points, edge_style_of,
                       style_of, text_units, wrap_lines)
 
-FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif"
+# Keep a deterministic CJK fallback before the Latin stack.  The previous
+# Latin-only stack made CairoSVG substitute missing-glyph boxes for Chinese
+# labels in otherwise valid SVG/PNG figure outputs.
+FONT = "'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Noto Sans CJK JP', 'Droid Sans Fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif"
 
 # 各形状的有效文本宽度比例（文字折行按 w*ratio 计算，避免顶到斜边/弧边）
 TEXT_WIDTH_RATIO = {
