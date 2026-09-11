@@ -113,6 +113,25 @@ prompt 生成 2/1 张参照，过一遍 B2 审计要点后进 Phase C。
   （重建是矢量级控制，能修生图模型改不动的毛病）。两轮共 6 次生图为
   预算上限，不许无限重试。
 
+## Phase A/B 的对接：super_teaser（paper-framework-figure-studio-pro）
+
+主图的策略合同与生图候选按 `asimfish/super_teaser`（v3.2.21）的 S0–S5 契约执行，不另造一套：
+
+- **S0 精读锁**：先写 `figure_plan.md` 的"实体—证据锚点"表（每个模块、连线、符号指向论文的节/图/句），
+  再写 `role_visual_realization_contract`（重复角色是否合并、禁止的误画法）。没有证据锚点的箭头不画。
+- **S1 策略**：八个"版式语法 × 表面处理"提案打分选四（C01–C04）；版式先于表面（读者问题 → 主线），
+  表面只从 super_teaser `references/print-first-style-profiles.md` 的四个印刷优先档位里选（清洁模块 /
+  技术线稿 / 编辑式机制 / 注释式机制），配色白底、炭黑线、≤1 强调色，灰度可辨。
+- **Prompt 硬约束段**（每条生图 prompt 内必须含）：edge-label-first（变量/指标只在连线、端口、标签上，不作同级模块）；
+  两模块之间只有一条捆绑连线；无伪中继；禁止渐变/霓虹/玻璃质感/装饰图标；说明有意抽象掉的细节。
+- **S2/S5 只生图**：Codex 用内置 `image_gen`，其余宿主必须显式指定图像 API；**没有图像通道时不得用 SVG/截图冒充生图候选**，
+  改走 figspec 印刷优先矢量候选（样板：`final_round/figures/gen_fig01.py`，通过 `figspec.lint` 的 ≥6.5 pt 印刷字号规则），
+  并把 S0/S1 文档与 prompt package 留在 `workspace/figures/studio/` 等通道恢复后补生图。
+- **S3 复审只看像素**：对照 S1 的 edge/port 合同逐条记 issue，转成 S4 的负约束；S5 终选后由人决定，agent 不再自动改图。
+- 机器人/具身相关的图额外加载 `references/embodied-figure-guide.md`（先锁场景身份、接触、动作含义与时间，再谈风格）。
+
+参考实现与证据：`refs/super_teaser/`（克隆），`final_round/figures/S0_paper_foundation.md`、`S1_figure_strategy.md`。
+
 ## Phase C：可编辑化重建（测量驱动，凡有生图参照的图都走）
 
 把参照定稿重建为 figspec，产出可编辑矢量——这是交付物的唯一来源，
