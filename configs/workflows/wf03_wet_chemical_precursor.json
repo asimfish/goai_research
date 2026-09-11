@@ -1,0 +1,473 @@
+{
+  "spec_version": "1.0",
+  "id": "wf03_wet_chemical_precursor",
+  "title": "Wet-chemical (solution) precursor preparation: metering, stirring, pH adjustment, centrifugation and drying",
+  "goal": {
+    "objective": "Prepare a mixed Ba/Zn/Si precursor gel from stock solutions with pH control, separate it by centrifugation and dry it, as the alternative low-temperature route feeding the calcination workflow.",
+    "target_phase": "BaZn2Si2O7 precursor gel",
+    "literature": [
+      "szymanski2023alab",
+      "bai2026safelab"
+    ]
+  },
+  "embodiment": {
+    "robot": "franka_fr3",
+    "gripper": "franka_hand",
+    "base_pose": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "samples": [
+    {
+      "name": "s1",
+      "precursors": {
+        "Ba/Zn nitrate solution (mL)": 50,
+        "silica sol (mL)": 20,
+        "NH3 aq (mL)": 2
+      },
+      "labware": [
+        "beaker_1",
+        "tube_1",
+        "dish_1"
+      ]
+    }
+  ],
+  "stations": [
+    {
+      "id": "liquid_1",
+      "instrument": "liquid_station",
+      "asset": "art:MagneticStirrer001",
+      "pose": [
+        0.55,
+        0.1,
+        0.0
+      ]
+    },
+    {
+      "id": "ph_1",
+      "instrument": "ph_meter",
+      "asset": "art:PHMeterAcidimeter001",
+      "pose": [
+        0.6,
+        -0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "mixer_1",
+      "instrument": "mixer",
+      "asset": "art:HighSpeedCentrifuge001",
+      "pose": [
+        0.75,
+        0.4,
+        0.0
+      ]
+    },
+    {
+      "id": "oven_1",
+      "instrument": "drying_oven",
+      "asset": "art:Oven065",
+      "pose": [
+        0.75,
+        -0.45,
+        0.0
+      ]
+    },
+    {
+      "id": "rack_1",
+      "instrument": "storage_rack",
+      "asset": "Test_Tube_Rack",
+      "pose": [
+        0.3,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "waste_1",
+      "instrument": "waste",
+      "asset": "glass_beaker_500ml",
+      "pose": [
+        0.2,
+        -0.55,
+        0.0
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "bottle_nitrate",
+      "labware": "precursor_bottle",
+      "asset": "brown_reagent_bottle_large",
+      "pose": [
+        0.3,
+        0.6,
+        0.0
+      ]
+    },
+    {
+      "id": "bottle_silica",
+      "labware": "precursor_bottle",
+      "asset": "clear_reagent_bottle_large",
+      "pose": [
+        0.4,
+        0.6,
+        0.0
+      ]
+    },
+    {
+      "id": "bottle_ammonia",
+      "labware": "precursor_bottle",
+      "asset": "brown_reagent_bottle_small",
+      "pose": [
+        0.48,
+        0.6,
+        0.0
+      ]
+    },
+    {
+      "id": "cyl_1",
+      "labware": "cylinder",
+      "asset": "glass_cylinder_100ml",
+      "pose": [
+        0.45,
+        0.35,
+        0.0
+      ]
+    },
+    {
+      "id": "beaker_1",
+      "labware": "beaker",
+      "asset": "glass_beaker_250ml",
+      "pose": [
+        0.55,
+        0.1,
+        0.0
+      ],
+      "sample": "s1"
+    },
+    {
+      "id": "tube_1",
+      "labware": "vial",
+      "asset": "Centrifuge_Tube",
+      "pose": [
+        0.3,
+        0.42,
+        0.0
+      ],
+      "sample": "s1"
+    },
+    {
+      "id": "dish_1",
+      "labware": "dish",
+      "asset": "glass_beaker_100ml",
+      "pose": [
+        0.35,
+        -0.1,
+        0.0
+      ],
+      "sample": "s1"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t_meter",
+      "type": "LiquidHandling",
+      "station": "liquid_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [],
+      "params": {
+        "volume_ml": 70,
+        "stir_rpm": 300
+      },
+      "primitives": [
+        {
+          "op": "uncap",
+          "object": "bottle_nitrate"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "bottle_nitrate",
+          "to": "cyl_1",
+          "volume_ml": 50
+        },
+        {
+          "op": "cap",
+          "object": "bottle_nitrate"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "cyl_1",
+          "to": "beaker_1",
+          "volume_ml": 50
+        },
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "liquid_1"
+        },
+        {
+          "op": "press_button",
+          "station": "liquid_1",
+          "button": "stir"
+        },
+        {
+          "op": "uncap",
+          "object": "bottle_silica"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "bottle_silica",
+          "to": "cyl_1",
+          "volume_ml": 20
+        },
+        {
+          "op": "cap",
+          "object": "bottle_silica"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "cyl_1",
+          "to": "beaker_1",
+          "volume_ml": 20
+        },
+        {
+          "op": "wait",
+          "seconds": 60
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Measure 50 mL nitrate solution and 20 mL silica sol with the cylinder into the beaker on the stirrer; stir for 1 minute."
+    },
+    {
+      "id": "t_ph",
+      "type": "Measurement",
+      "station": "ph_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_meter"
+      ],
+      "params": {
+        "quantity": "pH",
+        "target": 9.0
+      },
+      "primitives": [
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "ph_1"
+        },
+        {
+          "op": "press_button",
+          "station": "ph_1",
+          "button": "measure"
+        },
+        {
+          "op": "wait",
+          "seconds": 10
+        },
+        {
+          "op": "uncap",
+          "object": "bottle_ammonia"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "bottle_ammonia",
+          "to": "beaker_1",
+          "volume_ml": 2
+        },
+        {
+          "op": "cap",
+          "object": "bottle_ammonia"
+        },
+        {
+          "op": "press_button",
+          "station": "ph_1",
+          "button": "measure"
+        },
+        {
+          "op": "wait",
+          "seconds": 10
+        },
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "liquid_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Measure the pH, add 2 mL ammonia solution, re-measure, return the beaker to the stirrer."
+    },
+    {
+      "id": "t_spin",
+      "type": "Mixing",
+      "station": "mixer_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_ph"
+      ],
+      "params": {
+        "duration_s": 300,
+        "rpm": 4000
+      },
+      "primitives": [
+        {
+          "op": "pour_liquid",
+          "object": "beaker_1",
+          "to": "tube_1",
+          "volume_ml": 40
+        },
+        {
+          "op": "cap",
+          "object": "tube_1"
+        },
+        {
+          "op": "open_lid",
+          "station": "mixer_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "tube_1",
+          "to": "mixer_1"
+        },
+        {
+          "op": "close_lid",
+          "station": "mixer_1"
+        },
+        {
+          "op": "press_button",
+          "station": "mixer_1",
+          "button": "start"
+        },
+        {
+          "op": "wait",
+          "seconds": 60
+        },
+        {
+          "op": "open_lid",
+          "station": "mixer_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "tube_1",
+          "to": "rack_1"
+        },
+        {
+          "op": "close_lid",
+          "station": "mixer_1"
+        },
+        {
+          "op": "uncap",
+          "object": "tube_1"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "tube_1",
+          "to": "waste_1",
+          "volume_ml": 30
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Transfer 40 mL of suspension into the centrifuge tube, spin, then decant the supernatant into the waste beaker."
+    },
+    {
+      "id": "t_dry",
+      "type": "Drying",
+      "station": "oven_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_spin"
+      ],
+      "params": {
+        "temperature_c": 80,
+        "duration_min": 720
+      },
+      "primitives": [
+        {
+          "op": "pour_powder",
+          "object": "tube_1",
+          "to": "dish_1"
+        },
+        {
+          "op": "open_door",
+          "station": "oven_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "dish_1",
+          "to": "oven_1"
+        },
+        {
+          "op": "close_door",
+          "station": "oven_1"
+        },
+        {
+          "op": "press_button",
+          "station": "oven_1",
+          "button": "start"
+        },
+        {
+          "op": "wait",
+          "seconds": 60
+        },
+        {
+          "op": "open_door",
+          "station": "oven_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "dish_1",
+          "to": "rack_1"
+        },
+        {
+          "op": "close_door",
+          "station": "oven_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Scrape the gel into the dish and dry it at 80 C in the oven."
+    }
+  ],
+  "safety_constraints": {
+    "dp_max_mm": 20,
+    "theta_dev_max_rad": 0.25,
+    "f_peak_max_n": 20,
+    "tilt_limit_rad": 0.85
+  },
+  "evidence": [
+    {
+      "claim": "The A-Lab mixes precursor powders as an ethanol slurry and dries the slurry at 80 C in a closed evaporation system before heating.",
+      "cite": "szymanski2023alab"
+    },
+    {
+      "claim": "SafeLab calibrates liquid transport tilt (0.25 rad) and pour-phase ceilings from container geometry and fill level; pouring tasks are evaluated on spillage.",
+      "cite": "bai2026safelab"
+    }
+  ]
+}

@@ -1,0 +1,527 @@
+{
+  "spec_version": "1.0",
+  "id": "wf04_flux_growth_pt_crucible",
+  "title": "High-temperature solution (flux) growth of Ba5Y12Zn[O(SiO4)]8 crystals in a platinum crucible with flux leaching and filtration",
+  "goal": {
+    "objective": "Dose oxide precursors and flux into a Pt crucible, run a melt/slow-cool furnace program, then leach the flux in hot water on a stirrer, filter and collect the crystals.",
+    "target_phase": "Ba5Y12Zn[O(SiO4)]8",
+    "literature": [
+      "ababaikeri2024ba5y12zn",
+      "wierzbickawieczorek2017high",
+      "gulay2024navigation"
+    ]
+  },
+  "embodiment": {
+    "robot": "franka_fr3",
+    "gripper": "franka_hand",
+    "base_pose": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "samples": [
+    {
+      "name": "s1",
+      "precursors": {
+        "oxide premix (BaCO3/Y2O3/ZnO/SiO2)": 2.0,
+        "flux": 6.0
+      },
+      "labware": [
+        "pt_crucible_1",
+        "vial_s1"
+      ]
+    }
+  ],
+  "stations": [
+    {
+      "id": "dosing_1",
+      "instrument": "dosing_station",
+      "asset": "Precision_Electronic_Balance",
+      "pose": [
+        0.55,
+        0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "furnace_1",
+      "instrument": "box_furnace",
+      "asset": "art:Oven065",
+      "pose": [
+        0.75,
+        -0.35,
+        0.0
+      ]
+    },
+    {
+      "id": "leach_1",
+      "instrument": "liquid_station",
+      "asset": "art:MagneticStirrer001",
+      "pose": [
+        0.55,
+        0.05,
+        0.0
+      ]
+    },
+    {
+      "id": "filter_1",
+      "instrument": "liquid_station",
+      "asset": "Funnel_Stand",
+      "pose": [
+        0.45,
+        -0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "rack_1",
+      "instrument": "storage_rack",
+      "asset": "Test_Tube_Rack",
+      "pose": [
+        0.3,
+        0.5,
+        0.0
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "bottle_premix",
+      "labware": "precursor_bottle",
+      "asset": "clear_reagent_bottle_small",
+      "pose": [
+        0.3,
+        0.58,
+        0.0
+      ]
+    },
+    {
+      "id": "bottle_flux",
+      "labware": "precursor_bottle",
+      "asset": "brown_reagent_bottle_large",
+      "pose": [
+        0.4,
+        0.58,
+        0.0
+      ]
+    },
+    {
+      "id": "bottle_water",
+      "labware": "precursor_bottle",
+      "asset": "clear_reagent_bottle_large",
+      "pose": [
+        0.48,
+        0.58,
+        0.0
+      ]
+    },
+    {
+      "id": "paper_1",
+      "labware": "xrd_holder",
+      "asset": "weighing_paper",
+      "pose": [
+        0.55,
+        0.3,
+        0.02
+      ]
+    },
+    {
+      "id": "pt_crucible_1",
+      "labware": "crucible",
+      "asset": "Crucible",
+      "pose": [
+        0.4,
+        0.1,
+        0.0
+      ],
+      "sample": "s1"
+    },
+    {
+      "id": "tray_1",
+      "labware": "crucible_tray",
+      "asset": null,
+      "pose": [
+        0.35,
+        -0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "tongs_1",
+      "labware": "tongs",
+      "asset": "Crucible_Tong",
+      "pose": [
+        0.25,
+        -0.1,
+        0.0
+      ]
+    },
+    {
+      "id": "beaker_1",
+      "labware": "beaker",
+      "asset": "glass_beaker_250ml",
+      "pose": [
+        0.55,
+        0.05,
+        0.0
+      ]
+    },
+    {
+      "id": "funnel_1",
+      "labware": "funnel",
+      "asset": "Funnel",
+      "pose": [
+        0.45,
+        -0.3,
+        0.05
+      ]
+    },
+    {
+      "id": "flask_1",
+      "labware": "flask",
+      "asset": "erlenmeyer_flask",
+      "pose": [
+        0.45,
+        -0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "vial_s1",
+      "labware": "vial",
+      "asset": "Sample_Tube_With_Stopper",
+      "pose": [
+        0.3,
+        0.42,
+        0.0
+      ],
+      "sample": "s1"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t_dose",
+      "type": "PowderDosing",
+      "station": "dosing_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [],
+      "params": {
+        "powder_dispenses": {
+          "oxide premix": 2.0,
+          "flux": 6.0
+        },
+        "flux_ratio": 3.0
+      },
+      "primitives": [
+        {
+          "op": "pick_place",
+          "object": "paper_1",
+          "to": "dosing_1"
+        },
+        {
+          "op": "press_button",
+          "station": "dosing_1",
+          "button": "tare"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_premix",
+          "to": "dosing_1"
+        },
+        {
+          "op": "uncap",
+          "object": "bottle_premix"
+        },
+        {
+          "op": "pour_powder",
+          "object": "bottle_premix",
+          "to": "paper_1"
+        },
+        {
+          "op": "cap",
+          "object": "bottle_premix"
+        },
+        {
+          "op": "weigh",
+          "object": "paper_1",
+          "station": "dosing_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_premix",
+          "to": "rack_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_flux",
+          "to": "dosing_1"
+        },
+        {
+          "op": "uncap",
+          "object": "bottle_flux"
+        },
+        {
+          "op": "pour_powder",
+          "object": "bottle_flux",
+          "to": "paper_1"
+        },
+        {
+          "op": "cap",
+          "object": "bottle_flux"
+        },
+        {
+          "op": "weigh",
+          "object": "paper_1",
+          "station": "dosing_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_flux",
+          "to": "rack_1"
+        },
+        {
+          "op": "pour_powder",
+          "object": "paper_1",
+          "to": "pt_crucible_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "pt_crucible_1",
+          "to": "tray_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Weigh 2.0 g oxide premix and 6.0 g flux onto the paper, pour both into the platinum crucible and set it on the tray."
+    },
+    {
+      "id": "t_grow",
+      "type": "Heating",
+      "station": "furnace_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_dose"
+      ],
+      "params": {
+        "heating_temperature": 1250,
+        "heating_time": 600,
+        "profiles": [
+          [
+            5,
+            1250
+          ]
+        ],
+        "cooling_rate": 2
+      },
+      "primitives": [
+        {
+          "op": "open_door",
+          "station": "furnace_1"
+        },
+        {
+          "op": "insert_rack",
+          "object": "tray_1",
+          "to": "furnace_1",
+          "safety": {
+            "f_peak_max_n": 10,
+            "theta_dev_max_rad": 0.15
+          }
+        },
+        {
+          "op": "close_door",
+          "station": "furnace_1"
+        },
+        {
+          "op": "press_button",
+          "station": "furnace_1",
+          "button": "slow_cool"
+        },
+        {
+          "op": "wait",
+          "seconds": 120
+        },
+        {
+          "op": "open_door",
+          "station": "furnace_1"
+        },
+        {
+          "op": "extract_rack",
+          "object": "tray_1",
+          "to": "rack_1",
+          "safety": {
+            "f_peak_max_n": 10,
+            "theta_dev_max_rad": 0.15
+          }
+        },
+        {
+          "op": "close_door",
+          "station": "furnace_1"
+        },
+        {
+          "op": "wait",
+          "seconds": 30
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Run the melt-and-slow-cool program (1250 C dwell, 2 C/h cooling; time-compressed), unload the tray when cool.",
+      "safety": {
+        "f_peak_max_n": 10,
+        "theta_dev_max_rad": 0.15
+      }
+    },
+    {
+      "id": "t_leach",
+      "type": "LiquidHandling",
+      "station": "leach_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_grow"
+      ],
+      "params": {
+        "volume_ml": 150,
+        "temperature_c": 80
+      },
+      "primitives": [
+        {
+          "op": "uncap",
+          "object": "bottle_water"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "bottle_water",
+          "to": "beaker_1",
+          "volume_ml": 150
+        },
+        {
+          "op": "cap",
+          "object": "bottle_water"
+        },
+        {
+          "op": "grasp_with_tool",
+          "tool": "tongs_1",
+          "object": "pt_crucible_1",
+          "to": "beaker_1",
+          "safety": {
+            "f_peak_max_n": 10,
+            "theta_dev_max_rad": 0.15
+          }
+        },
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "leach_1"
+        },
+        {
+          "op": "press_button",
+          "station": "leach_1",
+          "button": "stir"
+        },
+        {
+          "op": "wait",
+          "seconds": 120
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Fill the beaker with 150 mL water, lower the crucible into it with the tongs and stir on the hot plate to dissolve the flux."
+    },
+    {
+      "id": "t_filter",
+      "type": "LiquidHandling",
+      "station": "filter_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_leach"
+      ],
+      "params": {
+        "volume_ml": 150
+      },
+      "primitives": [
+        {
+          "op": "pick_place",
+          "object": "funnel_1",
+          "to": "flask_1"
+        },
+        {
+          "op": "pour_liquid",
+          "object": "beaker_1",
+          "to": "funnel_1",
+          "volume_ml": 150
+        },
+        {
+          "op": "wait",
+          "seconds": 60
+        },
+        {
+          "op": "pour_powder",
+          "object": "funnel_1",
+          "to": "vial_s1"
+        },
+        {
+          "op": "cap",
+          "object": "vial_s1"
+        },
+        {
+          "op": "pick_place",
+          "object": "vial_s1",
+          "to": "rack_1"
+        },
+        {
+          "op": "grasp_with_tool",
+          "tool": "tongs_1",
+          "object": "pt_crucible_1",
+          "to": "rack_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Filter the leachate through the funnel into the flask, collect the crystals from the filter into the vial, return the crucible with the tongs."
+    }
+  ],
+  "safety_constraints": {
+    "dp_max_mm": 20,
+    "theta_dev_max_rad": 0.25,
+    "f_peak_max_n": 20,
+    "tilt_limit_rad": 0.85
+  },
+  "evidence": [
+    {
+      "claim": "Ba5Y12Zn[O(SiO4)]8 was obtained by a high-temperature solution method in a platinum crucible.",
+      "cite": "ababaikeri2024ba5y12zn"
+    },
+    {
+      "claim": "High-temperature flux growth is a systematic route to mixed-framework metal-Y silicates, with flux choice controlling the product.",
+      "cite": "wierzbickawieczorek2017high"
+    },
+    {
+      "claim": "Ba5Y13[SiO4]8O8.5 and Ba3Y2[Si2O7]2 were discovered by navigating Ba-Y-Si-O composition space, giving the neighbour phases to watch for in the product.",
+      "cite": "gulay2024navigation"
+    },
+    {
+      "claim": "Box-furnace loading/unloading with a robot arm and crucible racks is the A-Lab heating-station procedure.",
+      "cite": "szymanski2023alab"
+    }
+  ]
+}
