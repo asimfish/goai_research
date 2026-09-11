@@ -829,7 +829,7 @@ def make_trace(tmpdir, name="r1.md", size=2000):
 
 
 def make_tex_like_pdf(path, producer="xdvipdfmx (20240305)", creator="LaTeX with hyperref",
-                     font="TeXGyreTermes-Regular", text=("Abstract", "1 Introduction")):
+                     font="TeXGyreTermes-Regular", text=("Abstract", "1 Introduction", "References")):
     """手写一个 pdf_guard 可判定的最小 PDF：Producer/字体名/首页文字均可控，
     不依赖 TeX；用于账本闸门测试（draft_complete PASS 要求 PDF 过 pdf_guard）。"""
     lines = "".join(f"({t}) Tj 0 -20 Td " for t in text)
@@ -1897,3 +1897,319 @@ def test_refcheck_manual_verdict_for_grey_literature():
     assert _manual_verdict({**base, "entrytype": "article"})["verdict"] == "UNVERIFIED"
     assert _manual_verdict({**base, "verified": "manually checked"})["verdict"] == "UNVERIFIED"
     assert _manual_verdict({**base, "author": ""})["verdict"] == "UNVERIFIED"
+
+
+# ---------- 中文稿形态 / 引用卫生 / 账本级联（出货 PDF 审计后的机械守卫） ----------
+
+def test_pdf_guard_language_form_checks(tmp_path, monkeypatch):
+    """出货中文稿审计：首页标签是英文 Abstract、汉字全落在 Droid Sans Fallback 上，pdf_guard 仍 PASS
+    （旧规则 Abstract 或 摘要 任一即可、回退字体只告警）。现在 --lang zh 要求 摘要/参考文献 标签
+    与真正的中文字族；--lang en 要求 Abstract/References；不带 --lang 保持旧口径。
+    poppler 输出用桩替代，不依赖 TeX。"""
+    from tools import pdf_guard
+    pdf = tmp_path / "main.pdf"; pdf.write_bytes(b"%PDF-1.4 stub")
+    outputs = {}
+
+    def fake_run(cmd):
+        return outputs.get(cmd[0], "")
+    monkeypatch.setattr(pdf_guard, "_run", fake_run)
+    info = "Title: X\nProducer: xdvipdfmx (20240305)\nCreator: LaTeX with hyperref\nPages: 12\n"
+    fonts_hdr = "name type enc emb sub uni object ID\n" + "-" * 40 + "\n"
+    shipped_fonts = fonts_hdr + "AAA+TeXGyreTermesX-Regular Type1C\nBBB+DroidSansFallback CID\nCCC+DejaVuSerif CID\n"
+    shipped_page = "Ba5Y12Zn 及结构近邻的合成条件\n\n   Abstract\n非中心对称硅酸盐……\n1 引言\n正文\n\n   References\n[1] x\n"
+    outputs.update({"pdfinfo": info, "pdffonts": shipped_fonts, "pdftotext": shipped_page})
+    # 旧口径：放行（回退字体只告警）
+    blocking, warnings, meta = pdf_guard.check(str(pdf), None, None, 6, None)
+    assert blocking == [] and meta["lang"] == "auto", blocking
+    # 中文稿：三项阻塞——Abstract 标签、References 标签、没有中文字族
+    blocking, _, _ = pdf_guard.check(str(pdf), None, None, 6, "zh")
+    joined = "\n".join(blocking)
+    assert len(blocking) == 3, blocking
+    assert "「摘要」" in joined and "套了英文模板" in joined
+    assert "「参考文献」" in joined and "refname" in joined
+    assert "中文字族" in joined and "DroidSansFallback" in joined
+    # 合规中文稿（ctexart fontset=fandol）：放行
+    outputs["pdffonts"] = fonts_hdr + "AAA+TeXGyreTermesX-Regular Type1C\nBBB+FandolSong-Regular CID\n"
+    outputs["pdftotext"] = "题目\n\n   摘要\n非中心对称硅酸盐……\n1 引言\n正文\n\n   参考文献\n[1] x\n"
+    assert pdf_guard.check(str(pdf), None, None, 6, "zh")[0] == []
+    # 同一份中文 PDF 按英文声明检查 → 语言与声明不符
+    blocking, _, _ = pdf_guard.check(str(pdf), None, None, 6, "en")
+    assert any("Abstract" in b and "不符" in b for b in blocking) and any("References" in b for b in blocking)
+    # Noto Sans CJK 是中文字族，不再被当成回退字体告警
+    outputs["pdffonts"] = fonts_hdr + "AAA+TeXGyreTermesX-Regular Type1C\nBBB+NotoSansCJKsc-Regular CID\n"
+    blocking, warnings, _ = pdf_guard.check(str(pdf), None, None, 6, "zh")
+    assert blocking == [] and not any("回退字体" in w for w in warnings)
+    # --scope 自动读声明（与 loopctl 同口径）
+    scope = tmp_path / "scope.md"
+    scope.write_text("# scope\n- 交付语言: 中文（用户要求）\n", encoding="utf-8")
+    assert pdf_guard.scope_language(str(scope)) == "zh"
+    scope.write_text("- 交付语言: English（默认）\n", encoding="utf-8")
+    assert pdf_guard.scope_language(str(scope)) == "en"
+    assert pdf_guard.scope_language(str(tmp_path / "none.md")) is None
+
+
+def test_loopctl_draft_complete_checks_declared_language_form(tmp_path):
+    """scope.md 声明中文交付时，draft_complete 的 pdf_guard 以 --lang zh 运行：英文 Abstract 标签的
+    PDF 被拒并点名交付语言；声明英文时同一 PDF（Abstract + References）放行。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    (tmp_path / "inputs").mkdir()
+    (tmp_path / "inputs" / "scope.md").write_text("# scope\n- 交付语言: 中文（用户要求：请用中文写）\n", encoding="utf-8")
+    pass_all_gates(tmp_path, except_for=("draft_complete", "review_pass"),
+                   overrides={"scope_confirmed": ["--detail", "交付语言 中文（用户要求：请用中文写）"]})
+    (tmp_path / "drafts" / "main.tex").write_text("\\section{引言}" + "中文正文，前驱体与合成条件。" * 200, encoding="utf-8")
+    pdf = str(tmp_path / "drafts" / "main.pdf")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode != 0 and "--lang zh" in r.stderr and "「摘要」" in r.stderr, r.stderr
+    (tmp_path / "inputs" / "scope.md").write_text("- 交付语言: English（默认）\n", encoding="utf-8")
+    (tmp_path / "drafts" / "main.tex").write_text("\\section{Introduction}" + "English body on precursor routes. " * 100, encoding="utf-8")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf)
+    assert r.returncode == 0, r.stderr
+
+
+def test_tex_guard_chinese_abstract_label_na_tables_and_runin_labels(tmp_path):
+    """出货中文稿审计：(a) article + xeCJK 下 \\begin{abstract} 未本地化 → 摘要标签印成 Abstract，旧规则 9
+    因为有 xeCJK 就静默；(b) 条件矩阵 154 个 \\texttt{NA} / 一张表 >30% 单元格是 NA 只告警；
+    (c) \\textbf{…。} / \\paragraph{…。} 英文式段首标签无人管。现在 (a)(c) 告警，(b) 阻塞。"""
+    d = tmp_path / "drafts"; d.mkdir()
+    zh = "本综述覆盖高温溶液法与固相路线的全部公开条件记录。" * 3
+    head = "\\documentclass[11pt]{article}\n\\usepackage{xeCJK}\n\\begin{document}\n"
+    (d / "main.tex").write_text(head + "\\begin{abstract}" + zh + "\\end{abstract}\n" + zh + "\n\\end{document}\n", encoding="utf-8")
+    r = run_tex_guard(d)
+    assert r.returncode == 0 and "abstractname" in r.stdout and "Abstract" in r.stdout, r.stdout
+    # 补了本地化标签 → 不再告警；ctexart 同样不告警
+    (d / "main.tex").write_text(head + "\\renewcommand{\\abstractname}{摘要}\n\\begin{abstract}" + zh
+                                + "\\end{abstract}\n" + zh + "\n\\end{document}\n", encoding="utf-8")
+    assert "abstractname" not in run_tex_guard(d).stdout
+    (d / "main.tex").write_text("\\documentclass{ctexart}\n\\begin{document}\n\\begin{abstract}" + zh
+                                + "\\end{abstract}\n" + zh + "\n\\end{document}\n", encoding="utf-8")
+    assert "abstractname" not in run_tex_guard(d).stdout
+    # (b) 一张表 12 格里 5 格 NA（42%）→ 阻塞；3 格（25%）→ 放行
+    def table(n_na):
+        cells = ["\\texttt{NA}"] * n_na + ["1150 °C"] * (12 - n_na)
+        rows = " \\\\\n".join(" & ".join(cells[i:i + 4]) for i in range(0, 12, 4))
+        return "\\begin{tabular}{llll}\n" + rows + " \\\\\n\\end{tabular}\n"
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + table(5) + "\\end{document}", encoding="utf-8")
+    r = run_tex_guard(d)
+    assert r.returncode == 1 and "NA 铺表" in r.stdout and "12 格中 5 格" in r.stdout, r.stdout
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + table(3) + "\\end{document}", encoding="utf-8")
+    assert "NA 铺表" not in run_tex_guard(d).stdout
+    # 单文件 \texttt{NA} > 20 处（散在多张小表里）→ 阻塞
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}" + table(3) * 8 + "\\end{document}", encoding="utf-8")
+    r = run_tex_guard(d)
+    assert r.returncode == 1 and "全文 \\texttt{NA} 24 处" in r.stdout, r.stdout
+    # (c) 英文式段首标签 → 告警（不阻塞）
+    (d / "main.tex").write_text(head + "\\paragraph{Ba--Y--Si--O四方谱系。}" + zh + "\n\\textbf{目标化合物的直接报道。}" + zh
+                                + "\n\\textbf{正常加粗}" + zh + "\n\\end{document}\n", encoding="utf-8")
+    r = run_tex_guard(d)
+    assert r.returncode == 0 and "2 处英文式段首标签" in r.stdout, r.stdout
+
+
+def test_bib_guard_blocks_cites_with_too_many_keys(tmp_path):
+    """写作规范「单个 \\cite ≤ 5 个 key」此前只是文字；出货稿里有 8–10 个 key 的堆引。
+    --max-keys-per-cite（默认 5）超过即阻塞，0 关闭。"""
+    drafts = tmp_path / "drafts"; drafts.mkdir()
+    bib = tmp_path / "refs.bib"
+    keys = [f"k{i}2020x" for i in range(8)]
+    bib.write_text("\n".join(f"@article{{{k}, title={{T{k}}}, author={{A}}, year={{2020}}, journal={{J}}}}" for k in keys))
+    (drafts / "s1.tex").write_text("Claim \\cite{" + ",".join(keys) + "}.")
+    r = run_bib_guard(drafts, bib)
+    assert r.returncode == 1 and "超过 5 个 key" in r.stdout and "8 个 key" in r.stdout, r.stdout
+    (drafts / "s1.tex").write_text("A \\cite{" + ",".join(keys[:5]) + "}. B \\cite{" + ",".join(keys[5:]) + "}.")
+    assert run_bib_guard(drafts, bib).returncode == 0
+    (drafts / "s1.tex").write_text("Claim \\cite{" + ",".join(keys) + "}.")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "bib_guard.py"), str(drafts), str(bib),
+                        "--max-keys-per-cite", "0"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout
+
+
+def test_refcheck_dataset_placeholder_truncated_and_aggregator_rules(monkeypatch):
+    """出货稿引用审计：CSD 数据集被记成 @article 且作者 "Not Available"；题名「BaZn2−xCoxSi2O7 (0.」在 <
+    处截断后 DOI 解析被判成「指向另一篇」；MANUAL 条目拿 openalex.org 当官方 url。不访问网络：
+    权威路由用桩。"""
+    from server import refcheck_server as rc
+    full_title = "Crystal structure of BaZn2−xCoxSi2O7 (0 < x < 2) solid solutions"
+    dataset = {"source": "crossref", "title": "CCDC 2189214: Experimental Crystal Structure Determination",
+               "authors": [], "year": 2022, "venue": None, "doi": "10.5517/ccdc.csd.cc2c3t4v",
+               "publication_type": "dataset", "publisher": "Cambridge Crystallographic Data Centre",
+               "institution": None, "url": None, "arxiv_id": None}
+    paper = {"source": "crossref", "title": full_title, "authors": ["Ann One", "Bob Two"], "year": 2021,
+             "venue": "J. Solid State Chem.", "doi": "10.1000/x", "publication_type": "journal-article",
+             "url": None, "arxiv_id": None}
+    # (a) dataset → FIX，提议 @misc、机构作者
+    monkeypatch.setattr(rc, "_authoritative_lookup", lambda f: ({"score": 1.0, **dataset}, [], None))
+    r = rc._verify_fields({"entrytype": "article", "author": "Not Available", "year": "2022",
+                           "title": dataset["title"], "doi": dataset["doi"]})
+    assert r["verdict"] == "FIX" and r["issues"][0]["type"] == "dataset", r
+    assert r["suggested_bibtex"].startswith("@misc{") and "Cambridge Crystallographic Data Centre" in r["suggested_bibtex"]
+    assert "Dataset" in r["suggested_bibtex"]
+    # (b) 占位作者 → MISMATCH
+    monkeypatch.setattr(rc, "_authoritative_lookup", lambda f: ({"score": 1.0, **paper}, [], None))
+    for author in ("None", "Unknown", "Available, Not", "Anonymous", "N/A", "Not Available"):
+        r = rc._verify_fields({"entrytype": "article", "author": author, "year": "2021", "title": full_title})
+        assert r["verdict"] == "MISMATCH" and any(i["type"] == "placeholder" for i in r["issues"]), (author, r)
+    r = rc._verify_fields({"entrytype": "article", "author": "Ann One and Bob Two", "year": "2021", "title": full_title})
+    assert r["verdict"] == "PASS", r
+    # (c) 截断题名 + 权威更长 → FIX 用权威题名（权威路由命中时）
+    r = rc._verify_fields({"entrytype": "article", "author": "Ann One and Bob Two", "year": "2021",
+                           "title": "Crystal structure of BaZn2−xCoxSi2O7 (0"})
+    assert r["verdict"] == "FIX" and any(i["type"] == "truncated" for i in r["issues"]), r
+    assert full_title in r["suggested_bibtex"]
+    # 截断到相似度不够、只剩 DOI 解析出的记录（旧逻辑：MISMATCH「指向另一篇」）→ FIX
+    monkeypatch.setattr(rc, "_authoritative_lookup", lambda f: (None, [], paper))
+    r = rc._verify_fields({"entrytype": "article", "author": "Ann One and Bob Two", "year": "2021",
+                           "title": "Crystal structure of BaZn2−xCoxSi2O7 (0.", "doi": "10.1000/x"})
+    assert r["verdict"] == "FIX" and r["issues"][0]["type"] == "truncated" and full_title in r["suggested_bibtex"], r
+    # 题名正常但 DOI 指向别篇 → 仍是 MISMATCH
+    r = rc._verify_fields({"entrytype": "article", "author": "Ann One", "year": "2021",
+                           "title": "A completely different study of garnets", "doi": "10.1000/x"})
+    assert r["verdict"] == "MISMATCH", r
+    assert rc._title_truncated("Structure of Li7La3Zr2O12") is True        # 数字收尾也算（权威更长才 FIX）
+    assert rc._title_truncated("Structure of {Li7La3Zr2O12} garnets") is False
+    # (d) MANUAL 的官方 url 不能是聚合器
+    base = {"entrytype": "inproceedings", "author": "A. B.", "title": "T", "year": "2011",
+            "url": "https://www.dmg-home.org/abstracts.pdf",
+            "verified": "manual: goai-orchestrator 2026-09-07 abstract volume p.102"}
+    assert rc._manual_verdict(base)["verdict"] == "MANUAL"
+    for host in ("https://openalex.org/W2172467134", "https://www.semanticscholar.org/paper/abc",
+                 "https://scholar.google.com/scholar?q=x", "https://www.researchgate.net/publication/1"):
+        r = rc._manual_verdict({**base, "url": host})
+        assert r["verdict"] == "UNVERIFIED" and "聚合器" in r["reason"], (host, r)
+
+
+def test_bib_polish_protects_solid_solution_chains_and_flags_confusables():
+    """出货稿参考文献：Ba1-xSrxZn2Si2O7 被拆成 {Ba$_1$}-{xSr…}，plainnat 把 Ba1- 压成 ba1-；
+    「А. Yu. Tsivadze」的 А 是 U+0410，Times 排不出印成缺字。现在固溶体式整体转写，同形字母进
+    warnings（--strict 退出 1），author/title 先做 NFKC。幂等性不变。"""
+    from tools.bib_polish import polish, _protect_title
+    assert _protect_title("Ba1-xSrxZn2Si2O7 solid solutions") == "{Ba$_{1-x}$Sr$_x$Zn$_2$Si$_2$O$_7$} solid solutions"
+    assert _protect_title("Structure of BaZn2−xCoxSi2O7 (0 ≤ x ≤ 2)") == "Structure of {BaZn$_{2-x}$Co$_x$Si$_2$O$_7$} (0 ≤ x ≤ 2)"
+    assert _protect_title("Li7-xLa3Zr2-xTaxO12 garnets") == "{Li$_{7-x}$La$_3$Zr$_{2-x}$Ta$_x$O$_{12}$} garnets"
+    assert _protect_title("Al-substituted LLZO in 2019-2020") == "{Al}-substituted {LLZO} in 2019-2020"
+    # 出货 bib 里早期 hygiene 已把式子拆错（Ba1−{xSrxZn2Si2O7}、Ba0.5Sr0.{5Zn2SiGeO7}）：合回后同样处理
+    assert _protect_title("Ba1−{xSrxZn2Si2O7} - A new family") == "{Ba$_{1-x}$Sr$_x$Zn$_2$Si$_2$O$_7$} - A new family"
+    assert _protect_title("Expansion in Ba0.5Sr0.{5Zn2SiGeO7}") == "Expansion in {Ba$_{0.5}$Sr$_{0.5}$Zn$_2$SiGeO$_7$}"
+    assert _protect_title("series {BaZn2}−{xCoxSi2O7} (0<x≤2)") == "series {BaZn$_{2-x}$Co$_x$Si$_2$O$_7$} (0<x≤2)"
+    assert _protect_title("Co-{doped} and In-{situ} c-{LLZO}") == "Co-{doped} and In-{situ} c-{LLZO}"   # 非化学式不合并
+    warnings = []
+    out, changes = polish("""@article{t1,
+  title = {Ba1-xSrxZn2Si2O7 phases at ﬁxed （x）},
+  author = {А. Yu. Tsivadze and Иванов, А. and B. Two},
+  year = {2020}, journal = {J},
+}
+@article{t2,
+  title = {Structure of α-Ba2Si2O6},
+  author = {Ann One}, year = {2021}, journal = {J},
+}""", warnings)
+    assert "{Ba$_{1-x}$Sr$_x$Zn$_2$Si$_2$O$_7$} phases at fixed (x)" in out      # NFKC：合字/全角括号
+    assert len(warnings) == 1 and "U+0410" in warnings[0] and "t1" in warnings[0], warnings
+    assert "Иванов" in out                                                        # 真俄文名与 α 不报、不改
+    w2 = []
+    out2, changes2 = polish(out, w2)
+    assert out2 == out and changes2 == [] and w2 == warnings                     # 幂等
+
+
+def test_bib_polish_strict_exit_on_confusables(tmp_path):
+    bib = tmp_path / "r.bib"
+    bib.write_text("@article{t1, title={T}, author={А. Yu. Tsivadze}, year={2020}, journal={J}}", encoding="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "bib_polish.py"), str(bib), "--strict"],
+                       capture_output=True, text=True)
+    assert r.returncode == 1 and "同形异码" in r.stdout, r.stdout
+    assert subprocess.run([sys.executable, os.path.join(ROOT, "tools", "bib_polish.py"), str(bib)],
+                          capture_output=True, text=True).returncode == 0
+
+
+def test_build_tex_fails_on_missing_character_and_skips_enrich_offline(tmp_path):
+    """出货稿的 XeLaTeX 日志里有 Missing character（西里尔 А、U+2212 减号）但 build 只数 Overfull。
+    现在：编译前 bib_enrich（GOAI_OFFLINE=1 跳过并记录）→ bib_polish；日志含 Missing character 即失败。
+    用假 xelatex/bibtex 写日志与 PDF，不依赖 TeX。"""
+    d = tmp_path / "drafts"; d.mkdir()
+    (d / "main.tex").write_text("\\documentclass{article}\\begin{document}x\\end{document}", encoding="utf-8")
+    (d / "references.bib").write_text("@article{a1, title={Growth of BaZn2Si2O7}, author={A}, year={2020}, journal={J}}\n",
+                                      encoding="utf-8")
+    bindir = tmp_path / "bin"; bindir.mkdir()
+    (bindir / "xelatex").write_text("#!/bin/bash\nprintf 'Missing character: There is no А (U+0410) in font TeXGyreTermesX!\\n"
+                                    "Missing character: There is no − (U+2212) in font TeXGyreTermesX!\\n' > main.log\n"
+                                    "echo pdf > main.pdf\n", encoding="utf-8")
+    (bindir / "bibtex").write_text("#!/bin/bash\nexit 0\n", encoding="utf-8")
+    for f in ("xelatex", "bibtex"):
+        (bindir / f).chmod(0o755)
+    env = dict(os.environ, PATH=f"{bindir}:/usr/bin:/bin", GOAI_OFFLINE="1")
+    r = subprocess.run(["bash", os.path.join(ROOT, "scripts", "build_tex.sh"), str(d)],
+                       capture_output=True, text=True, env=env, cwd=ROOT)
+    assert r.returncode == 1, (r.stdout, r.stderr)
+    assert "2 处 Missing character" in r.stderr and "U+0410" in r.stderr, r.stderr
+    assert "bib_enrich 跳过" in r.stderr                                     # 离线：跳过并记录
+    assert "MissingChar=2" in r.stdout
+    assert "{BaZn$_2$Si$_2$O$_7$}" in (d / "references.bib").read_text(encoding="utf-8")   # bib_polish 已跑
+    # 日志干净 → 走到 pdf_guard（假 PDF 在那里被拒，但不再是 Missing character）
+    (bindir / "xelatex").write_text("#!/bin/bash\necho 'Overfull \\\\hbox' > main.log; echo pdf > main.pdf\n", encoding="utf-8")
+    r = subprocess.run(["bash", os.path.join(ROOT, "scripts", "build_tex.sh"), str(d)],
+                       capture_output=True, text=True, env=env, cwd=ROOT)
+    assert "Missing character" not in r.stderr and "MissingChar=0" in r.stdout, (r.stdout, r.stderr)
+
+
+def test_loopctl_rerecorded_upstream_gate_resets_review_pass(tmp_path):
+    """审稿过的是旧稿：draft_complete / figures_ready（或更上游）在 review_pass 之后重录，此前只有
+    check-done 按 --inputs 指纹才会级联；不带指纹的重录让账本上 review_pass 仍是 PASS。现在记 gate
+    时当场把 review_pass 置 PENDING 并标注，check-done 随之失败，复审后重录才恢复。"""
+    run_loopctl(tmp_path, "init", "--topic", "t")
+    pass_all_gates(tmp_path)
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    pdf = str(tmp_path / "drafts" / "main.pdf")
+    r = run_loopctl(tmp_path, "gate", "--name", "draft_complete", "--status", "PASS", "--inputs", pdf,
+                    "--detail", "返工后重编")
+    assert r.returncode == 0 and "review_pass" in r.stdout and "置 PENDING" in r.stdout, r.stdout
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    g = ledger["gates"]["review_pass"]
+    assert g["status"] == "PENDING" and "[stale: 上游 gate 重录，需复审]" in g["detail"]
+    assert any(e.get("event") == "gate_stale" and e.get("cause") == "draft_complete" for e in ledger["log"])
+    r = run_loopctl(tmp_path, "check-done")
+    assert r.returncode != 0 and "review_pass" in json.loads(r.stdout)["failing_gates"]
+    # 复审后重录 review_pass → 恢复
+    trace = str(tmp_path / "state" / "review_traces" / "round2_1.md")
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                       "--receipt", f"model=x;trace={trace}").returncode == 0
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+    # figures_ready 重录 → 同样级联（传递闭包：figures_ready → draft_complete → review_pass）
+    assert run_loopctl(tmp_path, "gate", "--name", "figures_ready", "--status", "PASS").returncode == 0
+    ledger = json.loads((tmp_path / "state" / "ledger.json").read_text())
+    assert ledger["gates"]["review_pass"]["status"] == "PENDING"
+    assert ledger["gates"]["draft_complete"]["status"] == "PASS"       # 只级联到审稿门
+    assert run_loopctl(tmp_path, "check-done").returncode != 0
+    # 重录 review_pass 自身不级联；再记一次 → 恢复
+    assert run_loopctl(tmp_path, "gate", "--name", "review_pass", "--status", "PASS",
+                       "--receipt", f"model=x;trace={trace}").returncode == 0
+    assert run_loopctl(tmp_path, "check-done").returncode == 0
+
+
+def test_package_submission_refuses_incomplete_ledgers(tmp_path):
+    """打包前每个运行账本必须过 loopctl check-done；--allow-incomplete 才放行并在 MANIFEST 记 WARN。
+    抽出 check_ledgers_done 在 bash 下执行：不完整账本 → 1；完整账本 → 0；没有账本 → 1；
+    被检查的账本本身不被 check-done 改写。"""
+    script = os.path.join(ROOT, "scripts", "package_submission.sh")
+    text = open(script, encoding="utf-8").read()
+    assert "--allow-incomplete" in text and 'ALLOW_INCOMPLETE" -eq 1' in text and "MANIFEST.sha256" in text
+    fn = subprocess.run(["sed", "-n", "/^check_ledgers_done()/,/^}/p", script], capture_output=True, text=True).stdout
+    assert "loopctl.py check-done" in fn
+    bash = "/bin/bash" if os.path.exists("/bin/bash") else "bash"
+
+    def run(root):
+        return subprocess.run([bash, "-c", fn + f'\ncheck_ledgers_done "{root}"'], capture_output=True, text=True,
+                              cwd=ROOT, env=dict(os.environ, PY=sys.executable))
+    root = tmp_path / "03"; (root / "incomplete" / "state").mkdir(parents=True)
+    ws_in = tmp_path / "ws_in"; run_loopctl(ws_in, "init", "--topic", "t")
+    pass_all_gates(ws_in, except_for=("review_pass",))
+    (root / "incomplete" / "state" / "ledger.json").write_bytes((ws_in / "state" / "ledger.json").read_bytes())
+    r = run(root)
+    assert r.returncode == 1 and "check-done FAIL" in r.stdout and "incomplete" in r.stdout, r.stdout
+    # 扁平布局（<case>/ledger.json，出货包里就是这样）同样被检查
+    ws_ok = tmp_path / "ws_ok"; run_loopctl(ws_ok, "init", "--topic", "t")
+    pass_all_gates(ws_ok)
+    (root / "incomplete" / "state" / "ledger.json").unlink()
+    (root / "complete").mkdir()
+    (root / "complete" / "ledger.json").write_bytes((ws_ok / "state" / "ledger.json").read_bytes())
+    before = (root / "complete" / "ledger.json").read_bytes()
+    r = run(root)
+    assert r.returncode == 0, (r.stdout, r.stderr)
+    assert (root / "complete" / "ledger.json").read_bytes() == before        # 只查副本，不改出货账本
+    assert run(tmp_path / "empty").returncode == 1

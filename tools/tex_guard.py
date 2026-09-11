@@ -12,10 +12,17 @@
    引用必须走 \\cite）＝阻塞
 8. \\texttt 密度过高（正文大量打字机体是内部术语泄漏的信号）＝告警
 9. 中文稿套英文模板（CJK 占比高但 documentclass 非 ctex 系，Abstract/
-   Table 等标签会是英文）＝告警
+   Table 等标签会是英文）＝告警；article + xeCJK 的中文稿用了 \\begin{abstract}
+   却没有 \\renewcommand{\\abstractname}{摘要} 同样告警（实跑：正式中文稿的
+   摘要标签印成 Abstract，旧规则因为有 xeCJK 就静默）
 10. 竖版密表：≥6 列且有长单元格（CJK 计 2 单位，> 40 单位）或 ≥8 列的竖版
     tabular/longtable ＝阻塞（转横版 landscape/sidewaystable、拆表或合并列；
     实跑中 7 列 P{0.12\textwidth} 的中文条件表把每行挤成 4–5 个字）
+11. NA 铺表：一张表 > 30% 单元格是 NA / \\texttt{NA} / —（≥8 格才算），或单个
+    文件 \\texttt{NA} 超过 20 处 ＝阻塞（缺失值应删列、合并列或写进表注，
+    实跑中条件矩阵 54 个 \\texttt{NA} 让读者看到的是空表）
+12. 中文正文里的英文式段首标签：\\textbf{…。} / \\paragraph{…。}（标签以句号
+    收尾）＝告警（中文段首标签用「：」或 \\paragraph 不带标点）
 
 用法：
   python3 tools/tex_guard.py <draft_dir_or_main.tex>
@@ -75,6 +82,17 @@ DENSE_MAX_COLS = 8          # 竖版 ≥8 列一律阻塞
 DENSE_MAX_UNITS = 40        # 最长单元格：CJK 字符计 2、其他计 1，> 40 即"读不下去"
 RE_CJK_PKG = re.compile(
     r"\\usepackage(?:\[[^\]]*\])?\{[^}]*(?:ctex|xeCJK|luatexja|CJKutf8|CJK)[^}]*\}")
+RE_ABSTRACT_ENV = re.compile(r"\\begin\{abstract\}")
+RE_ABSTRACTNAME = re.compile(r"\\renewcommand\*?\s*\{\\abstractname\}")
+# 规则 11：NA 铺表。单元格只含缺失值标记即计为空格
+RE_NA_CELL = re.compile(r"^(?:\\texttt\{NA\}|\{?N/?A\}?|—|–|-{2,3}|\\textemdash|\\textendash)$")
+RE_RULE_CMD = re.compile(r"\\(?:toprule|midrule|bottomrule|hline|cline\{[^}]*\}|cmidrule(?:\([^)]*\))?\{[^}]*\})")
+RE_TEXTTT_NA = re.compile(r"\\texttt\{NA\}")
+NA_TABLE_MAX_RATIO = 0.30      # 一张表内缺失值单元格占比上限
+NA_TABLE_MIN_CELLS = 8         # 太小的表不按占比判
+NA_FILE_MAX_TEXTTT = 20        # 单文件 \texttt{NA} 上限
+# 规则 12：英文式段首标签（标签以中文句号收尾）
+RE_RUNIN_LABEL = re.compile(r"\\(?:textbf|paragraph|subparagraph)\*?\{[^{}]*。\}")
 TEXTTT_WARN_MIN_COUNT = 8       # 少量合法用法（命令/代码名）不告警
 TEXTTT_WARN_PER_1K = 2.0        # 每千字符超过该密度则告警
 CJK_RATIO_ZH_DOC = 0.05         # CJK 字符占比超过 5% 视为中文稿
@@ -181,6 +199,8 @@ def check_typography(files: list[str]) -> list[str]:
     total_cjk = 0
     doc_classes: list[str] = []
     has_cjk_pkg = False
+    has_abstract_env = False
+    has_abstractname = False
     for fp in files:
         with open(fp, encoding="utf-8", errors="replace") as f:
             text = "\n".join(strip_comment(l) for l in f)
@@ -189,6 +209,13 @@ def check_typography(files: list[str]) -> list[str]:
         total_cjk += len(RE_CJK.findall(text))
         doc_classes += RE_DOCCLASS.findall(text)
         has_cjk_pkg = has_cjk_pkg or bool(RE_CJK_PKG.search(text))
+        has_abstract_env = has_abstract_env or bool(RE_ABSTRACT_ENV.search(text))
+        has_abstractname = has_abstractname or bool(RE_ABSTRACTNAME.search(text))
+        runin = RE_RUNIN_LABEL.findall(text)
+        if runin:
+            warnings.append(
+                f"{os.path.basename(fp)}: {len(runin)} 处英文式段首标签（以句号收尾），"
+                f"如 {runin[0][:40]}——中文稿段首标签改用「：」或 \\paragraph{{…}} 不带标点")
 
     density = total_texttt / max(total_chars / 1000, 1e-9)
     if total_texttt >= TEXTTT_WARN_MIN_COUNT and density > TEXTTT_WARN_PER_1K:
@@ -204,6 +231,13 @@ def check_typography(files: list[str]) -> list[str]:
             f"中文稿（CJK 占比 {cjk_ratio:.0%}）使用非 ctex 文档类 "
             f"{doc_classes} 且未加载 ctex/xeCJK：Abstract/Table/Figure 标签"
             "将是英文，请改用 templates/survey_main_zh.tex（ctexart + 本地化标签）")
+    elif cjk_ratio > CJK_RATIO_ZH_DOC and doc_classes and has_abstract_env \
+            and not has_cjk_class and not has_abstractname:
+        # article + xeCJK 能排汉字，但 abstract 环境的标签仍由英文文档类给出
+        warnings.append(
+            f"中文稿（CJK 占比 {cjk_ratio:.0%}）在非 ctex 文档类 {doc_classes} 下使用 "
+            "\\begin{abstract} 且未 \\renewcommand{\\abstractname}{摘要}：摘要标签将印成 "
+            "Abstract，请改用 templates/survey_main_zh.tex（ctexart）或补本地化标签")
     return warnings
 
 
@@ -266,6 +300,40 @@ def check_table_density(path: str) -> list[str]:
     return problems
 
 
+def check_na_density(path: str) -> list[str]:
+    """NA 铺表阻塞：一张表 > 30% 单元格是缺失值标记（≥8 格），或单文件 \\texttt{NA} > 20 处。"""
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        lines = [strip_comment(l) for l in fh]
+    text = "\n".join(lines)
+    base = os.path.basename(path)
+    problems: list[str] = []
+    for m in RE_TABLE_BEGIN.finditer(text):
+        env = m.group(1)
+        depth, i = 1, m.end()
+        while i < len(text) and depth:
+            depth += {"{": 1, "}": -1}.get(text[i], 0)
+            i += 1
+        end_tag = f"\\end{{{env}}}"
+        j = text.find(end_tag, i)
+        body = text[i:j if j != -1 else len(text)]
+        cells = [RE_RULE_CMD.sub("", c).strip()
+                 for row in re.split(r"\\\\", body) for c in re.split(r"(?<!\\)&", row)]
+        cells = [c for c in cells if c]
+        na = sum(1 for c in cells if RE_NA_CELL.match(c))
+        if len(cells) >= NA_TABLE_MIN_CELLS and na / len(cells) > NA_TABLE_MAX_RATIO:
+            line_no = text.count("\n", 0, m.start()) + 1
+            problems.append(
+                f"NA 铺表: {base}:{line_no} {env} {len(cells)} 格中 {na} 格是 NA/—"
+                f"（{na / len(cells):.0%} > {NA_TABLE_MAX_RATIO:.0%}）——删掉整列为空的实验项目、"
+                "合并列或把『未报道』写进表注，缺失值不是数据")
+    n_tt = len(RE_TEXTTT_NA.findall(text))
+    if n_tt > NA_FILE_MAX_TEXTTT:
+        problems.append(
+            f"NA 铺表: {base} 全文 \\texttt{{NA}} {n_tt} 处 > {NA_FILE_MAX_TEXTTT}——"
+            "打字机体缺失值堆成表是内部记录泄漏，改为删列/表注/正体『未报道』")
+    return problems
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("draft", help="稿件目录或 main.tex")
@@ -294,6 +362,7 @@ def main() -> None:
         all_refs |= rs
         blocking += check_bibkey_leak(fp)
         blocking += check_table_density(fp)
+        blocking += check_na_density(fp)
     warnings += check_typography(files)
 
     dangling = sorted(all_refs - all_labels)

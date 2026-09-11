@@ -2,7 +2,12 @@
 # Build the two official submission archives from submission/ (already laid out
 # in the official deliverable folders) plus a snapshot of this repository.
 #
-#   bash scripts/package_submission.sh "科学无极" [作品名]
+#   bash scripts/package_submission.sh "科学无极" [作品名] [--allow-incomplete]
+#
+# Packaging refuses unless every run ledger under 03_运行与评测包 passes
+# `loopctl check-done` (all required gates recorded PASS/WARN, no open blocker/major,
+# receipts and PDF still valid). `--allow-incomplete` packages anyway and records a
+# WARN line naming the failing workspaces in MANIFEST.sha256.
 #
 # Produces in dist/:
 #   AI4R_MAT_<队伍名>_<作品名>_非代码材料.zip
@@ -13,11 +18,39 @@
 #   AI4R_MAT_<队伍名>_<作品名>_非代码材料_PPT.{pptx,pdf}
 set -euo pipefail
 cd "$(dirname "$0")/.."
-TEAM="${1:?usage: package_submission.sh <队伍名> [作品名]}"
+ALLOW_INCOMPLETE=0
+POS=()
+for arg in "$@"; do
+  case "$arg" in
+    --allow-incomplete) ALLOW_INCOMPLETE=1 ;;
+    *) POS+=("$arg") ;;
+  esac
+done
+set -- ${POS[@]+"${POS[@]}"}
+TEAM="${1:?usage: package_submission.sh <队伍名> [作品名] [--allow-incomplete]}"
 WORK="${2:-SAGE-Mat}"
 PREFIX="AI4R_MAT_${TEAM}_${WORK}"
 SUB=submission
+PY="${PY:-.venv/bin/python}"
 mkdir -p dist
+
+# Run `loopctl check-done` against a copy of every ledger under <dir> (check-done rewrites
+# stale gates, so the shipped ledger itself is never touched). Prints one line per failing
+# workspace; returns 1 when any fails or when no ledger exists at all.
+check_ledgers_done() {
+  local root="$1" fails=0 found=0 ledger ws tmp
+  while IFS= read -r -d '' ledger; do
+    found=$((found + 1))
+    ws="$(dirname "$ledger")"; [[ "$(basename "$ws")" == "state" ]] && ws="$(dirname "$ws")"
+    tmp="$(mktemp -d)"; mkdir -p "$tmp/state"; cp "$ledger" "$tmp/state/ledger.json"
+    if ! GOAI_WORKSPACE="$tmp" "$PY" tools/loopctl.py check-done > "$tmp/check_done.log" 2>&1; then
+      echo "check-done FAIL: $ws"; tail -3 "$tmp/check_done.log" | cut -c1-400; fails=$((fails + 1))
+    fi
+    rm -rf "$tmp"
+  done < <(find "$root" -type f -name ledger.json -print0 | sort -z)
+  if [[ "$found" -eq 0 ]]; then echo "check-done FAIL: no ledger.json under $root"; return 1; fi
+  [[ "$fails" -eq 0 ]]
+}
 
 COMMIT="$(git rev-parse HEAD)"
 if [[ -n "$(git status --porcelain)" ]]; then
@@ -45,9 +78,24 @@ while IFS= read -r -d '' pdf; do
 done < <(find "$SUB/03_运行与评测包" -type f -name '*.pdf' -print0)
 [[ "$PDF_FAIL" -eq 0 ]] || { echo "存在非 TeX/陈旧/缺摘要的稿件 PDF，先按 scripts/build_tex.sh 重编再打包。" >&2; exit 3; }
 
+# Fail closed before packaging: every packaged run must be complete by the ledger's own
+# rules (loopctl check-done). --allow-incomplete records the debt in the manifest instead.
+LEDGER_WARN=""
+if ! LEDGER_REPORT="$(check_ledgers_done "$SUB/03_运行与评测包")"; then
+  echo "$LEDGER_REPORT" >&2
+  if [[ "$ALLOW_INCOMPLETE" -eq 1 ]]; then
+    LEDGER_WARN="# WARN: packaged with --allow-incomplete; loopctl check-done failed for: $(printf '%s\n' "$LEDGER_REPORT" | grep '^check-done FAIL' | sed 's/^check-done FAIL: //' | tr '\n' ';')"
+    echo "$LEDGER_WARN" >&2
+  else
+    echo "存在未通过 loopctl check-done 的运行账本，拒绝打包（确需打包用 --allow-incomplete，会在 MANIFEST 记 WARN）。" >&2
+    exit 4
+  fi
+fi
+
 # Fail closed before packaging: scrub secrets/private paths, normalize every
 # JSONL stream, validate all structured files, refresh MANIFEST.sha256.
 .venv/bin/python tools/export_submission_bundle.py --sanitize-only --out "$SUB"
+[[ -z "$LEDGER_WARN" ]] || echo "$LEDGER_WARN" >> "$SUB/MANIFEST.sha256"
 
 NONCODE="dist/${PREFIX}_非代码材料.zip"
 CODE="dist/${PREFIX}_代码材料.zip"
