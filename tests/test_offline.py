@@ -1,5 +1,6 @@
 """离线单测：核心确定性逻辑全覆盖，不打网络。"""
 import json
+import re
 import hashlib
 import os
 import sqlite3
@@ -1512,20 +1513,30 @@ def test_survey_templates_contract():
     zh = open(os.path.join(ROOT, "templates", "survey_main_zh.tex"), encoding="utf-8").read()
     # 语言分工：英文 article，中文 ctexart（标签本地化）
     assert r"\documentclass[11pt]{article}" in en
-    assert "{ctexart}" in zh and "fontset=fandol" in zh
-    for tpl in (en, zh):
-        # svg 包只在存在时加载——缺包/缺 inkscape 不得拖垮编译
-        assert r"\IfFileExists{svg.sty}{\usepackage{svg}}{}" in tpl
-        assert r"\usepackage{svg}" + "\n" not in tpl.replace(
-            r"\IfFileExists{svg.sty}{\usepackage{svg}}{}", "")
+    assert "{ctexart}" in zh and r"\usepackage{goai_zh_typo}" in zh
+    # 字体不再钉死在 documentclass 上（那会盖掉更好的 Noto）：goai_zh_typo 按
+    # Noto CJK OTF → macOS Songti/PingFang → Fandol 三级回退。最后一级仍是 TeX Live
+    # 自带的 Fandol，所以「服务器免装系统字体也能编」这条契约没变，只是换了落点。
+    sty = open(os.path.join(ROOT, "templates", "goai_zh_typo.sty"), encoding="utf-8").read()
+    assert "FandolSong-Regular.otf" in sty and "NotoSerifCJKsc" in sty
+    # 中文模板 v2 把排版规范整体搬进 goai_zh_typo.sty，所以中文侧的契约要对
+    # 「模板 + 它加载的 sty」求值——契约本身没放宽，只是换了落点。
+    # 先剥注释：被注释掉的 \usepackage 既不算加载（必需项应判缺），也不算违规（禁用项不该误报）。
+    def _active(text):
+        return "\n".join(re.sub(r"(?<!\\)%.*$", "", ln) for ln in text.splitlines())
+    for tpl in (_active(en), _active(zh + sty)):
+        # 缺 svg.sty / 缺 inkscape 不得拖垮编译：要么条件加载，要么根本不用
+        # （图件线改走矢量 pdf + \includegraphics 之后，中文侧已经不需要 svg 包）
+        bare = tpl.replace(r"\IfFileExists{svg.sty}{\usepackage{svg}}{}", "")
+        assert r"\usepackage{svg}" + "\n" not in bare and r"\RequirePackage{svg}" not in bare
         # 共同排版契约：学术蓝引用、P 列型、Times 字体链、参考文献前 clearpage
-        assert "citecolor=blue" in tpl
+        assert "colorlinks=true" in tpl and ("citecolor=blue" in tpl or "citecolor=goaiblue" in tpl)
         assert r"\newcolumntype{P}" in tpl
-        assert r"\usepackage{newtxtext}" in tpl and r"\usepackage{newtxmath}" in tpl
-        assert r"\usepackage{amssymb}" not in tpl
+        assert "{newtxtext}" in tpl and "{newtxmath}" in tpl
+        assert r"\usepackage{amssymb}" not in tpl and r"\RequirePackage{amssymb}" not in tpl
         assert r"\clearpage" in tpl
-        # 占位符必须在（writer 替换）且能被 tex_guard 拦住
-        assert "TODO" in tpl
+    # 占位符必须在模板里（writer 替换）且能被 tex_guard 拦住——这条只看模板，sty 里不该有
+    assert "TODO" in en and "TODO" in zh
     r = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "tex_guard.py"),
          os.path.join(ROOT, "templates", "survey_main_zh.tex")],
