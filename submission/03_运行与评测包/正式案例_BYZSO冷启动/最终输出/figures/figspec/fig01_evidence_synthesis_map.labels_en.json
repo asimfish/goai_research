@@ -1,0 +1,76 @@
+{
+  "title": "How Literature Sources Bound Transferable Synthesis Conditions",
+  "groups": {},
+  "nodes": {
+    "src_direct": {
+      "label": "Direct Reports: Ba₅Y₁₂Zn[O(SiO₄)]₈",
+      "sublabel": "One primary study"
+    },
+    "src_lineage": {
+      "label": "Same Ba–Y–Si–O Family",
+      "sublabel": "Structure/phases match"
+    },
+    "src_crystal": {
+      "label": "Crystal-Chemical Neighbors",
+      "sublabel": "Structure/phase links"
+    },
+    "src_process": {
+      "label": "Process Neighbors",
+      "sublabel": "Variables · methods"
+    },
+    "src_outside": {
+      "label": "Outside Study Scope",
+      "sublabel": "Structure/recipe: none"
+    },
+    "route": {
+      "label": "Route Comparison",
+      "sublabel": "Flux | self-flux/melt\nCeramic | mechanochemical\nCzochralski"
+    },
+    "validation": {
+      "label": "Characterization",
+      "sublabel": "SCXRD/advanced diffraction\nPXRD/Rietveld\nComposition/contamination\nHigh-temperature stability"
+    },
+    "warning": {
+      "label": "Neighbor Conditions ≠ Proven Target Recipe",
+      "sublabel": "No unconditional transfer of specific values"
+    },
+    "use_direct": {
+      "label": "Direct Reproduction",
+      "sublabel": "Primary study only"
+    },
+    "use_lineage": {
+      "label": "Family Phase Comparison",
+      "sublabel": "Composition scans"
+    },
+    "use_methods": {
+      "label": "Methods and Variables",
+      "sublabel": "No value transfer"
+    },
+    "use_exclude": {
+      "label": "Excluded From Comparison",
+      "sublabel": "Study boundary only"
+    }
+  },
+  "edges": {
+    "route_validation": {
+      "label": "Ratio · temperature–time\nAtmosphere · crucible/flux\nCooling"
+    },
+    "outside_exclude": {
+      "label": "Excluded"
+    }
+  },
+  "texts": {
+    "mainline": {
+      "text": "Evidence sources → route comparison → characterization → research uses"
+    },
+    "source_heading": {
+      "text": "Literature sources"
+    },
+    "comparison_heading": {
+      "text": "Route–variable–validation"
+    },
+    "uses_heading": {
+      "text": "Research uses"
+    }
+  }
+}

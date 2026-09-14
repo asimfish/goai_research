@@ -1,111 +1,526 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
-<defs>
-<linearGradient id="phase" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5F8F8"/><stop offset="1" stop-color="#DCE9EA"/></linearGradient>
-<linearGradient id="amber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4D9A3"/><stop offset="1" stop-color="#C88929"/></linearGradient>
-<linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BCD6D5"/><stop offset="1" stop-color="#477C80"/></linearGradient>
-<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/><feOffset dy="5" result="off"/><feComponentTransfer><feFuncA type="linear" slope=".17"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<marker id="arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 12 6 L 0 12 Z" fill="#607E88"/></marker>
-<marker id="arrowAmber" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 12 6 L 0 12 Z" fill="#B8791E"/></marker>
-</defs>
-<rect width="1600" height="900" fill="#FFFFFF"/>
-<text x="800" y="44" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="31px" font-weight="700" fill="#183A4A">从组成空间到可检验合成</text>
-<text x="800" y="78" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#657C86">Ba–Y–Si–O 近邻  ·  候选前驱体  ·  批量相区与单晶结构  ·  结果反馈</text>
-<text x="225" y="128" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="21px" font-weight="700" fill="#183A4A">组成空间</text>
-<path d="M 80 490 L 225 175 L 370 490 Z" fill="url(#phase)" stroke="#6C8994" stroke-width="2.0" opacity="1.0" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M 112 455 C 145 398 175 350 224 250 C 266 344 307 395 340 455" fill="none" stroke="#B8CDD0" stroke-width="1.5" opacity="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M 130 461 C 167 401 189 365 224 295 C 259 365 287 401 322 461" fill="none" stroke="#B8CDD0" stroke-width="1.2" opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M 152 466 C 180 422 203 390 224 340 C 250 391 268 423 296 466" fill="none" stroke="#B8CDD0" stroke-width="1.1" opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<polygon points="207,398 225,347 245,386 231,431" fill="#D59729" stroke="#A86C18" stroke-width="1.4" opacity="0.82"/>
-<circle cx="225" cy="383" r="7" fill="#B8791E" stroke="#805317" stroke-width="1.2" opacity="1.0"/>
-<text x="225" y="525" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#516A75">Ba–Y–Si–O / Ba–Zn–Si–O / Y–Si–O</text>
-<text x="225" y="550" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="600" fill="#A86C18">局部候选区与竞争相</text>
-<text x="85" y="500" text-anchor="start" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Ba</text>
-<text x="355" y="500" text-anchor="end" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Y</text>
-<text x="225" y="184" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="14px" font-weight="400" fill="#627A84">Zn</text>
-<polygon points="121,294 144.92000000000002,332.48 97.08,332.48" fill="#9FB8C4" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="121,294 144.92000000000002,332.48 121,340.28" fill="#9FB8C4" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="121,294 121,340.28 97.08,332.48" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="121" cy="294" r="2.86" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="144.92000000000002" cy="332.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="97.08" cy="332.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="326,289 349.92,327.48 302.08,327.48" fill="#9FB8C4" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="326,289 349.92,327.48 326,335.28" fill="#9FB8C4" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="326,289 326,335.28 302.08,327.48" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="326" cy="289" r="2.86" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="349.92" cy="327.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="302.08" cy="327.48" r="2.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<path d="M 372 374 C 442 337 494 300 552 263" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.9" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<text x="800" y="126" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="22px" font-weight="700" fill="#183A4A">候选晶相</text>
-<text x="800" y="151" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">结构模型待实验确认</text>
-<g filter="url(#soft)">
-<polygon points="650,181 699.68,260.92 600.32,260.92" fill="#5A9797" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="650,181 699.68,260.92 650,277.12" fill="#5A9797" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="650,181 650,277.12 600.32,260.92" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="650" cy="181" r="5.94" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="699.68" cy="260.92" r="5.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="600.32" cy="260.92" r="5.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="755,158 812.04,249.76 697.96,249.76" fill="#6CA4A2" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="755,158 812.04,249.76 755,268.36" fill="#6CA4A2" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="755,158 755,268.36 697.96,249.76" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="755" cy="158" r="6.82" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="812.04" cy="249.76" r="6.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="697.96" cy="249.76" r="6.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="866,185 913.84,261.96 818.16,261.96" fill="#4E8587" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="866,185 913.84,261.96 866,277.56" fill="#4E8587" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="866,185 866,277.56 818.16,261.96" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="866" cy="185" r="5.72" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="913.84" cy="261.96" r="5.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="818.16" cy="261.96" r="5.2" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="700,265 759.8,361.2 640.2,361.2" fill="#4E8587" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="700,265 759.8,361.2 700,380.7" fill="#4E8587" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="700,265 700,380.7 640.2,361.2" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="700" cy="265" r="7.15" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="759.8" cy="361.2" r="6.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="640.2" cy="361.2" r="6.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="812,264 865.36,349.84 758.64,349.84" fill="#72AAA6" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="812,264 865.36,349.84 812,367.24" fill="#72AAA6" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="812,264 812,367.24 758.64,349.84" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="812" cy="264" r="6.38" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="865.36" cy="349.84" r="5.800000000000001" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="758.64" cy="349.84" r="5.800000000000001" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="925,271 983.88,365.72 866.12,365.72" fill="#5A9797" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="925,271 983.88,365.72 925,384.92" fill="#5A9797" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="925,271 925,384.92 866.12,365.72" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="925" cy="271" r="7.04" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="983.88" cy="365.72" r="6.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="866.12" cy="365.72" r="6.4" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="760,370 810.6,451.4 709.4,451.4" fill="#72AAA6" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="760,370 810.6,451.4 760,467.9" fill="#72AAA6" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="760,370 760,467.9 709.4,451.4" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="760" cy="370" r="6.05" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="810.6" cy="451.4" r="5.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="709.4" cy="451.4" r="5.5" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<polygon points="870,365 925.2,453.8 814.8,453.8" fill="#4C8186" stroke="#486979" stroke-width="1.4" opacity="0.7"/><polygon points="870,365 925.2,453.8 870,471.8" fill="#4C8186" stroke="#486979" stroke-width="1.1" opacity="0.42"/><polygon points="870,365 870,471.8 814.8,453.8" fill="#B8D2D0" stroke="#486979" stroke-width="1.1" opacity="0.34"/><circle cx="870" cy="365" r="6.6" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="925.2" cy="453.8" r="6.0" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/><circle cx="814.8" cy="453.8" r="6.0" fill="#C65B4C" stroke="#7B3D37" stroke-width="0.7" opacity="1.0"/>
-<line x1="650" y1="235" x2="755" y2="220" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="755" y1="220" x2="866" y2="237" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="700" y1="330" x2="812" y2="322" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="812" y1="322" x2="925" y2="335" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="700" y1="330" x2="760" y2="425" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="812" y1="322" x2="870" y2="425" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="755" y1="220" x2="700" y2="330" stroke="#6F8A91" stroke-width="1.5"/>
-<line x1="866" y1="237" x2="925" y2="335" stroke="#6F8A91" stroke-width="1.5"/>
-<circle cx="676" cy="275" r="17" fill="#B1C89E" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-<circle cx="838" cy="270" r="15" fill="#AABF95" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-<circle cx="968" cy="280" r="18" fill="#B1C89E" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-<circle cx="760" cy="370" r="14" fill="#B8A5C6" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-<circle cx="895" cy="380" r="16" fill="#AABF95" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-<circle cx="690" cy="407" r="12" fill="#B8A5C6" stroke="#6D7F7A" stroke-width="1.1" opacity="0.94"/>
-</g>
-<path d="M 548 600 C 630 569 676 534 717 486" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.85" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<path d="M 1020 470 C 1084 500 1117 534 1165 582" fill="none" stroke="#7895A0" stroke-width="2.2" opacity="0.85" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<text x="200" y="625" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="19px" font-weight="700" fill="#183A4A">固相成相</text>
-<circle cx="72" cy="690" r="20" fill="#91A3A8" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="108" cy="684" r="17" fill="#B4A8C2" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="141" cy="699" r="18" fill="#A9B999" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="174" cy="686" r="16" fill="#D6C8B0" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<text x="123" y="730" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">前驱体粉体</text>
-<path d="M 215 681 Q 258 661 299 681 L 288 741 Q 258 760 226 741 Z" fill="#E9ECEA" stroke="#71828A" stroke-width="1.5"/>
-<path d="M 230 675 Q 258 692 287 675" fill="none" stroke="#71828A" stroke-width="1.4"/>
-<path d="M 270 654 L 300 620" stroke="#8B9AA0" stroke-width="9" stroke-linecap="round"/>
-<path d="M 300 620 L 309 611" stroke="#D3D8D7" stroke-width="7" stroke-linecap="round"/>
-<ellipse cx="349" cy="705" rx="28" ry="11" fill="#D8D1C6" stroke="#77868D" stroke-width="1.4"/>
-<rect x="326" y="705" width="46" height="20" fill="#C7BEB0" stroke="#77868D" stroke-width="1.4"/>
-<path d="M 399 677 Q 399 656 418 646 L 500 646 Q 519 656 519 677 L 519 741 L 399 741 Z" fill="#DCE0DF" stroke="#647982" stroke-width="1.7"/>
-<rect x="421" y="671" width="76" height="48" rx="23" fill="#6B7477" stroke="#404A4C" stroke-width="1.4"/>
-<rect x="435" y="680" width="48" height="31" rx="13" fill="#D8902B" opacity=".9"/>
-<rect x="447" y="691" width="24" height="12" rx="4" fill="#F5D39A"/>
-<text x="457" y="770" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">混合 · 压片 · 热处理</text>
-<path d="M 520 700 C 566 700 590 682 622 654" fill="none" stroke="#7895A0" stroke-width="2.0" opacity="0.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<text x="650" y="625" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="19px" font-weight="700" fill="#805718">高温溶液长晶</text>
-<path d="M 574 683 L 714 683 L 691 758 Q 646 778 597 758 Z" fill="#D8DDDB" stroke="#687D83" stroke-width="1.6"/>
-<path d="M 594 704 Q 646 682 696 704 L 686 752 Q 645 766 604 752 Z" fill="url(#amber)" opacity=".88"/>
-<ellipse cx="646" cy="704" rx="51" ry="17" fill="#E5AF58" opacity=".72"/>
-<path d="M 744 760 L 744 679 Q 744 663 760 658 L 833 658 Q 849 663 849 679 L 849 760 Z" fill="#F1F2F0" stroke="#687D83" stroke-width="1.5"/>
-<ellipse cx="796" cy="679" rx="53" ry="16" fill="#E6A743" opacity=".85"/>
-<path d="M 768 732 L 796 659 L 823 732 L 796 759 Z" fill="#EBC27E" stroke="#A06C1D" stroke-width="1.4" opacity=".9"/>
-<path d="M 796 659 L 823 732 L 796 719 L 768 732 Z" fill="#F4DCA9" stroke="#A06C1D" stroke-width="1.1" opacity=".9"/>
-<text x="710" y="797" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#805718">熔体 · 保温 · 慢冷</text>
-<path d="M 852 696 C 898 696 927 686 963 661" fill="none" stroke="#B8791E" stroke-width="2.2" opacity="0.9" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowAmber)"/>
-<text x="1350" y="126" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="21px" font-weight="700" fill="#183A4A">互补表征</text>
-<line x1="1168" y1="280" x2="1518" y2="280" stroke="#A5B3B8" stroke-width="1.2"/>
-<line x1="1168" y1="177" x2="1168" y2="280" stroke="#A5B3B8" stroke-width="1.2"/>
-<path d="M 1170 278 L 1190 278 L 1197 263 L 1203 278 L 1222 278 L 1230 220 L 1235 278 L 1258 278 L 1264 245 L 1269 278 L 1290 278 L 1299 188 L 1305 278 L 1328 278 L 1336 234 L 1341 278 L 1361 278 L 1370 205 L 1376 278 L 1397 278 L 1405 174 L 1410 278 L 1431 278 L 1440 228 L 1445 278 L 1465 278 L 1474 197 L 1480 278 L 1500 278 L 1514 260" fill="none" stroke="#2C5871" stroke-width="2.2" opacity="1.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="1345" y="307" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">粉末衍射 · 批量相组成</text>
-<g fill="none" stroke="#527789" stroke-width="1.5"><path d="M 1186 425 L 1280 390 L 1370 420 L 1274 456 Z"/><path d="M 1186 425 L 1186 510 L 1274 545 L 1274 456 Z"/><path d="M 1274 456 L 1370 420 L 1370 507 L 1274 545 Z"/><path d="M 1280 390 L 1280 477 L 1370 507"/><path d="M 1186 510 L 1280 477 L 1280 390"/></g>
-<circle cx="1186" cy="425" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1280" cy="390" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1370" cy="420" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1274" cy="545" r="5" fill="#C65B4C" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<text x="1350" y="574" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">单晶衍射 · 结构身份</text>
-<line x1="1190" y1="674" x2="1505" y2="674" stroke="#A5B3B8" stroke-width="1.2"/>
-<rect x="1190" y="632" width="315" height="13" rx="6" fill="#D9E2E2"/>
-<rect x="1302" y="632" width="93" height="13" rx="6" fill="#E1B561"/>
-<line x1="1215" y1="670" x2="1215" y2="688" stroke="#8298A0" stroke-width="1.2"/>
-<line x1="1302" y1="670" x2="1302" y2="688" stroke="#8298A0" stroke-width="1.2"/>
-<line x1="1395" y1="670" x2="1395" y2="688" stroke="#8298A0" stroke-width="1.2"/>
-<line x1="1488" y1="670" x2="1488" y2="688" stroke="#8298A0" stroke-width="1.2"/>
-<circle cx="1265" cy="674" r="6" fill="#4E7880" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1355" cy="674" r="7" fill="#B8791E" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1420" cy="674" r="6" fill="#4E7880" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<circle cx="1470" cy="674" r="6" fill="#A4B2B4" stroke="none" stroke-width="1.0" opacity="1.0"/>
-<text x="1350" y="716" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="16px" font-weight="400" fill="#536D79">EDS / EPMA · 实际化学计量</text>
-<path d="M 1490 744 C 1360 820 1160 820 1010 750" fill="none" stroke="#8299A1" stroke-width="1.8" opacity="0.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 7" marker-end="url(#arrow)"/>
-<text x="1348" y="813" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#657C86">结果反馈至下一轮组成与工艺</text>
-<line x1="80" y1="850" x2="1520" y2="850" stroke="#D5DEE0" stroke-width="1.0"/>
-<text x="800" y="872" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans CJK SC,Source Han Sans CN,Arial,sans-serif" font-size="15px" font-weight="400" fill="#526A75">核心判据：批量相区、单晶结构与实际化学计量必须相互支持</text>
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <rect width="100%" height="100%" fill="#FFFFFF" />
+  <g id="zL">
+    <rect x="26" y="26" width="1484" height="362" rx="14" fill="#EEF2F7" stroke="#5B7592" stroke-width="1.6" />
+  </g>
+  <g id="zL_l">
+    <text x="44" y="69.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#2B3E57">文献证据</tspan>
+    </text>
+  </g>
+  <g id="zE">
+    <rect x="26" y="418" width="1484" height="232" rx="14" fill="#E6F2F3" stroke="#1F7F8C" stroke-width="1.6" />
+  </g>
+  <g id="zE_l">
+    <text x="44" y="461.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#0F4F58">实验方法</tspan>
+    </text>
+  </g>
+  <g id="zR">
+    <rect x="26" y="680" width="1484" height="176" rx="14" fill="#EEF2F7" stroke="#5B7592" stroke-width="1.6" />
+  </g>
+  <g id="zR_l">
+    <text x="44" y="723.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#2B3E57">结果反馈</tspan>
+    </text>
+  </g>
+  <g id="zQ">
+    <rect x="26" y="880" width="1484" height="136" rx="14" fill="#FFF6E3" stroke="#C48A24" stroke-width="1.6" />
+  </g>
+  <g id="zQ_l">
+    <text x="44" y="923.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#7A5410">判断提醒</tspan>
+    </text>
+  </g>
+  <g id="c1">
+    <rect x="60" y="92" width="450" height="262" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="c1_b">
+    <rect x="60" y="92" width="8" height="262" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="c1_g_s2">
+    <rect x="99" y="122" width="20" height="30" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_g_s1">
+    <rect x="95" y="118" width="20" height="30" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_g_s0">
+    <rect x="92" y="114" width="20" height="30" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_g_l1">
+    <line x1="97" y1="125" x2="110" y2="125" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_g_l2">
+    <line x1="97" y1="131" x2="110" y2="131" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_g_l3">
+    <line x1="97" y1="137" x2="106" y2="137" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c1_t">
+    <text x="138" y="140.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#2B3E57">文献依据</tspan>
+    </text>
+  </g>
+  <g id="c1_i0">
+    <rect x="84" y="160" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c1_i0_t">
+    <text x="217.375" y="194.375" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">Ba–Y–Si–O </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">谱系</tspan>
+    </text>
+  </g>
+  <g id="c1_i1">
+    <rect x="84" y="222" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c1_i1_t">
+    <text x="192.951171875" y="256.375" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">Ba–Zn–Si–O </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">结构近邻</tspan>
+    </text>
+  </g>
+  <g id="c1_i2">
+    <rect x="84" y="285" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c1_i2_t">
+    <text x="216.75" y="319.375" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">Y–Si–O </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">工艺参照</tspan>
+    </text>
+  </g>
+  <g id="c2">
+    <rect x="560" y="92" width="450" height="262" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="c2_b">
+    <rect x="560" y="92" width="8" height="262" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="c2_g_o_0">
+    <line x1="605" y1="112" x2="622" y2="123" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_o_1">
+    <line x1="622" y1="123" x2="614" y2="145" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_o_2">
+    <line x1="614" y1="145" x2="596" y2="145" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_o_3">
+    <line x1="596" y1="145" x2="588" y2="123" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_o_4">
+    <line x1="588" y1="123" x2="605" y2="112" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_a">
+    <line x1="605" y1="112" x2="605" y2="145" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_g_b">
+    <line x1="588" y1="123" x2="622" y2="123" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c2_t">
+    <text x="638" y="140.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#2B3E57">结构假设</tspan>
+    </text>
+  </g>
+  <g id="c2_i0">
+    <rect x="584" y="160" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c2_i0_t">
+    <text x="734.75" y="194.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">局部组成网格</tspan>
+    </text>
+  </g>
+  <g id="c2_i1">
+    <rect x="584" y="222" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c2_i1_t">
+    <text x="715.294921875" y="256.375" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">Zn–Y–</tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">氧计量耦合</tspan>
+    </text>
+  </g>
+  <g id="c2_i2">
+    <rect x="584" y="285" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c2_i2_t">
+    <text x="725.75" y="319.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">竞争相与玻璃区</tspan>
+    </text>
+  </g>
+  <g id="c3">
+    <rect x="1060" y="92" width="450" height="262" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="c3_b">
+    <rect x="1060" y="92" width="8" height="262" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="c3_g_f_0">
+    <line x1="1089" y1="116" x2="1121" y2="116" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_g_f_1">
+    <line x1="1121" y1="116" x2="1108" y2="133" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_g_f_2">
+    <line x1="1108" y1="133" x2="1108" y2="145" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_g_f_3">
+    <line x1="1108" y1="145" x2="1102" y2="145" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_g_f_4">
+    <line x1="1102" y1="145" x2="1102" y2="133" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_g_f_5">
+    <line x1="1102" y1="133" x2="1089" y2="116" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c3_t">
+    <text x="1138" y="140.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#2B3E57">前驱体筛选</tspan>
+    </text>
+  </g>
+  <g id="c3_i0">
+    <rect x="1084" y="160" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c3_i0_t">
+    <text x="1177.375" y="192.75" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">BaCO3 + Y2O3 + SiO2</tspan>
+    </text>
+  </g>
+  <g id="c3_i1">
+    <rect x="1084" y="222" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c3_i1_t">
+    <text x="1192.962890625" y="254.75" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">ZnO / MgO / Co3O4</tspan>
+    </text>
+  </g>
+  <g id="c3_i2">
+    <rect x="1084" y="285" width="410" height="53" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c3_i2_t">
+    <text x="1225.75" y="319.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">模型排序的候选</tspan>
+    </text>
+  </g>
+  <g id="cav">
+    <rect x="1208" y="352" width="165" height="39" rx="19.5" fill="#FFF6E3" stroke="#C48A24" stroke-width="1.6" />
+  </g>
+  <g id="cav_t">
+    <text x="1222.693359375" y="379.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18" font-weight="bold" font-style="normal" fill="#7A5410">模型排序</tspan>
+      <tspan font-family="DejaVu Sans" font-size="18" font-weight="bold" font-style="normal" fill="#7A5410"> ≠ </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="18" font-weight="bold" font-style="normal" fill="#7A5410">验证</tspan>
+    </text>
+  </g>
+  <g id="l1">
+    <rect x="60" y="480" width="620" height="142" rx="9" fill="#FFFFFF" stroke="#1F7F8C" stroke-width="1.9" />
+  </g>
+  <g id="l1_b">
+    <rect x="60" y="480" width="8" height="142" rx="3" fill="#1F7F8C" stroke="none" stroke-width="1" />
+  </g>
+  <g id="l1_g_b">
+    <rect x="87" y="506" width="30" height="24" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_d">
+    <line x1="96" y1="506" x2="96" y2="530" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h0_0">
+    <line x1="103" y1="514" x2="100" y2="518" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h0_1">
+    <line x1="100" y1="518" x2="103" y2="522" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h1_0">
+    <line x1="108" y1="514" x2="105" y2="518" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h1_1">
+    <line x1="105" y1="518" x2="108" y2="522" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h2_0">
+    <line x1="112" y1="514" x2="110" y2="518" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_g_h2_1">
+    <line x1="110" y1="518" x2="112" y2="522" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l1_t">
+    <text x="136" y="526.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#0F4F58">固相成相</tspan>
+    </text>
+  </g>
+  <g id="l1r_t0">
+    <rect x="82" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l1r_t0_t">
+    <text x="94.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">分段煅烧</tspan>
+    </text>
+  </g>
+  <g id="l1r_t1">
+    <rect x="199" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l1r_t1_t">
+    <text x="229.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">复磨</tspan>
+    </text>
+  </g>
+  <g id="l1r_a1">
+    <polygon points="184.0,575.9 188.5,575.9 188.5,574.525 194,577 188.5,579.475 188.5,578.1 184.0,578.1" fill="#3C4753" />
+  </g>
+  <g id="l1r_t2">
+    <rect x="315" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l1r_t2_t">
+    <text x="345.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">退火</tspan>
+    </text>
+  </g>
+  <g id="l1r_a2">
+    <polygon points="300.0,575.9 304.5,575.9 304.5,574.525 310,577 304.5,579.475 304.5,578.1 300.0,578.1" fill="#3C4753" />
+  </g>
+  <g id="l1_o">
+    <rect x="424" y="552" width="234" height="50" rx="6" fill="#E6F2F3" stroke="#1F7F8C" stroke-width="1.6" />
+  </g>
+  <g id="l1_o_t">
+    <text x="468.75" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#0F4F58">批量相区与相纯度</tspan>
+    </text>
+  </g>
+  <g id="l2">
+    <rect x="820" y="480" width="620" height="142" rx="9" fill="#FFFFFF" stroke="#1F7F8C" stroke-width="1.9" />
+  </g>
+  <g id="l2_b">
+    <rect x="820" y="480" width="8" height="142" rx="3" fill="#1F7F8C" stroke="none" stroke-width="1" />
+  </g>
+  <g id="l2_g_n_0">
+    <line x1="858" y1="500" x2="858" y2="511" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_n_1">
+    <line x1="858" y1="511" x2="848" y2="531" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_n_2">
+    <line x1="848" y1="531" x2="876" y2="531" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_n_3">
+    <line x1="876" y1="531" x2="866" y2="511" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_n_4">
+    <line x1="866" y1="511" x2="866" y2="500" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_m">
+    <line x1="856" y1="500" x2="868" y2="500" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_d1">
+    <ellipse cx="858.5" cy="523.5" rx="1.5" ry="1.5" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_g_d2">
+    <ellipse cx="865.0" cy="526.0" rx="1.0" ry="1.0" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="l2_t">
+    <text x="896" y="526.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#0F4F58">高温溶液长晶</tspan>
+    </text>
+  </g>
+  <g id="l2r_t0">
+    <rect x="842" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l2r_t0_t">
+    <text x="872.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">助熔</tspan>
+    </text>
+  </g>
+  <g id="l2r_t1">
+    <rect x="959" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l2r_t1_t">
+    <text x="989.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">保温</tspan>
+    </text>
+  </g>
+  <g id="l2r_a1">
+    <polygon points="944.0,575.9 948.5,575.9 948.5,574.525 954,577 948.5,579.475 948.5,578.1 944.0,578.1" fill="#3C4753" />
+  </g>
+  <g id="l2r_t2">
+    <rect x="1075" y="552" width="97" height="50" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="l2r_t2_t">
+    <text x="1105.375" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#27303A">慢冷</tspan>
+    </text>
+  </g>
+  <g id="l2r_a2">
+    <polygon points="1060.0,575.9 1064.5,575.9 1064.5,574.525 1070,577 1064.5,579.475 1064.5,578.1 1060.0,578.1" fill="#3C4753" />
+  </g>
+  <g id="l2_o">
+    <rect x="1184" y="552" width="234" height="50" rx="6" fill="#E6F2F3" stroke="#1F7F8C" stroke-width="1.6" />
+  </g>
+  <g id="l2_o_t">
+    <text x="1210.625" y="584.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18.063954671223957" font-weight="bold" font-style="normal" fill="#0F4F58">单晶结构与液相选择性</tspan>
+    </text>
+  </g>
+  <g id="c5">
+    <rect x="380" y="706" width="780" height="130" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="c5_b">
+    <rect x="380" y="706" width="8" height="130" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="c5_g_a_0">
+    <line x1="408" y1="755" x2="414" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_1">
+    <line x1="414" y1="755" x2="417" y2="736" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_2">
+    <line x1="417" y1="736" x2="419" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_3">
+    <line x1="419" y1="755" x2="424" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_4">
+    <line x1="424" y1="755" x2="426" y2="742" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_5">
+    <line x1="426" y1="742" x2="429" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_6">
+    <line x1="429" y1="755" x2="434" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_7">
+    <line x1="434" y1="755" x2="435" y2="747" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_8">
+    <line x1="435" y1="747" x2="437" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_a_9">
+    <line x1="437" y1="755" x2="441" y2="755" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_k_0">
+    <line x1="430" y1="732" x2="433" y2="736" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_g_k_1">
+    <line x1="433" y1="736" x2="440" y2="726" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="c5_t">
+    <text x="456" y="752.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#2B3E57">表征手段</tspan>
+    </text>
+  </g>
+  <g id="c5r_t0">
+    <rect x="404" y="776" width="175" height="44" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c5r_t0_t">
+    <text x="416.0" y="803.875" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="17.11322021484375" font-weight="bold" font-style="normal" fill="#27303A">PXRD / Rietveld</tspan>
+    </text>
+  </g>
+  <g id="c5r_t1">
+    <rect x="591" y="776" width="175" height="44" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c5r_t1_t">
+    <text x="645.75" y="803.875" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="17.11322021484375" font-weight="bold" font-style="normal" fill="#27303A">SCXRD</tspan>
+    </text>
+  </g>
+  <g id="c5r_t2">
+    <rect x="778" y="776" width="175" height="44" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c5r_t2_t">
+    <text x="785.25" y="803.875" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="17.11322021484375" font-weight="bold" font-style="normal" fill="#27303A">EDS / EPMA / ICP</tspan>
+    </text>
+  </g>
+  <g id="c5r_t3">
+    <rect x="965" y="776" width="175" height="44" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="c5r_t3_t">
+    <text x="984.0" y="805.5" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="17.11322021484375" font-weight="bold" font-style="normal" fill="#27303A">高温相与冷却产物</tspan>
+    </text>
+  </g>
+  <g id="q1">
+    <rect x="60" y="936" width="450" height="66" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="q1_b">
+    <rect x="60" y="936" width="8" height="66" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="q1_t">
+    <text x="140.25" y="978.125" xml:space="preserve">
+      <tspan font-family="DejaVu Sans" font-size="21" font-weight="bold" font-style="normal" fill="#7A5410">Zn </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="21" font-weight="bold" font-style="normal" fill="#7A5410">是否进入并与氧计量耦合？</tspan>
+    </text>
+  </g>
+  <g id="q2">
+    <rect x="560" y="936" width="450" height="66" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="q2_b">
+    <rect x="560" y="936" width="8" height="66" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="q2_t">
+    <text x="659.0" y="978.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="21" font-weight="bold" font-style="normal" fill="#7A5410">稳定相区还是液相选择性？</tspan>
+    </text>
+  </g>
+  <g id="q3">
+    <rect x="1060" y="936" width="450" height="66" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="q3_b">
+    <rect x="1060" y="936" width="8" height="66" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="q3_t">
+    <text x="1138.0" y="978.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="21" font-weight="bold" font-style="normal" fill="#7A5410">实际组成与结构信号如何对应？</tspan>
+    </text>
+  </g>
+  <g id="e1_0">
+    <polygon points="514.0,221.75 541.0,221.75 541.0,217.0 556,223 541.0,229.0 541.0,224.25 514.0,224.25" fill="#3C4753" />
+  </g>
+  <g id="e2_0">
+    <polygon points="1014.0,221.75 1041.0,221.75 1041.0,217.0 1056,223 1041.0,229.0 1041.0,224.25 1014.0,224.25" fill="#3C4753" />
+  </g>
+  <g id="fk0_0">
+    <line x1="1285" y1="358" x2="1285" y2="444" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="fkh_0">
+    <line x1="370" y1="444" x2="1285" y2="444" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="fk1_0">
+    <polygon points="371.25,444.0 371.25,461.0 376.0,461.0 370,476 364.0,461.0 368.75,461.0 368.75,444.0" fill="#3C4753" />
+  </g>
+  <g id="fk2_0">
+    <polygon points="1131.25,444.0 1131.25,461.0 1136.0,461.0 1130,476 1124.0,461.0 1128.75,461.0 1128.75,444.0" fill="#3C4753" />
+  </g>
+  <g id="mg1_0">
+    <line x1="370" y1="626" x2="370" y2="662" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="mg2_0">
+    <line x1="1130" y1="626" x2="1130" y2="662" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="mgh_0">
+    <line x1="370" y1="662" x2="1130" y2="662" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="mg3_0">
+    <polygon points="771.25,662.0 771.25,687.0 776.0,687.0 770,702 764.0,687.0 768.75,687.0 768.75,662.0" fill="#3C4753" />
+  </g>
+  <g id="fb_0">
+    <line x1="1164" y1="771" x2="1475" y2="771" stroke="#3C4753" stroke-width="2.5" stroke-dasharray="11 7" />
+  </g>
+  <g id="fb_1">
+    <line x1="1475" y1="771" x2="1475" y2="403" stroke="#3C4753" stroke-width="2.5" stroke-dasharray="11 7" />
+  </g>
+  <g id="fb_2">
+    <line x1="1475" y1="403" x2="785" y2="403" stroke="#3C4753" stroke-width="2.5" stroke-dasharray="11 7" />
+  </g>
+  <g id="fb_3">
+    <defs>
+      <marker id="marker-fb_3" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#3C4753" />
+      </marker>
+    </defs>
+    <line x1="785" y1="403" x2="785" y2="358" stroke="#3C4753" stroke-width="2.5" stroke-dasharray="11 7" marker-end="url(#marker-fb_3)" />
+  </g>
+  <g id="fb_p">
+    <rect x="796" y="383" width="169" height="40" rx="20.0" fill="#FFFFFF" stroke="#CBD3DA" stroke-width="1.6" />
+  </g>
+  <g id="fb_p_t">
+    <text x="814.0" y="411.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="19" font-weight="bold" font-style="normal" fill="#27303A">更新组成与工艺</tspan>
+    </text>
+  </g>
 </svg>

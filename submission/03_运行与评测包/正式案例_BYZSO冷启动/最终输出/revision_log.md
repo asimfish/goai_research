@@ -116,3 +116,26 @@
 - 输入图 PDF 自带 1.7 版本而主稿输出设为 1.5，Tectonic 对三次嵌图各给出版本提示；未改动图件内容，记录该兼容性提示并以 `pdfinfo` 核对嵌图完整性。
 - 条件总表的来源定位单元原先以等宽字体显示 BibTeX key；在主模板的 `\\texttt` 显示层将含年份的内部 key 统一呈现为“来源”，保留同一单元中的 `\\cite{}` 文献标记，不改引用对象、数值或证据边界。
 - 最终 QC：`pdfinfo` 确认 23 页 Letter、PDF 1.5；`pdftotext` 逐页非空且裸 BibTeX key/内部控制术语扫描为 0；`pdftoppm` 抽查首页、含表格页、三张图页、研究方向页及参考文献首尾页，确认无裁切、重叠、空白页，图注与正文编号一致。最终 PDF 已复制至仓库根目录 `Ba5Y12Zn_合成调研_学术润色版.pdf`。
+
+## 2026-09-13 排版/用语 v3（main_zh3.tex + sections_zh3/，PDF main_zh3.pdf，19 页）
+- 排版：`goai_zh_typo.sty` v3（版心 2.0/2.3 cm、行距 1.2、节前后与浮动体间距压缩、去掉按节 FloatBarrier、首页 `\suppressfloats[t]`、表格 footnotesize + 灰底黑体表头 + 列距 3 pt + 行高 1.10、参考文献小五紧接结论）。
+- 表 2：六块上下联表合并为一张横排 `longtable`（`goai_research/tools/zh_table_merge.py`，1.0 cm 页边、12 列、A/B/C 分区行、`\endhead` 重复表头、“—”=未报道、去掉 `\texttt{bibkey}` 只留 `\cite`、`/`、`:` 后可断行），占 3 个横排页；0 Overfull。
+- 用语：`templates/glossary_materials_zh.json` 的 `zh_normalize`（56 条）由 `tools/zh_terms_apply.py` 在公式/引用保护区之外注入（身份→归属、长晶→晶体生长、热史→热历史、谱系→系列、批量→块体、成相→相形成、温时→温度–时间、近邻→结构相关化合物/工艺参照体系、NA→未报道、副相/次生相→第二相、多型→多晶型、非整比→非化学计量、慢冷→缓冷、CRED→cRED…），随后两位编辑按 `docs/zh_style_guide.md` 逐句润色（记录见 `sections_zh3/CHANGES_00_03.md`、`CHANGES_04_08.md`）。`tools/zh_qa.py` 核对每个文件的 `\cite` 键、数学片段、`\ref/\label`、数字、表格 `&`/`\\` 计数与基线一致：PASS。`01_phase_identity.tex` 中一处 `\linebreak` 随改句删除。
+- 构建：5090 docker TeX Live 2023，xelatex→bibtex→xelatex×2，0 错误。部署：`pdf/byzso_cn_typo3_20260913.pdf`。
+- 注：同目录 `main_typo3.tex`/`sections_v3/` 为另一并行会话的在途文件，未动；见 `OWNER_goai-76.md`。
+
+## 2026-09-13 排版 v4（main_zh3.tex 同源，仅换样式层 goai_zh_typo.sty v4）
+- 对齐 super_translate 的中文观感：正文 Noto Serif CJK SC Light（≈Songti SC 灰度）、标题/粗体 Noto Sans CJK SC Bold（≈Hiragino Sans GB W6）、五号 10.5 pt、行距 1.5×字号（15.75 pt）、表内 Regular 字重；内容、术语与引用与 v3 完全相同。v3 的 PDF 保留为 `main_zh3_v3.pdf`。部署：`pdf/*_cn_typo4_20260913.pdf`。
+- 2026-09-13 v4.1：所有竖排表改为严格等于版心宽（`tools/zh_table_width.py`，列宽为 `\textwidth` 的比例），去掉表头灰底，只留三线表与黑体表头；表 1 的 `\shortstack` 化学式改为自动换行。BYZSO 第 7.3 节标题由编辑改写的“机械化学活化与提拉法生长”改回准确表述“机械化学预活化与提拉法工艺参照”（该节只引用 Y2SiO5 的提拉法研究作工艺参照，目标相无提拉法生长证据）。
+
+## 2026-09-13 排版 v5（NeurIPS 版式；main_zh3.tex 同源，样式层 goai_zh_typo.sty v5）
+- 按 neurips_2023.sty 逐项移植：Letter 纸、版心 5.5 in × 9 in、上边距 1 in、页码居中页脚、首页无页码；正文 10 pt（Times + 思源宋 Light，行距 1.5 倍）、small/footnotesize 9 pt、large 12 pt、LARGE 17 pt；一级标题 12 pt 粗体左齐（前 2.0 ex 后 1.5 ex），二/三级 10 pt 粗体；无首行缩进、段间 5.5 pt；标题栏上下横线（4 pt / 1 pt）+ LARGE 粗体 + 粗体作者；摘要 12 pt 粗体居中 + quote 缩进；图注在下、表注在上，7 pt 间距，普通字号，冒号分隔；浮动比例 0.85/0.4/0.1/0.7；参考文献 \small、natbib 数字编号、`\section*`；超链接 hidelinks（不再有蓝色）；断行 \sloppy。
+- 参考文献：修正 references.bib 中 `author = {None Available}`（Materials Project 数据条目）。v4 的 PDF 保留为 `main_zh3_v4.pdf`。部署：`pdf/*_cn_typo5_20260913.pdf`。
+
+- 2026-09-13 v5.4：并行多代理版式审查环两轮（见 goai_research/docs/zh_review_loop.md）：表题注/表头/分区行/列宽、图件裁边、`\ref` 间距、run-in 标题、变量斜体、参考文献（bib_polish.py：括号保护大小写、Crossref 补卷期页、姓名/条目类型修正、去重）。PDF 同址更新。
+
+- 2026-09-13 英文版：`main_en.tex + sections_en/`（由 sections_zh3 经并行翻译代理译出，zh_qa 门禁一致，美式拼写），样式 `goai_en_typo.sty`（NeurIPS 移植；`template=iclr` 为 ICLR 2025 变体 `main_en_iclr.tex`）；中文 ICLR 变体 `main_zh_iclr.tex`。部署 `pdf/*_en_typo5_20260913.pdf`、`pdf/*_en_iclr_20260913.pdf`。
+
+- 2026-09-13 中英两条线：英文 `main_en.tex + sections_en/` 由母语级改写代理重写（非逐句翻译，zh_qa 门禁保证事实/引用/表格一致）；五张图改由 `tools/figspec2tikz.py` 从 figspec 直出 TikZ，中英各一版（`figures/pdf_tikz/*_{zh,en}.pdf`，源码 `figures/tikz/`，英文标签 `figures/figspec/*.labels_en.json`），图内文字 5.2–8 pt、无 trim、公式不断行。ICLR 变体 `main_en_iclr.tex` / `main_zh_iclr.tex`。方法见 `goai_research/docs/en_edition.md`。
+
+- 2026-09-13 模版对照：两套 sty 增加 `template=neurips|iclr|orchestra|arxiv|springer|journal`（PaperOrchestra 取其表/图/题注约定），同一内容各出一版（`main_{en,zh}_<模版>.tex`），对照册 `pdf/gallery/typo_gallery_20260913.pdf`；见 `goai_research/docs/typo_templates.md`。

@@ -1,0 +1,105 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic]
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+\begin{tikzpicture}[x=1pt,y=1pt, every node/.style={inner sep=0pt}]
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.42pt, rounded corners=2.4pt] (8.93pt,227.60pt) rectangle (127.93pt,22.31pt);
+\definecolor{gf}{HTML}{F7F8F8}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.42pt, rounded corners=2.4pt] (136.86pt,227.60pt) rectangle (291.56pt,16.36pt);
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.42pt, rounded corners=2.4pt] (300.49pt,227.60pt) rectangle (437.34pt,22.31pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.15pt, rounded corners=0.9pt] (16.36pt,217.18pt) rectangle (120.49pt,214.80pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.15pt, rounded corners=0.9pt] (144.29pt,217.18pt) rectangle (284.12pt,214.80pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.15pt, rounded corners=0.9pt] (307.92pt,217.18pt) rectangle (429.90pt,214.80pt);
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (68.43pt,196.06pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}External Flux}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Dwell $\rightarrow$ slow cool/separate}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (68.43pt,161.85pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Self-Flux/Melt}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Homogenize $\rightarrow$ nucleate/cool}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (68.43pt,127.63pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Solid-State Ceramic}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Mix $\rightarrow$ calcine $\rightarrow$ sinter}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.51pt, rounded corners=0.9pt, minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (68.43pt,93.42pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.1}{8.4}\selectfont\color{lc}Mechanochemical Activation}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}Mill $\rightarrow$ activate $\rightarrow$ phase}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[draw=ns, fill=nf, line width=0.48pt, rounded corners=0.9pt, minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (68.43pt,59.20pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Czochralski}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Melt $\rightarrow$ seed pull $\rightarrow$ anneal}};
+\definecolor{nf}{HTML}{FFFDF7}\definecolor{ns}{HTML}{9A7436}
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[draw=ns, fill=nf, line width=0.60pt, rounded corners=0.9pt, minimum width=107.1pt, minimum height=108.6pt, text width=102.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (232.06pt,127.19pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Unified Experiment Record}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Extract $\rightarrow$ normalize $\rightarrow$ compare routes\\Ratio and raw materials\\Temperature--time and atmosphere\\Crucible, flux/mineralizer\\Cooling, growth, separation, mass loss}};
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=139.8pt, minimum height=29.8pt, text width=134.8pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (214.21pt,38.68pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.4}{8.7}\selectfont\color{lc}Framework ≠ Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$ Recipe}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}Compared only on shared items}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{4D7165}
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (368.91pt,193.38pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Single-Crystal Structure}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Structural identity and site occupancy}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{4D7165}
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[draw=ns, fill=nf, line width=0.54pt, rounded corners=0.9pt, minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (368.91pt,151.73pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}PXRD / Rietveld}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Bulk phase purity and impurity phases}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.51pt, rounded corners=0.9pt, minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (368.91pt,110.08pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Composition · Contamination}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Nominal--local--bulk mean}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.51pt, rounded corners=0.9pt, minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (368.91pt,68.43pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}High-Temperature Stability}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}In situ HT ≠ cooled product}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (119.00pt,196.06pt) -- (148.76pt,196.06pt) -- (166.61pt,196.06pt) -- (180.46pt,181.48pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (119.00pt,161.85pt) -- (148.76pt,161.85pt) -- (166.61pt,161.85pt) -- (178.51pt,155.54pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (119.00pt,127.63pt) -- (148.76pt,127.63pt) -- (166.61pt,127.63pt) -- (178.51pt,127.55pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (119.00pt,93.42pt) -- (148.76pt,93.42pt) -- (166.61pt,93.42pt) -- (178.51pt,99.56pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (119.00pt,59.20pt) -- (148.76pt,59.20pt) -- (166.61pt,59.20pt) -- (179.78pt,72.89pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (285.61pt,124.97pt) -- (300.49pt,124.36pt) -- (300.49pt,193.38pt) -- (312.39pt,193.38pt) -- (312.39pt,193.38pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (299.00pt,158.87pt) {Structure};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (285.61pt,124.97pt) -- (300.49pt,124.36pt) -- (300.49pt,151.73pt) -- (312.39pt,151.73pt) -- (312.39pt,151.73pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (285.61pt,124.97pt) -- (300.49pt,124.36pt) -- (300.49pt,110.08pt) -- (312.39pt,110.08pt) -- (312.39pt,110.08pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.60pt, -{Stealth[length=2.7pt,width=2.1pt]}, rounded corners=1.8pt] (285.61pt,124.97pt) -- (300.49pt,124.36pt) -- (300.49pt,68.43pt) -- (312.39pt,68.43pt) -- (312.39pt,68.43pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (299.00pt,96.39pt) {High temperature};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center] at (68.43pt,196.06pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}External Flux}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Dwell $\rightarrow$ slow cool/separate}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center] at (68.43pt,161.85pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Self-Flux/Melt}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Homogenize $\rightarrow$ nucleate/cool}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center] at (68.43pt,127.63pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Solid-State Ceramic}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Mix $\rightarrow$ calcine $\rightarrow$ sinter}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center] at (68.43pt,93.42pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.1}{8.4}\selectfont\color{lc}Mechanochemical Activation}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}Mill $\rightarrow$ activate $\rightarrow$ phase}};
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[minimum width=101.2pt, minimum height=27.4pt, text width=96.2pt, align=center, inner sep=2pt, anchor=center] at (68.43pt,59.20pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Czochralski}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Melt $\rightarrow$ seed pull $\rightarrow$ anneal}};
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[minimum width=107.1pt, minimum height=108.6pt, text width=102.1pt, align=center, inner sep=2pt, anchor=center] at (232.06pt,127.19pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Unified Experiment Record}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Extract $\rightarrow$ normalize $\rightarrow$ compare routes\\Ratio and raw materials\\Temperature--time and atmosphere\\Crucible, flux/mineralizer\\Cooling, growth, separation, mass loss}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=139.8pt, minimum height=29.8pt, text width=134.8pt, align=center, inner sep=2pt, anchor=center] at (214.21pt,38.68pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.4}{8.7}\selectfont\color{lc}Framework ≠ Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$ Recipe}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}Compared only on shared items}};
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center] at (368.91pt,193.38pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Single-Crystal Structure}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Structural identity and site occupancy}};
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center] at (368.91pt,151.73pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}PXRD / Rietveld}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Bulk phase purity and impurity phases}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center] at (368.91pt,110.08pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}Composition · Contamination}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Nominal--local--bulk mean}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=113.1pt, minimum height=32.7pt, text width=108.1pt, align=center, inner sep=2pt, anchor=center] at (368.91pt,68.43pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.0}{9.5}\selectfont\color{lc}High-Temperature Stability}\\[2.4pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}In situ HT ≠ cooled product}};
+\definecolor{tc}{HTML}{536873}
+\node[anchor=center, font=\fontsize{6.1}{7.4}\selectfont, text=tc] at (223.13pt,232.65pt) {Route families $\rightarrow$ experimental items $\rightarrow$ characterization methods};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.2}{8.7}\selectfont, text=tc] at (68.43pt,220.16pt) {Route families};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.2}{8.7}\selectfont, text=tc] at (214.21pt,220.16pt) {Experimental items};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.2}{8.7}\selectfont, text=tc] at (368.91pt,220.16pt) {Characterization methods};
+\end{tikzpicture}
+\end{document}

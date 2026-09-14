@@ -1,0 +1,93 @@
+{
+  "title": "Route–Variable–Validation: Unified Comparison of Synthesis Conditions",
+  "groups": {},
+  "nodes": {
+    "flux": {
+      "label": "External Flux",
+      "sublabel": "Dwell → slow cool/separate"
+    },
+    "melt": {
+      "label": "Self-Flux/Melt",
+      "sublabel": "Homogenize → nucleate/cool"
+    },
+    "solid": {
+      "label": "Solid-State Ceramic",
+      "sublabel": "Mix → calcine → sinter"
+    },
+    "mech": {
+      "label": "Mechanochemical Activation",
+      "sublabel": "Mill → activate → phase"
+    },
+    "cz": {
+      "label": "Czochralski",
+      "sublabel": "Melt → seed pull → anneal"
+    },
+    "record": {
+      "label": "Unified Experiment Record",
+      "sublabel": "Extract → normalize → compare routes\nRatio and raw materials\nTemperature–time and atmosphere\nCrucible, flux/mineralizer\nCooling, growth, separation, mass loss"
+    },
+    "boundary": {
+      "label": "Framework ≠ Ba₅Y₁₂Zn[O(SiO₄)]₈ Recipe",
+      "sublabel": "Compared only on shared items"
+    },
+    "scxrd": {
+      "label": "Single-Crystal Structure",
+      "sublabel": "Structural identity and site occupancy"
+    },
+    "pxrd": {
+      "label": "PXRD / Rietveld",
+      "sublabel": "Bulk phase purity and impurity phases"
+    },
+    "chem": {
+      "label": "Composition · Contamination",
+      "sublabel": "Nominal–local–bulk mean"
+    },
+    "thermal": {
+      "label": "High-Temperature Stability",
+      "sublabel": "In situ HT ≠ cooled product"
+    }
+  },
+  "edges": {
+    "flux_record": {
+      "label": "Ratio · temperature"
+    },
+    "melt_record": {
+      "label": "Melt · container"
+    },
+    "solid_record": {
+      "label": "Mixing · calcination"
+    },
+    "mech_record": {
+      "label": "Milling · contamination"
+    },
+    "cz_record": {
+      "label": "Seed · annealing"
+    },
+    "record_scxrd": {
+      "label": "Structure"
+    },
+    "record_pxrd": {
+      "label": "Phase composition"
+    },
+    "record_chem": {
+      "label": "Composition"
+    },
+    "record_thermal": {
+      "label": "High temperature"
+    }
+  },
+  "texts": {
+    "mainline": {
+      "text": "Route families → experimental items → characterization methods"
+    },
+    "routes_heading": {
+      "text": "Route families"
+    },
+    "record_heading": {
+      "text": "Experimental items"
+    },
+    "checks_heading": {
+      "text": "Characterization methods"
+    }
+  }
+}

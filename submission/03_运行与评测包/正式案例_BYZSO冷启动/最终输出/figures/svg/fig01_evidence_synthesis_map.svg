@@ -1,67 +1,526 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
-<defs><marker id="arrow-block" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker><marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker><filter id="goai-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#2A3B47" flood-opacity="0.28"/></filter></defs>
-<rect x="0" y="0" width="1500" height="900" fill="#FFFFFF"/>
-<text x="750.0" y="40.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" fill="#183A4A" font-weight="bold">文献来源如何限定合成条件的可迁移范围</text>
-<rect x="30" y="95" width="340" height="730" rx="10" fill="#F3F6F7" stroke="#234456" stroke-width="1.4"/>
-<rect x="395" y="95" width="700" height="730" rx="10" fill="#F7F8F8" stroke="#234456" stroke-width="1.4"/>
-<rect x="1120" y="95" width="350" height="730" rx="10" fill="#F3F6F7" stroke="#234456" stroke-width="1.4"/>
-<path d="M 350.0 214.0 L 390.0 214.0 L 390.0 300.0 L 425.0 300.0 L 425.0 300.0" fill="none" stroke="#B67A21" stroke-width="2.4" marker-end="url(#arrow-block)"/>
-<path d="M 350.0 334.0 L 390.0 334.0 L 390.0 350.0 L 425.0 350.0 L 425.0 350.0" fill="none" stroke="#315A70" stroke-width="2.0" marker-end="url(#arrow-block)"/>
-<path d="M 350.0 454.0 L 390.0 454.0 L 390.0 400.0 L 425.0 400.0 L 425.0 400.0" fill="none" stroke="#587080" stroke-width="1.9" marker-end="url(#arrow-block)"/>
-<path d="M 350.0 574.0 L 390.0 574.0 L 390.0 450.0 L 425.0 450.0 L 425.0 450.0" fill="none" stroke="#71818A" stroke-width="1.8" marker-end="url(#arrow-block)"/>
-<path d="M 645.0 405.0 L 865.0 405.0" fill="none" stroke="#244B61" stroke-width="3.4" marker-end="url(#arrow-block)"/>
-<rect x="670.76" y="371.0" width="168.48000000000002" height="68.0" fill="#FFFFFF" opacity="0.9"/>
-<text x="755.0" y="383.75" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">配比 · 温度—时间</text><text x="755.0" y="405.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">气氛 · 坩埚/助熔剂</text><text x="755.0" y="426.25" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#244B61">冷却</text>
-<path d="M 1085.0 260.9 L 1120.0 215.0 L 1155.0 215.0 L 1155.0 215.0" fill="none" stroke="#B67A21" stroke-width="2.2" marker-end="url(#arrow-block)"/>
-<path d="M 1085.0 374.7 L 1120.0 365.0 L 1155.0 365.0 L 1155.0 365.0" fill="none" stroke="#315A70" stroke-width="2.0" marker-end="url(#arrow-block)"/>
-<path d="M 1085.0 488.4 L 1120.0 515.0 L 1155.0 515.0 L 1155.0 515.0" fill="none" stroke="#587080" stroke-width="1.9" marker-end="url(#arrow-block)"/>
-<path d="M 298.6 748.0 L 380.0 795.0 L 1120.0 795.0 L 1120.0 700.0 L 1155.0 700.0 L 1155.0 700.0" fill="none" stroke="#8A9499" stroke-width="1.8" stroke-dasharray="7,5" marker-end="url(#arrow-block)"/>
-<rect x="1099.0" y="734.75" width="42.0" height="25.5" fill="#FFFFFF" opacity="0.9"/>
-<text x="1120.0" y="747.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#8A9499">排除</text>
-<rect x="55" y="130" width="290" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
-<text x="200.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
-<rect x="425" y="130" width="640" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
-<text x="745.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
-<rect x="1150" y="130" width="290" height="8" rx="0" fill="#D3DADF" stroke="#D3DADF" stroke-width="0.5"/>
-<text x="1295.0" y="134.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1a1a1a" font-weight="bold"></text>
-<rect x="60" y="160" width="290" height="108" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="2.0"/>
-<text x="205.0" y="200.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">目标化合物直接报道</text>
-<text x="205.0" y="229.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">Ba₅Y₁₂Zn[O(SiO₄)]₈；仅 1 篇原始研究</text>
-<rect x="60" y="280" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#315A70" stroke-width="1.8"/>
-<text x="205.0" y="320.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#24475C" font-weight="bold">同一 Ba–Y–Si–O 谱系</text>
-<text x="205.0" y="349.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#536873">结构身份与相组成可比较</text>
-<rect x="60" y="400" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#587080" stroke-width="1.7"/>
-<text x="205.0" y="440.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#3A5968" font-weight="bold">晶体化学近邻</text>
-<text x="205.0" y="469.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#61727B">比较结构关系与相组成</text>
-<rect x="60" y="520" width="290" height="108" rx="0" fill="#FFFFFF" stroke="#71818A" stroke-width="1.6"/>
-<text x="205.0" y="560.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#52656F" font-weight="bold">工艺近邻</text>
-<text x="205.0" y="589.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#6C7980">比较过程变量与表征方法</text>
-<rect x="60" y="640" width="290" height="108" rx="0" fill="#F0F1F1" stroke="#8A9499" stroke-width="1.6" stroke-dasharray="6,4"/>
-<text x="205.0" y="680.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#626D73" font-weight="bold">研究范围之外</text>
-<text x="205.0" y="709.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#707A7F">不承担结构或配方结论</text>
-<rect x="425" y="255" width="220" height="300" rx="0" fill="#FFFFFF" stroke="#244B61" stroke-width="2.0"/>
-<text x="535.0" y="370.125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1E4154" font-weight="bold">合成路线对照</text>
-<text x="535.0" y="399.25" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">外加助熔｜自熔/熔体</text><text x="535.0" y="420.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">固相陶瓷｜机械化学</text><text x="535.0" y="441.75" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">Czochralski</text>
-<rect x="865" y="255" width="220" height="300" rx="0" fill="#FFFFFF" stroke="#244B61" stroke-width="2.0"/>
-<text x="975.0" y="359.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1E4154" font-weight="bold">互补表征</text>
-<text x="975.0" y="388.625" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">单晶/先进衍射</text><text x="975.0" y="409.875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">PXRD/Rietveld</text><text x="975.0" y="431.125" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">成分与污染</text><text x="975.0" y="452.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#526770">高温稳定性</text>
-<rect x="425" y="650" width="640" height="95" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="1.8"/>
-<text x="745.0" y="683.875" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">近邻条件 ≠ 目标相已验证配方</text>
-<text x="745.0" y="713.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">具体数值不得无条件迁移</text>
-<rect x="1155" y="160" width="285" height="110" rx="0" fill="#FFF8EA" stroke="#B67A21" stroke-width="2.0"/>
-<text x="1297.5" y="201.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#805718" font-weight="bold">直接条件复现</text>
-<text x="1297.5" y="230.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#805718">只依据目标化合物原始研究</text>
-<rect x="1155" y="310" width="285" height="110" rx="0" fill="#FFFFFF" stroke="#315A70" stroke-width="1.8"/>
-<text x="1297.5" y="351.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#24475C" font-weight="bold">谱系内相图与结构比较</text>
-<text x="1297.5" y="380.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#536873">借鉴组成扫描与核验方法</text>
-<rect x="1155" y="460" width="285" height="110" rx="0" fill="#FFFFFF" stroke="#587080" stroke-width="1.7"/>
-<text x="1297.5" y="501.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#3A5968" font-weight="bold">方法与变量结构</text>
-<text x="1297.5" y="530.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#61727B">不直接移用相关体系数值</text>
-<rect x="1155" y="650" width="285" height="100" rx="0" fill="#F0F1F1" stroke="#8A9499" stroke-width="1.6" stroke-dasharray="6,4"/>
-<text x="1297.5" y="686.375" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#626D73" font-weight="bold">排除出条件比较</text>
-<text x="1297.5" y="715.5" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.0" fill="#707A7F">仅说明研究边界</text>
-<text x="750" y="78.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" fill="#536873">证据来源 → 合成路线对照 → 互补表征 → 研究用途</text>
-<text x="200" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">文献来源</text>
-<text x="745" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">路线—变量—验证</text>
-<text x="1295" y="120.0" text-anchor="middle" dominant-baseline="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#183A4A" font-weight="bold">研究用途</text>
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <rect width="100%" height="100%" fill="#FFFFFF" />
+  <g id="zL">
+    <rect x="110" y="50" width="462" height="806" rx="14" fill="#EEF2F7" stroke="#5B7592" stroke-width="1.6" />
+  </g>
+  <g id="zL_l">
+    <text x="128" y="93.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#2B3E57">文献证据</tspan>
+    </text>
+  </g>
+  <g id="zE">
+    <rect x="592" y="50" width="440" height="806" rx="14" fill="#E6F2F3" stroke="#1F7F8C" stroke-width="1.6" />
+  </g>
+  <g id="zE_l">
+    <text x="610" y="93.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#0F4F58">实验方法</tspan>
+    </text>
+  </g>
+  <g id="zQ">
+    <rect x="1052" y="50" width="458" height="806" rx="14" fill="#FFF6E3" stroke="#C48A24" stroke-width="1.6" />
+  </g>
+  <g id="zQ_l">
+    <text x="1070" y="93.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="26" font-weight="bold" font-style="normal" fill="#7A5410">可回答的问题</tspan>
+    </text>
+  </g>
+  <g id="a1">
+    <rect x="130" y="150" width="420" height="102" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="a1_b">
+    <rect x="130" y="150" width="8" height="102" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a1_g_s0">
+    <rect x="161" y="187" width="19" height="29" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a1_g_l1">
+    <line x1="166" y1="197" x2="179" y2="197" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a1_g_l2">
+    <line x1="166" y1="203" x2="179" y2="203" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a1_g_l3">
+    <line x1="166" y1="208" x2="175" y2="208" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a1_t">
+    <text x="206" y="211.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57">目标化合物直接报道</tspan>
+    </text>
+  </g>
+  <g id="a2">
+    <rect x="130" y="262" width="420" height="102" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="a2_b">
+    <rect x="130" y="262" width="8" height="102" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a2_g_o_0">
+    <line x1="174" y1="296" x2="190" y2="307" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_o_1">
+    <line x1="190" y1="307" x2="183" y2="328" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_o_2">
+    <line x1="183" y1="328" x2="165" y2="328" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_o_3">
+    <line x1="165" y1="328" x2="158" y2="307" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_o_4">
+    <line x1="158" y1="307" x2="174" y2="296" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_a">
+    <line x1="174" y1="296" x2="174" y2="328" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_g_b">
+    <line x1="158" y1="307" x2="190" y2="307" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a2_t">
+    <text x="206" y="323.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57">同类</tspan>
+      <tspan font-family="DejaVu Sans" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57"> Ba–Y </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57">四方硅酸盐</tspan>
+    </text>
+  </g>
+  <g id="a3">
+    <rect x="130" y="374" width="420" height="102" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="a3_b">
+    <rect x="130" y="374" width="8" height="102" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_h0">
+    <line x1="161" y1="412" x2="187" y2="412" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_v0">
+    <line x1="161" y1="412" x2="161" y2="438" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_h1">
+    <line x1="161" y1="425" x2="187" y2="425" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_v1">
+    <line x1="174" y1="412" x2="174" y2="438" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_h2">
+    <line x1="161" y1="438" x2="187" y2="438" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_v2">
+    <line x1="187" y1="412" x2="187" y2="438" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a3_g_d00">
+    <ellipse cx="161.0" cy="412.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d01">
+    <ellipse cx="161.0" cy="425.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d02">
+    <ellipse cx="161.0" cy="438.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d10">
+    <ellipse cx="174.0" cy="412.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d11">
+    <ellipse cx="174.0" cy="425.0" rx="3.0" ry="3.0" fill="#111A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d12">
+    <ellipse cx="174.0" cy="438.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d20">
+    <ellipse cx="187.0" cy="412.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d21">
+    <ellipse cx="187.0" cy="425.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_g_d22">
+    <ellipse cx="187.0" cy="438.0" rx="3.0" ry="3.0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a3_t">
+    <text x="206" y="435.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57">结构相关化合物</tspan>
+    </text>
+  </g>
+  <g id="a4">
+    <rect x="130" y="486" width="420" height="102" rx="9" fill="#FFFFFF" stroke="#5B7592" stroke-width="1.9" />
+  </g>
+  <g id="a4_b">
+    <rect x="130" y="486" width="8" height="102" rx="3" fill="#5B7592" stroke="none" stroke-width="1" />
+  </g>
+  <g id="a4_g_b_0">
+    <line x1="163" y1="529" x2="167" y2="551" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a4_g_b_1">
+    <line x1="167" y1="551" x2="181" y2="551" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a4_g_b_2">
+    <line x1="181" y1="551" x2="185" y2="529" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a4_g_r">
+    <line x1="160" y1="529" x2="188" y2="529" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a4_t">
+    <text x="206" y="547.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#2B3E57">工艺参照研究</tspan>
+    </text>
+  </g>
+  <g id="a5">
+    <rect x="130" y="700" width="420" height="112" rx="9" fill="#FFFFFF" stroke="#9AA3AB" stroke-width="1.9" stroke-dasharray="12 8" />
+  </g>
+  <g id="a5_g_s0">
+    <rect x="163" y="742" width="19" height="29" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a5_g_l1">
+    <line x1="168" y1="752" x2="181" y2="752" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a5_g_l2">
+    <line x1="168" y1="758" x2="181" y2="758" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a5_g_l3">
+    <line x1="168" y1="763" x2="177" y2="763" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a5_g_x">
+    <line x1="162" y1="772" x2="190" y2="740" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="a5_t">
+    <text x="208" y="767.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#5B6570">非相关资料</tspan>
+    </text>
+  </g>
+  <g id="ax_u">
+    <polygon points="60.9,439.0 60.9,188.0 56.5,188.0 62,174 67.5,188.0 63.1,188.0 63.1,439.0" fill="#27303A" />
+  </g>
+  <g id="ax_d">
+    <polygon points="63.1,523.0 63.1,774.0 67.5,774.0 62,788 56.5,774.0 60.9,774.0 60.9,523.0" fill="#27303A" />
+  </g>
+  <g id="ax_n">
+    <text x="53.0" y="162.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18" font-weight="bold" font-style="normal" fill="#27303A">近</tspan>
+    </text>
+  </g>
+  <g id="ax_f">
+    <text x="53.0" y="812.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18" font-weight="bold" font-style="normal" fill="#27303A">远</tspan>
+    </text>
+  </g>
+  <g id="ax_l" transform="rotate(-90 42.0 481.5)">
+    <text x="-21.0" y="489.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="18" font-weight="bold" font-style="normal" fill="#27303A">与目标相的距离</tspan>
+    </text>
+  </g>
+  <g id="led">
+    <rect x="620" y="150" width="382" height="540" rx="9" fill="#FFFFFF" stroke="#1F7F8C" stroke-width="1.9" />
+  </g>
+  <g id="led_b">
+    <rect x="620" y="150" width="11" height="540" rx="3" fill="#1F7F8C" stroke="none" stroke-width="1" />
+  </g>
+  <g id="led_g_b">
+    <rect x="653" y="186" width="33" height="29" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="led_g_r1">
+    <line x1="653" y1="196" x2="687" y2="196" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="led_g_r2">
+    <line x1="653" y1="205" x2="687" y2="205" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="led_g_c1">
+    <line x1="664" y1="186" x2="664" y2="215" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="led_g_c2">
+    <line x1="676" y1="186" x2="676" y2="215" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="led_t">
+    <text x="704" y="210.875" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="25" font-weight="bold" font-style="normal" fill="#0F4F58">相同实验项目下比较</tspan>
+    </text>
+  </g>
+  <g id="ledr_r0">
+    <rect x="648" y="248" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c0_b">
+    <rect x="662" y="269" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c0_k_0">
+    <line x1="666" y1="279" x2="670" y2="283" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c0_k_1">
+    <line x1="670" y1="283" x2="677" y2="274" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x0">
+    <text x="694" y="287.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">原料与配比</tspan>
+    </text>
+  </g>
+  <g id="ledr_r1">
+    <rect x="648" y="319" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c1_b">
+    <rect x="662" y="340" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c1_k_0">
+    <line x1="666" y1="349" x2="670" y2="353" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c1_k_1">
+    <line x1="670" y1="353" x2="677" y2="345" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x1">
+    <text x="694" y="357.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">热史</tspan>
+    </text>
+  </g>
+  <g id="ledr_r2">
+    <rect x="648" y="389" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c2_b">
+    <rect x="662" y="410" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c2_k_0">
+    <line x1="666" y1="420" x2="670" y2="424" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c2_k_1">
+    <line x1="670" y1="424" x2="677" y2="415" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x2">
+    <text x="694" y="428.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">气氛</tspan>
+    </text>
+  </g>
+  <g id="ledr_r3">
+    <rect x="648" y="460" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c3_b">
+    <rect x="662" y="481" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c3_k_0">
+    <line x1="666" y1="491" x2="670" y2="495" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c3_k_1">
+    <line x1="670" y1="495" x2="677" y2="486" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x3">
+    <text x="694" y="499.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">容器与助熔剂</tspan>
+    </text>
+  </g>
+  <g id="ledr_r4">
+    <rect x="648" y="531" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c4_b">
+    <rect x="662" y="552" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c4_k_0">
+    <line x1="666" y1="561" x2="670" y2="565" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c4_k_1">
+    <line x1="670" y1="565" x2="677" y2="557" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x4">
+    <text x="694" y="570.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">冷却与分离</tspan>
+    </text>
+  </g>
+  <g id="ledr_r5">
+    <rect x="648" y="601" width="330" height="61" rx="6" fill="#F4F7FA" stroke="#AEBBC7" stroke-width="1.6" />
+  </g>
+  <g id="ledr_c5_b">
+    <rect x="662" y="622" width="18" height="18" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="ledr_c5_k_0">
+    <line x1="666" y1="632" x2="670" y2="636" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_c5_k_1">
+    <line x1="670" y1="636" x2="677" y2="627" stroke="#111A24" stroke-width="2.9835000000000003" />
+  </g>
+  <g id="ledr_x5">
+    <text x="694" y="640.125" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="20" font-weight="bold" font-style="normal" fill="#27303A">产物表征</tspan>
+    </text>
+  </g>
+  <g id="u1">
+    <rect x="1076" y="150" width="410" height="112" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="u1_b">
+    <rect x="1076" y="150" width="8" height="112" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="u1_g_n_0">
+    <line x1="1118" y1="190" x2="1118" y2="201" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_n_1">
+    <line x1="1118" y1="201" x2="1108" y2="221" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_n_2">
+    <line x1="1108" y1="221" x2="1136" y2="221" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_n_3">
+    <line x1="1136" y1="221" x2="1126" y2="201" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_n_4">
+    <line x1="1126" y1="201" x2="1126" y2="190" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_m">
+    <line x1="1116" y1="190" x2="1128" y2="190" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_d1">
+    <ellipse cx="1118.5" cy="213.5" rx="1.5" ry="1.5" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_g_d2">
+    <ellipse cx="1125.0" cy="216.0" rx="1.0" ry="1.0" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u1_t">
+    <text x="1154" y="217.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#7A5410">直接条件复现</tspan>
+    </text>
+  </g>
+  <g id="u2">
+    <rect x="1076" y="282" width="410" height="112" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="u2_b">
+    <rect x="1076" y="282" width="8" height="112" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="u2_g_o_0">
+    <line x1="1122" y1="321" x2="1138" y2="332" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_o_1">
+    <line x1="1138" y1="332" x2="1131" y2="353" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_o_2">
+    <line x1="1131" y1="353" x2="1113" y2="353" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_o_3">
+    <line x1="1113" y1="353" x2="1106" y2="332" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_o_4">
+    <line x1="1106" y1="332" x2="1122" y2="321" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_a">
+    <line x1="1122" y1="321" x2="1122" y2="353" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_g_b">
+    <line x1="1106" y1="332" x2="1138" y2="332" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u2_t">
+    <text x="1154" y="349.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#7A5410">谱系内相图与结构比较</tspan>
+    </text>
+  </g>
+  <g id="u3">
+    <rect x="1076" y="414" width="410" height="112" rx="9" fill="#FFFFFF" stroke="#C48A24" stroke-width="1.9" />
+  </g>
+  <g id="u3_b">
+    <rect x="1076" y="414" width="8" height="112" rx="3" fill="#C48A24" stroke="none" stroke-width="1" />
+  </g>
+  <g id="u3_g_p">
+    <line x1="1122" y1="456" x2="1122" y2="481" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_b">
+    <line x1="1108" y1="461" x2="1136" y2="461" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_l_0">
+    <line x1="1108" y1="461" x2="1104" y2="470" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_l_1">
+    <line x1="1104" y1="470" x2="1112" y2="470" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_l_2">
+    <line x1="1112" y1="470" x2="1108" y2="461" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_r_0">
+    <line x1="1136" y1="461" x2="1132" y2="470" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_r_1">
+    <line x1="1132" y1="470" x2="1140" y2="470" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_r_2">
+    <line x1="1140" y1="470" x2="1136" y2="461" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_g_f">
+    <line x1="1114" y1="484" x2="1130" y2="484" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u3_t">
+    <text x="1154" y="481.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#7A5410">方法与变量结构</tspan>
+    </text>
+  </g>
+  <g id="cav">
+    <rect x="1166" y="580" width="230" height="40" rx="20.0" fill="#FFF6E3" stroke="#C48A24" stroke-width="1.6" />
+  </g>
+  <g id="cav_t">
+    <text x="1180.875" y="608.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="19" font-weight="bold" font-style="normal" fill="#7A5410">近邻条件</tspan>
+      <tspan font-family="DejaVu Sans" font-size="19" font-weight="bold" font-style="normal" fill="#7A5410"> ≠ </tspan>
+      <tspan font-family="Noto Sans CJK SC" font-size="19" font-weight="bold" font-style="normal" fill="#7A5410">已验证配方</tspan>
+    </text>
+  </g>
+  <g id="u4">
+    <rect x="1076" y="700" width="410" height="112" rx="9" fill="#FFFFFF" stroke="#9AA3AB" stroke-width="1.9" stroke-dasharray="12 8" />
+  </g>
+  <g id="u4_g_o">
+    <ellipse cx="1122.0" cy="756.0" rx="12.0" ry="12.0" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_g_i">
+    <ellipse cx="1122.0" cy="756.0" rx="4.0" ry="4.0" fill="none" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_g_t506">
+    <line x1="1122" y1="738" x2="1122" y2="745" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_g_t5078">
+    <line x1="1122" y1="767" x2="1122" y2="774" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_g_t650">
+    <line x1="1104" y1="756" x2="1111" y2="756" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_g_t7850">
+    <line x1="1133" y1="756" x2="1140" y2="756" stroke="#111A24" stroke-width="2.295" />
+  </g>
+  <g id="u4_t">
+    <text x="1154" y="767.0" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="24" font-weight="bold" font-style="normal" fill="#5B6570">划定研究范围</tspan>
+    </text>
+  </g>
+  <g id="br_a1_0">
+    <line x1="554" y1="201" x2="584" y2="201" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="br_a2_0">
+    <line x1="554" y1="313" x2="584" y2="313" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="br_a3_0">
+    <line x1="554" y1="425" x2="584" y2="425" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="br_a4_0">
+    <line x1="554" y1="537" x2="584" y2="537" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="brv_0">
+    <line x1="584" y1="201" x2="584" y2="537" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="brh_0">
+    <polygon points="584.0,367.75 601.0,367.75 601.0,363.0 616,369 601.0,375.0 601.0,370.25 584.0,370.25" fill="#3C4753" />
+  </g>
+  <g id="fan0_0">
+    <line x1="1006" y1="420" x2="1030" y2="420" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="fanv_0">
+    <line x1="1030" y1="206" x2="1030" y2="470" stroke="#3C4753" stroke-width="2.5" />
+  </g>
+  <g id="fan1_0">
+    <polygon points="1030.0,204.75 1057.0,204.75 1057.0,200.0 1072,206 1057.0,212.0 1057.0,207.25 1030.0,207.25" fill="#3C4753" />
+  </g>
+  <g id="fan2_0">
+    <polygon points="1030.0,336.75 1057.0,336.75 1057.0,332.0 1072,338 1057.0,344.0 1057.0,339.25 1030.0,339.25" fill="#3C4753" />
+  </g>
+  <g id="fan3_0">
+    <polygon points="1030.0,468.75 1057.0,468.75 1057.0,464.0 1072,470 1057.0,476.0 1057.0,471.25 1030.0,471.25" fill="#3C4753" />
+  </g>
+  <g id="ex_0">
+    <defs>
+      <marker id="marker-ex_0" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#3C4753" />
+      </marker>
+    </defs>
+    <line x1="554" y1="756" x2="1072" y2="756" stroke="#3C4753" stroke-width="2.5" stroke-dasharray="11 7" marker-end="url(#marker-ex_0)" />
+  </g>
+  <g id="ex_p">
+    <rect x="776" y="736" width="74" height="40" rx="20.0" fill="#FFFFFF" stroke="#CBD3DA" stroke-width="1.6" />
+  </g>
+  <g id="ex_p_t">
+    <text x="794.0" y="764.375" xml:space="preserve">
+      <tspan font-family="Noto Sans CJK SC" font-size="19" font-weight="bold" font-style="normal" fill="#27303A">排除</tspan>
+    </text>
+  </g>
 </svg>

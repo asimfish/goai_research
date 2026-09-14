@@ -1,0 +1,217 @@
+% goai_en_typo.sty — English report typography with switchable templates.
+%   \documentclass[10pt]{article} \usepackage[template=<name>]{goai_en_typo}      (xelatex)
+%
+% template=neurips   NeurIPS 2023 (neurips_2023.sty values): letter, 5.5x9in block, Times 10/11,
+%                    bold headings, 4pt/1pt title rules, quote abstract, bold-lead hanging captions.
+% template=iclr      ICLR 2025 (iclr2025_conference.sty): same block, SMALL CAPS title/headings/"Abstract",
+%                    parskip 0.5pc.
+% template=orchestra PaperOrchestra conventions (github.com/Ar9av/PaperOrchestra, skills/section-writing-agent
+%                    references): booktabs only, table caption above / figure caption below, plain
+%                    (non-bold-lead) captions of 1-3 sentences, figures at 0.95\linewidth, \clearpage
+%                    before the bibliography so no float lands past References, "Figure~\ref{}" prefixes.
+%                    Geometry/type follow NeurIPS.
+% template=arxiv     arxiv.sty look (G. Kour): wider 6.0in block on letter, left-aligned title with a rule,
+%                    bold sans headings, first-line indent, no title rules box.
+% template=springer  LNCS-like: 12.2x19.3cm block, Times 10/12, run-in bold numbered headings, indented
+%                    paragraphs, small captions with a period separator.
+% template=journal   Single-column journal look (ACS/RSC-like): 6.5x9in block, Times 10/12.5, bold sans
+%                    numbered headings, justified small captions, tighter float skips.
+%
+% Shared with the Chinese sty: \thead, P/R columns, \tabCJK (no-op), \CJKecglue (space), \doi, \runninghead.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{goai_en_typo}[2026/09/13 v2 goai English typography, switchable templates]
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{family=goaien,prefix=goaien@}
+\DeclareStringOption[neurips]{template}
+\ProcessKeyvalOptions*
+\RequirePackage{iftex}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+% ---- template flags
+\newif\ifgoai@iclr \newif\ifgoai@orch \newif\ifgoai@arxiv \newif\ifgoai@springer \newif\ifgoai@journal
+\edef\goai@tpl{\goaien@template}
+\def\goai@a{iclr}\ifx\goai@tpl\goai@a \goai@iclrtrue \fi
+\def\goai@a{orchestra}\ifx\goai@tpl\goai@a \goai@orchtrue \fi
+\def\goai@a{arxiv}\ifx\goai@tpl\goai@a \goai@arxivtrue \fi
+\def\goai@a{springer}\ifx\goai@tpl\goai@a \goai@springertrue \fi
+\def\goai@a{journal}\ifx\goai@tpl\goai@a \goai@journaltrue \fi
+% ---- fonts
+\ifXeTeX
+  \RequirePackage{fontspec}
+  \RequirePackage{newtxtext}
+  \RequirePackage[nonewtxmathopt]{newtxmath}
+  \setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+  \setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+\else
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage{newtxtext}
+  \RequirePackage[nonewtxmathopt]{newtxmath}
+  \renewcommand{\sfdefault}{phv}
+\fi
+\RequirePackage{textcomp}
+% ---- geometry per template
+\ifgoai@arxiv
+  \RequirePackage[letterpaper,textwidth=6.0in,textheight=8.8in,top=1.1in,headheight=12pt,headsep=18pt,footskip=28pt]{geometry}
+\else\ifgoai@springer
+  \RequirePackage[a4paper,textwidth=12.2cm,textheight=19.3cm,top=2.6cm,headheight=12pt,headsep=14pt,footskip=26pt]{geometry}
+\else\ifgoai@journal
+  \RequirePackage[letterpaper,textwidth=6.5in,textheight=9.0in,top=1.0in,headheight=12pt,headsep=16pt,footskip=26pt]{geometry}
+\else
+  \RequirePackage[letterpaper,textheight=9in,textwidth=5.5in,top=1in,headheight=12pt,headsep=25pt,footskip=30pt]{geometry}
+\fi\fi\fi
+\widowpenalty=10000 \clubpenalty=10000 \displaywidowpenalty=10000
+\raggedbottom
+\sloppy
+% ---- sizes (NeurIPS reduced leading; springer/journal slightly looser)
+\renewcommand{\normalsize}{\@setfontsize\normalsize\@xpt\@xipt
+  \abovedisplayskip 7\p@ \@plus 2\p@ \@minus 5\p@ \abovedisplayshortskip \z@ \@plus 3\p@
+  \belowdisplayskip \abovedisplayskip \belowdisplayshortskip 4\p@ \@plus 3\p@ \@minus 3\p@}
+\ifgoai@springer \renewcommand{\normalsize}{\@setfontsize\normalsize\@xpt{12}}\fi
+\ifgoai@journal  \renewcommand{\normalsize}{\@setfontsize\normalsize\@xpt{12.5}}\fi
+\normalsize
+\renewcommand{\small}{\@setfontsize\small\@ixpt\@xpt
+  \abovedisplayskip 6\p@ \@plus 1.5\p@ \@minus 4\p@ \abovedisplayshortskip \z@ \@plus 2\p@
+  \belowdisplayskip \abovedisplayskip \belowdisplayshortskip 3\p@ \@plus 2\p@ \@minus 2\p@}
+\renewcommand{\footnotesize}{\@setfontsize\footnotesize\@ixpt\@xpt}
+\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viipt\@viiipt}
+\renewcommand{\tiny}{\@setfontsize\tiny\@vipt\@viipt}
+\renewcommand{\large}{\@setfontsize\large\@xiipt{14}}
+\renewcommand{\Large}{\@setfontsize\Large\@xivpt{16}}
+\renewcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{20}}
+\renewcommand{\huge}{\@setfontsize\huge\@xxpt{23}}
+\renewcommand{\Huge}{\@setfontsize\Huge\@xxvpt{28}}
+% ---- paragraph style
+\ifgoai@iclr     \setlength{\parskip}{.5pc}\setlength{\parindent}{\z@}
+\else\ifgoai@springer \setlength{\parskip}{\z@}\setlength{\parindent}{1.2em}
+\else\ifgoai@arxiv    \setlength{\parskip}{\z@ \@plus 1\p@}\setlength{\parindent}{1.2em}
+\else\ifgoai@journal  \setlength{\parskip}{2\p@ \@plus 1\p@}\setlength{\parindent}{1.0em}
+\else            \setlength{\parskip}{5.5\p@}\setlength{\parindent}{\z@}
+\fi\fi\fi\fi
+% ---- heading fonts
+\ifgoai@iclr
+  \newcommand{\goai@secfont}{\large\sc\raggedright}\newcommand{\goai@subsecfont}{\normalsize\sc\raggedright}
+  \newcommand{\goai@titlefont}{\LARGE\sc}\newcommand{\goai@abshead}{\large\sc Abstract}
+\else\ifgoai@arxiv
+  \newcommand{\goai@secfont}{\large\bfseries\sffamily\raggedright}\newcommand{\goai@subsecfont}{\normalsize\bfseries\sffamily\raggedright}
+  \newcommand{\goai@titlefont}{\LARGE\bfseries}\newcommand{\goai@abshead}{\large\bfseries Abstract}
+\else\ifgoai@springer
+  \newcommand{\goai@secfont}{\large\bfseries\raggedright}\newcommand{\goai@subsecfont}{\normalsize\bfseries\raggedright}
+  \newcommand{\goai@titlefont}{\Large\bfseries}\newcommand{\goai@abshead}{\normalsize\bfseries Abstract}
+\else\ifgoai@journal
+  \newcommand{\goai@secfont}{\large\bfseries\sffamily\raggedright}\newcommand{\goai@subsecfont}{\normalsize\bfseries\sffamily\raggedright}
+  \newcommand{\goai@titlefont}{\LARGE\bfseries\sffamily}\newcommand{\goai@abshead}{\normalsize\bfseries\sffamily Abstract}
+\else
+  \newcommand{\goai@secfont}{\large\bfseries\raggedright}\newcommand{\goai@subsecfont}{\normalsize\bfseries\raggedright}
+  \newcommand{\goai@titlefont}{\LARGE\bfseries}\newcommand{\goai@abshead}{\large\bfseries Abstract}
+\fi\fi\fi\fi
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{-2.0ex \@plus -0.5ex \@minus -0.2ex}{1.5ex \@plus 0.3ex \@minus 0.2ex}{\goai@secfont}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{-1.8ex \@plus -0.5ex \@minus -0.2ex}{0.8ex \@plus 0.2ex}{\goai@subsecfont}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}{-1.5ex \@plus -0.5ex \@minus -0.2ex}{0.5ex \@plus 0.2ex}{\goai@subsecfont}}
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}{1.0ex \@plus 0.3ex \@minus 0.2ex}{-0.5em}{\normalsize\bfseries}}
+% ---- floats, tables, captions
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{longtable}
+\RequirePackage{multirow}
+\RequirePackage{needspace}
+\RequirePackage{etoolbox}
+\RequirePackage[table]{xcolor}
+\ifgoai@orch
+  % PaperOrchestra: plain captions (no bold lead-in), 1-3 sentences, no "Figure N:" inside the text
+  \RequirePackage[font={small},labelfont={bf},labelsep=period,skip=6pt,justification=justified,singlelinecheck=true]{caption}
+  \captionsetup[longtable]{font={small},labelfont={bf},labelsep=period,skip=6pt,justification=justified}
+\else\ifgoai@springer
+  \RequirePackage[font={small},labelfont={bf},labelsep=period,skip=5pt,justification=justified,singlelinecheck=true]{caption}
+  \captionsetup[longtable]{font={small},labelfont={bf},labelsep=period,skip=5pt,justification=justified}
+\else
+  \RequirePackage[font={small,stretch=1.1},labelfont={bf},labelsep=colon,skip=6pt,justification=justified,singlelinecheck=true,format=hang]{caption}
+  \captionsetup[longtable]{font={small,stretch=1.1},labelfont={bf},skip=6pt,justification=justified,singlelinecheck=true,format=hang}
+\fi\fi
+\captionsetup[table]{position=above,skip=6pt}
+\setlength{\LTcapwidth}{\textwidth}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.4}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 2fil}
+\setlength{\@fpbot}{0pt plus 1fil}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{3pt}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedright\arraybackslash}p{#1}}
+\AtBeginEnvironment{table}{\small}
+\AtBeginEnvironment{table*}{\small}
+\AtBeginEnvironment{longtable}{\linespread{1.0}\selectfont}
+\setlength{\LTpre}{14pt plus 2pt minus 2pt}\setlength{\LTpost}{12pt plus 2pt minus 2pt}
+\newcommand{\thead}[1]{\textbf{#1}}
+\newcommand{\NA}{---}
+\providecommand{\tabCJK}{}
+\providecommand{\CJKecglue}{\ }
+\providecommand{\kaishu}{}
+% PaperOrchestra: figures at 0.95\linewidth and a \clearpage before the bibliography
+\ifgoai@orch
+  \let\goai@ig\includegraphics
+  \renewcommand{\includegraphics}[2][]{\goai@ig[width=0.95\linewidth]{#2}}
+  \pretocmd{\bibliography}{\clearpage}{}{}
+\fi
+% ---- footnotes, lists
+\setlength{\footnotesep}{6.65pt}
+\setlength{\skip\footins}{9pt plus 4pt minus 2pt}
+\renewcommand{\footnoterule}{\kern-3pt \hrule width 12pc \kern 2.6pt}
+\RequirePackage{enumitem}
+\setlist{topsep=4pt plus 1pt minus 2pt,itemsep=2pt plus 1pt minus 0.5pt,parsep=2pt plus 1pt minus 0.5pt,leftmargin=2.2em}
+% ---- links and references
+\definecolor{goaiblue}{RGB}{0,84,159}
+\RequirePackage[hyphens]{url}
+\RequirePackage[colorlinks=true,citecolor=goaiblue,linkcolor=goaiblue,urlcolor=goaiblue]{hyperref}
+\urlstyle{same}
+\renewcommand{\UrlBigBreaks}{}
+\renewcommand{\UrlBreaks}{\do\/\do\-\do\_\do\(\do\)}
+\newcommand{\doi}[1]{doi:\,\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\RequirePackage[numbers,sort&compress]{natbib}
+\setlength{\bibsep}{3pt plus 2pt}
+\renewcommand{\bibfont}{\small\hyphenpenalty=2000\exhyphenpenalty=2000\emergencystretch=2em}
+% ---- page furniture
+\pagestyle{plain}
+\newcommand{\runninghead}[1]{}
+% ---- title block
+\renewcommand{\maketitle}{%
+  \par\begingroup
+  \thispagestyle{empty}%
+  \ifgoai@arxiv
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \raggedright{\goai@titlefont\boldmath \@title\par}\vskip 8pt
+      {\normalsize\@author\par}\vskip 6pt
+      \hrule height 0.6pt \vskip 14pt}%
+  \else\ifgoai@springer
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \centering{\goai@titlefont\boldmath \@title\par}\vskip 10pt
+      {\normalsize\@author\par}\vskip 12pt}%
+  \else\ifgoai@journal
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \raggedright{\goai@titlefont\boldmath \@title\par}\vskip 10pt
+      {\normalsize\bfseries\@author\par}\vskip 4pt
+      \hrule height 1.2pt \vskip 12pt}%
+  \else
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \vskip 0.1in
+      \hrule height 4pt \vskip 0.25in \vskip -\parskip
+      \centering{\goai@titlefont\boldmath \@title\par}
+      \vskip 0.29in \vskip -\parskip \hrule height 1pt \vskip 0.09in
+      \centering\begin{tabular}[t]{c}\bfseries\rule{0pt}{24pt}\@author\end{tabular}\par
+      \vskip 0.3in minus 0.1in}%
+  \fi\fi\fi
+  \endgroup\suppressfloats[t]}
+% ---- abstract
+\ifgoai@springer
+  \renewenvironment{abstract}{\small\begin{quote}\noindent{\bfseries Abstract.}\ \ignorespaces}{\par\end{quote}\vskip 6pt}
+\else\ifgoai@journal
+  \renewenvironment{abstract}{\vskip 2pt\noindent\begin{minipage}{\linewidth}\small\noindent{\goai@abshead}\par\vskip 3pt\noindent\ignorespaces}{\par\end{minipage}\vskip 10pt}
+\else\ifgoai@arxiv
+  \renewenvironment{abstract}{\vskip 0.075in\centerline{\goai@abshead}\vspace{0.5ex}\begin{quote}\small}{\par\end{quote}\vskip 1ex}
+\else
+  \renewenvironment{abstract}{\vskip 0.075in\centerline{\goai@abshead}\vspace{0.5ex}\begin{quote}}{\par\end{quote}\vskip 1ex}
+\fi\fi\fi
+\RequirePackage{microtype}

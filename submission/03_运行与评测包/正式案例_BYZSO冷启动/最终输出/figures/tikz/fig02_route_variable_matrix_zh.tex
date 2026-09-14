@@ -1,0 +1,117 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\xeCJKsetup{CJKecglue={\hskip 0.18em}}
+\usepackage{fontspec}
+\setmainfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic]
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+\begin{tikzpicture}[x=1pt,y=1pt, every node/.style={inner sep=0pt}]
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (8.64pt,220.41pt) rectangle (123.89pt,21.61pt);
+\definecolor{gf}{HTML}{F7F8F8}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (132.53pt,220.41pt) rectangle (282.35pt,15.85pt);
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (291.00pt,220.41pt) rectangle (423.53pt,21.61pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (15.85pt,210.32pt) rectangle (116.69pt,208.02pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (139.74pt,210.32pt) rectangle (275.15pt,208.02pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (298.20pt,210.32pt) rectangle (416.33pt,208.02pt);
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (66.27pt,189.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{外加助熔}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{溶解}/\mbox{保温} $\rightarrow$ \mbox{慢冷}/\mbox{分离}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (66.27pt,156.74pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{自熔}/\mbox{熔体}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{均化} $\rightarrow$ \mbox{自发成核} $\rightarrow$ \mbox{受控冷却}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (66.27pt,123.60pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{固相陶瓷}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{混合}/\mbox{压片} $\rightarrow$ \mbox{煅烧}/\mbox{复磨} $\rightarrow$ \mbox{烧结}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.49pt, rounded corners=0.9pt, minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (66.27pt,90.47pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}机械化学预活化}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{高能研磨} $\rightarrow$ \mbox{活化} $\rightarrow$ \mbox{后续成相}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (66.27pt,57.34pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}Czochralski}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{预烧}/\mbox{熔化} $\rightarrow$ \mbox{籽晶提拉} $\rightarrow$ \mbox{退火}}};
+\definecolor{nf}{HTML}{FFFDF7}\definecolor{ns}{HTML}{9A7436}
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=103.7pt, minimum height=105.2pt, text width=98.7pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (224.73pt,123.17pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{统一实验记录}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{抽取} $\rightarrow$ \mbox{规范化} $\rightarrow$ \mbox{跨路线对照}\\\mbox{配比与原料}\\\mbox{温度}—\mbox{时间与气氛}\\\mbox{坩埚}、\mbox{助熔}/\mbox{矿化剂}\\\mbox{冷却}、\mbox{生长}、\mbox{分离与失重}}};
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=135.4pt, minimum height=28.8pt, text width=130.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (207.44pt,37.46pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.9}{8.1}\selectfont\color{lc}\mbox{抽取框架} ≠ Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$ \mbox{实验处方}}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}各路线仅在相同实验项目下比较}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{4D7165}
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (357.26pt,187.28pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{单晶结构}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}结构身份与位点占据}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{4D7165}
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (357.26pt,146.94pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}PXRD / Rietveld}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}批量相纯与杂相}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.49pt, rounded corners=0.9pt, minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (357.26pt,106.60pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{成分与污染}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{名义}—\mbox{局域}—\mbox{体平均}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.49pt, rounded corners=0.9pt, minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (357.26pt,66.27pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{高温稳定性}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{原位高温} ≠ \mbox{冷却回收}}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (115.25pt,189.87pt) -- (144.06pt,189.87pt) -- (161.35pt,189.87pt) -- (174.76pt,175.75pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{5.0}{5.6}\selectfont, text=ec, anchor=south, align=center] at (129.65pt,191.02pt) {\mbox{配比} · \mbox{温度}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (115.25pt,156.74pt) -- (144.06pt,156.74pt) -- (161.35pt,156.74pt) -- (172.87pt,150.63pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{5.0}{5.6}\selectfont, text=ec, anchor=south, align=center] at (129.65pt,157.89pt) {\mbox{熔体} · \mbox{容器}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (115.25pt,123.60pt) -- (144.06pt,123.60pt) -- (161.35pt,123.60pt) -- (172.87pt,123.52pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{5.0}{5.6}\selectfont, text=ec, anchor=south, align=center] at (129.65pt,124.75pt) {\mbox{混合} · \mbox{煅烧}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (115.25pt,90.47pt) -- (144.06pt,90.47pt) -- (161.35pt,90.47pt) -- (172.87pt,96.41pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{5.0}{5.6}\selectfont, text=ec, anchor=south, align=center] at (129.65pt,91.62pt) {\mbox{研磨} · \mbox{污染}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (115.25pt,57.34pt) -- (144.06pt,57.34pt) -- (161.35pt,57.34pt) -- (174.11pt,70.59pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{5.0}{5.6}\selectfont, text=ec, anchor=south, align=center] at (129.65pt,58.49pt) {\mbox{籽晶} · \mbox{退火}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (276.59pt,121.03pt) -- (291.00pt,120.43pt) -- (291.00pt,187.28pt) -- (302.52pt,187.28pt) -- (302.52pt,187.28pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (289.56pt,153.85pt) {\mbox{结构}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (276.59pt,121.03pt) -- (291.00pt,120.43pt) -- (291.00pt,146.94pt) -- (302.52pt,146.94pt) -- (302.52pt,146.94pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (289.56pt,133.69pt) {\mbox{相组成}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (276.59pt,121.03pt) -- (291.00pt,120.43pt) -- (291.00pt,106.60pt) -- (302.52pt,106.60pt) -- (302.52pt,106.60pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (283.79pt,121.88pt) {\mbox{成分}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (276.59pt,121.03pt) -- (291.00pt,120.43pt) -- (291.00pt,66.27pt) -- (302.52pt,66.27pt) -- (302.52pt,66.27pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (289.56pt,93.35pt) {\mbox{高温}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center] at (66.27pt,189.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{外加助熔}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{溶解}/\mbox{保温} $\rightarrow$ \mbox{慢冷}/\mbox{分离}}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center] at (66.27pt,156.74pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{自熔}/\mbox{熔体}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{均化} $\rightarrow$ \mbox{自发成核} $\rightarrow$ \mbox{受控冷却}}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center] at (66.27pt,123.60pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{固相陶瓷}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{混合}/\mbox{压片} $\rightarrow$ \mbox{煅烧}/\mbox{复磨} $\rightarrow$ \mbox{烧结}}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center] at (66.27pt,90.47pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}机械化学预活化}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{高能研磨} $\rightarrow$ \mbox{活化} $\rightarrow$ \mbox{后续成相}}};
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[minimum width=98.0pt, minimum height=26.5pt, text width=93.0pt, align=center, inner sep=2pt, anchor=center] at (66.27pt,57.34pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}Czochralski}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{预烧}/\mbox{熔化} $\rightarrow$ \mbox{籽晶提拉} $\rightarrow$ \mbox{退火}}};
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[minimum width=103.7pt, minimum height=105.2pt, text width=98.7pt, align=center, inner sep=2pt, anchor=center] at (224.73pt,123.17pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{统一实验记录}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{抽取} $\rightarrow$ \mbox{规范化} $\rightarrow$ \mbox{跨路线对照}\\\mbox{配比与原料}\\\mbox{温度}—\mbox{时间与气氛}\\\mbox{坩埚}、\mbox{助熔}/\mbox{矿化剂}\\\mbox{冷却}、\mbox{生长}、\mbox{分离与失重}}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=135.4pt, minimum height=28.8pt, text width=130.4pt, align=center, inner sep=2pt, anchor=center] at (207.44pt,37.46pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.9}{8.1}\selectfont\color{lc}\mbox{抽取框架} ≠ Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$ \mbox{实验处方}}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}各路线仅在相同实验项目下比较}};
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center] at (357.26pt,187.28pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{单晶结构}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}结构身份与位点占据}};
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center] at (357.26pt,146.94pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}PXRD / Rietveld}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}批量相纯与杂相}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center] at (357.26pt,106.60pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{成分与污染}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{名义}—\mbox{局域}—\mbox{体平均}}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=109.5pt, minimum height=31.7pt, text width=104.5pt, align=center, inner sep=2pt, anchor=center] at (357.26pt,66.27pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{高温稳定性}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{原位高温} ≠ \mbox{冷却回收}}};
+\definecolor{tc}{HTML}{536873}
+\node[anchor=center, font=\fontsize{6.0}{7.2}\selectfont, text=tc] at (216.09pt,225.31pt) {\mbox{路线族} $\rightarrow$ \mbox{实验项目} $\rightarrow$ \mbox{表征方法}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (66.27pt,213.21pt) {\mbox{路线族}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (207.44pt,213.21pt) {\mbox{实验项目}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (357.26pt,213.21pt) {\mbox{表征方法}};
+\end{tikzpicture}
+\end{document}

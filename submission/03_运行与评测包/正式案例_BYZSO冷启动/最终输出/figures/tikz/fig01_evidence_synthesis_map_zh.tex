@@ -1,0 +1,114 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\xeCJKsetup{CJKecglue={\hskip 0.18em}}
+\usepackage{fontspec}
+\setmainfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic]
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+\begin{tikzpicture}[x=1pt,y=1pt, every node/.style={inner sep=0pt}]
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (8.64pt,231.93pt) rectangle (106.60pt,21.61pt);
+\definecolor{gf}{HTML}{F7F8F8}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (113.81pt,231.93pt) rectangle (315.49pt,21.61pt);
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (322.69pt,231.93pt) rectangle (423.53pt,21.61pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (15.85pt,221.85pt) rectangle (99.40pt,219.54pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (122.45pt,221.85pt) rectangle (306.84pt,219.54pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (331.33pt,221.85pt) rectangle (414.89pt,219.54pt);
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (59.06pt,197.65pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}目标化合物直接报道}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$；仅 1 \mbox{篇原始研究}}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (59.06pt,163.07pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.6}{7.8}\selectfont\color{lc}\mbox{同一} Ba--Y--Si--O \mbox{谱系}}\\[2.0pt]{\fontsize{5.1}{6.1}\selectfont\color{sc}结构身份与相组成可比较}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.49pt, rounded corners=0.9pt, minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (59.06pt,128.50pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{晶体化学近邻}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}比较结构关系与相组成}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (59.06pt,93.93pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{工艺近邻}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}比较过程变量与表征方法}};
+\definecolor{nf}{HTML}{F0F1F1}\definecolor{ns}{HTML}{8A9499}
+\definecolor{lc}{HTML}{626D73}\definecolor{sc}{HTML}{707A7F}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, dashed, minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (59.06pt,59.35pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{研究范围之外}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}不承担结构或配方结论}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{244B61}
+\definecolor{lc}{HTML}{1E4154}\definecolor{sc}{HTML}{526770}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=63.4pt, minimum height=86.4pt, text width=58.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (154.14pt,142.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{合成路线对照}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{外加助熔}｜\mbox{自熔}/\mbox{熔体}\\\mbox{固相陶瓷}｜\mbox{机械化学}\\Czochralski}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{244B61}
+\definecolor{lc}{HTML}{1E4154}\definecolor{sc}{HTML}{526770}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=63.4pt, minimum height=86.4pt, text width=58.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (280.91pt,142.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{互补表征}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{单晶}/\mbox{先进衍射}\\PXRD/Rietveld\\\mbox{成分与污染}\\\mbox{高温稳定性}}};
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=184.4pt, minimum height=27.4pt, text width=179.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (214.65pt,58.34pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{近邻条件} ≠ 目标相已验证配方}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}具体数值不得无条件迁移}};
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (373.83pt,197.36pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{直接条件复现}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}只依据目标化合物原始研究}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (373.83pt,154.14pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.5}{8.8}\selectfont\color{lc}谱系内相图与结构比较}\\[2.2pt]{\fontsize{5.8}{6.9}\selectfont\color{sc}借鉴组成扫描与核验方法}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{587080}
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.49pt, rounded corners=0.9pt, minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (373.83pt,110.92pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}方法与变量结构}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}不直接移用相关体系数值}};
+\definecolor{nf}{HTML}{F0F1F1}\definecolor{ns}{HTML}{8A9499}
+\definecolor{lc}{HTML}{626D73}\definecolor{sc}{HTML}{707A7F}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, dashed, minimum width=82.1pt, minimum height=28.8pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (373.83pt,57.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}排除出条件比较}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}仅说明研究边界}};
+\definecolor{ec}{HTML}{B67A21}
+\draw[draw=ec, line width=0.69pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (100.84pt,197.65pt) -- (112.37pt,197.65pt) -- (112.37pt,172.87pt) -- (122.45pt,172.87pt) -- (122.45pt,172.87pt);
+\definecolor{ec}{HTML}{315A70}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (100.84pt,163.07pt) -- (112.37pt,163.07pt) -- (112.37pt,158.46pt) -- (122.45pt,158.46pt) -- (122.45pt,158.46pt);
+\definecolor{ec}{HTML}{587080}
+\draw[draw=ec, line width=0.55pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (100.84pt,128.50pt) -- (112.37pt,128.50pt) -- (112.37pt,144.06pt) -- (122.45pt,144.06pt) -- (122.45pt,144.06pt);
+\definecolor{ec}{HTML}{71818A}
+\draw[draw=ec, line width=0.52pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (100.84pt,93.93pt) -- (112.37pt,93.93pt) -- (112.37pt,129.65pt) -- (122.45pt,129.65pt) -- (122.45pt,129.65pt);
+\definecolor{ec}{HTML}{244B61}
+\draw[draw=ec, line width=0.98pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (185.84pt,142.62pt) -- (249.22pt,142.62pt);
+\definecolor{ec}{HTML}{B67A21}
+\draw[draw=ec, line width=0.63pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (312.61pt,184.15pt) -- (322.69pt,197.36pt) -- (332.77pt,197.36pt) -- (332.77pt,197.36pt);
+\definecolor{ec}{HTML}{315A70}
+\draw[draw=ec, line width=0.58pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (312.61pt,151.36pt) -- (322.69pt,154.14pt) -- (332.77pt,154.14pt) -- (332.77pt,154.14pt);
+\definecolor{ec}{HTML}{587080}
+\draw[draw=ec, line width=0.55pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (312.61pt,118.57pt) -- (322.69pt,110.92pt) -- (332.77pt,110.92pt) -- (332.77pt,110.92pt);
+\definecolor{ec}{HTML}{8A9499}
+\draw[draw=ec, line width=0.52pt, -{Stealth[length=2.6pt,width=2.0pt]}, dashed, rounded corners=1.7pt] (86.02pt,43.79pt) -- (109.48pt,30.25pt) -- (322.69pt,30.25pt) -- (322.69pt,57.62pt) -- (332.77pt,57.62pt) -- (332.77pt,57.62pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (216.09pt,31.40pt) {\mbox{排除}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center] at (59.06pt,197.65pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}目标化合物直接报道}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]$_{8}$；仅 1 \mbox{篇原始研究}}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center] at (59.06pt,163.07pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.6}{7.8}\selectfont\color{lc}\mbox{同一} Ba--Y--Si--O \mbox{谱系}}\\[2.0pt]{\fontsize{5.1}{6.1}\selectfont\color{sc}结构身份与相组成可比较}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center] at (59.06pt,128.50pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{晶体化学近邻}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}比较结构关系与相组成}};
+\definecolor{lc}{HTML}{52656F}\definecolor{sc}{HTML}{6C7980}
+\node[minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center] at (59.06pt,93.93pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{工艺近邻}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}比较过程变量与表征方法}};
+\definecolor{lc}{HTML}{626D73}\definecolor{sc}{HTML}{707A7F}
+\node[minimum width=83.6pt, minimum height=31.1pt, text width=78.6pt, align=center, inner sep=2pt, anchor=center] at (59.06pt,59.35pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{研究范围之外}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}不承担结构或配方结论}};
+\definecolor{lc}{HTML}{1E4154}\definecolor{sc}{HTML}{526770}
+\node[minimum width=63.4pt, minimum height=86.4pt, text width=58.4pt, align=center, inner sep=2pt, anchor=center] at (154.14pt,142.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{合成路线对照}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{外加助熔}｜\mbox{自熔}/\mbox{熔体}\\\mbox{固相陶瓷}｜\mbox{机械化学}\\Czochralski}};
+\definecolor{lc}{HTML}{1E4154}\definecolor{sc}{HTML}{526770}
+\node[minimum width=63.4pt, minimum height=86.4pt, text width=58.4pt, align=center, inner sep=2pt, anchor=center] at (280.91pt,142.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{互补表征}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{单晶}/\mbox{先进衍射}\\PXRD/Rietveld\\\mbox{成分与污染}\\\mbox{高温稳定性}}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=184.4pt, minimum height=27.4pt, text width=179.4pt, align=center, inner sep=2pt, anchor=center] at (214.65pt,58.34pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{近邻条件} ≠ 目标相已验证配方}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}具体数值不得无条件迁移}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center] at (373.83pt,197.36pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{直接条件复现}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}只依据目标化合物原始研究}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center] at (373.83pt,154.14pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.5}{8.8}\selectfont\color{lc}谱系内相图与结构比较}\\[2.2pt]{\fontsize{5.8}{6.9}\selectfont\color{sc}借鉴组成扫描与核验方法}};
+\definecolor{lc}{HTML}{3A5968}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=82.1pt, minimum height=31.7pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center] at (373.83pt,110.92pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}方法与变量结构}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}不直接移用相关体系数值}};
+\definecolor{lc}{HTML}{626D73}\definecolor{sc}{HTML}{707A7F}
+\node[minimum width=82.1pt, minimum height=28.8pt, text width=77.1pt, align=center, inner sep=2pt, anchor=center] at (373.83pt,57.62pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}排除出条件比较}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}仅说明研究边界}};
+\definecolor{tc}{HTML}{536873}
+\node[anchor=center, font=\fontsize{6.0}{7.2}\selectfont, text=tc] at (216.09pt,236.83pt) {\mbox{证据来源} $\rightarrow$ \mbox{合成路线对照} $\rightarrow$ \mbox{互补表征} $\rightarrow$ \mbox{研究用途}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (57.62pt,224.73pt) {\mbox{文献来源}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (214.65pt,224.73pt) {\mbox{路线}—\mbox{变量}—\mbox{验证}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (373.11pt,224.73pt) {\mbox{研究用途}};
+\end{tikzpicture}
+\end{document}
