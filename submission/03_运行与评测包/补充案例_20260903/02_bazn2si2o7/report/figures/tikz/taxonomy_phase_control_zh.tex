@@ -1,0 +1,78 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\xeCJKsetup{CJKecglue={\hskip 0.18em}}
+\usepackage{fontspec}
+\setmainfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic]
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+\begin{tikzpicture}[x=1pt,y=1pt, every node/.style={inner sep=0pt}]
+\definecolor{nf}{HTML}{DCE6F1}\definecolor{ns}{HTML}{1f4e79}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (216.09pt,136.86pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}BaZn$_{2}$Si$_{2}$O$_{7}$}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{目标相}}};
+\definecolor{nf}{HTML}{DCE6F1}\definecolor{ns}{HTML}{1f4e79}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (72.03pt,203.48pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{结构与多晶型}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{相变} · \mbox{配位}}};
+\definecolor{nf}{HTML}{DCE6F1}\definecolor{ns}{HTML}{1f4e79}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (172.87pt,210.69pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{合成路线}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{固相} · \mbox{溶胶}—\mbox{凝胶}}};
+\definecolor{nf}{HTML}{DCE6F1}\definecolor{ns}{HTML}{1f4e79}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (288.12pt,203.48pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{组成与热处理}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba/Sr · Zn 位}};
+\definecolor{nf}{HTML}{D9EEE9}\definecolor{ns}{HTML}{2a9d8f}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (72.03pt,55.82pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{玻璃析晶}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{成核} · \mbox{生长}}};
+\definecolor{nf}{HTML}{D9EEE9}\definecolor{ns}{HTML}{2a9d8f}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (172.87pt,45.02pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{近邻体系}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba$_{2}$ZnSi$_{2}$O$_{7}$ 等}};
+\definecolor{nf}{HTML}{F8DDD5}\definecolor{ns}{HTML}{e07a5f}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (288.12pt,55.82pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{证据边界}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{直接} / \mbox{近邻} / \mbox{推断}}};
+\definecolor{nf}{HTML}{F8DDD5}\definecolor{ns}{HTML}{e07a5f}
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=3.6pt, minimum width=84.9pt, minimum height=32.4pt, text width=79.9pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (388.96pt,136.86pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]8}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{未见直接报道}}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (181.05pt,153.06pt) -- (107.07pt,187.28pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (144.06pt,171.61pt) {\mbox{结构}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (206.60pt,153.06pt) -- (182.36pt,194.48pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (192.68pt,173.77pt) {\mbox{制备}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (233.61pt,153.06pt) -- (270.60pt,187.28pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (252.10pt,171.61pt) {\mbox{变量}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (187.28pt,120.65pt) -- (100.84pt,72.03pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (144.06pt,97.78pt) {\mbox{晶化}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (208.46pt,120.65pt) -- (180.50pt,61.22pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (192.68pt,90.94pt) {\mbox{近邻}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Stealth[length=3.2pt,width=2.5pt]}, rounded corners=2.2pt] (230.49pt,120.65pt) -- (273.71pt,72.03pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=east, align=center] at (250.30pt,96.34pt) {\mbox{判读}};
+\definecolor{ec}{HTML}{1f4e79}
+\draw[draw=ec, line width=1.08pt, -{Straight Barb[length=3.2pt,width=2.5pt]}, dashed, rounded corners=2.2pt] (252.10pt,136.86pt) -- (352.94pt,136.86pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (302.52pt,138.30pt) {\mbox{类比}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (216.09pt,136.86pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}BaZn$_{2}$Si$_{2}$O$_{7}$}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{目标相}}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (72.03pt,203.48pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{结构与多晶型}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{相变} · \mbox{配位}}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (172.87pt,210.69pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{合成路线}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{固相} · \mbox{溶胶}—\mbox{凝胶}}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (288.12pt,203.48pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{组成与热处理}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba/Sr · Zn 位}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (72.03pt,55.82pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{玻璃析晶}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{成核} · \mbox{生长}}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (172.87pt,45.02pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{近邻体系}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba$_{2}$ZnSi$_{2}$O$_{7}$ 等}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=72.0pt, minimum height=32.4pt, text width=67.0pt, align=center, inner sep=2pt, anchor=center] at (288.12pt,55.82pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}\mbox{证据边界}}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{直接} / \mbox{近邻} / \mbox{推断}}};
+\definecolor{lc}{HTML}{183A4A}\definecolor{sc}{HTML}{536873}
+\node[minimum width=84.9pt, minimum height=32.4pt, text width=79.9pt, align=center, inner sep=2pt, anchor=center] at (388.96pt,136.86pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{8.3}{9.8}\selectfont\color{lc}Ba$_{5}$Y$_{12}$Zn[O(SiO$_{4}$)]8}\\[2.5pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{未见直接报道}}};
+\definecolor{tc}{HTML}{4b5563}
+\node[anchor=center, font=\fontsize{6.6}{7.9}\selectfont, text=tc] at (126.05pt,16.21pt) {\mbox{实线}：\mbox{实验依据}；\mbox{虚线}：\mbox{结构化学比较}，\mbox{不表示同构}};
+\end{tikzpicture}
+\end{document}

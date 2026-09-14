@@ -1,0 +1,814 @@
+{
+  "catalog_version": "1.0",
+  "source": {
+    "paper": "Szymanski et al., Nature 624, 86-91 (2023), doi:10.1038/s41586-023-06734-w (Methods; Extended Data Fig. 1-3)",
+    "code": [
+      "CederGroupHub/alab_management (AlabOS)",
+      "CederGroupHub/alab_control",
+      "njszym/ARROWS"
+    ],
+    "safelab": "Bai et al., SafeLab, ICML 2026, Table 3 (63 calibrated assets); github.com/ChangWinde/SafeLab"
+  },
+  "instruments": {
+    "dosing_station": {
+      "name": "Powder dosing station (Labman quadrant, Quantos auto-dispensing balance)",
+      "alab_ref": "Labman Automation custom station; Mettler Toledo Quantos; ED Fig.1 items 1-7",
+      "driver": "alab_control.labman.LabmanQuadrant / mt_auto_balance",
+      "safelab_assets": [
+        "Precision_Electronic_Balance",
+        "art:AnalyticalBalance001",
+        "Analytical_Balance",
+        "weighing_paper",
+        "brown_reagent_bottle_small",
+        "clear_reagent_bottle_small"
+      ],
+      "primitives": [
+        "pick_place",
+        "press_button",
+        "weigh",
+        "pour_powder"
+      ],
+      "capacity": {
+        "samples_per_quadrant": 16
+      },
+      "params": {
+        "powder_dispenses": "dict formula->grams",
+        "ethanol_ml": "auto"
+      }
+    },
+    "mixer": {
+      "name": "Dual asymmetric centrifuge mixer",
+      "alab_ref": "Hauschild Smart DAC 250; 10 x 5 mm ZrO2 balls; 9 min",
+      "driver": "alab_control.speedmixer_hauschild_smart_dac400",
+      "safelab_assets": [
+        "art:HighSpeedCentrifuge001",
+        "High_Speed_Centrifuge"
+      ],
+      "primitives": [
+        "open_lid",
+        "close_lid",
+        "pick_place",
+        "press_button"
+      ],
+      "params": {
+        "duration_s": 540,
+        "rpm": 2000
+      }
+    },
+    "drying_oven": {
+      "name": "Slurry drying oven",
+      "alab_ref": "80 C closed evaporation system",
+      "driver": "alab_control.labman",
+      "safelab_assets": [
+        "art:Oven065",
+        "Oven065"
+      ],
+      "primitives": [
+        "open_door",
+        "close_door",
+        "pick_place",
+        "wait"
+      ],
+      "params": {
+        "temperature_c": 80
+      }
+    },
+    "box_furnace": {
+      "name": "Box furnace with automated door",
+      "alab_ref": "Thermo Scientific F48055-60 x4; Eurotherm controller; Arduino door opener",
+      "driver": "alab_control.furnace_epc_3016 / furnace_2416 / door_controller",
+      "safelab_assets": [
+        "art:Oven065",
+        "Oven065"
+      ],
+      "primitives": [
+        "open_door",
+        "close_door",
+        "insert_rack",
+        "extract_rack",
+        "press_button",
+        "wait"
+      ],
+      "capacity": {
+        "crucibles_per_tray": 8,
+        "franka_tray_capacity": 4
+      },
+      "params": {
+        "ramp1_c_per_min": 2,
+        "ramp1_hold_c": 300,
+        "ramp2_c_per_min": 15,
+        "target_c": "<=1100",
+        "dwell_min": 240,
+        "cool_to_c": 100,
+        "rack_cooling_min": 60
+      },
+      "note": "Oven065 (articulated door) stands in for the F48055-60 box furnace"
+    },
+    "tube_furnace": {
+      "name": "Tube furnace with atmosphere control",
+      "alab_ref": "MTI tube furnace (HeatingWithAtmosphere task)",
+      "driver": "alab_control.tube_furnace_mti",
+      "safelab_assets": [
+        "art:Oven065"
+      ],
+      "primitives": [
+        "open_door",
+        "close_door",
+        "pick_place",
+        "press_button",
+        "wait"
+      ],
+      "params": {
+        "atmosphere": "Ar|N2|O2|air",
+        "target_c": "<=1100"
+      }
+    },
+    "shaker_grinder": {
+      "name": "Vertical shaker grinder (crucible + 10 mm alumina ball)",
+      "alab_ref": "in-house vertical shaker; 2 min",
+      "driver": "alab_control.shaker / gripper_shaker / ball_dispenser",
+      "safelab_assets": [
+        "mortar",
+        "pestle"
+      ],
+      "primitives": [
+        "pick_place",
+        "clamp",
+        "unclamp",
+        "press_button",
+        "wait"
+      ],
+      "params": {
+        "duration_s": 120,
+        "ball_diameter_mm": 10
+      }
+    },
+    "ball_dispenser": {
+      "name": "Alumina ball dispenser",
+      "alab_ref": "in-house Arduino device (dispense_one)",
+      "driver": "alab_control.ball_dispenser",
+      "safelab_assets": [
+        "art:BottleTopDispenser002",
+        "Bottle_Top_Dispenser"
+      ],
+      "primitives": [
+        "pick_place",
+        "press_button"
+      ],
+      "params": {}
+    },
+    "balance": {
+      "name": "Analytical balance",
+      "alab_ref": "Ohaus scale (get_mass_in_mg)",
+      "driver": "alab_control.ohaus_scale",
+      "safelab_assets": [
+        "art:AnalyticalBalance001",
+        "Analytical_Balance",
+        "Precision_Electronic_Balance"
+      ],
+      "primitives": [
+        "pick_place",
+        "weigh",
+        "press_button"
+      ],
+      "params": {
+        "readability_mg": 1
+      }
+    },
+    "capper": {
+      "name": "Vial capper / cap dispenser / capping gripper",
+      "alab_ref": "Arduino capper + cap dispenser + DH robotic gripper",
+      "driver": "alab_control.capper / cap_dispenser / dh_robotic_gripper",
+      "safelab_assets": [
+        "Sample_Tube_With_Stopper",
+        "Test_Tube_Rack",
+        "Centrifuge_Tube"
+      ],
+      "primitives": [
+        "pick_place",
+        "uncap",
+        "cap"
+      ],
+      "params": {}
+    },
+    "xrd": {
+      "name": "Powder X-ray diffractometer",
+      "alab_ref": "Malvern Panalytical Aeris; 2theta 10-100 deg; 8 min scans; 16-slot holder rack",
+      "driver": "alab_control.diffractometer_aeris / xrd_dispenser",
+      "safelab_assets": [
+        "art:PHMeterAcidimeter001",
+        "PH_Meter"
+      ],
+      "primitives": [
+        "open_door",
+        "close_door",
+        "pick_place",
+        "press_button",
+        "wait"
+      ],
+      "params": {
+        "two_theta_range": [
+          10,
+          100
+        ],
+        "scan_min": 8,
+        "holder_slots": 16
+      },
+      "note": "no XRD asset in SafeLab; art:PHMeterAcidimeter001 is a labelled bench-analyzer proxy until a simple XRD shell USD is built"
+    },
+    "xrd_prep": {
+      "name": "XRD sample prep (mesh pour + acrylic flattening)",
+      "alab_ref": "steel mesh + acrylic disc, PrepareSampleforXRD",
+      "driver": "alab_control.xrd_dispenser",
+      "safelab_assets": [
+        "Funnel_Stand",
+        "Funnel",
+        "weighing_paper"
+      ],
+      "primitives": [
+        "pick_place",
+        "pour_powder",
+        "flatten",
+        "weigh"
+      ],
+      "params": {
+        "target_mass_mg": 100,
+        "max_attempts": 3
+      }
+    },
+    "transfer_rack": {
+      "name": "Transfer rack between stations",
+      "alab_ref": "alab_example.devices.transfer_rack",
+      "driver": "alab_management (sample positions)",
+      "safelab_assets": [
+        "Test_Tube_Rack",
+        "Funnel_Stand"
+      ],
+      "primitives": [
+        "pick_place",
+        "handover"
+      ],
+      "params": {}
+    },
+    "storage_rack": {
+      "name": "Vial / crucible storage rack",
+      "alab_ref": "fresh_vial_rack / filled_vial_rack",
+      "driver": "alab_control.vial_dispenser_rack (example)",
+      "safelab_assets": [
+        "Test_Tube_Rack",
+        "art:ReagentCabinet001"
+      ],
+      "primitives": [
+        "pick_place",
+        "open_door",
+        "close_door"
+      ],
+      "params": {}
+    },
+    "liquid_station": {
+      "name": "Liquid handling (solvent addition, slurry transfer)",
+      "alab_ref": "Sartorius rLine LH-710969 pipettor; ethanol addition",
+      "driver": "alab_control.labman",
+      "safelab_assets": [
+        "art:MagneticStirrer001",
+        "art:BottleTopDispenser002",
+        "Funnel_Stand",
+        "Micropipette",
+        "glass_cylinder_100ml",
+        "glass_beaker_250ml"
+      ],
+      "primitives": [
+        "pick_place",
+        "pour_liquid",
+        "press_button"
+      ],
+      "params": {}
+    },
+    "waste": {
+      "name": "Safety waste container / crucible disposal",
+      "alab_ref": "RecoverPowder ends by disposing of the crucible",
+      "driver": "-",
+      "safelab_assets": [
+        "glass_beaker_500ml"
+      ],
+      "primitives": [
+        "pick_place"
+      ],
+      "params": {}
+    },
+    "ph_meter": {
+      "name": "pH meter / acidimeter",
+      "alab_ref": "not in A-Lab; SafeLab analytical instrument",
+      "driver": "-",
+      "safelab_assets": [
+        "art:PHMeterAcidimeter001",
+        "PH_Meter"
+      ],
+      "primitives": [
+        "pick_place",
+        "press_button",
+        "wait"
+      ],
+      "params": {}
+    }
+  },
+  "labware": {
+    "crucible": {
+      "safelab_assets": [
+        "Crucible"
+      ],
+      "alab_ref": "alumina crucible"
+    },
+    "crucible_tray": {
+      "safelab_assets": [],
+      "alab_ref": "alumina tray / crucible rack with handle",
+      "note": "needs a simple new USD"
+    },
+    "vial": {
+      "safelab_assets": [
+        "Sample_Tube_With_Stopper",
+        "Centrifuge_Tube",
+        "glass_test_tube_20ml"
+      ],
+      "alab_ref": "capped plastic vial with barcode"
+    },
+    "precursor_bottle": {
+      "safelab_assets": [
+        "brown_reagent_bottle_small",
+        "brown_reagent_bottle_large",
+        "clear_reagent_bottle_small",
+        "clear_reagent_bottle_large"
+      ],
+      "alab_ref": "50-100 g dosing bottle"
+    },
+    "xrd_holder": {
+      "safelab_assets": [
+        "weighing_paper"
+      ],
+      "alab_ref": "XRD sample holder (16 per rack)",
+      "note": "weighing_paper as flat holder proxy; simple new USD preferred"
+    },
+    "grinding_ball": {
+      "safelab_assets": [],
+      "alab_ref": "10 mm alumina ball",
+      "note": "sphere primitive"
+    },
+    "mesh": {
+      "safelab_assets": [
+        "Funnel"
+      ],
+      "alab_ref": "steel mesh"
+    },
+    "acrylic_disc": {
+      "safelab_assets": [],
+      "alab_ref": "acrylic flattening disc",
+      "note": "cylinder primitive"
+    },
+    "tongs": {
+      "safelab_assets": [
+        "Crucible_Tong"
+      ],
+      "alab_ref": "-"
+    },
+    "beaker": {
+      "safelab_assets": [
+        "glass_beaker_100ml",
+        "glass_beaker_250ml",
+        "glass_beaker_500ml"
+      ],
+      "alab_ref": "-"
+    },
+    "cylinder": {
+      "safelab_assets": [
+        "glass_cylinder_100ml",
+        "Glass_Graduated_Cylinder_500ml"
+      ],
+      "alab_ref": "-"
+    },
+    "pipette": {
+      "safelab_assets": [
+        "Micropipette",
+        "Pipette",
+        "dropper"
+      ],
+      "alab_ref": "Sartorius rLine pipettor"
+    },
+    "funnel": {
+      "safelab_assets": [
+        "Funnel"
+      ],
+      "alab_ref": "-"
+    },
+    "flask": {
+      "safelab_assets": [
+        "erlenmeyer_flask",
+        "three_neck_flask"
+      ],
+      "alab_ref": "-"
+    },
+    "dish": {
+      "safelab_assets": [
+        "glass_beaker_100ml"
+      ],
+      "alab_ref": "evaporating dish proxy"
+    }
+  },
+  "primitives": {
+    "pick_place": {
+      "args": [
+        "object",
+        "to"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm",
+        "f_peak_max_n",
+        "theta_dev_max_rad"
+      ]
+    },
+    "grasp": {
+      "args": [
+        "object"
+      ],
+      "safelab_category": "grasp vessel",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "release": {
+      "args": [
+        "object"
+      ],
+      "safelab_category": "grasp vessel",
+      "safety": []
+    },
+    "insert_rack": {
+      "args": [
+        "object",
+        "to"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm",
+        "theta_dev_max_rad"
+      ]
+    },
+    "extract_rack": {
+      "args": [
+        "object",
+        "to"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm",
+        "theta_dev_max_rad"
+      ]
+    },
+    "open_door": {
+      "args": [
+        "station"
+      ],
+      "safelab_category": "open cabinet",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "close_door": {
+      "args": [
+        "station"
+      ],
+      "safelab_category": "close cabinet",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "open_lid": {
+      "args": [
+        "station"
+      ],
+      "safelab_category": "open cabinet",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "close_lid": {
+      "args": [
+        "station"
+      ],
+      "safelab_category": "close cabinet",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "press_button": {
+      "args": [
+        "station",
+        "button"
+      ],
+      "safelab_category": "press switch",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "clamp": {
+      "args": [
+        "object",
+        "station"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm"
+      ]
+    },
+    "unclamp": {
+      "args": [
+        "object",
+        "station"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": []
+    },
+    "uncap": {
+      "args": [
+        "object"
+      ],
+      "safelab_category": "grasp vessel",
+      "safety": [
+        "f_peak_max_n"
+      ],
+      "note": "extension of SafeLab grammar (wrist rotation)"
+    },
+    "cap": {
+      "args": [
+        "object"
+      ],
+      "safelab_category": "grasp vessel",
+      "safety": [
+        "f_peak_max_n"
+      ],
+      "note": "extension of SafeLab grammar (wrist rotation)"
+    },
+    "pour_powder": {
+      "args": [
+        "object",
+        "to"
+      ],
+      "safelab_category": "pour liquid",
+      "safety": [
+        "tilt_limit_rad",
+        "dp_max_mm"
+      ],
+      "note": "granular proxy for pour"
+    },
+    "pour_liquid": {
+      "args": [
+        "object",
+        "to",
+        "volume_ml"
+      ],
+      "safelab_category": "pour liquid",
+      "safety": [
+        "tilt_limit_rad",
+        "dp_max_mm"
+      ]
+    },
+    "flatten": {
+      "args": [
+        "object",
+        "tool"
+      ],
+      "safelab_category": "press switch",
+      "safety": [
+        "f_peak_max_n"
+      ]
+    },
+    "weigh": {
+      "args": [
+        "object",
+        "station"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm"
+      ]
+    },
+    "handover": {
+      "args": [
+        "object",
+        "to"
+      ],
+      "safelab_category": "handover",
+      "safety": [
+        "dp_max_mm"
+      ]
+    },
+    "stack": {
+      "args": [
+        "object",
+        "on"
+      ],
+      "safelab_category": "stack vessel",
+      "safety": [
+        "dp_max_mm",
+        "theta_dev_max_rad"
+      ]
+    },
+    "wait": {
+      "args": [
+        "seconds"
+      ],
+      "safelab_category": "-",
+      "safety": []
+    },
+    "stir": {
+      "args": [
+        "tool",
+        "station",
+        "seconds"
+      ],
+      "safelab_category": "-",
+      "safety": [
+        "f_peak_max_n"
+      ],
+      "note": "circular tool motion in a vessel: grinding with pestle / manual stirring (grammar extension)"
+    },
+    "grasp_with_tool": {
+      "args": [
+        "tool",
+        "object",
+        "to"
+      ],
+      "safelab_category": "pick-and-place",
+      "safety": [
+        "dp_max_mm",
+        "f_peak_max_n",
+        "theta_dev_max_rad"
+      ],
+      "note": "tongs-mediated transfer of a hot/fragile item (grammar extension)"
+    }
+  },
+  "task_types": {
+    "Starting": {
+      "instrument": "storage_rack",
+      "robot": false
+    },
+    "PowderDosing": {
+      "instrument": "dosing_station",
+      "robot": true,
+      "params": [
+        "powder_dispenses"
+      ],
+      "result": [
+        "dispensed_mass_g"
+      ]
+    },
+    "Mixing": {
+      "instrument": "mixer",
+      "robot": true,
+      "params": [
+        "duration_s"
+      ],
+      "result": []
+    },
+    "Drying": {
+      "instrument": "drying_oven",
+      "robot": true,
+      "params": [
+        "temperature_c",
+        "duration_min"
+      ],
+      "result": []
+    },
+    "Moving": {
+      "instrument": "transfer_rack",
+      "robot": true,
+      "params": [
+        "destination"
+      ],
+      "result": []
+    },
+    "Heating": {
+      "instrument": "box_furnace",
+      "robot": true,
+      "params": [
+        "heating_temperature",
+        "heating_time"
+      ],
+      "result": [
+        "temperature_log"
+      ]
+    },
+    "HeatingWithAtmosphere": {
+      "instrument": "tube_furnace",
+      "robot": true,
+      "params": [
+        "heating_temperature",
+        "heating_time",
+        "atmosphere"
+      ],
+      "result": [
+        "temperature_log"
+      ]
+    },
+    "RecoverPowder": {
+      "instrument": "shaker_grinder",
+      "robot": true,
+      "params": [],
+      "result": [
+        "recovered_mass_mg"
+      ]
+    },
+    "PrepareSampleforXRD": {
+      "instrument": "xrd_prep",
+      "robot": true,
+      "params": [
+        "target_mass_mg"
+      ],
+      "result": [
+        "mass_on_holder_mg"
+      ]
+    },
+    "Diffraction": {
+      "instrument": "xrd",
+      "robot": true,
+      "params": [
+        "two_theta_range"
+      ],
+      "result": [
+        "pattern_file"
+      ]
+    },
+    "LiquidHandling": {
+      "instrument": "liquid_station",
+      "robot": true,
+      "params": [
+        "volume_ml"
+      ],
+      "result": []
+    },
+    "Ending": {
+      "instrument": "storage_rack",
+      "robot": true,
+      "params": [],
+      "result": []
+    },
+    "Grinding": {
+      "instrument": "shaker_grinder",
+      "robot": true,
+      "params": [
+        "duration_s"
+      ],
+      "result": []
+    },
+    "Measurement": {
+      "instrument": "ph_meter",
+      "robot": true,
+      "params": [
+        "quantity"
+      ],
+      "result": [
+        "value"
+      ]
+    },
+    "Storage": {
+      "instrument": "storage_rack",
+      "robot": true,
+      "params": [],
+      "result": []
+    },
+    "Disposal": {
+      "instrument": "waste",
+      "robot": true,
+      "params": [],
+      "result": []
+    }
+  },
+  "safety_defaults": {
+    "dp_max_mm": 20,
+    "theta_dev_max_rad": 0.25,
+    "f_peak_max_n": 20,
+    "tilt_limit_rad": 0.85,
+    "note": "SafeLab Table 4/11: spatial tolerance 20 mm, transport tilt 0.25 rad, pour ceiling 0.85 rad; peak force per fragile-object class"
+  },
+  "embodiments": {
+    "franka_fr3": {
+      "dof": 7,
+      "gripper": "franka_hand",
+      "payload_kg": 3,
+      "safelab_supported": true
+    },
+    "ur5e_robotiq_2f85": {
+      "dof": 6,
+      "gripper": "robotiq_2f85",
+      "payload_kg": 5,
+      "safelab_supported": true
+    },
+    "psibot_rm75_g0r": {
+      "dof": 7,
+      "gripper": "g0r_hand",
+      "payload_kg": 5,
+      "safelab_supported": true,
+      "bimanual": true
+    }
+  }
+}

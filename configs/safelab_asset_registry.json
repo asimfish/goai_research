@@ -1,0 +1,646 @@
+{
+  "root": "/mnt/nas/data/safelab/retreat/lyf-back/chembench/psilab/assets/usd/asset_collection/sim_ready",
+  "generated_from": "ssh listing of sim_ready/ on bj.wznln.com:4009, 2026-09-11 (read-only find, depth<=2)",
+  "key_scheme": "solid asset key = directory name under solid_assets_all; articulated instrument = art:<dir>; liquid = liquid:<dir>",
+  "assets": {
+    "Alcohol_Lamp": {
+      "usd": "solid_assets_all/Alcohol_Lamp/AlcoholLamp001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "Analytical_Balance": {
+      "usd": "solid_assets_all/Analytical_Balance/AnalyticalBalance001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "BottleTopDispenser002": {
+      "usd": "solid_assets_all/BottleTopDispenser002/BottleTopDispenser002.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Bottle_Top_Dispenser": {
+      "usd": "solid_assets_all/Bottle_Top_Dispenser/BottleTopDispenser001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Centrifuge_Tube": {
+      "usd": "solid_assets_all/Centrifuge_Tube/CentrifugeTube001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Crucible": {
+      "usd": "solid_assets_all/Crucible/Crucible001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "Crucible_Tong": {
+      "usd": "solid_assets_all/Crucible_Tong/CrucibleTong001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "Electric_Heating_Mantle": {
+      "usd": "solid_assets_all/Electric_Heating_Mantle/ElectricHeatingMantle001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Erlenmeyer_Flask_With_Stopper": {
+      "usd": "solid_assets_all/Erlenmeyer_Flask_With_Stopper/ErlenmeyerFlask002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Funnel": {
+      "usd": "solid_assets_all/Funnel/Funnel001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Funnel_Stand": {
+      "usd": "solid_assets_all/Funnel_Stand/FunnelStand001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Glass_Graduated_Cylinder_500ml": {
+      "usd": "solid_assets_all/Glass_Graduated_Cylinder_500ml/GraduatedCylinder003.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "High_Speed_Centrifuge": {
+      "usd": "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": [
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_1.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_2.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_3.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_4.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_5.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_6.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_7.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_8.usd",
+        "solid_assets_all/High_Speed_Centrifuge/HighSpeedCentrifuge001_9.usd"
+      ]
+    },
+    "IronStand001": {
+      "usd": "solid_assets_all/IronStand001/IronStand001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "Magnetic_Stirrer": {
+      "usd": "solid_assets_all/Magnetic_Stirrer/MagneticStirrer001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Mercury_Thermometer": {
+      "usd": "solid_assets_all/Mercury_Thermometer/Thermometer001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Micropipette": {
+      "usd": "solid_assets_all/Micropipette/Micropipette001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": [
+        "solid_assets_all/Micropipette/Micropipette001_new.usd"
+      ]
+    },
+    "Micropipette_Tip": {
+      "usd": "solid_assets_all/Micropipette_Tip/MicropipetteTip001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "OilBath001": {
+      "usd": "solid_assets_all/OilBath001/OilBath001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Oven065": {
+      "usd": "solid_assets_all/Oven065/Oven065.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "PH_Meter": {
+      "usd": "solid_assets_all/PH_Meter/PHMeterAcidimeter001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Pipette": {
+      "usd": "solid_assets_all/Pipette/Pipette001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Plastic_Graduated_Cylinder_100ml": {
+      "usd": "solid_assets_all/Plastic_Graduated_Cylinder_100ml/GraduatedCylinder001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Plastic_Graduated_Cylinder_500ml": {
+      "usd": "solid_assets_all/Plastic_Graduated_Cylinder_500ml/GraduatedCylinder002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Plastic_Test_Tube_20ml": {
+      "usd": "solid_assets_all/Plastic_Test_Tube_20ml/TestTube003.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Precision_Electronic_Balance": {
+      "usd": "solid_assets_all/Precision_Electronic_Balance/PrecisionElectronicBalance001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "Sample_Tube_With_Stopper": {
+      "usd": "solid_assets_all/Sample_Tube_With_Stopper/SampleTube001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Test_Tube_Rack": {
+      "usd": "solid_assets_all/Test_Tube_Rack/TestTubeRack001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "Thermometer_Sleeve": {
+      "usd": "solid_assets_all/Thermometer_Sleeve/ThermometerSleeve001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "asbestos_gauze": {
+      "usd": "solid_assets_all/asbestos_gauze/AsbestosGauze001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "brown_reagent_bottle_large": {
+      "usd": "solid_assets_all/brown_reagent_bottle_large/ReagentBottle001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "brown_reagent_bottle_small": {
+      "usd": "solid_assets_all/brown_reagent_bottle_small/ReagentBottle004.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "brown_volumetric_flask_250ml": {
+      "usd": "solid_assets_all/brown_volumetric_flask_250ml/VolumetricFlask001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "burette": {
+      "usd": "solid_assets_all/burette/Pipette001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "clear_reagent_bottle_large": {
+      "usd": "solid_assets_all/clear_reagent_bottle_large/ReagentBottle002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": [
+        "solid_assets_all/clear_reagent_bottle_large/ReagentBottle002_invi.usd"
+      ]
+    },
+    "clear_reagent_bottle_small": {
+      "usd": "solid_assets_all/clear_reagent_bottle_small/ReagentBottle003.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "clear_volumetric_flask_1000ml": {
+      "usd": "solid_assets_all/clear_volumetric_flask_1000ml/VolumetricFlask004.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "clear_volumetric_flask_250ml": {
+      "usd": "solid_assets_all/clear_volumetric_flask_250ml/VolumetricFlask002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "clear_volumetric_flask_500ml": {
+      "usd": "solid_assets_all/clear_volumetric_flask_500ml/VolumetricFlask003.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "coiled_condenser": {
+      "usd": "solid_assets_all/coiled_condenser/CoiledCondenser001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "dropper": {
+      "usd": "solid_assets_all/dropper/Dropper001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "erlenmeyer_flask": {
+      "usd": "solid_assets_all/erlenmeyer_flask/ErlenmeyerFlask001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "glass_beaker_100ml": {
+      "usd": "solid_assets_all/glass_beaker_100ml/Beaker003.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": [
+        "solid_assets_all/glass_beaker_100ml/Beaker003_2.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_art.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_black.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_change.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_fix.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_invi.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_new.usd",
+        "solid_assets_all/glass_beaker_100ml/Beaker003_rot.usd"
+      ]
+    },
+    "glass_beaker_250ml": {
+      "usd": "solid_assets_all/glass_beaker_250ml/Beaker004.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "glass_beaker_500ml": {
+      "usd": "solid_assets_all/glass_beaker_500ml/Beaker005.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "glass_beaker_50ml": {
+      "usd": "solid_assets_all/glass_beaker_50ml/Beaker002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "glass_cylinder_100ml": {
+      "usd": "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": [
+        "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004_box_collision.usda",
+        "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004_proxy_collision.usda",
+        "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004_side_grasp_collision.usda",
+        "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004_side_grasp_hide_collision_visual.usda",
+        "solid_assets_all/glass_cylinder_100ml/GraduatedCylinder004_side_grasp_nomark_collision.usda"
+      ]
+    },
+    "glass_test_tube_20ml": {
+      "usd": "solid_assets_all/glass_test_tube_20ml/TestTube001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "glass_test_tube_50ml": {
+      "usd": "solid_assets_all/glass_test_tube_50ml/TestTube002.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "hygrothermometer": {
+      "usd": "solid_assets_all/hygrothermometer/TemperatureAndHumidityMeter001.usd",
+      "category": "instrument",
+      "articulated": false,
+      "variants": []
+    },
+    "iron_stand": {
+      "usd": "solid_assets_all/iron_stand/IronStand001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "mortar": {
+      "usd": "solid_assets_all/mortar/Mortar001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "pestle": {
+      "usd": "solid_assets_all/pestle/Pestle001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "plastic_beaker_50ml": {
+      "usd": "solid_assets_all/plastic_beaker_50ml/Beaker001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "plastic_cylinder_100ml": {
+      "usd": "solid_assets_all/plastic_cylinder_100ml/GraduatedCylinder001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "spherical_condenser": {
+      "usd": "solid_assets_all/spherical_condenser/SphericalCondenser001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "straight_condenser": {
+      "usd": "solid_assets_all/straight_condenser/StraightCondenser001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "three_neck_flask": {
+      "usd": "solid_assets_all/three_neck_flask/SlantedThreeNeckedFlask001.usd",
+      "category": "glassware",
+      "articulated": false,
+      "variants": []
+    },
+    "weighing_paper": {
+      "usd": "solid_assets_all/weighing_paper/WeighingPaper001.usd",
+      "category": "ancillary",
+      "articulated": false,
+      "variants": []
+    },
+    "art:AnalyticalBalance001": {
+      "usd": "articulated/AnalyticalBalance001/AnalyticalBalance001_2.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": [
+        "articulated/AnalyticalBalance001/AnalyticalBalance001.usd"
+      ]
+    },
+    "art:BottleTopDispenser002": {
+      "usd": "articulated/BottleTopDispenser002/BottleTopDispenser002.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:Electric_Heating_Mantle": {
+      "usd": "articulated/Electric_Heating_Mantle/ElectricHeatingMantle001.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:HighSpeedCentrifuge001": {
+      "usd": "articulated/HighSpeedCentrifuge001/HighSpeedCentrifuge001.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:MagneticStirrer001": {
+      "usd": "articulated/MagneticStirrer001/MagneticStirrer001.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:OilBath001": {
+      "usd": "articulated/OilBath001/OilBath001.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:Oven065": {
+      "usd": "articulated/Oven065/Oven065_small.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": [
+        "articulated/Oven065/Oven065_upper.usd",
+        "articulated/Oven065/Oven065.usd"
+      ]
+    },
+    "art:PHMeterAcidimeter001": {
+      "usd": "articulated/PHMeterAcidimeter001/PHMeterAcidimeter001.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": []
+    },
+    "art:ReagentCabinet001": {
+      "usd": "articulated/ReagentCabinet001/ReagentCabinet001_2.usd",
+      "category": "instrument",
+      "articulated": true,
+      "variants": [
+        "articulated/ReagentCabinet001/ReagentCabinet001_backup.usd",
+        "articulated/ReagentCabinet001/ReagentCabinet001_test.usd",
+        "articulated/ReagentCabinet001/ReagentCabinet001.usd"
+      ]
+    },
+    "liquid:brown_reagent_bottle_large_liquid": {
+      "usd": "liquid_assets/brown_reagent_bottle_large_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:brown_reagent_bottle_small_liquid": {
+      "usd": "liquid_assets/brown_reagent_bottle_small_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:brown_volumetric_flask_250ml_liquid": {
+      "usd": "liquid_assets/brown_volumetric_flask_250ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:clear_reagent_bottle_large_liquid": {
+      "usd": "liquid_assets/clear_reagent_bottle_large_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:clear_reagent_bottle_small_liquid": {
+      "usd": "liquid_assets/clear_reagent_bottle_small_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:clear_volumetric_flask_1000ml_liquid": {
+      "usd": "liquid_assets/clear_volumetric_flask_1000ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:clear_volumetric_flask_250ml_liquid": {
+      "usd": "liquid_assets/clear_volumetric_flask_250ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:clear_volumetric_flask_500ml_liquid": {
+      "usd": "liquid_assets/clear_volumetric_flask_500ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:erlenmeyer_flask_liquid": {
+      "usd": "liquid_assets/erlenmeyer_flask_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:extract_liquid_usd.py": {
+      "usd": "liquid_assets/extract_liquid_usd.py",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:fix_liquid_usd_isaacsim.py": {
+      "usd": "liquid_assets/fix_liquid_usd_isaacsim.py",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:fix_liquid_usd.py": {
+      "usd": "liquid_assets/fix_liquid_usd.py",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_beaker_100ml_liquid": {
+      "usd": "liquid_assets/glass_beaker_100ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_beaker_250ml_liquid": {
+      "usd": "liquid_assets/glass_beaker_250ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_beaker_500ml_liquid": {
+      "usd": "liquid_assets/glass_beaker_500ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_beaker_50ml_liquid": {
+      "usd": "liquid_assets/glass_beaker_50ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_cylinder_100ml_liquid": {
+      "usd": "liquid_assets/glass_cylinder_100ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_test_tube_20ml_liquid": {
+      "usd": "liquid_assets/glass_test_tube_20ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:glass_test_tube_50ml_liquid": {
+      "usd": "liquid_assets/glass_test_tube_50ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:plastic_beaker_50ml_liquid": {
+      "usd": "liquid_assets/plastic_beaker_50ml_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    },
+    "liquid:three_neck_flask_liquid": {
+      "usd": "liquid_assets/three_neck_flask_liquid",
+      "category": "liquid",
+      "articulated": false,
+      "variants": []
+    }
+  },
+  "robots": {
+    "franka_fr3": {
+      "usd": "../../robots/fr3/fr3/fr3.usd",
+      "note": "psilab/assets/usd/robots/fr3/fr3/fr3.usd (with_cameras variant alongside)"
+    },
+    "franka_fr3_cams": {
+      "usd": "../../robots/fr3/fr3/fr3_with_cameras.usd"
+    },
+    "ur5e_2f85": {
+      "usd": "../../../robots/ur5/ur5e_2f85.usd",
+      "note": "psilab/assets/robots/ur5/ur5e_2f85.usd"
+    },
+    "psibot": {
+      "usd": "../../robots/psibot/psibot_normal.usd"
+    },
+    "franka_panda_nvidia": {
+      "usd": "~/isaac_assets/Isaac/Robots/FrankaRobotics/FrankaPanda/franka.usd",
+      "note": "NVIDIA asset pack on the 5090 home dir"
+    }
+  },
+  "scenes": {
+    "lab_simple": "../Chemistrylab/lab_simple_1.25.usd",
+    "lab_simple_pick_place": "../Chemistrylab/lab_simple_1.25_pick_place.usd",
+    "lab_simple_open_close": "../Chemistrylab/lab_simple_1.25_open_close.usd",
+    "lab_real": "../Chemistrylab/lab_real.usd",
+    "oven_room": "../Chemistrylab/oven_room/",
+    "note": "relative to psilab/assets/usd/; basenames as reported by the probe, verify before use"
+  },
+  "task_object_dirs": [
+    "task_object",
+    "task_object/handover",
+    "task_object/handover/plastic_graduated_cylinder_500ml",
+    "task_object/handover/glass_cylinder_100ml",
+    "task_object/handover/plastic_cylinder_100ml",
+    "task_object/handover/glass_beaker_250ml",
+    "task_object/handover/clear_volumetric_flask_500ml",
+    "task_object/handover/clear_volumetric_flask_1000ml",
+    "task_object/handover/brown_volumetric_flask_250ml",
+    "task_object/handover/glass_graduated_cylinder_500ml",
+    "task_object/handover/glass_beaker_500ml",
+    "task_object/handover/clear_volumetric_flask_250ml",
+    "task_object/grasp",
+    "task_object/grasp/mortar",
+    "task_object/grasp/clear_reagent_bottle_large",
+    "task_object/grasp/clear_volumetric_flask_1000ml",
+    "task_object/grasp/brown_reagent_bottle_small",
+    "task_object/grasp/funnel",
+    "task_object/grasp/glass_beaker_100ml",
+    "task_object/grasp/erlenmeyer_flask",
+    "task_object/grasp/glass_graduated_cylinder_500ml",
+    "task_object/grasp/brown_reagent_bottle_large",
+    "task_object/grasp/clear_reagent_bottle_small",
+    "task_object/grasp/glass_beaker_250ml",
+    "task_object/grasp/clear_volumetric_flask_250ml",
+    "task_object/grasp/erlenmeyer_flask_with_stopper",
+    "task_object/grasp/glass_cylinder_100ml",
+    "task_object/grasp/glass_beaker_50ml",
+    "task_object/grasp/brown_volumetric_flask_250ml",
+    "task_object/grasp/plastic_graduated_cylinder_500ml"
+  ],
+  "long_horizon": [
+    "IronStand001+asb_rgby_no_bad_joints.usd",
+    "IronStand001+asb_rgby_no_invalid_rigidbody_joints.usd",
+    "IronStand001+asb_rgby.usd",
+    "iron.usd",
+    "texture"
+  ]
+}

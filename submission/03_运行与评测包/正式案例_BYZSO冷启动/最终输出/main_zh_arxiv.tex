@@ -1,0 +1,36 @@
+% 排版 v3（goai_zh_typo.sty v3：紧凑版心、横排条件总表、术语规范化后的 sections_v3）。
+% 内容层（sections_zh3/、references.bib、figures/）与 main.tex 完全相同，只换排版层。xelatex 编译。
+\documentclass[10pt,linespread=1.5]{ctexart}
+\usepackage[template=arxiv]{goai_zh_typo}
+\runninghead{Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$ 合成条件与迁移边界}
+\hypersetup{
+  pdftitle={Ba5Y12Zn[O(SiO4)]8及结构近邻的合成条件：证据分级、路线矩阵与迁移边界},
+  pdfauthor={匿名综述工作组}
+}
+\title{$\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ 及结构相关化合物的\\
+合成条件：证据分级、路线矩阵与迁移边界}
+\author{匿名综述工作组}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+非中心对称硅酸盐 $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ 已由高温溶液法获得并完成单晶结构解析，但其投料组成、块体相区和独立复现仍缺少直接证据。本文围绕目标相、无 Zn 的四方 Ba--Y 硅酸盐系列、Ba--Zn--Si--O 结构相关化合物及 Y--Si--O 工艺参照体系，对已发表的组成、热历史、容器、冷却和表征结果进行分级比较。现有实验显示，目标附近的相形成行为同时受 Ba/Y/Si 比、Zn--Y--氧计量、助熔剂比例和冷却路径影响；单晶结构证据不能替代块体相纯度和实际组成分析。基于这些结果，本文提出四项优先工作：建立 $\mathrm{Ba_5Y_{12}ZnSi_8O_{40}}$ 附近的局部相图，检验 $\mathrm{Ba_5Y_{13-\mathit{x}}Zn_{\mathit{x}}[SiO_4]_8O_{8.5-\mathit{x}/2}}$ 的组成--结构关系，并行比较固相反应与高温溶液法晶体生长，以及用 Mg/Co 类比区分尺寸差异。本地两步无机逆合成模型为 Zn、Mg、Co 目标分别推荐以 ZnO、MgO、Co$_3$O$_4$ 配合 BaCO$_3$、Y$_2$O$_3$ 和 SiO$_2$ 的首选原料集合；这些结果仅作为待验证的前驱体假设。最有利于科学发现的实验不是继续尝试孤立温度，而是将组成网格、相定量、单晶结构、实际化学计量和工艺记录组成可反馈的实验闭环。
+\end{abstract}
+
+\input{sections_zh3/00_introduction}
+\input{sections_zh3/00_review_method}
+\input{sections_zh3/01_phase_identity}
+\input{sections_zh3/02_evidence_distance}
+\input{sections_zh3/03_condition_matrix}
+\input{sections_zh3/04_prior_experimental_findings}
+\input{sections_zh3/04_neighbor_routes}
+\input{sections_zh3/05_validation_endpoints}
+\input{sections_zh3/06_failure_boundaries}
+\input{sections_zh3/08_future_directions}
+\input{sections_zh3/07_transferability_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

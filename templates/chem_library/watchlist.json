@@ -1,0 +1,68 @@
+[
+ {
+  "id": "grow_crystal_garbled",
+  "pattern": "生晶体生长体",
+  "message": "疑似语病/重复字：应为“生长晶体”或“生长得到晶体”，不要写成“生+晶体+生长+体”。",
+  "severity": "high"
+ },
+ {
+  "id": "yuchuli_not_qianchuli",
+  "pattern": "(?<!前)预处理",
+  "message": "本项目术语统一用“前处理”指原料准备步骤；如非刻意区分，请改为“前处理”。",
+  "severity": "medium"
+ },
+ {
+  "id": "zhanwei_site_occupancy",
+  "pattern": "(?<![位有站定错部]) 占位|(?<![位有站定错部])占位",
+  "message": "“占位”是“位点占据”的口语化简称，正式表述请统一为“位点占据”。",
+  "severity": "medium"
+ },
+ {
+  "id": "phase_purity_window_range_drift",
+  "pattern": "相纯范围",
+  "message": "“相纯范围”与“相纯窗口/相纯度”指同一概念，请统一为“相纯窗口”或“块体相纯度”。",
+  "severity": "medium"
+ },
+ {
+  "id": "open_closed_extra_xing_or_tixi",
+  "pattern": "开放/\\\\allowbreak\\{\\}封闭性—|体系封闭性—",
+  "message": "“开放/封闭”未记载字段的写法应统一为“开放/封闭—”，不要写成“开放/封闭性—”或“体系封闭性—”。",
+  "severity": "medium"
+ },
+ {
+  "id": "open_closed_weiming",
+  "pattern": "开放/\\\\allowbreak\\{\\}封闭性未明",
+  "message": "核对“未明”是否应与“—”（本次核查未取得记载）区分；若无独立含义，统一改为“开放/封闭—”。",
+  "severity": "low"
+ },
+ {
+  "id": "flux_weilie_not_dash",
+  "pattern": "未列(?:外加助熔|助熔剂)",
+  "message": "助熔剂信息缺失请统一记为“助熔—”；只有确实不使用助熔剂的工艺才写“不适用”，不要用“未列……”这类改写。",
+  "severity": "medium"
+ },
+ {
+  "id": "source_locator_missing_tier",
+  "pattern": "[pP]\\.~?\\d+，\\\\S\\d|主文\\\\S[\\d.]+",
+  "message": "来源与出处栏只给出页码/章节号时，请按方法学声明补上“实验部分”或“摘要/题名”字样，标明证据层级。",
+  "severity": "medium"
+ },
+ {
+  "id": "x_range_split_math_text",
+  "pattern": "\\$x=[0-9.]+\\$--[0-9.]+",
+  "message": "变量范围的上界也应放入数学模式，例如改写为 $9\\le x\\le 11$，不要让上界落在$...$之外。",
+  "severity": "medium"
+ },
+ {
+  "id": "screening_vs_scanning",
+  "pattern": "组成扫描",
+  "message": "“组成扫描”与“组成筛查”所指相同，请统一用“组成筛查”。",
+  "severity": "low"
+ },
+ {
+  "id": "shaocheng_vs_shaojie",
+  "pattern": "(?<!未)烧成(?!分)",
+  "message": "核对“烧成”是否应统一为“烧结”，或在正文说明二者在本文中的区别。",
+  "severity": "low"
+ }
+]

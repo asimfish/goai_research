@@ -1,0 +1,93 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Regular.otf}
+\xeCJKsetup{CJKecglue={\hskip 0.18em}}
+\usepackage{fontspec}
+\setmainfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic]
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+\begin{tikzpicture}[x=1pt,y=1pt, every node/.style={inner sep=0pt}]
+\definecolor{gf}{HTML}{F3F6F7}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (8.64pt,231.93pt) rectangle (423.53pt,106.60pt);
+\definecolor{gf}{HTML}{F7F8F8}\definecolor{gs}{HTML}{234456}
+\filldraw[fill=gf, draw=gs, line width=0.40pt, rounded corners=2.3pt] (8.64pt,96.52pt) rectangle (423.53pt,14.41pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (15.85pt,221.85pt) rectangle (416.33pt,219.54pt);
+\definecolor{nf}{HTML}{D3DADF}\definecolor{ns}{HTML}{D3DADF}
+\filldraw[fill=nf, draw=ns, line width=0.14pt, rounded corners=0.9pt] (15.85pt,86.43pt) rectangle (416.33pt,84.13pt);
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=66.3pt, minimum height=69.1pt, text width=61.3pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (48.98pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{文献依据}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba--Y--Si--O \mbox{谱系}\\Ba--Zn--Si--O \mbox{结构近邻}\\Y--Si--O \mbox{工艺参照}}};
+\definecolor{nf}{HTML}{FFFDF7}\definecolor{ns}{HTML}{9A7436}
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[draw=ns, fill=nf, line width=0.55pt, rounded corners=0.9pt, minimum width=66.3pt, minimum height=69.1pt, text width=61.3pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (128.21pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{结构假设}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{局部组成网格}\\Zn--Y--\mbox{氧计量耦合}\\竞争相与玻璃区}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{4D7165}
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=76.1pt, minimum height=69.1pt, text width=71.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (210.32pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.5}{8.8}\selectfont\color{lc}模型筛选的前驱体}\\[2.2pt]{\fontsize{5.8}{6.9}\selectfont\color{sc}BaCO$_{3}$ + Y$_{2}$O$_{3}$ + SiO$_{2}$\\ZnO / MgO / Co$_{3}$O$_{4}$\\\mbox{模型排序}，不等于实验验证}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.52pt, rounded corners=0.9pt, minimum width=69.1pt, minimum height=37.5pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (296.76pt,197.36pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.9}{8.1}\selectfont\color{lc}\mbox{固相成相}}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}\mbox{分段煅烧} $\rightarrow$ \mbox{复磨} $\rightarrow$ \mbox{退火}\\批量相区与相纯度}};
+\definecolor{nf}{HTML}{FFF8EA}\definecolor{ns}{HTML}{B67A21}
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=69.1pt, minimum height=43.2pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (296.76pt,146.94pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{高温溶液长晶}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{助熔} $\rightarrow$ \mbox{保温} $\rightarrow$ \mbox{慢冷}\\单晶结构与液相选择性}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{315A70}
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[draw=ns, fill=nf, line width=0.58pt, rounded corners=0.9pt, minimum width=69.1pt, minimum height=70.6pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (378.87pt,169.27pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{结果反馈}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}PXRD / Rietveld\\SCXRD / \mbox{先进衍射}\\EDS / EPMA / ICP\\高温相与冷却产物}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, minimum width=107.4pt, minimum height=34.6pt, text width=102.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (80.67pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}稳定相区还是液相选择性晶体？}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}区分批量相稳定性与长晶选择性}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, minimum width=103.7pt, minimum height=34.6pt, text width=98.7pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (216.09pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}Zn \mbox{是否进入无} Zn 谱系并与氧计量耦合？}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}检验掺入位置与电荷补偿关系}};
+\definecolor{nf}{HTML}{FFFFFF}\definecolor{ns}{HTML}{71818A}
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[draw=ns, fill=nf, line width=0.46pt, rounded corners=0.9pt, minimum width=107.4pt, minimum height=34.6pt, text width=102.4pt, align=center, inner sep=2pt, anchor=center, text opacity=0] at (351.50pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}实际组成与结构信号如何对应？}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}区分批量相组成与结构判定}};
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.75pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (82.11pt,172.87pt) -- (95.08pt,172.87pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.75pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (161.35pt,172.87pt) -- (174.31pt,172.87pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.69pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (246.34pt,172.87pt) -- (254.98pt,172.87pt) -- (254.98pt,197.36pt) -- (262.19pt,197.36pt) -- (262.19pt,197.36pt);
+\definecolor{ec}{HTML}{B67A21}
+\draw[draw=ec, line width=0.69pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (246.34pt,172.87pt) -- (254.98pt,172.87pt) -- (254.98pt,146.94pt) -- (262.19pt,146.94pt) -- (262.19pt,146.94pt);
+\definecolor{ec}{HTML}{536B77}
+\draw[draw=ec, line width=0.69pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (331.33pt,197.36pt) -- (338.54pt,197.36pt) -- (338.54pt,184.39pt) -- (344.30pt,184.39pt) -- (344.30pt,184.39pt);
+\definecolor{ec}{HTML}{B67A21}
+\draw[draw=ec, line width=0.69pt, -{Stealth[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (331.33pt,146.94pt) -- (338.54pt,146.94pt) -- (338.54pt,154.14pt) -- (344.30pt,154.14pt) -- (344.30pt,154.14pt);
+\definecolor{ec}{HTML}{69777E}
+\draw[draw=ec, line width=0.58pt, -{Straight Barb[length=2.6pt,width=2.0pt]}, rounded corners=1.7pt] (378.87pt,133.97pt) -- (378.87pt,115.25pt) -- (144.06pt,115.25pt) -- (144.06pt,138.30pt) -- (144.06pt,138.30pt);
+\node[fill=white, fill opacity=0.92, text opacity=1, inner sep=1.2pt, rounded corners=1pt, font=\fontsize{6.0}{6.7}\selectfont, text=ec, anchor=south, align=center] at (261.47pt,116.40pt) {相组成与实际计量更新下一轮};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=66.3pt, minimum height=69.1pt, text width=61.3pt, align=center, inner sep=2pt, anchor=center] at (48.98pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{文献依据}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}Ba--Y--Si--O \mbox{谱系}\\Ba--Zn--Si--O \mbox{结构近邻}\\Y--Si--O \mbox{工艺参照}}};
+\definecolor{lc}{HTML}{6D4D1E}\definecolor{sc}{HTML}{5C554A}
+\node[minimum width=66.3pt, minimum height=69.1pt, text width=61.3pt, align=center, inner sep=2pt, anchor=center] at (128.21pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{结构假设}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{局部组成网格}\\Zn--Y--\mbox{氧计量耦合}\\竞争相与玻璃区}};
+\definecolor{lc}{HTML}{34584C}\definecolor{sc}{HTML}{52655E}
+\node[minimum width=76.1pt, minimum height=69.1pt, text width=71.1pt, align=center, inner sep=2pt, anchor=center] at (210.32pt,172.87pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.5}{8.8}\selectfont\color{lc}模型筛选的前驱体}\\[2.2pt]{\fontsize{5.8}{6.9}\selectfont\color{sc}BaCO$_{3}$ + Y$_{2}$O$_{3}$ + SiO$_{2}$\\ZnO / MgO / Co$_{3}$O$_{4}$\\\mbox{模型排序}，不等于实验验证}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=69.1pt, minimum height=37.5pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center] at (296.76pt,197.36pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{6.9}{8.1}\selectfont\color{lc}\mbox{固相成相}}\\[2.1pt]{\fontsize{5.3}{6.4}\selectfont\color{sc}\mbox{分段煅烧} $\rightarrow$ \mbox{复磨} $\rightarrow$ \mbox{退火}\\批量相区与相纯度}};
+\definecolor{lc}{HTML}{805718}\definecolor{sc}{HTML}{805718}
+\node[minimum width=69.1pt, minimum height=43.2pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center] at (296.76pt,146.94pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{高温溶液长晶}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}\mbox{助熔} $\rightarrow$ \mbox{保温} $\rightarrow$ \mbox{慢冷}\\单晶结构与液相选择性}};
+\definecolor{lc}{HTML}{24475C}\definecolor{sc}{HTML}{536873}
+\node[minimum width=69.1pt, minimum height=70.6pt, text width=64.1pt, align=center, inner sep=2pt, anchor=center] at (378.87pt,169.27pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}\mbox{结果反馈}}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}PXRD / Rietveld\\SCXRD / \mbox{先进衍射}\\EDS / EPMA / ICP\\高温相与冷却产物}};
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=107.4pt, minimum height=34.6pt, text width=102.4pt, align=center, inner sep=2pt, anchor=center] at (80.67pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}稳定相区还是液相选择性晶体？}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}区分批量相稳定性与长晶选择性}};
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=103.7pt, minimum height=34.6pt, text width=98.7pt, align=center, inner sep=2pt, anchor=center] at (216.09pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.8}{9.2}\selectfont\color{lc}Zn \mbox{是否进入无} Zn 谱系并与氧计量耦合？}\\[2.3pt]{\fontsize{6.0}{7.2}\selectfont\color{sc}检验掺入位置与电荷补偿关系}};
+\definecolor{lc}{HTML}{3A4F59}\definecolor{sc}{HTML}{61727B}
+\node[minimum width=107.4pt, minimum height=34.6pt, text width=102.4pt, align=center, inner sep=2pt, anchor=center] at (351.50pt,53.30pt) {\hyphenpenalty=9000\exhyphenpenalty=9000\relax {\bfseries\fontsize{7.2}{8.5}\selectfont\color{lc}实际组成与结构信号如何对应？}\\[2.2pt]{\fontsize{5.5}{6.6}\selectfont\color{sc}区分批量相组成与结构判定}};
+\definecolor{tc}{HTML}{536873}
+\node[anchor=center, font=\fontsize{6.0}{7.2}\selectfont, text=tc] at (216.09pt,236.83pt) {\mbox{文献依据} $\rightarrow$ \mbox{结构假设} $\rightarrow$ \mbox{前驱体} $\rightarrow$ \mbox{平行实验} $\rightarrow$ \mbox{结果反馈}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (216.09pt,224.73pt) {文献依据到实验反馈};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{6.3}{7.6}\selectfont, text=tc] at (296.76pt,224.73pt) {\mbox{平行实验}};
+\definecolor{tc}{HTML}{183A4A}
+\node[anchor=center, font=\bfseries\fontsize{7.0}{8.4}\selectfont, text=tc] at (216.09pt,89.32pt) {\mbox{三类科学问题}};
+\definecolor{tc}{HTML}{5F6B73}
+\node[anchor=center, font=\fontsize{6.0}{7.2}\selectfont, text=tc] at (216.09pt,21.61pt) {每轮实验保留成功产物、\mbox{竞争相}、\mbox{失重与负结果}};
+\end{tikzpicture}
+\end{document}

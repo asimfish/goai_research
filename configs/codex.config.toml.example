@@ -42,6 +42,16 @@ env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
 # 接真实逆合成后端时打开：
 # env = { GOAI_RETRO_PROVIDER = "http", GOAI_RETRO_API_URL = "https://your-askcos/api/retro", GOAI_RETRO_API_KEY = "..." }
 
+[mcp_servers.goai-workflow]
+command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
+args = ["/ABSOLUTE/PATH/TO/goai_research/server/workflow_server.py"]
+default_tools_approval_mode = "approve"
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
+# 实验工作流生成：仪器目录（A-Lab）、模板实例化、机械校验、SafeLab YAML + Isaac Sim 清单导出。
+# GOAI_BIB_PATH 指向已过 ref_gate 的 references.bib，evidence[].cite 零信任核对；
+# GOAI_ASSET_REGISTRY 可覆盖 configs/safelab_asset_registry.json（5090 NAS 资产登记表）。
+env = { GOAI_BIB_PATH = "/ABSOLUTE/PATH/TO/workspace/library/references.bib" }
+
 # 可选：draw.io 官方 MCP（浏览器实时打开/编辑图，需 Node.js）
 # [mcp_servers.drawio]
 # command = "npx"

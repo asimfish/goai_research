@@ -1,0 +1,36 @@
+% 排版 v3（goai_zh_typo.sty v3：紧凑版心、横排条件总表、术语规范化后的 sections_v3）。
+% 内容层（sections_en/、references.bib、figures/）与 main.tex 完全相同，只换排版层。xelatex 编译。
+\documentclass[10pt]{article}
+\usepackage[template=iclr]{goai_en_typo}
+\runninghead{Synthesis Conditions and Transferability Boundaries of Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$}
+\hypersetup{
+  pdftitle={Synthesis Conditions of Ba5Y12Zn[O(SiO4)]8 and Its Structural Neighbors: Evidence Grading, Route Matrix, and Transferability Boundaries},
+  pdfauthor={Anonymous Review Working Group}
+}
+\title{Synthesis Conditions of $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ and Structurally Related Compounds:\\
+Evidence Grading, Route Matrix, and Transferability Boundaries}
+\author{Anonymous Review Working Group}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The non-centrosymmetric silicate $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ has been obtained by the high-temperature solution method and its single-crystal structure has been solved, but direct evidence for its starting composition, bulk phase region, and independent reproduction is still lacking. This review compares, with evidence grading, the published compositions, thermal histories, containers, cooling procedures, and characterization results for the target phase, the Zn-free tetragonal Ba--Y silicate family, structurally related Ba--Zn--Si--O compounds, and Y--Si--O process-reference systems. Existing experiments show that phase-formation behavior near the target is affected simultaneously by the Ba/Y/Si ratio, Zn--Y--oxygen stoichiometry, flux proportion, and cooling path; single-crystal structural evidence cannot substitute for bulk phase purity and actual composition analysis. On the basis of these results, the review proposes four priorities: establishing a local phase diagram around $\mathrm{Ba_5Y_{12}ZnSi_8O_{40}}$, testing the composition--structure relationship of $\mathrm{Ba_5Y_{13-\mathit{x}}Zn_{\mathit{x}}[SiO_4]_8O_{8.5-\mathit{x}/2}}$, comparing solid-state reaction and high-temperature solution crystal growth in parallel, and using Mg/Co analogues to distinguish size differences. A local two-step inorganic retrosynthesis model recommends ZnO, MgO, and Co$_3$O$_4$, respectively, combined with BaCO$_3$, Y$_2$O$_3$, and SiO$_2$ as the preferred starting-material sets for the Zn, Mg, and Co targets; these results serve only as precursor hypotheses awaiting verification. The experiments most conducive to scientific discovery are not further trials of isolated temperatures but a closed experimental loop with feedback that links composition grids, phase quantification, single-crystal structure, actual stoichiometry, and process records.
+\end{abstract}
+
+\input{sections_en/00_introduction}
+\input{sections_en/00_review_method}
+\input{sections_en/01_phase_identity}
+\input{sections_en/02_evidence_distance}
+\input{sections_en/03_condition_matrix}
+\input{sections_en/04_prior_experimental_findings}
+\input{sections_en/04_neighbor_routes}
+\input{sections_en/05_validation_endpoints}
+\input{sections_en/06_failure_boundaries}
+\input{sections_en/08_future_directions}
+\input{sections_en/07_transferability_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

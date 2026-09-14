@@ -1,0 +1,36 @@
+% 排版 v3（goai_zh_typo.sty v3：紧凑版心、横排条件总表、术语规范化后的 sections_v3）。
+% 内容层（sections_en/、references.bib、figures/）与 main.tex 完全相同，只换排版层。xelatex 编译。
+\documentclass[10pt]{article}
+\usepackage[template=journal]{goai_en_typo}
+\runninghead{Synthesis Conditions and Transferability Limits of Ba$_5$Y$_{12}$Zn[O(SiO$_4$)]$_8$}
+\hypersetup{
+  pdftitle={Synthesis Conditions of Ba5Y12Zn[O(SiO4)]8 and Its Structural Relatives: Evidence Grading, Route Matrix, and Transferability Limits},
+  pdfauthor={Anonymous Review Working Group}
+}
+\title{Synthesis Conditions of $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ and Its Structural Relatives:\\
+Evidence Grading, Route Matrix, and Transferability Limits}
+\author{Anonymous Review Working Group}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The non-centrosymmetric silicate $\mathrm{Ba_5Y_{12}Zn[O(SiO_4)]_8}$ has been grown from a high-temperature solution and its single-crystal structure solved, but direct evidence for its starting composition, its bulk phase region, and any independent reproduction is still missing. Here we grade the available evidence and compare the published compositions, thermal histories, containers, cooling programs, and characterization results for the target phase, the Zn-free tetragonal Ba--Y silicate family, structurally related Ba--Zn--Si--O compounds, and Y--Si--O process-reference systems. The existing experiments show that phase formation near the target is governed simultaneously by the Ba/Y/Si ratio, the Zn--Y--oxygen stoichiometry, the flux proportion, and the cooling path, and that single-crystal structural evidence is no substitute for bulk phase-purity and measured-composition analysis. On this basis we propose four priorities: establishing a local phase diagram around $\mathrm{Ba_5Y_{12}ZnSi_8O_{40}}$, testing the composition--structure relationship along $\mathrm{Ba_5Y_{13-\mathit{x}}Zn_{\mathit{x}}[SiO_4]_8O_{8.5-\mathit{x}/2}}$, running solid-state reaction and high-temperature solution growth in parallel, and using Mg/Co analogs to isolate the effect of ionic-size differences. A local two-step inorganic retrosynthesis model recommends ZnO, MgO, and Co$_3$O$_4$, respectively, together with BaCO$_3$, Y$_2$O$_3$, and SiO$_2$, as the preferred starting-material sets for the Zn, Mg, and Co targets; these are precursor hypotheses awaiting verification, nothing more. The experiments most likely to yield discovery are not further trials at isolated temperatures but a closed feedback loop that ties together composition grids, phase quantification, single-crystal structure, measured stoichiometry, and process records.
+\end{abstract}
+
+\input{sections_en/00_introduction}
+\input{sections_en/00_review_method}
+\input{sections_en/01_phase_identity}
+\input{sections_en/02_evidence_distance}
+\input{sections_en/03_condition_matrix}
+\input{sections_en/04_prior_experimental_findings}
+\input{sections_en/04_neighbor_routes}
+\input{sections_en/05_validation_endpoints}
+\input{sections_en/06_failure_boundaries}
+\input{sections_en/08_future_directions}
+\input{sections_en/07_transferability_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
