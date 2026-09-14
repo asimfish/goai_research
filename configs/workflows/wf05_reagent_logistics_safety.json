@@ -1,0 +1,302 @@
+{
+  "spec_version": "1.0",
+  "id": "wf05_reagent_logistics_safety",
+  "title": "Reagent logistics and safe disposal: cabinet retrieval, bottle-top dispensing, return and waste handling",
+  "goal": {
+    "objective": "Retrieve an acid bottle from the reagent cabinet, dispense a metered volume with the bottle-top dispenser into a beaker on the balance, return the bottle and dispose of a used crucible and test tube into the waste container without spillage or excessive contact force.",
+    "target_phase": null,
+    "literature": [
+      "bai2026safelab",
+      "szymanski2023alab"
+    ]
+  },
+  "embodiment": {
+    "robot": "franka_fr3",
+    "gripper": "franka_hand",
+    "base_pose": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "samples": [
+    {
+      "name": "s1",
+      "precursors": {
+        "HCl 1 M (mL)": 10
+      },
+      "labware": [
+        "beaker_1"
+      ]
+    }
+  ],
+  "stations": [
+    {
+      "id": "cabinet_1",
+      "instrument": "storage_rack",
+      "asset": "art:ReagentCabinet001",
+      "pose": [
+        0.8,
+        0.3,
+        0.0
+      ]
+    },
+    {
+      "id": "dispenser_1",
+      "instrument": "liquid_station",
+      "asset": "art:BottleTopDispenser002",
+      "pose": [
+        0.55,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "balance_1",
+      "instrument": "balance",
+      "asset": "art:AnalyticalBalance001",
+      "pose": [
+        0.55,
+        -0.35,
+        0.0
+      ]
+    },
+    {
+      "id": "rack_1",
+      "instrument": "storage_rack",
+      "asset": "Test_Tube_Rack",
+      "pose": [
+        0.3,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "waste_1",
+      "instrument": "waste",
+      "asset": "glass_beaker_500ml",
+      "pose": [
+        0.2,
+        -0.55,
+        0.0
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "bottle_acid",
+      "labware": "precursor_bottle",
+      "asset": "brown_reagent_bottle_large",
+      "pose": [
+        0.8,
+        0.3,
+        0.1
+      ]
+    },
+    {
+      "id": "beaker_1",
+      "labware": "beaker",
+      "asset": "glass_beaker_100ml",
+      "pose": [
+        0.4,
+        0.2,
+        0.0
+      ],
+      "sample": "s1"
+    },
+    {
+      "id": "crucible_used",
+      "labware": "crucible",
+      "asset": "Crucible",
+      "pose": [
+        0.35,
+        -0.15,
+        0.0
+      ]
+    },
+    {
+      "id": "tube_used",
+      "labware": "vial",
+      "asset": "glass_test_tube_20ml",
+      "pose": [
+        0.3,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "tongs_1",
+      "labware": "tongs",
+      "asset": "Crucible_Tong",
+      "pose": [
+        0.25,
+        -0.1,
+        0.0
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t_get",
+      "type": "Storage",
+      "station": "cabinet_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [],
+      "params": {},
+      "primitives": [
+        {
+          "op": "open_door",
+          "station": "cabinet_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_acid",
+          "to": "dispenser_1"
+        },
+        {
+          "op": "close_door",
+          "station": "cabinet_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Open the reagent cabinet, take the acid bottle to the dispenser station, close the cabinet."
+    },
+    {
+      "id": "t_dispense",
+      "type": "LiquidHandling",
+      "station": "dispenser_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_get"
+      ],
+      "params": {
+        "volume_ml": 10
+      },
+      "primitives": [
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "dispenser_1"
+        },
+        {
+          "op": "press_button",
+          "station": "dispenser_1",
+          "button": "dispense"
+        },
+        {
+          "op": "wait",
+          "seconds": 5
+        },
+        {
+          "op": "weigh",
+          "object": "beaker_1",
+          "station": "balance_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "beaker_1",
+          "to": "rack_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Place the beaker under the dispenser, dispense 10 mL, weigh the beaker and park it on the rack."
+    },
+    {
+      "id": "t_return",
+      "type": "Storage",
+      "station": "cabinet_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_dispense"
+      ],
+      "params": {},
+      "primitives": [
+        {
+          "op": "open_door",
+          "station": "cabinet_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "bottle_acid",
+          "to": "cabinet_1"
+        },
+        {
+          "op": "close_door",
+          "station": "cabinet_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Return the acid bottle to the cabinet and close the door."
+    },
+    {
+      "id": "t_dispose",
+      "type": "Disposal",
+      "station": "waste_1",
+      "samples": [
+        "s1"
+      ],
+      "depends_on": [
+        "t_return"
+      ],
+      "params": {},
+      "primitives": [
+        {
+          "op": "grasp_with_tool",
+          "tool": "tongs_1",
+          "object": "crucible_used",
+          "to": "waste_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "tongs_1",
+          "to": "rack_1"
+        },
+        {
+          "op": "pick_place",
+          "object": "tube_used",
+          "to": "waste_1"
+        }
+      ],
+      "on_error": {
+        "retry": 3,
+        "then": "request_user_input"
+      },
+      "instruction": "Move the used crucible with the tongs and the used test tube into the waste container."
+    }
+  ],
+  "safety_constraints": {
+    "dp_max_mm": 20,
+    "theta_dev_max_rad": 0.25,
+    "f_peak_max_n": 15,
+    "tilt_limit_rad": 0.85
+  },
+  "evidence": [
+    {
+      "claim": "SafeLab's actuation domain (open/close cabinet, press switch) and spatial domain (pick-and-place, handover) are evaluated by Safe Success Rate with peak-force and 20 mm placement thresholds.",
+      "cite": "bai2026safelab"
+    },
+    {
+      "claim": "In the A-Lab, crucibles are disposed of after powder recovery and consumables such as precursor bottles are refilled manually.",
+      "cite": "szymanski2023alab"
+    }
+  ]
+}

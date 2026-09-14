@@ -1,0 +1,231 @@
+% goai_zh_typo.sty — 中文综述排版规范 v5（2026-09-13）：按 NeurIPS 模版（neurips_2023.sty）改写的中文版
+% 存档：v2 goai_zh_typo_v2.sty（思源宋/黑 + 1.25 行距），v3 goai_zh_typo_v3.sty（紧凑版心 + 横排长表），v4 goai_zh_typo_v4.sty（细宋 10.5pt/1.5）。
+% v5 = NeurIPS 版式：Letter 纸、版心 5.5in × 9in、上边距 1in、页码居中页脚、首页无页码；正文 10pt（Times + 思源宋 Light，行距 1.5 倍），
+%   小号 9pt、脚注 9pt、large 12pt、LARGE 17pt；一级标题 12pt 粗体左齐（前 2.0ex 后 1.5ex），二/三级 10pt 粗体；
+%   无首行缩进、段间 5.5pt；标题栏上下横线（4pt/1pt）、LARGE 粗体居中；摘要“摘要”12pt 粗体居中 + quote 缩进；
+%   图注在下、表注在上（7pt 间距，普通字号，标签不加粗，冒号分隔）；浮动比例 0.85/0.4/0.1/0.7；参考文献 \small、natbib 数字编号；
+%   引用/链接保留之前的学术蓝 RGB(0,84,159)（用户要求）。中文特有：思源宋 Light 正文 + 思源黑 Bold 作粗体/标题、全角标点、中西文四分空。
+% 用法：\documentclass[10pt,linespread=1.5]{ctexart} \usepackage{goai_zh_typo}   （必须 xelatex）
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{goai_zh_typo}[2026/09/13 v6 goai Chinese survey typography, default journal + orchestra conventions]
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{family=goaizh,prefix=goaizh@}
+\DeclareStringOption[manuscript]{template}
+\ProcessKeyvalOptions*
+\newif\ifgoai@iclr \newif\ifgoai@orch \newif\ifgoai@arxiv \newif\ifgoai@journal \newif\ifgoai@manu
+\edef\goai@tpl{\goaizh@template}
+\def\goai@a{iclr}\ifx\goai@tpl\goai@a \goai@iclrtrue \fi
+\def\goai@a{orchestra}\ifx\goai@tpl\goai@a \goai@orchtrue \fi
+\def\goai@a{arxiv}\ifx\goai@tpl\goai@a \goai@arxivtrue \fi
+\def\goai@a{journal}\ifx\goai@tpl\goai@a \goai@journaltrue \fi
+\def\goai@a{manuscript}\ifx\goai@tpl\goai@a \goai@manutrue \fi
+% ---- 约定层：plaincap = orchestra 的题注写法；orchfloat = 图宽 0.95 行宽 + 参考文献前 clearpage
+\newif\ifgoai@plaincap \newif\ifgoai@orchfloat
+\ifgoai@orch \goai@plaincaptrue \goai@orchfloattrue \fi
+\ifgoai@journal \goai@plaincaptrue \goai@orchfloattrue \fi
+\ifgoai@manu \goai@plaincaptrue \goai@orchfloattrue \fi
+\RequirePackage{iftex}
+\RequireXeTeX
+\RequirePackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\IfFileExists{\goainotopath NotoSerifCJKsc-Regular.otf}{%
+  \IfFileExists{\goainotopath NotoSerifCJKsc-Light.otf}{%
+    \setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf,AutoFakeSlant=false]{NotoSerifCJKsc-Light.otf}%
+  }{%
+    \setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf,AutoFakeSlant=false]{NotoSerifCJKsc-Regular.otf}%
+  }%
+  \setCJKfamilyfont{tab}[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSerifCJKsc-Regular.otf}%
+  \setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Medium.otf}%
+  \setCJKmonofont[Path=\goainotopath]{NotoSansCJKsc-Regular.otf}%
+}{%
+  \IfFontExistsTF{Songti SC}{%
+    \setCJKmainfont[BoldFont={PingFang SC Semibold}]{Songti SC}%
+    \setCJKfamilyfont{tab}[BoldFont={PingFang SC Semibold}]{Songti SC}%
+    \setCJKsansfont[BoldFont={PingFang SC Semibold}]{PingFang SC}%
+    \setCJKmonofont{PingFang SC}%
+  }{%
+    \setCJKmainfont[BoldFont=FandolHei-Bold.otf]{FandolSong-Regular.otf}%
+    \setCJKfamilyfont{tab}[BoldFont=FandolHei-Bold.otf]{FandolSong-Regular.otf}%
+    \setCJKsansfont[BoldFont=FandolHei-Bold.otf]{FandolHei-Regular.otf}%
+    \setCJKmonofont{FandolFang-Regular.otf}%
+  }%
+}
+\setCJKfamilyfont{kai}{FandolKai-Regular.otf}
+\providecommand{\kaishu}{}\renewcommand{\kaishu}{\CJKfamily{kai}}
+\providecommand{\tabCJK}{}\renewcommand{\tabCJK}{\CJKfamily{tab}}
+\xeCJKDeclareCharClass{Default}{"2013}   % en dash 按西文处理，其后的空格不被 xeCJK 吞掉（参考文献里的 “– a review”）
+\xeCJKsetup{PunctStyle=quanjiao, CJKecglue={\hskip 0.25em plus 0.06em minus 0.04em}, CJKglue={\hskip 0pt plus 0.05em minus 0.01em}, CheckSingle=true, CJKmath=true}
+% ---- 拉丁字体：Times（NeurIPS \rmdefault=ptm）+ Helvetica 系无衬线（phv → TeX Gyre Heros）
+\RequirePackage{amsmath}
+\RequirePackage{newtxtext}
+\RequirePackage[nonewtxmathopt]{newtxmath}
+\RequirePackage{textcomp}
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+\setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+% ---- 版心：NeurIPS letterpaper, textwidth 5.5in, textheight 9in, top 1in（直接作为包选项，便于 \restoregeometry 回到此版心）
+\ifgoai@arxiv
+  \RequirePackage[letterpaper,textwidth=6.0in,textheight=8.8in,top=1.1in,headheight=12pt,headsep=18pt,footskip=28pt]{geometry}
+\else\ifgoai@journal
+  \RequirePackage[a4paper,textwidth=16.0cm,textheight=23.5cm,top=2.5cm,headheight=12pt,headsep=16pt,footskip=26pt]{geometry}
+\else\ifgoai@manu
+  \RequirePackage[a4paper,margin=2.54cm,headheight=14pt,headsep=16pt,footskip=26pt]{geometry}
+\else
+  \RequirePackage[letterpaper,textheight=9in,textwidth=5.5in,top=1in,headheight=12pt,headsep=25pt,footskip=30pt]{geometry}
+\fi\fi\fi
+\widowpenalty=10000 \clubpenalty=10000 \displaywidowpenalty=10000
+\raggedbottom   % NeurIPS 用 flushbottom；中文段间 5.5pt 刚性，flushbottom 会把短页撑开（审稿发现 p6/p7 段距被拉大）
+% manuscript 同参考版：不开 \sloppy，只给 emergencystretch（\sloppy 会把词距放得很松）
+\ifgoai@manu \emergencystretch=1.5em \tolerance=2500 \else \sloppy \fi
+% ---- 字号（NeurIPS：normal 10/11，small 9/10，footnotesize 9/10，scriptsize 7/8，large 12/14，LARGE 17/20）；正文行距由类选项 linespread=1.5 给出
+\renewcommand{\small}{\@setfontsize\small\@ixpt\@xpt}
+\renewcommand{\footnotesize}{\@setfontsize\footnotesize\@ixpt\@xpt}
+\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viipt\@viiipt}
+\renewcommand{\tiny}{\@setfontsize\tiny\@vipt\@viipt}
+\renewcommand{\large}{\@setfontsize\large\@xiipt{14}}
+\renewcommand{\Large}{\@setfontsize\Large\@xivpt{16}}
+\renewcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{20}}
+% ---- 段落：无缩进，段间 5.5pt（NeurIPS）
+\ctexset{autoindent=false}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt minus 0.5pt}
+\ifgoai@iclr \setlength{\parskip}{.5pc}\fi                                  % ICLR 段间 0.5pc
+\ifgoai@arxiv \setlength{\parskip}{0pt plus 1pt}\setlength{\parindent}{2em}\ctexset{autoindent=2em}\fi   % arXiv 预印本：中文首行缩进 2 字
+\ifgoai@journal \setlength{\parskip}{2pt plus 1pt}\setlength{\parindent}{2em}\ctexset{autoindent=2em}\fi
+\ifgoai@manu    \setlength{\parskip}{0pt plus 1pt}\setlength{\parindent}{2em}\ctexset{autoindent=2em}\fi % 中文期刊：缩进 2 字、宽版心
+% ---- 标题层级（NeurIPS：section \large\bf raggedright，-2.0ex/1.5ex；subsection/subsubsection \normalsize\bf，-1.8ex/0.8ex，-1.5ex/0.5ex；paragraph run-in \normalsize\bf）
+\ctexset{
+  section = {format = \large\bfseries\raggedright, aftername = \quad,
+             beforeskip = 2.0ex plus 0.5ex minus 0.2ex, afterskip = 1.5ex plus 0.3ex minus 0.2ex},
+  subsection = {format = \normalsize\bfseries\raggedright, aftername = \quad,
+                beforeskip = 1.8ex plus 0.5ex minus 0.2ex, afterskip = 0.8ex plus 0.2ex},
+  subsubsection = {format = \normalsize\bfseries\raggedright, aftername = \quad,
+                   beforeskip = 1.5ex plus 0.5ex minus 0.2ex, afterskip = 0.5ex plus 0.2ex},
+  paragraph = {format = \normalsize\bfseries, runin = true, aftername = \quad, afterskip = 0.5em, beforeskip = 1.0ex plus 0.3ex minus 0.2ex},
+  abstractname = {摘要},
+}
+% ---- run-in 小标题的记号（\rule 画，不依赖字体字符）；编号标题按期刊惯例只用数字，不加记号
+\newcommand{\goaiParMark}{\textcolor{goaiblue}{\rule[0.03em]{3.2pt}{3.2pt}}\hspace{0.32em}}
+\let\goai@paragraph\paragraph
+\renewcommand{\paragraph}[1]{\goai@paragraph{\goaiParMark#1}}
+% 无衬线标题必须放在通用 \ctexset 之后，否则会被通用设置里的 format 覆盖
+\ifgoai@journal \ctexset{section={format+=\sffamily}, subsection={format+=\sffamily}}\fi
+% manuscript：中文标题仍用黑体（中文期刊惯例，宋体加粗在标题上太弱），间距改成参考版的 14pt/6pt、10pt/4pt
+\ifgoai@manu \ctexset{section={format+=\sffamily, beforeskip=14pt plus 3pt minus 2pt, afterskip=6pt plus 1pt},
+                      subsection={format+=\sffamily, beforeskip=10pt plus 2pt minus 2pt, afterskip=4pt plus 1pt}}\fi
+\ifgoai@arxiv   \ctexset{section={format+=\sffamily}, subsection={format+=\sffamily}}\fi
+% ---- 强调：楷体（中文无斜体）
+\renewcommand{\emph}[1]{{\kaishu #1}}
+% ---- 列表（NeurIPS）
+\RequirePackage{enumitem}
+\setlist{topsep=4pt plus 1pt minus 2pt,itemsep=2pt plus 1pt minus 0.5pt,parsep=2pt plus 1pt minus 0.5pt,leftmargin=3pc}
+% ---- 图表：booktabs 三线表、表格等版心宽；图注在下、表注在上，间距 7pt，普通字号，标签不加粗、冒号分隔（NeurIPS 默认 \@makecaption）
+\RequirePackage{etoolbox}
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{longtable}
+\RequirePackage{multirow}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}
+\RequirePackage[table]{xcolor}
+\ifgoai@plaincap
+  % PaperOrchestra 约定：题注标签后用句点、整段同字重（章节源里的 \textbf 首句在此变透明）
+  \RequirePackage[font={small},labelfont={bf},labelsep=period,skip=6pt,justification=justified,singlelinecheck=false]{caption}
+  \DeclareCaptionFormat{goaiplain}{\begingroup\let\textbf\@firstofone#1#2#3\endgroup}
+  \captionsetup{format=goaiplain}
+  \captionsetup[longtable]{font={small},labelfont={bf},labelsep=period,skip=6pt,justification=justified,singlelinecheck=false,format=goaiplain}
+\else
+  \RequirePackage[font={small,stretch=1.15},labelfont={bf},labelsep=colon,skip=6pt,justification=justified,singlelinecheck=false,format=hang]{caption}
+  \captionsetup[longtable]{font={small,stretch=1.15},labelfont={bf},skip=6pt,justification=justified,singlelinecheck=false,format=hang}
+\fi
+% singlelinecheck=false：开着的话 caption 会把「放得下一行」的题注居中、放不下的左对齐，
+% 于是同一篇里短题注（如长表的「续表」头）居中、长题注顶左，看着像两套规矩。全部统一左对齐。
+\captionsetup[table]{position=above,skip=6pt}
+% PaperOrchestra：图宽 0.95 行宽；参考文献前 clearpage，浮动体不会漏到参考文献之后
+\ifgoai@orchfloat
+  \let\goai@ig\includegraphics
+  \renewcommand{\includegraphics}[2][]{\goai@ig[width=0.95\linewidth]{#2}}
+  \AtBeginDocument{\pretocmd{\bibliography}{\clearpage}{}{}}
+\fi
+\setlength{\LTcapwidth}{\textwidth}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.78}   % 表格浮到页底，需要给足高度
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 2fil}
+\setlength{\@fpbot}{0pt plus 1fil}
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{3pt}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}   % 窄列两端对齐会把汉字撑开，表格单元一律左齐
+\newcolumntype{R}[1]{>{\raggedright\arraybackslash}p{#1}}
+\AtBeginEnvironment{table}{\small\tabCJK}
+\AtBeginEnvironment{table*}{\small\tabCJK}
+\RequirePackage{needspace}
+\AtBeginEnvironment{tabular}{\tabCJK\linespread{1.0}\selectfont}
+\AtBeginEnvironment{longtable}{\tabCJK\linespread{1.0}\selectfont}
+\setlength{\LTpre}{14pt plus 2pt minus 2pt}\setlength{\LTpost}{12pt plus 2pt minus 2pt}
+\newcommand{\thead}[1]{\textbf{#1}}
+\newcommand{\NA}{—}
+% ---- 脚注（NeurIPS）
+\setlength{\footnotesep}{6.65pt}
+\setlength{\skip\footins}{9pt plus 4pt minus 2pt}
+\renewcommand{\footnoterule}{\kern-3pt \hrule width 12pc \kern 2.6pt}
+% ---- 链接：引用、交叉引用与 URL 用之前的学术蓝（用户要求保留蓝色引用）
+\definecolor{goaiblue}{RGB}{0,84,159}
+\RequirePackage[hyphens]{url}
+\RequirePackage[colorlinks=true,citecolor=goaiblue,linkcolor=goaiblue,urlcolor=goaiblue]{hyperref}
+\urlstyle{same}
+\renewcommand{\UrlBigBreaks}{}   % 不在 “https:” 后断行
+\renewcommand{\UrlBreaks}{\do\/\do\-\do\_\do\(\do\)}   % 只在 / - _ ( ) 处断 DOI/URL，避免 “10.” 单独留在行尾
+% DOI：plainnat 的 .bbl 用 \providecommand 定义 \doi，这里先定义成可点击、只在 / . - 处断行的形式
+\newcommand{\doi}[1]{doi:\,\href{https://doi.org/#1}{\nolinkurl{#1}}}
+% ---- 参考文献：natbib 数字编号 [1]，\small，条目间距紧凑
+\RequirePackage[numbers,sort&compress]{natbib}
+\setlength{\bibsep}{3pt plus 2pt}
+\renewcommand{\bibfont}{\small\linespread{1.15}\selectfont\hyphenpenalty=2000\exhyphenpenalty=2000\emergencystretch=2em}
+% ---- 页眉页脚：无页眉，页码居中页脚；首页无页码（NeurIPS 首页 \thispagestyle{empty}）
+\pagestyle{plain}
+\ifgoai@manu
+  \RequirePackage{fancyhdr}
+  \newcommand{\runninghead}[1]{%
+    \pagestyle{fancy}\fancyhf{}%
+    \fancyhead[L]{\small #1}\fancyhead[R]{\small\thepage}%
+    \renewcommand{\headrulewidth}{0.3pt}%
+    \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}}
+\else
+  \newcommand{\runninghead}[1]{}   % 兼容旧主文件；NeurIPS 无页眉
+\fi
+% ---- 标题栏（NeurIPS \@maketitle）：上横线 4pt、LARGE 粗体居中、下横线 1pt、作者粗体
+\renewcommand{\maketitle}{%
+  \par\begingroup
+  \thispagestyle{empty}%
+  \ifgoai@arxiv
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \raggedright{\sffamily\bfseries\boldmath\fontsize{17}{22}\selectfont \@title\par}\vskip 8pt
+      {\normalsize\@author\par}\vskip 6pt \hrule height 0.6pt \vskip 14pt}%
+    \endgroup\suppressfloats[t]\else
+  \ifgoai@manu
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \vskip 0.3in
+      \centering{\bfseries\boldmath\fontsize{17}{24}\selectfont \@title\par}\vskip 20pt
+      {\large\@author\par}\vskip 18pt}%
+    \endgroup\suppressfloats[t]\else
+  \ifgoai@journal
+    \vbox{\hsize\textwidth \linewidth\hsize
+      \raggedright{\sffamily\bfseries\boldmath\fontsize{17}{22}\selectfont \@title\par}\vskip 10pt
+      {\normalsize\bfseries\@author\par}\vskip 4pt \hrule height 1.2pt \vskip 12pt}%
+    \endgroup\suppressfloats[t]\else
+  \vbox{\hsize\textwidth \linewidth\hsize
+    \vskip 0.1in
+    \hrule height 4pt \vskip 0.25in \vskip -\parskip
+    \centering{\LARGE\bfseries\boldmath\linespread{1.15}\selectfont \@title\par}
+    \vskip 0.29in \vskip -\parskip \hrule height 1pt \vskip 0.09in
+    \centering\begin{tabular}[t]{c}\bfseries\rule{0pt}{24pt}\@author\end{tabular}\par
+    \vskip 0.3in minus 0.1in}
+  \endgroup\suppressfloats[t]\fi\fi\fi}
+% ---- 摘要（NeurIPS）：\large\bf 居中标题 + quote 缩进，正文字号
+\renewenvironment{abstract}{%
+  \vskip 0.075in\centerline{\large\bfseries 摘要}\vspace{0.5ex}\begin{quote}}{\par\end{quote}\vskip 1ex}
+\RequirePackage{microtype}
+% 断行容差沿用 NeurIPS 的 \sloppy（tolerance 9999、emergencystretch 3em）；汉字间 glue 伸缩量小，不要再压低 tolerance

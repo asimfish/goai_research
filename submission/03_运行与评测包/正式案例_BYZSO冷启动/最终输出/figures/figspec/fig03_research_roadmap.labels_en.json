@@ -1,0 +1,64 @@
+{
+  "title": "From Literature Basis to Testable Synthesis Experiments",
+  "groups": {},
+  "nodes": {
+    "evidence": {
+      "label": "Literature Basis",
+      "sublabel": "Ba–Y–Si–O family\nBa–Zn–Si–O structurally related\nY–Si–O process reference"
+    },
+    "hypothesis": {
+      "label": "Structural Hypothesis",
+      "sublabel": "Composition grid\nZn–Y–O coupling\nCompeting phases\nGlass region"
+    },
+    "precursor": {
+      "label": "Screened Precursors",
+      "sublabel": "BaCO₃ + Y₂O₃ + SiO₂\nZnO / MgO / Co₃O₄\nModel ranking, not validation"
+    },
+    "solid": {
+      "label": "Solid-State Route",
+      "sublabel": "Calcine → anneal"
+    },
+    "growth": {
+      "label": "Solution Growth",
+      "sublabel": "Flux → slow cool\nLiquid selectivity"
+    },
+    "validate": {
+      "label": "Result Feedback",
+      "sublabel": "PXRD / Rietveld\nSCXRD / advanced diffraction\nEDS / EPMA / ICP\nHigh-T phases, cooled products"
+    },
+    "q1": {
+      "label": "Stable Phase or Liquid-Grown?",
+      "sublabel": "Stability vs selectivity"
+    },
+    "q2": {
+      "label": "Zn Uptake and Oxygen Coupling?",
+      "sublabel": "Zn site + compensation"
+    },
+    "q3": {
+      "label": "Composition–Structure Match?",
+      "sublabel": "Composition vs structure"
+    }
+  },
+  "edges": {
+    "feedback": {
+      "label": "Phase composition and stoichiometry update next round"
+    }
+  },
+  "texts": {
+    "mainline": {
+      "text": "Literature basis → structural hypothesis → precursors → parallel experiments → result feedback"
+    },
+    "pipeline_heading": {
+      "text": "From literature basis to experimental feedback"
+    },
+    "parallel_label": {
+      "text": "Parallel experiments"
+    },
+    "questions_heading": {
+      "text": "Three classes of scientific questions"
+    },
+    "foot": {
+      "text": "Each round retains successful products, competing phases, mass loss, and negative results"
+    }
+  }
+}

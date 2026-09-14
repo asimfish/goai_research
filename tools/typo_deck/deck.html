@@ -1,0 +1,565 @@
+<title>版心对照台</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+:root{
+  --paper:#ffffff; --ground:#e7eaee; --panel:#f4f6f9; --panel-2:#eef1f5;
+  --ink:#131820; --ink-2:#5d6874; --ink-3:#8b96a3;
+  --rule:#ccd4dd; --rule-2:#dde3ea;
+  --accent:#00549f; --accent-soft:#e3edf7;
+  --flag:#a63a28; --flag-soft:#f7e6e2;
+  --ok:#2d6a4f;
+  --shadow:0 1px 2px rgba(19,24,32,.10), 0 6px 18px rgba(19,24,32,.07);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  --serif:"IBM Plex Serif","Songti SC","Noto Serif CJK SC",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#ffffff; --ground:#11151a; --panel:#1a1f26; --panel-2:#222831;
+    --ink:#e8ecf1; --ink-2:#98a4b2; --ink-3:#6b7684;
+    --rule:#2c343e; --rule-2:#232a33;
+    --accent:#63a7e8; --accent-soft:#1b2a3a;
+    --flag:#e2795f; --flag-soft:#32201c;
+    --ok:#68b894;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.38);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#ffffff; --ground:#11151a; --panel:#1a1f26; --panel-2:#222831;
+  --ink:#e8ecf1; --ink-2:#98a4b2; --ink-3:#6b7684;
+  --rule:#2c343e; --rule-2:#232a33;
+  --accent:#63a7e8; --accent-soft:#1b2a3a;
+  --flag:#e2795f; --flag-soft:#32201c;
+  --ok:#68b894;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+  height:100dvh;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+/* ---------- chrome ---------- */
+.bar{display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--rule);
+  background:var(--panel);flex:none;min-height:52px}
+.mark{font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:.01em;white-space:nowrap}
+.mark span{color:var(--ink-3);font-family:var(--mono);font-weight:400;font-size:11px;margin-left:8px;letter-spacing:.04em}
+.bar-spacer{flex:1}
+.seg{display:flex;border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--ground)}
+.seg button{padding:5px 13px;font-size:12.5px;font-weight:500;color:var(--ink-2);transition:background .12s,color .12s}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.count{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.05em;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.nav{display:flex;gap:4px}
+.nav button{width:30px;height:30px;border:1px solid var(--rule);border-radius:5px;color:var(--ink-2);
+  display:grid;place-items:center;font-size:14px;line-height:1}
+.nav button:hover{background:var(--panel-2);color:var(--ink)}
+.nav button:disabled{opacity:.32;cursor:default}
+
+/* ---------- track ---------- */
+.track{flex:1;min-height:0;display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){.track{scroll-behavior:auto}}
+.slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;
+  overflow-y:auto;padding:22px 32px 26px;display:flex;flex-direction:column;gap:14px}
+
+.head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;flex:none}
+.num{font-family:var(--serif);font-size:13px;color:var(--accent);font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.head h2{margin:0;font-size:20px;font-weight:600;letter-spacing:-.005em;text-wrap:balance}
+.head .look{margin:0;font-size:13px;color:var(--ink-2);line-height:1.55;max-width:78ch;flex-basis:100%}
+.head .look b{color:var(--ink);font-weight:500}
+code{font-family:var(--mono);font-size:.9em;background:var(--panel-2);
+  padding:1px 5px;border-radius:3px;color:var(--ink-2)}
+
+/* ---------- specimen grid ---------- */
+.strip{flex:1;min-height:0;display:grid;gap:14px;align-content:center}
+.strip.pages{grid-template-columns:repeat(6,1fr)}
+.strip.details{grid-template-columns:repeat(3,1fr);align-content:start;overflow-y:auto;padding-bottom:4px}
+.spec{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.spec-top{display:flex;align-items:baseline;gap:7px;min-width:0}
+.tid{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--ink);letter-spacing:.02em}
+.tmeta{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.03em;
+  font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot{display:block;width:100%;padding:0;border:1px solid var(--rule);border-radius:2px;
+  background:var(--paper);box-shadow:var(--shadow);overflow:hidden;line-height:0;
+  transition:border-color .14s, transform .14s}
+.shot:hover{border-color:var(--accent);transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.shot:hover{transform:none}}
+.shot img{width:100%;height:auto;display:block}
+.spec.flagged .tid{color:var(--flag)}
+.spec.flagged .shot{border-color:var(--flag)}
+.spec-note{font-size:11px;color:var(--ink-2);line-height:1.45}
+.spec.flagged .spec-note{color:var(--flag)}
+.missing{border:1px dashed var(--rule);border-radius:2px;aspect-ratio:17/22;display:grid;place-items:center;
+  padding:14px;text-align:center;font-size:11.5px;color:var(--ink-3);line-height:1.5;background:var(--panel)}
+
+/* ---------- overview ---------- */
+.cover{flex:1;min-height:0;display:grid;grid-template-columns:minmax(250px,1fr) 2.6fr;gap:40px;align-items:center;padding-block:8px}
+.cover-lede h1{font-family:var(--serif);font-size:33px;font-weight:600;margin:0 0 12px;
+  letter-spacing:-.01em;line-height:1.2;text-wrap:balance}
+.cover-lede p{margin:0 0 14px;font-size:13.5px;line-height:1.7;color:var(--ink-2);max-width:34ch}
+.cover-lede p b{color:var(--ink);font-weight:500}
+.hint{font-size:11.5px;color:var(--ink-3);line-height:2;border-top:1px solid var(--rule);padding-top:12px}
+.hint kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--rule);border-bottom-width:2px;
+  border-radius:3px;padding:1px 5px;color:var(--ink-2);background:var(--panel)}
+.tblwrap{overflow:auto;max-height:100%}
+table.specs{border-collapse:collapse;width:100%;font-size:12px;min-width:660px}
+table.specs th{text-align:left;font-weight:500;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 12px 7px 0;border-bottom:1.5px solid var(--ink-2);white-space:nowrap}
+table.specs td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule-2);vertical-align:top;line-height:1.5}
+table.specs tr:last-child td{border-bottom:1.5px solid var(--ink-2)}
+table.specs td.t{font-family:var(--mono);font-weight:500;white-space:nowrap}
+table.specs td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+table.specs td.d{color:var(--ink-2);min-width:13ch}
+table.specs tr.bad td,table.specs tr.bad td.t,table.specs tr.bad td.n{color:var(--flag)}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:9px;
+  background:var(--flag-soft);color:var(--flag);letter-spacing:.03em;margin-left:6px}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}
+
+/* ---------- block diagram ---------- */
+.diagram{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto}
+.diagram svg{width:100%;height:auto;max-height:100%;max-width:1440px}
+.diagram .pap{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.diagram .blk{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.diagram .blk.bad{fill:var(--flag-soft);stroke:var(--flag)}
+.diagram .zhblk{fill:none;stroke:var(--ok);stroke-width:1.5;stroke-dasharray:5 4}
+.diagram text{font-family:var(--sans);font-size:11px;fill:var(--ink-2)}
+.diagram .lbl{font-family:var(--mono);font-size:12px;font-weight:500;fill:var(--ink)}
+.diagram .lbl.bad{fill:var(--flag)}
+.diagram .sub{font-family:var(--mono);font-size:10px;fill:var(--ink-3)}
+.diagram .dimn{font-family:var(--mono);font-size:11.5px;fill:var(--ink)}
+.diagram .zhn{fill:var(--ok)}
+.legend{display:flex;gap:22px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);flex:none;align-items:center}
+.legend i{display:inline-block;width:22px;border-top:2px solid var(--accent);margin-right:6px;vertical-align:middle}
+.legend i.dash{border-top-style:dashed;border-top-color:var(--ok)}
+.legend i.papr{border-top:1px solid var(--rule)}
+
+/* ---------- closing ---------- */
+.recs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-content:start}
+.rec{border:1px solid var(--rule);border-radius:4px;padding:15px 16px;background:var(--panel);
+  display:flex;flex-direction:column;gap:9px}
+.rec.pick{border-color:var(--accent);border-width:1.5px;background:var(--accent-soft)}
+.rec h3{margin:0;font-family:var(--mono);font-size:13px;font-weight:500;display:flex;
+  align-items:baseline;justify-content:space-between;gap:8px}
+.rec h3 em{font-style:normal;font-family:var(--sans);font-size:10px;letter-spacing:.08em;color:var(--accent)}
+.rec p{margin:0;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.rec ul{margin:0;padding-left:16px;font-size:12px;line-height:1.7;color:var(--ink-2)}
+.code{font-family:var(--mono);font-size:12px;line-height:1.8;background:var(--panel);border:1px solid var(--rule);
+  border-left:3px solid var(--accent);border-radius:3px;padding:12px 15px;overflow-x:auto;
+  white-space:pre;color:var(--ink);flex:none}
+.tail{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.65;flex:none}
+.split{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:start;overflow-y:auto}
+.why{display:flex;flex-direction:column;gap:14px}
+.why p{margin:0;font-size:13px;line-height:1.75;color:var(--ink-2)}
+.why p b{color:var(--ink);font-weight:500}
+.why dl{margin:2px 0 0;display:flex;flex-direction:column;gap:9px}
+.fact{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--rule-2);padding-bottom:9px}
+.fact dt{font-size:11.5px;color:var(--ink-3);width:8em;flex:none}
+.fact dd{margin:0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.fact dd.bad{color:var(--flag)}
+
+/* ---------- rail ---------- */
+.rail{display:flex;padding:0 14px;border-top:1px solid var(--rule);background:var(--panel);
+  flex:none;overflow-x:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail button{padding:9px 11px 8px;font-size:11.5px;color:var(--ink-3);white-space:nowrap;
+  border-bottom:2px solid transparent;display:flex;align-items:baseline;gap:6px;transition:color .12s}
+.rail button:hover{color:var(--ink-2)}
+.rail button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.rail button i{font-family:var(--mono);font-style:normal;font-size:10px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.rail button[aria-current="true"] i{color:var(--accent)}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;background:rgba(9,12,16,.92);z-index:50;display:none;
+  flex-direction:column;padding:14px 18px 18px;gap:10px}
+.lb[open]{display:flex}
+.lb-bar{display:flex;align-items:center;gap:14px;color:#e8ecf1;flex:none}
+.lb-bar .t{font-family:var(--mono);font-size:13px;letter-spacing:.02em}
+.lb-bar .s{font-size:12px;color:#9aa5b2}
+.lb-bar .sp{flex:1}
+.lb-bar button{color:#e8ecf1;border:1px solid #3a434e;border-radius:5px;width:30px;height:30px;
+  display:grid;place-items:center;font-size:14px;line-height:1}
+.lb-bar button:hover{background:#242b34}
+.lb-stage{flex:1;min-height:0;overflow:auto;display:flex;align-items:flex-start;justify-content:center}
+.lb-stage img{background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.5);max-width:100%;height:auto}
+.lb-stage.zoom{justify-content:flex-start}
+.lb-stage.zoom img{max-width:none;width:auto}
+
+@media (max-width:900px){
+  .slide{padding:16px 16px 20px}
+  .cover{grid-template-columns:1fr;gap:18px;overflow-y:auto}
+  .cover-lede h1{font-size:26px}
+  .strip.pages{grid-template-columns:repeat(3,1fr);align-content:start;overflow-y:auto}
+  .strip.details{grid-template-columns:1fr}
+  .recs{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .head h2{font-size:17px}
+}
+</style>
+
+<div class="bar">
+  <div class="mark">版心对照台<span>BYZSO · 2026-09-13</span></div>
+  <div class="bar-spacer"></div>
+  <div class="seg" role="group" aria-label="语言版本">
+    <button id="lang-zh" aria-pressed="true">中文版</button>
+    <button id="lang-en" aria-pressed="false">English</button>
+  </div>
+  <div class="count" id="count">01 / 11</div>
+  <div class="nav">
+    <button id="prev" aria-label="上一页">&#8592;</button>
+    <button id="next" aria-label="下一页">&#8594;</button>
+  </div>
+</div>
+
+<div class="track" id="track"></div>
+<nav class="rail" id="rail" aria-label="幻灯片"></nav>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="原尺寸查看">
+  <div class="lb-bar">
+    <span class="t" id="lb-t"></span><span class="s" id="lb-s"></span>
+    <span class="sp"></span>
+    <button id="lb-prev" aria-label="上一张">&#8592;</button>
+    <button id="lb-next" aria-label="下一张">&#8594;</button>
+    <button id="lb-zoom" aria-label="切换 1:1 缩放">1:1</button>
+    <button id="lb-close" aria-label="关闭">&#10005;</button>
+  </div>
+  <div class="lb-stage" id="lb-stage"></div>
+</div>
+
+<script>
+/* ---- data: read off the two .sty files and the 11 built PDFs ---- */
+const T = [
+  {id:'neurips', src:'neurips_2023.sty 官方值', paper:'Letter', w:5.5, h:9.0,
+   title:'17 pt 粗体居中 + 4 pt/1 pt 双横线', cap:'冒号分隔，首句加粗，悬挂缩进',
+   pg:{en:26, zh:25}, of:0, zh:true,
+   pages:{en:{p1:1,fig:3,tab:5,cond:9,ref:24}, zh:{p1:1,fig:3,tab:5,cond:9,ref:22}}},
+  {id:'iclr', src:'iclr2025_conference.sty', paper:'Letter', w:5.5, h:9.0,
+   title:'小型大写：标题 / 节标题 / Abstract', cap:'同 neurips',
+   pg:{en:26, zh:25}, of:0, zh:true,
+   pages:{en:{p1:1,fig:3,tab:5,cond:9,ref:24}, zh:{p1:1,fig:3,tab:5,cond:9,ref:22}}},
+  {id:'orchestra', src:'PaperOrchestra 写作规范', paper:'Letter', w:5.5, h:9.0,
+   title:'同 neurips', cap:'句点分隔，首句不加粗；图宽 0.95 行宽',
+   pg:{en:26, zh:25}, of:0, zh:true,
+   pages:{en:{p1:1,fig:3,tab:5,cond:8,ref:24}, zh:{p1:1,fig:3,tab:5,cond:9,ref:22}}},
+  {id:'arxiv', src:'arxiv.sty 观感', paper:'Letter', w:6.0, h:8.8,
+   title:'左对齐 17 pt 粗体 + 细横线；节标题无衬线', cap:'同 neurips',
+   pg:{en:24, zh:22}, of:0, zh:true,
+   pages:{en:{p1:1,fig:3,tab:5,cond:8,ref:21}, zh:{p1:1,fig:3,tab:5,cond:8,ref:20}}},
+  {id:'springer', src:'Springer LNCS 类', paper:'A4', w:4.80, h:7.60,
+   title:'14 pt 粗体居中', cap:'句点分隔，首句不加粗',
+   pg:{en:35, zh:null}, of:4, zh:false, bad:true,
+   pages:{en:{p1:1,fig:3,tab:34,cond:10,ref:29}}},
+  {id:'journal', src:'单栏期刊（ACS / RSC）+ PaperOrchestra 约定', paper:'Letter / A4', w:6.5, h:9.0, wzh:6.299, hzh:9.252,
+   title:'无衬线粗体，编号只用数字（期刊惯例）', cap:'句点分隔，首句不加粗；表格浮到页底',
+   pg:{en:24, zh:22}, of:0, zh:true, pick:true,
+   pages:{en:{p1:1,fig:3,tab:5,cond:8,ref:22}, zh:{p1:1,fig:3,tab:5,cond:8,ref:20}}},
+];
+let lang = 'zh', cur = 0;
+/* 图片既可以是同目录下的文件，也可以是打包进本文件的 data URI */
+const IMG = window.__IMG || {};
+const url = p => IMG[p] || p;
+const avail = () => T.filter(t => lang === 'en' || t.zh);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const dimOf = t => (t.id === 'springer') ? '12.2×19.3 cm'
+  : (t.id === 'journal' && lang === 'zh') ? '16.0×23.5 cm'
+  : t.w.toFixed(1) + '×' + t.h.toFixed(1) + ' in';
+
+const KIND = {
+  p1:{t:'首页：标题、摘要与正文起始',
+      look:'看标题区的气质。<b>neurips</b> 用两条横线夹住标题、摘要缩成引文块；<b>iclr</b> 把标题和 Abstract 换成小型大写；<b>arxiv / journal</b> 标题左对齐、正文首行缩进；<b>springer</b> 窄栏显得瘦长。'},
+  fig:{t:'图页：图 1 与正文的咬合',
+      look:'同一张 TikZ 直出的图在不同版心下的实际占幅。journal（默认）这一列是重渲染过的：行宽估算修好之后，说明文字不再压到相邻的框上。'},
+  capfig:{t:'图注细节：图 1 的题注写法',
+      look:'六套模版差异最集中的地方。<b>neurips / iclr / arxiv</b> 用 <code>labelsep=colon</code> + 首句加粗 + 悬挂缩进；<b>journal（默认）/ orchestra / springer</b> 用 <code>labelsep=period</code>，整段同一字重。journal 这一列取自重编后的正式版。'},
+  tab:{t:'表格页：表 1（组成与结构依据）',
+      look:'报告的瓶颈在两张宽长表：<b>版心宽就是列宽</b>，直接决定单元格里要折几行。journal（默认）的表格已改为浮到页底。<b>journal 6.5 in</b> 最松，<b>neurips 5.5 in</b> 居中，<b>springer 4.8 in</b> 放不下，表 1 被浮动到第 34 页。'},
+  captab:{t:'表头细节：表注、列头与三线规则',
+      look:'六套都只用 booktabs 三线，无竖线、无底色，宽度都正好等于版心。差别在表注是否加粗首句，以及列头在各自列宽下折成几行。'},
+  cond:{t:'条件矩阵：跨页长表',
+      look:'12 列的条件矩阵拆成两张 5 列竖排 <code>longtable</code>，每张都正好等于版心宽（分数列宽，Σ = 1，7.5 pt），不做横排页。看跨页表头重复和行距的呼吸感。'},
+  ref:{t:'参考文献：编号引用与条目密度',
+      look:'同一份 <code>references.bib</code>、同一套 natbib 数字引用、<code>\\small</code> 字号；正文引用保持 goai 蓝 <code>#00549F</code>。<b>orchestra</b> 在 <code>\\bibliography</code> 前强制 <code>\\clearpage</code>，浮动体不会漏到 References 之后。'},
+};
+const SLIDES = [
+  {key:'over',   nav:'总览'},
+  {key:'block',  nav:'版心尺寸'},
+  {key:'p1',     nav:'首页'},
+  {key:'fig',    nav:'图页'},
+  {key:'capfig', nav:'图注细节', detail:true},
+  {key:'tab',    nav:'表格页'},
+  {key:'captab', nav:'表头细节', detail:true},
+  {key:'cond',   nav:'条件矩阵'},
+  {key:'ref',    nav:'参考文献'},
+  {key:'sprng',  nav:'springer 的问题'},
+  {key:'pick',   nav:'建议'},
+];
+
+/* ---- specimen strip ---- */
+function strip(kind, detail){
+  const cells = avail().map(t => {
+    const pgs = t.pages[lang];
+    if (!pgs) return '';
+    const which = kind === 'capfig' ? 'fig' : kind === 'captab' ? 'tab' : kind;
+    const thumb = (detail ? 'd/' : 'p/') + lang + '_' + t.id + '_' + kind + '.webp';
+    const full = 'p/' + lang + '_' + t.id + '_' + which + '.webp';
+    const n = pgs[which];
+    const flag = t.bad && (kind === 'tab' || kind === 'captab');
+    return '<figure class="spec' + (flag ? ' flagged' : '') + '">' +
+      '<div class="spec-top"><span class="tid">' + t.id + '</span>' +
+      '<span class="tmeta">' + dimOf(t) + ' · p.' + n + '</span></div>' +
+      '<button class="shot" data-t="' + t.id + '" data-full="' + full + '" data-p="' + n + '">' +
+      '<img src="' + url(thumb) + '" loading="lazy" alt="' + t.id + ' 第 ' + n + ' 页">' +
+      '</button>' +
+      (flag ? '<figcaption class="spec-note">窄栏放不下，表 1 被推到正文之后</figcaption>' : '') +
+      '</figure>';
+  }).join('');
+  const gap = (lang === 'zh' && !detail)
+    ? '<figure class="spec"><div class="spec-top"><span class="tid">springer</span></div>' +
+      '<div class="missing">中文版未构建<br>窄栏与宽长表冲突</div></figure>' : '';
+  return '<div class="strip ' + (detail ? 'details' : 'pages') + '">' + cells + (detail ? '' : gap) + '</div>';
+}
+
+/* ---- slide 1: overview ---- */
+function slideOver(){
+  const rows = T.map(t => '<tr' + (t.bad ? ' class="bad"' : '') + '>' +
+    '<td class="t">' + t.id + (t.bad ? '<span class="pill">不建议</span>' : '') +
+        (t.pick ? '<span class="pill ok">默认</span>' : '') + '</td>' +
+    '<td class="d">' + esc(t.src) + '</td>' +
+    '<td class="n">' + t.paper + ' · ' + (t.id === 'springer' ? '12.2×19.3 cm'
+        : t.id === 'journal' ? '6.5×9.0 in / 16×23.5 cm'
+        : t.w.toFixed(1) + '×' + t.h.toFixed(1) + ' in') + '</td>' +
+    '<td class="d">' + esc(t.title) + '</td>' +
+    '<td class="d">' + esc(t.cap) + '</td>' +
+    '<td class="n">' + t.pg.en + ' / ' + (t.pg.zh === null ? '—' : t.pg.zh) + '</td>' +
+    '<td class="n">' + (t.of ? t.of + ' 处' : '0') + '</td></tr>').join('');
+  return '<div class="cover">' +
+    '<div class="cover-lede">' +
+      '<h1>同一份报告，<br>六套版心</h1>' +
+      '<p>BYZSO 综述的正文、图、表、参考文献完全相同，只换排版。中英是两条独立的线：' +
+        '<b>中文 25 → 22 页</b>，<b>英文 26 → 24 页</b>。</p>' +
+      '<p>全部 0 编译错误、0 Overfull —— <b>springer 除外</b>。' +
+        '已定版：<b>journal 版心 + PaperOrchestra 题注约定</b>，两套样式文件的默认值。</p>' +
+      '<div class="hint"><kbd>&#8592;</kbd> <kbd>&#8594;</kbd> 翻页　·　点任意页面看 150 dpi 原图　·　右上角切中英</div>' +
+    '</div>' +
+    '<div class="tblwrap"><table class="specs"><thead><tr>' +
+      '<th>模版</th><th>来源</th><th>纸张 · 版心</th><th>标题</th><th>题注</th>' +
+      '<th>页数 EN / ZH</th><th>Overfull</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+}
+
+/* ---- slide 2: text blocks to scale ---- */
+function slideBlock(){
+  const S = 27, GAP = 30, TOP = 40, BOT = 66;
+  const PAPER = {Letter:[8.5, 11], A4:[8.2677, 11.693]};
+  let x = 0; const parts = [];
+  T.forEach(t => {
+    const pk = t.id === 'springer' ? 'A4' : 'Letter';
+    const [pw, ph] = PAPER[pk];
+    const PW = pw * S, PH = ph * S;
+    const bw = t.w * S, bh = t.h * S;
+    const bx = x + (PW - bw) / 2;
+    const by = TOP + (t.id === 'springer' ? 2.6 / 2.54 : 1.0) * S;
+    const cx = (x + PW / 2).toFixed(1);
+    parts.push(
+      '<rect class="pap" x="' + x.toFixed(1) + '" y="' + TOP + '" width="' + PW.toFixed(1) + '" height="' + PH.toFixed(1) + '"/>',
+      '<rect class="blk' + (t.bad ? ' bad' : '') + '" x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) +
+        '" width="' + bw.toFixed(1) + '" height="' + bh.toFixed(1) + '"/>',
+      '<text class="lbl' + (t.bad ? ' bad' : '') + '" x="' + cx + '" y="' + (TOP - 20) + '" text-anchor="middle">' + t.id + '</text>',
+      '<text class="sub" x="' + cx + '" y="' + (TOP - 7) + '" text-anchor="middle">' + pk + '</text>',
+      '<text class="dimn" x="' + cx + '" y="' + (TOP + PH + 19).toFixed(1) + '" text-anchor="middle">' +
+        (t.id === 'springer' ? '12.2 × 19.3 cm' : t.w.toFixed(1) + ' × ' + t.h.toFixed(1) + ' in') + '</text>',
+      '<text x="' + cx + '" y="' + (TOP + PH + 34).toFixed(1) + '" text-anchor="middle">表格可用宽 ' +
+        (t.w * 25.4).toFixed(0) + ' mm</text>'
+    );
+    if (t.wzh){
+      const [aw, ah] = PAPER.A4, AW = aw * S;
+      const zx = x + (PW - AW) / 2 + (AW - t.wzh * S) / 2;
+      const zy = TOP + 2.5 / 2.54 * S;
+      parts.push('<rect class="zhblk" x="' + zx.toFixed(1) + '" y="' + zy.toFixed(1) + '" width="' +
+        (t.wzh * S).toFixed(1) + '" height="' + (t.hzh * S).toFixed(1) + '"/>');
+      parts.push('<text class="zhn" x="' + cx + '" y="' + (TOP + PH + 49).toFixed(1) +
+        '" text-anchor="middle">中文 A4 16.0 × 23.5 cm</text>');
+    }
+    x += PW + GAP;
+  });
+  const W = x - GAP, H = TOP + 11.693 * S + BOT;
+  return '<div class="diagram"><svg viewBox="-6 -24 ' + (W + 12).toFixed(0) + ' ' + (H + 24).toFixed(0) +
+      '" role="img" aria-label="六套模版的纸张与版心按同一比例对照">' + parts.join('') + '</svg></div>' +
+    '<div class="legend"><span><i class="papr"></i>纸张外框</span><span><i></i>英文版心</span>' +
+    '<span><i class="dash"></i>中文版心（只有 journal 与英文不同）</span>' +
+    '<span style="color:var(--ink-3)">同一比例尺，1 in = ' + S + ' px</span></div>';
+}
+
+/* ---- slide 10: springer ---- */
+function slideSpringer(){
+  const shot = (id, d, p, note, flag) =>
+    '<figure class="spec' + (flag ? ' flagged' : '') + '">' +
+    '<div class="spec-top"><span class="tid">' + id + '</span><span class="tmeta">' + d + ' · p.' + p + '</span></div>' +
+    '<button class="shot" data-t="' + id + '" data-full="p/en_' + id + '_tab.webp" data-p="' + p + '">' +
+    '<img src="' + url('p/en_' + id + '_tab.webp') + '" loading="lazy" alt="' + id + ' 第 ' + p + ' 页的表 1"></button>' +
+    '<figcaption class="spec-note">' + note + '</figcaption></figure>';
+  return '<div class="split"><div class="why">' +
+    '<p><b>12.2 cm 的单栏是给 LNCS 短文用的。</b>这份报告有两张宽长表：表 1 有 5 个说明列，条件矩阵拆成两张 5 列表。列宽压到 24 mm 上下时，单元格里的化学式和“待研究”长句折不下来。</p>' +
+    '<p>结果不只是表格变丑：LaTeX 放不下这个浮动体，把<b>表 1 一路推到第 34 页</b>（正文只到第 22 页），并留下 4 处 Overfull。同样一张表在 journal 版心里稳稳落在第 5 页。</p>' +
+    '<p style="color:var(--flag)"><b>结论：这份报告不要用 springer。</b>其余五套都能干净编译。</p>' +
+    '<dl><div class="fact"><dt>版心宽</dt><dd class="bad">12.2 cm，比 journal 窄 43 mm</dd></div>' +
+    '<div class="fact"><dt>表 1 落点</dt><dd class="bad">第 34 页（共 35 页）</dd></div>' +
+    '<div class="fact"><dt>Overfull</dt><dd class="bad">4 处</dd></div>' +
+    '<div class="fact"><dt>总页数</dt><dd class="bad">35 页，journal 为 23 页</dd></div></dl></div>' +
+    '<div class="strip details" style="grid-template-columns:1fr 1fr">' +
+    shot('springer', '12.2×19.3 cm', 34, '表 1 漂到正文之后', true) +
+    shot('journal', '6.5×9.0 in', 5, '同一张表，落在正文原位', false) +
+    '</div></div>';
+}
+
+/* ---- slide 11: recommendation ---- */
+function slidePick(){
+  return '<div class="recs">' +
+    '<div class="rec pick"><h3>journal<em>已定为默认</em></h3>' +
+      '<p>journal 的版心与字体，套 PaperOrchestra 的题注与浮动体规则：版心最宽（英 6.5 in / 中 16 cm），' +
+      '两张宽长表的列最松；题注标签后句点、首句不加粗；图宽 0.95 行宽；参考文献前 <code>\\clearpage</code>。</p>' +
+      '<ul><li>英 24 页 / 中 22 页，0 错误 0 Overfull</li><li>表格可用宽 165 mm，浮动到页底</li>' +
+      '<li>编号标题纯数字，加粗的 run-in 小标题带蓝色小方块</li><li>两套 sty 不带参数即为此版</li></ul></div>' +
+    '<div class="rec"><h3>arxiv<em>次选</em></h3>' +
+      '<p>6.0 in 版心，比 NeurIPS 宽 0.5 in，表格已经明显舒展；标题左对齐加细横线，是预印本的样子。</p>' +
+      '<ul><li>英 24 页 / 中 22 页</li><li>表格可用宽 152 mm</li><li>正文首行缩进</li></ul></div>' +
+    '<div class="rec"><h3>neurips / iclr<em>会议观感</em></h3>' +
+      '<p>要对齐顶会观感时用。5.5 in 是六套里最窄的可用版心，表格也最挤。iclr 与 neurips 只差一层小型大写。</p>' +
+      '<ul><li>英 26 页 / 中 25 页</li><li>表格可用宽 140 mm</li></ul></div>' +
+    '<div class="rec"><h3>orchestra<em>题注偏好</em></h3>' +
+      '<p>版心与 neurips 相同，差别全在题注和浮动体规则。不喜欢“加粗首句”的题注就选它。</p>' +
+      '<ul><li>题注：标签后句点、整段同字重</li><li>图宽固定 0.95 行宽</li><li>References 前 <code>\\clearpage</code></li></ul></div>' +
+    '</div>' +
+    '<div class="code">% 默认即 journal 版心 + PaperOrchestra 题注/浮动体约定\n' +
+    '\\usepackage{goai_zh_typo}          % 中文\n' +
+    '\\usepackage{goai_en_typo}          % 英文\n\n' +
+    '% 要看别的版式再显式指定（英文另有 springer，本报告不建议）\n' +
+    '\\usepackage[template=neurips]{goai_zh_typo}</div>' +
+    '<p class="tail">BYZSO 与 BaZn₂Si₂O₇ 两份报告的中英正式版已按此重编并部署到 <code>pdf/final/</code>；' +
+    '其余版式仍留在 <code>pdf/gallery/</code> 备查。</p>';
+}
+
+/* ---- render ---- */
+function headHTML(i, title, look){
+  return '<div class="head"><span class="num">' + pad(i + 1) + '</span><h2>' + title + '</h2>' +
+    '<p class="look">' + look + '</p></div>';
+}
+function render(){
+  const track = document.getElementById('track');
+  track.innerHTML = SLIDES.map((s, i) => {
+    let head = '', body;
+    if (s.key === 'over') body = slideOver();
+    else if (s.key === 'block'){
+      head = headHTML(i, '版心尺寸：纸张与文本块按同一比例',
+        '决定表格好不好看的就是这一条：<b>版心宽等于列宽</b>。6.5 in 比 5.5 in 多出 25 mm，够两列各多放一个词。');
+      body = slideBlock();
+    } else if (s.key === 'sprng'){
+      head = headHTML(i, 'springer 为什么不适合这份报告', '窄栏加宽长表，等于浮动体漂移。');
+      body = slideSpringer();
+    } else if (s.key === 'pick'){
+      head = headHTML(i, '建议与切换方式', '你挑一套，我把两份报告的中英正式版都切过去。');
+      body = slidePick();
+    } else {
+      head = headHTML(i, KIND[s.key].t, KIND[s.key].look);
+      body = strip(s.key, s.detail);
+    }
+    return '<section class="slide" aria-label="' + esc(s.nav) + '">' + head + body + '</section>';
+  }).join('');
+  document.getElementById('rail').innerHTML = SLIDES.map((s, i) =>
+    '<button data-i="' + i + '"' + (i === cur ? ' aria-current="true"' : '') + '>' +
+    '<i>' + pad(i + 1) + '</i>' + esc(s.nav) + '</button>').join('');
+  setScroll(cur);
+  sync();
+}
+
+/* ---- navigation ---- */
+const track = document.getElementById('track');
+function setScroll(i){                      // 直接落位：snap 容器下 smooth 会吞掉赋值
+  const prev = track.style.scrollBehavior;
+  track.style.scrollBehavior = 'auto';
+  track.scrollLeft = i * track.clientWidth;
+  requestAnimationFrame(() => { track.style.scrollBehavior = prev; });
+}
+function go(i){
+  cur = Math.max(0, Math.min(SLIDES.length - 1, i));
+  track.scrollTo({left: cur * track.clientWidth, behavior: 'smooth'});
+  sync();
+}
+function sync(){
+  document.getElementById('count').textContent = pad(cur + 1) + ' / ' + pad(SLIDES.length);
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === SLIDES.length - 1;
+  document.querySelectorAll('#rail button').forEach(b => {
+    const on = Number(b.dataset.i) === cur;
+    if (on){ b.setAttribute('aria-current', 'true'); b.scrollIntoView({block:'nearest', inline:'nearest'}); }
+    else b.removeAttribute('aria-current');
+  });
+}
+document.getElementById('prev').onclick = () => go(cur - 1);
+document.getElementById('next').onclick = () => go(cur + 1);
+document.getElementById('rail').onclick = e => {
+  const b = e.target.closest('button'); if (b) go(Number(b.dataset.i));
+};
+let st;
+track.addEventListener('scroll', () => {
+  clearTimeout(st);
+  st = setTimeout(() => {
+    const i = Math.round(track.scrollLeft / track.clientWidth);
+    if (i !== cur && i >= 0 && i < SLIDES.length){ cur = i; sync(); }
+  }, 90);
+});
+addEventListener('resize', () => setScroll(cur));
+
+function setLang(l){
+  lang = l;
+  document.getElementById('lang-zh').setAttribute('aria-pressed', String(l === 'zh'));
+  document.getElementById('lang-en').setAttribute('aria-pressed', String(l === 'en'));
+  render();
+  try { localStorage.setItem('goai-deck-lang', l); } catch(e){}
+}
+document.getElementById('lang-zh').onclick = () => setLang('zh');
+document.getElementById('lang-en').onclick = () => setLang('en');
+
+/* ---- lightbox ---- */
+const lb = document.getElementById('lb'), stage = document.getElementById('lb-stage');
+let shots = [], si = 0;
+function showLB(){
+  const b = shots[si];
+  stage.classList.remove('zoom');
+  stage.innerHTML = '<img src="' + url(b.dataset.full) + '" alt="' + b.dataset.t + ' 第 ' + b.dataset.p + ' 页">';
+  document.getElementById('lb-t').textContent = b.dataset.t + '  ·  ' + (lang === 'zh' ? '中文版' : 'English');
+  document.getElementById('lb-s').textContent = '第 ' + b.dataset.p + ' 页 · 150 dpi';
+  lb.setAttribute('open', '');
+  stage.scrollTop = 0; stage.scrollLeft = 0;
+}
+function closeLB(){ lb.removeAttribute('open'); stage.innerHTML = ''; }
+document.addEventListener('click', e => {
+  const s = e.target.closest('.shot');
+  if (s){ shots = [...s.closest('.slide').querySelectorAll('.shot')]; si = shots.indexOf(s); showLB(); }
+});
+document.getElementById('lb-close').onclick = closeLB;
+document.getElementById('lb-prev').onclick = () => { si = (si - 1 + shots.length) % shots.length; showLB(); };
+document.getElementById('lb-next').onclick = () => { si = (si + 1) % shots.length; showLB(); };
+document.getElementById('lb-zoom').onclick = () => stage.classList.toggle('zoom');
+lb.addEventListener('click', e => { if (e.target === lb || e.target === stage) closeLB(); });
+
+addEventListener('keydown', e => {
+  if (lb.hasAttribute('open')){
+    if (e.key === 'Escape') closeLB();
+    else if (e.key === 'ArrowRight'){ si = (si + 1) % shots.length; showLB(); }
+    else if (e.key === 'ArrowLeft'){ si = (si - 1 + shots.length) % shots.length; showLB(); }
+    return;
+  }
+  if (e.key === 'ArrowRight' || e.key === 'PageDown'){ e.preventDefault(); go(cur + 1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); go(cur - 1); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(SLIDES.length - 1);
+});
+
+try { const l = localStorage.getItem('goai-deck-lang'); if (l === 'en' || l === 'zh') lang = l; } catch(e){}
+setLang(lang);
+</script>

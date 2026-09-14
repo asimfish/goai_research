@@ -1,0 +1,43 @@
+{
+ "schema_version": "1.0",
+ "domains": [
+  "solid_state_synthesis",
+  "crystal_growth",
+  "phase_equilibria",
+  "crystallography",
+  "characterization",
+  "glass_ceramics",
+  "evidence_method"
+ ],
+ "sections": [
+  "abstract",
+  "introduction",
+  "method_survey",
+  "condition_matrix",
+  "evidence_grading",
+  "results_synthesis",
+  "characterization",
+  "limitations",
+  "conclusion"
+ ],
+ "intents": [
+  "define",
+  "describe",
+  "compare",
+  "evidence",
+  "gap",
+  "limit",
+  "scope",
+  "caution",
+  "quantify",
+  "transition"
+ ],
+ "kinds": [
+  "term",
+  "definition",
+  "phrase",
+  "sentence_pattern",
+  "usage_note",
+  "anti_pattern"
+ ]
+}

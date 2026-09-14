@@ -1,0 +1,141 @@
+% goai_zh_typo.sty — 中文综述排版规范 v4（2026-09-13；v3 存档为 goai_zh_typo_v3.sty，v2 为 goai_zh_typo_v2.sty）
+% v4 = 对齐 super_translate 的中文观感（pdf_zh_translator/pdf_layout.py：正文 Songti SC 细宋 + 标题/粗体 Hiragino Sans GB W6 黑体，
+% 行距 = 1.5 × 字号，两端对齐但单个间隙拉伸 ≤ 0.55 em，全角标点不加空，中西文之间一个空格“盘古之白”）：
+% 正文改用 Noto Serif CJK SC Light（Linux 上最接近 Songti SC 的灰度），五号 10.5 pt、行距 15.75 pt（ctexart[zihao=5] + linespread=1.5），
+% 表格内用 Regular 保证小字号清晰；其余（黑体左齐标题、灰底表头、横排长表）沿用 v3。
+% v3 变化：版心加宽（2.0/2.3 cm）、行距 1.2、节前后空白压缩、浮动体间距压缩、表格统一（colortbl 灰底黑体表头、列距 3pt、行高 1.10、
+% 表内单倍行距、脚注号字号）、参考文献小五。条件总表改为横排 longtable（见 tools/zh_table_merge.py）。
+% 设计依据：super_translate 的中文排版原则（宋体正文 + 黑体加粗/标题、行距约 1.5、有界两端对齐、
+% 中文禁则、中西文自动加隙、全角标点）以及中文期刊综述的字号层级（标题四号黑、正文五号宋、图表注小五）。
+% 必须 xelatex 编译；配合 ctexart：\documentclass[11pt]{ctexart} 后 \usepackage{goai_zh_typo}。
+%
+% 字体策略（逐级回退）：① 目录 \goainotopath 下的思源/Noto CJK SC 单字面 OTF（正文 Noto Serif CJK SC，
+% 黑体/粗体 Noto Sans CJK SC）；② macOS 系统字体 Songti SC / PingFang SC；③ TeX Live 自带 Fandol。
+% 楷体一律用 TeX Live 自带 FandolKai（页眉、强调）。
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{goai_zh_typo}[2026/09/13 v4 goai Chinese survey typography]
+\RequirePackage{iftex}
+\RequireXeTeX
+\RequirePackage{xeCJK}
+\providecommand{\goainotopath}{/usr/share/fonts/noto-cjk/}
+\IfFileExists{\goainotopath NotoSerifCJKsc-Regular.otf}{%
+  \IfFileExists{\goainotopath NotoSerifCJKsc-Light.otf}{%
+    \setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf,AutoFakeSlant=false]{NotoSerifCJKsc-Light.otf}%
+  }{%
+    \setCJKmainfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf,AutoFakeSlant=false]{NotoSerifCJKsc-Regular.otf}%
+  }%
+  \setCJKfamilyfont{tab}[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSerifCJKsc-Regular.otf}%
+  \setCJKsansfont[Path=\goainotopath,BoldFont=NotoSansCJKsc-Bold.otf]{NotoSansCJKsc-Medium.otf}%
+  \setCJKmonofont[Path=\goainotopath]{NotoSansCJKsc-Regular.otf}%
+}{%
+  \IfFontExistsTF{Songti SC}{%
+    \setCJKmainfont[BoldFont={PingFang SC Semibold}]{Songti SC}%
+    \setCJKsansfont[BoldFont={PingFang SC Semibold}]{PingFang SC}%
+    \setCJKmonofont{PingFang SC}%
+  }{%
+    \setCJKmainfont[BoldFont=FandolHei-Bold.otf]{FandolSong-Regular.otf}%
+    \setCJKsansfont[BoldFont=FandolHei-Bold.otf]{FandolHei-Regular.otf}%
+    \setCJKmonofont{FandolFang-Regular.otf}%
+  }%
+}
+\setCJKfamilyfont{kai}{FandolKai-Regular.otf}
+\providecommand{\tabCJK}{}\renewcommand{\tabCJK}{\CJKfamily{tab}}   % 表格内用 Regular 字重
+\providecommand{\kaishu}{}
+\renewcommand{\kaishu}{\CJKfamily{kai}}
+% 标点与间隙：全角式标点（GB/T 15834 期刊惯例，行末由 xeCJK 压缩），中西文/数字之间自动加四分之一空；汉字间伸缩量受限（有界两端对齐），禁则由 xeCJK 处理
+\xeCJKsetup{PunctStyle=quanjiao, CJKecglue={\hskip 0.25em plus 0.06em minus 0.04em}, CJKglue={\hskip 0pt plus 0.05em minus 0.01em}, CheckSingle=true, CJKmath=true}
+% ---- 版心与行距：A4，左右 2.0 cm、上下 2.3 cm；正文五号 10.5 pt（\documentclass[zihao=5]{ctexart}），行距 = 1.5 × 字号 = 15.75 pt（super_translate 的 DEFAULT_LEADING）
+\RequirePackage[a4paper,left=2.0cm,right=2.0cm,top=2.3cm,bottom=2.3cm,headsep=0.5cm,footskip=0.9cm]{geometry}
+% 行距由文档类选项给出：\documentclass[zihao=5,linespread=1.5]{ctexart}（ctexset 不接受 linespread 键）
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt plus 1pt}
+% 拉丁/数学字体：Times 系（与英文版一致；super_translate 亦保留原文 Times）。顺序 amsmath → newtxtext → newtxmath，禁止 amssymb
+\RequirePackage{amsmath}
+\RequirePackage{newtxtext}
+\RequirePackage[nonewtxmathopt]{newtxmath}
+\RequirePackage{textcomp}
+% 拉丁无衬线/等宽与黑体标题搭配：TeX Gyre Heros / Cursor（fontspec OpenType；legacy tgheros 在 TU 编码下会回退到 LM）
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+\setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=MatchLowercase]
+% ---- 标题层级：黑体、左齐、紧凑；一级 四号 14pt、二级 小四 12pt、三级 五号加粗；节前空白随层级递减；所有段落（含节后首段）缩进 2 字
+\ctexset{
+  autoindent = 2em,
+  section = {format = \sffamily\bfseries\fontsize{14}{20}\selectfont\raggedright, aftername = \quad,
+             beforeskip = 14pt plus 3pt minus 3pt, afterskip = 6pt plus 1pt},
+  subsection = {format = \sffamily\bfseries\fontsize{12}{17}\selectfont\raggedright, aftername = \quad,
+                beforeskip = 10pt plus 2pt minus 2pt, afterskip = 4pt plus 1pt},
+  subsubsection = {format = \sffamily\bfseries\normalsize\raggedright, aftername = \quad,
+                   beforeskip = 8pt plus 2pt minus 1pt, afterskip = 2pt plus 1pt},
+  paragraph = {format = \sffamily\bfseries\normalsize, runin = true, aftername = \quad, afterskip = 0.8em, beforeskip = 5pt plus 1pt},
+  abstractname = {摘\quad 要},
+}
+\RequirePackage{etoolbox}
+\AtBeginEnvironment{abstract}{\small\linespread{1.4}\selectfont\setlength{\parindent}{2em}}
+% ---- 强调用楷体而非伪斜体
+\renewcommand{\emph}[1]{{\kaishu #1}}
+% ---- 图表：booktabs；表内恢复单倍行距（正文 1.25 倍行距不进表格）、行高 1.15，浮动体内默认 small（章节里自带 \footnotesize 时以章节为准）；图表注小五：黑体粗标签 + 宋体说明
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{longtable}
+\RequirePackage{multirow}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}   % v3：不再按节设置 FloatBarrier（v2 的 [section] 让每个带图的节末都留下半页空白）；需要时手动 \FloatBarrier
+\RequirePackage[table]{xcolor}   % colortbl：\rowcolor{gray!12} 表头灰底
+\RequirePackage[font={footnotesize},labelfont={bf,sf},labelsep=quad,skip=4pt,justification=justified]{caption}
+\renewcommand{\arraystretch}{1.10}
+\setlength{\tabcolsep}{3pt}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\AtBeginEnvironment{table}{\footnotesize\tabCJK}
+\AtBeginEnvironment{tabular}{\tabCJK\linespread{1.0}\selectfont}
+\AtBeginEnvironment{longtable}{\tabCJK\linespread{1.0}\selectfont}
+\setlength{\LTpre}{6pt}\setlength{\LTpost}{6pt}
+\newcommand{\thead}[1]{\textsf{\textbf{#1}}}
+% 浮动体与正文之间的空白压缩
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{4pt}
+\newcommand{\NA}{—}
+% ---- 列表紧凑
+\RequirePackage{enumitem}
+\setlist{itemsep=1pt,topsep=3pt,parsep=0pt,leftmargin=2em}
+% ---- 链接：学术蓝（略深）
+\definecolor{goaiblue}{RGB}{0,84,159}
+\RequirePackage{xurl}
+\RequirePackage[colorlinks=true,citecolor=goaiblue,linkcolor=goaiblue,urlcolor=goaiblue]{hyperref}
+\RequirePackage[numbers,sort&compress]{natbib}
+\setlength{\bibsep}{2pt plus 1pt}
+\renewcommand{\bibfont}{\footnotesize\linespread{1.2}\selectfont}
+% ---- 页眉页脚：楷体短题 + 页码；用 \runninghead{...} 设置短题
+\RequirePackage{fancyhdr}
+\newcommand{\goai@runhead}{}
+\newcommand{\runninghead}[1]{\renewcommand{\goai@runhead}{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\kaishu\goai@runhead}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{14pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+% ---- 微排版与断行纪律：禁孤行寡行；两端对齐留弹性；浮动页从顶部排；正文优先
+\RequirePackage{microtype}
+\widowpenalty=10000 \clubpenalty=10000 \displaywidowpenalty=10000
+\emergencystretch=1em
+\tolerance=900
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 2fil}
+\setlength{\@fpbot}{0pt plus 1fil}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{3}\setcounter{totalnumber}{4}
+% ---- 标题块：黑体加粗 18pt 主标题、正文号作者、日期留空
+\renewcommand{\maketitle}{%
+  \begin{center}
+    {\sffamily\bfseries\fontsize{17}{24}\selectfont \@title\par}\vskip 8pt
+    {\normalsize \@author\par}\vskip 2pt
+    {\small \@date\par}
+  \end{center}\vskip 4pt\suppressfloats[t]}   % 首页顶部不放浮动体，避免图排在标题之上

@@ -38,7 +38,7 @@ def _check_environment() -> dict[str, Any]:
 
 def _check_servers() -> dict[str, Any]:
     modules: dict[str, dict[str, Any]] = {}
-    for name in ("litsearch", "refcheck", "figure", "retro"):
+    for name in ("litsearch", "refcheck", "figure", "retro", "workflow"):
         path = ROOT / "server" / f"{name}_server.py"
         try:
             spec = importlib.util.spec_from_file_location(f"goai_preflight_{name}", path)

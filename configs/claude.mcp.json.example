@@ -18,6 +18,11 @@
     "goai-retro": {
       "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
       "args": ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
+    },
+    "goai-workflow": {
+      "command": "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/goai_research/server/workflow_server.py"],
+      "env": { "GOAI_BIB_PATH": "/ABSOLUTE/PATH/TO/workspace/library/references.bib" }
     }
   }
 }
