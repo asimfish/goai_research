@@ -11,11 +11,14 @@
 4. bib 字段卫生（告警）：doi 与 url 同存（编译后 URL 断行难看且冗余，
    应删 url 留 doi）；title 中化学式/多大写缩写未加 {} 保护
    （plainnat 会把 BaZn2Si2O7 压成 bazn 2 si 2 o 7）。
+5. 单次 \\cite 的 key 数上限（--max-keys-per-cite，默认 5）= 阻塞：写作规范
+   「一条论断只带支撑它的引用、单个 \\cite ≤ 5 个 key」此前只是文字规则，
+   出货稿里出现过 8–10 个 key 的堆引。
 
 用法：
   python3 tools/bib_guard.py <draft_dir_or_file> <references.bib> \
-      [--min-cites-per-1k 8] [--min-integration 0.9]
-退出码：0 = PASS；1 = 存在未定义引用或整合率不达标。
+      [--min-cites-per-1k 8] [--min-integration 0.9] [--max-keys-per-cite 5]
+退出码：0 = PASS；1 = 存在未定义引用、整合率不达标或超长 \\cite。
 """
 from __future__ import annotations
 
@@ -161,6 +164,21 @@ def collect_cites(path: str) -> list[tuple[str, str, int]]:
     return out
 
 
+def collect_long_cites(path: str, max_keys: int) -> list[tuple[str, int, int, str]]:
+    """→ [(file, line_no, n_keys, keys_preview)]：单次 \\cite 携带 key 数超过 max_keys 的调用。"""
+    if max_keys <= 0:
+        return []
+    out = []
+    with open(path, encoding="utf-8", errors="replace") as f:
+        text = f.read()
+    for m in CITE_TEX.finditer(text):
+        keys = [k.strip() for k in m.group(1).split(",") if k.strip()]
+        if len(keys) > max_keys:
+            ln = text.count("\n", 0, m.start()) + 1
+            out.append((path, ln, len(keys), ",".join(keys[:3]) + ",…"))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("draft", help="稿件目录或单个 .tex/.md 文件")
@@ -171,6 +189,8 @@ def main() -> None:
                     help="库内条目整合率下限（被引条目/bib 总条目，低于线阻塞）")
     ap.add_argument("--fix-hygiene", action="store_true",
                     help="原地删除 DOI 重复 URL、规范化化学式空格并保护标题 token")
+    ap.add_argument("--max-keys-per-cite", type=int, default=5,
+                    help="单次 \\cite 允许的最大 key 数（超过即阻塞；0 = 关闭）")
     args = ap.parse_args()
 
     files = ([args.draft] if os.path.isfile(args.draft) else
@@ -197,9 +217,11 @@ def main() -> None:
     bib_keys = {e["key"] for e in bib_entries}
 
     cites: list[tuple[str, str, int]] = []
+    long_cites: list[tuple[str, int, int, str]] = []
     word_count = 0
     for fp in files:
         cites.extend(collect_cites(fp))
+        long_cites.extend(collect_long_cites(fp, args.max_keys_per_cite))
         with open(fp, encoding="utf-8", errors="replace") as f:
             word_count += len(re.findall(r"[\w\u4e00-\u9fff]+", f.read()))
 
@@ -217,6 +239,11 @@ def main() -> None:
         for k in undefined:
             locs = [f"{os.path.basename(f)}:{ln}" for kk, f, ln in cites if kk == k][:3]
             print(f"  - {k}  ({', '.join(locs)})")
+    if long_cites:
+        print(f"\n[阻塞] {len(long_cites)} 处 \\cite 超过 {args.max_keys_per_cite} 个 key"
+              "（一条论断只带支撑它的引用；堆引拆到各自论断或改成表格/附录）:")
+        for fp, ln, n, preview in long_cites[:20]:
+            print(f"  - {os.path.basename(fp)}:{ln}  {n} 个 key  ({preview})")
     integration_fail = bib_keys and integration < args.min_integration
     if orphans:
         level = "阻塞" if integration_fail else "告警"
@@ -232,10 +259,12 @@ def main() -> None:
         print(f"\n[告警] {len(hygiene)} 项 bib 字段卫生问题:")
         for h in hygiene[:30]:
             print(f"  - {h}")
-    failed = bool(undefined) or bool(integration_fail)
+    failed = bool(undefined) or bool(integration_fail) or bool(long_cites)
     reasons = ([f"{len(undefined)} 个未定义引用"] if undefined else []) + \
               ([f"整合率 {integration:.0%} 低于 {args.min_integration:.0%}"]
-               if integration_fail else [])
+               if integration_fail else []) + \
+              ([f"{len(long_cites)} 处 \\cite 超过 {args.max_keys_per_cite} 个 key"]
+               if long_cites else [])
     print("\n结论:", f"FAIL（{'；'.join(reasons)}）" if failed else "PASS")
     sys.exit(1 if failed else 0)
 

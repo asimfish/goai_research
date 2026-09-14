@@ -31,7 +31,8 @@ gate 状态语义：
   FAIL    未通过，阻塞 check-done
   WARN    合规跳过/带保留通过，不阻塞 check-done；但合成/制备类主题的
           ideas_reviewed 不接受「跳过」类 WARN（见下）
-  PENDING 待复审（级联失效重置用），阻塞 check-done
+  PENDING 待复审（级联失效重置用），阻塞 check-done；上游 gate（draft_complete /
+          figures_ready / 更上游）在 review_pass 之后重录时，review_pass 当场置 PENDING
 
 必需 gate（check-done 要求每一个都已记录，缺任何一个 = 该阶段从未执行 = 未完成；
 跳过要显式记 WARN，禁止静默跳过）：
@@ -100,6 +101,11 @@ CONCURRENCY_EVIDENCE = {
 }
 # 对抗审稿至少两轮：review_pass 记 PASS 时 trace 目录里须有 ≥2 份非占位审稿 trace
 REVIEW_MIN_ROUNDS = 2
+# 记 gate 时的即时级联：上游 gate（沿 GATE_PREREQS 传递闭包）重录后，已记录的这些下游 gate
+# 立即置 PENDING——审过的是旧稿。此前级联只在 check-done 里按 --inputs 指纹触发，不带指纹的
+# 重录（draft_complete / figures_ready 返工后再记）不会让 review_pass 失效。
+STALE_CASCADE_TARGETS = ("review_pass",)
+STALE_RERECORD_MARK = "[stale: 上游 gate 重录，需复审]"
 
 # 合成/制备类主题：ideas 支线（新方向 → 推荐工艺 + 前驱体）是交付物的一部分，不得以
 # 「用户未要求」「安全边界」为由整体跳过。冷启动实跑里出现过把普通氧化物固相/助熔
@@ -278,6 +284,37 @@ def _synthesis_draft_problem(lg: dict, name: str, status: str) -> str | None:
     return None
 
 
+def _upstream_gates(name: str) -> set[str]:
+    """name 的全部上游 gate（GATE_PREREQS 的传递闭包）。"""
+    seen: set[str] = set()
+    todo = list(GATE_PREREQS.get(name, []))
+    while todo:
+        g = todo.pop()
+        if g not in seen:
+            seen.add(g)
+            todo += GATE_PREREQS.get(g, [])
+    return seen
+
+
+def _cascade_stale(lg: dict, rerecorded: str) -> list[str]:
+    """上游 gate 重录 → 已记录（PASS/WARN）的级联目标置 PENDING；返回被置回的 gate 名。"""
+    hit = []
+    for target in STALE_CASCADE_TARGETS:
+        g = lg["gates"].get(target)
+        if target == rerecorded or not g or g.get("status") not in ("PASS", "WARN"):
+            continue
+        if rerecorded not in _upstream_gates(target):
+            continue
+        g["status"] = "PENDING"
+        detail = g.get("detail", "") or ""
+        if STALE_RERECORD_MARK not in detail:
+            g["detail"] = (detail + " " + STALE_RERECORD_MARK).strip()
+        lg["log"].append({"ts": _now(), "round": lg["round"], "event": "gate_stale",
+                          "gate": target, "cause": rerecorded})
+        hit.append(target)
+    return hit
+
+
 def _prereq_problem(lg: dict, name: str, status: str) -> str | None:
     if status not in ("PASS", "WARN"):
         return None
@@ -319,8 +356,13 @@ def _review_rounds_problem(receipt: str) -> str | None:
     return None
 
 
-def _pdf_guard_problem(inputs: list[str]) -> str | None:
-    """draft_complete PASS 的 PDF 来源校验；合规返回 None。"""
+def _pdf_guard_problem(inputs: list[str], lang: str | None = None) -> str | None:
+    """draft_complete PASS 的 PDF 来源校验；合规返回 None。
+
+    lang 为 scope.md 声明的交付语言（zh/en）：中文稿要求 摘要/参考文献 标签与真正的中文字族，
+    英文稿要求 Abstract/References——实跑中中文稿带英文 Abstract 标签、汉字全落在 Droid Sans
+    Fallback 上仍被记了 PASS。
+    """
     pdfs = [p for p in inputs if p.lower().endswith(".pdf")]
     if not pdfs:
         return ("draft_complete 记 PASS 必须在 --inputs 里给出终稿 PDF（如 workspace/drafts/main.pdf）；"
@@ -333,6 +375,8 @@ def _pdf_guard_problem(inputs: list[str]) -> str | None:
         cmd += ["--tex", tex]
     if bib:
         cmd += ["--bib", bib]
+    if lang in ("zh", "en"):
+        cmd += ["--lang", lang]
     try:
         import subprocess
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
@@ -341,7 +385,8 @@ def _pdf_guard_problem(inputs: list[str]) -> str | None:
     if r.returncode == 0:
         return None
     tail = "\n".join((r.stdout + r.stderr).strip().splitlines()[-8:])
-    return f"pdf_guard 未通过（PDF 不是 TeX 从模板编译的产物，或陈旧/缺摘要/缺编号）:\n{tail}"
+    return (f"pdf_guard 未通过（PDF 不是 TeX 从模板编译的产物，或陈旧/缺摘要/缺编号"
+            f"{'，或与 scope 声明的交付语言形态不符（--lang ' + lang + '）' if lang else ''}）:\n{tail}")
 
 
 def _parse_receipt(raw: str) -> dict[str, str]:
@@ -491,7 +536,8 @@ def cmd_gate(args) -> None:
         if problem:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     if args.name in PDF_GATES and args.status == "PASS":
-        problem = _pdf_guard_problem([p.strip() for p in (args.inputs or "").split(",") if p.strip()])
+        problem = _pdf_guard_problem([p.strip() for p in (args.inputs or "").split(",") if p.strip()],
+                                     _scope_language())
         if problem:
             sys.exit(f"拒绝: gate {args.name} 记 PASS —— {problem}")
     for check in (_prereq_problem(lg, args.name, args.status),
@@ -523,10 +569,14 @@ def cmd_gate(args) -> None:
     lg["log"].append({"ts": _now(), "round": lg["round"], "event": "gate",
                       "gate": args.name, "status": args.status,
                       "detail": args.detail})
+    stale = _cascade_stale(lg, args.name)
     save(lg)
     missing = [fp["path"] for fp in entry.get("inputs", [])
                if fp["sha256"] == "MISSING"]
     print(f"gate {args.name} = {args.status}")
+    if stale:
+        print(f"级联: 上游 gate {args.name} 重录，{stale} 置 PENDING {STALE_RERECORD_MARK}——"
+              "返工后须重新独立审稿再记 review_pass")
     if missing:
         print(f"警告: --inputs 中文件不存在: {missing}")
 
@@ -626,7 +676,7 @@ def cmd_check_done(_args) -> None:
     for name in PDF_GATES:
         g = lg["gates"].get(name)
         if g and g["status"] == "PASS":
-            problem = _pdf_guard_problem([fp["path"] for fp in g.get("inputs", [])])
+            problem = _pdf_guard_problem([fp["path"] for fp in g.get("inputs", [])], _scope_language())
             if problem:
                 bad_receipts[name] = problem
     # 合成类主题的 ideas 支线再核一遍：跳过类 WARN / 无逆合成调用 / 无产出都不放行

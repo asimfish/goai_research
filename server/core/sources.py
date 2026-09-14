@@ -249,6 +249,13 @@ def _parse_crossref(it: dict[str, Any]) -> dict[str, Any]:
     raw_venue = ((it.get("container-title") or [None])[0]
                  or ((it.get("event") or {}).get("name")
                      if isinstance(it.get("event"), dict) else None))
+    # dataset / component（CSD/ICSD 数据集、SI 附件）没有个人作者，引用时以机构为作者：
+    # 记下 publisher / institution 与 subtype 供 refcheck 提议 @misc
+    inst = it.get("institution")
+    if isinstance(inst, list):
+        inst = (inst[0] or {}).get("name") if inst else None
+    elif isinstance(inst, dict):
+        inst = inst.get("name")
     return record(
         "crossref", id=it.get("DOI"),
         title=clean((it.get("title") or [None])[0]),
@@ -256,7 +263,8 @@ def _parse_crossref(it: dict[str, Any]) -> dict[str, Any]:
         venue=clean(raw_venue),
         doi=it.get("DOI"), url=it.get("URL"),
         citation_count=it.get("is-referenced-by-count"),
-        publication_type=it.get("type"))
+        publication_type=it.get("type"), subtype=it.get("subtype"),
+        publisher=clean(it.get("publisher")), institution=clean(inst))
 
 
 def search_crossref(query: str, limit: int = 20) -> list[dict[str, Any]]:

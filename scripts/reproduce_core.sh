@@ -264,7 +264,8 @@ run_guard tex_guard .venv/bin/python tools/tex_guard.py "$WORKDIR/drafts"
 # 与 goai-survey-writer / goai-orchestrator 约定的范围一致：只查正文源文件，
 # 不查 blueprint.md / revision_log.md 等内部规划笔记。
 run_guard academic_language_guard .venv/bin/python tools/academic_language_guard.py \
-  "$WORKDIR/drafts/sections" "$WORKDIR/drafts/main.tex"
+  "$WORKDIR/drafts/sections" "$WORKDIR/drafts/main.tex" \
+  --negative-claims "$WORKDIR/notes/negative_claims.md"
 # 终稿 PDF 必须是 TeX 从模板编译的产物（Producer/字体/时效/摘要块/编号标题）
 run_guard pdf_guard .venv/bin/python tools/pdf_guard.py "$WORKDIR/drafts/main.pdf" \
   --tex "$WORKDIR/drafts/main.tex" --bib "$WORKDIR/library/references.bib"

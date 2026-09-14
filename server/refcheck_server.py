@@ -11,9 +11,17 @@ Crossref（DOI）/ arXiv / OpenAlex / DBLP。
   UNVERIFIED  找不到权威记录（可能是幻觉引用）——fail-closed，不猜测
   MANUAL      灰色文献（会议摘要、学位论文、技术报告等）无 DOI 且不入索引，由人/agent
               对照官方来源实读后在条目里写 verified = {manual: <who> <date> <locator>}
-              并给 url（官方主机）——闸门放行但报告单列，供终审人眼复核。
+              并给 url（官方主机；OpenAlex/Semantic Scholar/Google Scholar/ResearchGate
+              这类聚合器不算）——闸门放行但报告单列，供终审人眼复核。
               禁止为了让检查通过而把条目改成整卷/整集的 DOI 与题名（实跑中发生过：
               会议摘要被改写成整本摘要集的题名与 DOI，两轮审计都放行了）。
+
+出货稿审计补的三条机械规则（_verify_fields）：
+  - 权威记录类型为 dataset / component（Crossref type，或 posted-content 的 dataset 子类）
+    → FIX，提议 @misc 并以机构（institution/publisher）为作者；
+  - 作者是 None / Unknown / Available / Anonymous / N/A / Not Available 一类占位 → MISMATCH；
+  - bib 题名括号不配对或以数字、(、-、< 收尾且权威题名更长（截断，如
+    「BaZn2−xCoxSi2O7 (0.」在 < 处被截）→ FIX，用权威题名。
 """
 from __future__ import annotations
 
@@ -21,6 +29,7 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 from typing import Any, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -140,6 +149,47 @@ def _authoritative_lookup(
 
 MANUAL_ENTRY_TYPES = {"inproceedings", "phdthesis", "mastersthesis", "techreport", "misc",
                       "unpublished", "booklet", "proceedings", "incollection"}
+# 聚合器主机：只是别人记录的二级入口，不是灰色文献的「官方来源」
+AGGREGATOR_HOSTS = re.compile(
+    r"(?:^|\.)(?:openalex\.org|semanticscholar\.org|scholar\.google\.[a-z.]+|researchgate\.net)$", re.I)
+# 数据集 / 附件类权威记录（CSD/ICSD 存储号、出版社 SI）：没有个人作者，@article 是错的载体
+DATASET_TYPES = {"dataset", "component"}
+# 占位作者：整个名字只由这些词组成（"None"、"Not Available"、"Available, Not"、"N/A"…）
+PLACEHOLDER_AUTHOR_WORDS = {"none", "unknown", "available", "anonymous", "n/a", "not", "author", "no", "null"}
+RE_TITLE_TRUNCATED_END = re.compile(r"[\d(\-<]$")
+
+
+def _is_placeholder_author(name: str) -> bool:
+    words = set(re.findall(r"[a-z/]+", name.lower()))
+    return bool(words) and words <= PLACEHOLDER_AUTHOR_WORDS
+
+
+def _is_dataset(canonical: dict[str, Any]) -> bool:
+    ptype = str(canonical.get("publication_type") or "").lower()
+    return ptype in DATASET_TYPES or (
+        ptype == "posted-content" and str(canonical.get("subtype") or "").lower() == "dataset")
+
+
+def _title_truncated(title: str) -> bool:
+    t = re.sub(r"[{}]", "", title or "").strip()
+    if not t:
+        return False
+    if t.count("(") != t.count(")") or t.count("[") != t.count("]"):
+        return True
+    return bool(RE_TITLE_TRUNCATED_END.search(t))
+
+
+def _dataset_misc_bibtex(fields: dict[str, str], canonical: dict[str, Any]) -> str:
+    """数据集/附件记录 → @misc，机构作者（institution > publisher > 权威作者 > 声称作者）。"""
+    org = (canonical.get("institution") or canonical.get("publisher")
+           or (canonical.get("authors") or [None])[0] or fields.get("author") or "")
+    rec = {**canonical, "venue": None, "authors": [org] if org else []}
+    entry = bib.parse_bibtex(bib.record_to_bibtex(rec))[0]
+    f = dict(entry["fields"])
+    kind = "Dataset" if str(canonical.get("publication_type") or "").lower() != "component" else "Supplementary material"
+    f["note"] = kind + (f", {canonical['publisher']}" if canonical.get("publisher")
+                        and canonical.get("publisher") != org else "")
+    return bib.format_entry(entry["key"], "misc", f)
 RE_MANUAL = re.compile(r"^\s*manual\s*[:：]\s*(?P<who>\S+)\s+(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<locator>\S.*)$",
                        re.I | re.S)
 
@@ -158,6 +208,9 @@ def _manual_verdict(fields: dict[str, str]) -> dict[str, Any] | None:
     url = (fields.get("url") or "").strip()
     if not url.lower().startswith(("http://", "https://")):
         problems.append("人工核验须给官方来源 url")
+    elif AGGREGATOR_HOSTS.search(urllib.parse.urlparse(url).hostname or ""):
+        problems.append("url 指向聚合器（OpenAlex/Semantic Scholar/Google Scholar/ResearchGate），"
+                        "不是官方来源；给主办方/出版社/机构库的页面")
     if (fields.get("ENTRYTYPE") or fields.get("entrytype") or "").lower() not in MANUAL_ENTRY_TYPES:
         problems.append("人工核验只用于灰色文献类型（inproceedings/phdthesis/techreport/misc…），期刊论文须走 DOI")
     if not fields.get("author") or not fields.get("title") or not fields.get("year"):
@@ -182,6 +235,22 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
     canonical, near, id_conflict = _authoritative_lookup(fields)
     if canonical is None:
         if id_conflict is not None:
+            # 题名被截断（出货稿：「BaZn2−xCoxSi2O7 (0.」在 < 处截断）时 DOI 解析出的全题名
+            # 相似度不够，会被误判成「指向另一篇」——权威题名以声称题名为前缀即视为同一篇
+            norm_claim = src.norm_title(claimed_title)
+            norm_id = src.norm_title(id_conflict.get("title") or "")
+            if _title_truncated(claimed_title) and len(norm_claim) >= 8 \
+                    and len(norm_id) > len(norm_claim) and norm_id.startswith(norm_claim[:20]):
+                return {
+                    "verdict": "FIX",
+                    "reason": "bib 题名被截断（括号不配对或以数字/(/-/< 收尾），权威记录题名更长；"
+                              "用权威题名替换",
+                    "issues": [{"axis": "TITLE", "type": "truncated",
+                                "detail": f"声称「{claimed_title}」 vs 权威「{id_conflict.get('title')}」"}],
+                    "canonical": {k: id_conflict.get(k) for k in
+                                  ("title", "authors", "year", "venue", "doi", "arxiv_id", "url")},
+                    "suggested_bibtex": bib.record_to_bibtex(id_conflict),
+                }
             # DOI/arXiv 能解析，但指向另一篇论文 —— 高危：标识符与标题张冠李戴
             return {
                 "verdict": "MISMATCH",
@@ -209,10 +278,34 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
 
     issues: list[dict[str, Any]] = []
     title_sim = canonical.pop("score")
+    canon_view = {**{k: canonical.get(k) for k in
+                     ("title", "authors", "year", "venue", "doi", "arxiv_id", "url")}}
+    if _is_dataset(canonical):
+        # CSD/ICSD 存储记录、出版社附件：不是论文，@article + 个人作者是错的载体
+        return {"verdict": "FIX", "title_similarity": title_sim,
+                "reason": f"权威记录类型为 {canonical.get('publication_type')}"
+                          f"{'/' + str(canonical.get('subtype')) if canonical.get('subtype') else ''}"
+                          "（数据集/附件），应以 @misc 引用并以机构为作者",
+                "canonical": {**canon_view, "publication_type": canonical.get("publication_type"),
+                              "institution": canonical.get("institution"),
+                              "publisher": canonical.get("publisher")},
+                "issues": [{"axis": "TYPE", "type": "dataset",
+                            "detail": f"type={canonical.get('publication_type')}，机构="
+                                      f"{canonical.get('institution') or canonical.get('publisher')}"}],
+                "suggested_bibtex": _dataset_misc_bibtex(fields, canonical)}
+    placeholders = [a for a in claimed_authors if _is_placeholder_author(a)]
+    if placeholders:
+        issues.append({"axis": "AUTHORS", "type": "placeholder",
+                       "detail": f"占位作者 {placeholders}——不是人名；用权威记录的作者或机构"})
     if title_sim < TITLE_MATCH:
         issues.append({"axis": "TITLE", "type": "drift",
                        "detail": f"标题相似度 {title_sim}，可能存在版本漂移",
                        "canonical": canonical.get("title")})
+    if _title_truncated(claimed_title) and \
+            len(src.norm_title(canonical.get("title") or "")) > len(src.norm_title(claimed_title)):
+        issues.append({"axis": "TITLE", "type": "truncated",
+                       "detail": f"bib 题名疑似截断（括号不配对或以数字/(/-/< 收尾）：「{claimed_title}」"
+                                 f" vs 权威「{canonical.get('title')}」"})
 
     author_cmp = bib.compare_authors(claimed_authors, canonical.get("authors") or [])
     hard_author = [i for i in author_cmp["issues"]
@@ -261,7 +354,7 @@ def _verify_fields(fields: dict[str, str]) -> dict[str, Any]:
         issues.append({"axis": "ID", "type": "arxiv_mismatch",
                        "detail": f"声称 arXiv {claimed_aid} vs 权威 {canon_aid}"})
 
-    if any(i["type"] in ("missing", "extra") for i in hard_author):
+    if placeholders or any(i["type"] in ("missing", "extra") for i in hard_author):
         verdict = "MISMATCH"
     elif issues:
         verdict = "FIX"
