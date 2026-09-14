@@ -40,12 +40,12 @@
 
 ### 2. figspec（图的单一事实源）
 JSON：`{title, canvas, defaults, groups[], nodes[], edges[], texts[]}`，schema 见
-`figure_server.figspec_schema()`。一份 spec 同时渲染：
-- `render_svg.py` → 论文用 SVG（LaTeX includesvg）
-- `render_drawio.py` → mxGraph XML（draw.io 原生打开，连线绑定 source/target）
+`figure_server.figspec_schema()`（辅助图与遗留图仍可用）。
 
-改图只改 spec 重渲染，SVG 与 drawio 永不漂移。位图重建（figure-editable
-路线 B）也是先重建 spec 再渲染，保证一切图可编辑。
+**主路线是 scene.json**：`skills/goai-figure-studio/lib/` 把图写成原生 text/shape/line
+对象，super_img2ppt 一次构建出 PPTX（PowerPoint/WPS 直接编辑）、SVG 和矢量 PDF。
+改图只改重建脚本重生成，三种格式永不漂移。位图重建（figure-editable）也是先重建
+scene 再构建，保证一切图可编辑。
 
 ### 3. 回环账本（ledger.json）
 ```json

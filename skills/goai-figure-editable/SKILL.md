@@ -1,11 +1,11 @@
 ---
 name: goai-figure-editable
-description: Use when an existing figure image/SVG must become an editable drawio file — 图转可编辑 agent：结构化 SVG 走确定性逆向，位图/PDF 图走「视觉重建 figspec → 渲染 → 对照自检 → 修正」回环，输出 .drawio 原生可编辑文件并接入 draw.io 工具链。触发词：「转成可编辑」「图转 drawio」「editable figure」。
+description: Use when an existing figure image/SVG must become an editable file — 图转可编辑 agent：位图/PDF 图走「读图测量 → 用 goai-figure-studio 的 lib/ 重建 scene → super_img2ppt 构建 → 对照自检」回环，出 pptx+svg+矢量 pdf；结构化 SVG 可走 drawio 确定性逆向（遗留路线）。触发词：「转成可编辑」「图转可编辑」「editable figure」。
 ---
 
-# GoAI Figure-Editable —— 图 → drawio 可编辑重建 agent
+# GoAI Figure-Editable —— 图 → 可编辑件重建 agent
 
-把「一张定死的图」变成「可继续编辑的图」。核心是重建循环
+把「一张定死的图」变成「可继续编辑的图」。**交付口径与画图线一致：pptx + svg + 矢量 pdf，由 `scene.json` 同源构建**（`skills/goai-figure-studio/lib/` 重建 → super_img2ppt）。核心是重建循环
 （重建 → 自我检查 → 页内修正）加分层策略：**可读文字恢复为原生文本、
 简单几何恢复为原生形状、复杂视觉元素保留为独立资产并记录来源**。
 
@@ -13,13 +13,13 @@ description: Use when an existing figure image/SVG must become an editable drawi
 
 | 输入 | 路线 |
 |---|---|
-| 结构化 SVG（矢量框图） | 路线 A：确定性逆向（一条工具调用） |
-| 位图 PNG/JPG、PDF 里的图、复杂 SVG | 路线 B：视觉重建回环 |
-| 本仓库 figspec 渲染出的图 | 不用转——figspec 就是源，直接改重渲染 |
+| 位图 PNG/JPG、PDF 里的图、复杂 SVG | **路线 B：视觉重建回环（默认）** → pptx+svg+矢量 pdf |
+| 结构化 SVG（矢量框图） | 路线 A：确定性逆向出 drawio（遗留路线，只在确实要 drawio 时用） |
+| 本仓库已有 `scene.json` / figspec 的图 | 不用转——源就在那，直接改重建脚本重生成 |
 
 **先想清楚是否值得转**：视觉重建回环需要多轮读图与渲染对照，token 成本
 明显高于普通画图。若用户只想微调图里一两处内容，直接改源
-（figspec/绘图代码）或让图像模型局部重绘往往更省；只有确有持续编辑
+（`scene.json` 重建脚本）或让图像模型局部重绘往往更省；只有确有持续编辑
 需求时才走本流程。弱视觉模型跑路线 B 效果不保证，读图没把握时应
 提前告知用户预期折扣。
 
@@ -30,7 +30,9 @@ description: Use when an existing figure image/SVG must become an editable drawi
 产物互不覆盖。宿主支持并行 subagent 时可按并发槽位分派，但每个子任务
 只写自己的目录。全部完成后汇总一份总清单：每张图的路线、轮数、遗留差异。
 
-## 路线 A：确定性逆向
+## 路线 A：确定性逆向（遗留）
+
+> 只在用户明确要 `.drawio` 时走。默认交付是路线 B 的 pptx+svg+矢量 pdf。
 
 ```
 svg_file_to_drawio(svg_path, out_path)
@@ -54,24 +56,34 @@ svg_file_to_drawio(svg_path, out_path)
    框坐标、实测字高和识别内容写进清单；重建时以测量值定 x/y/font_size，
    同一层级的文字统一取同组字号，不靠目测。无 OCR 可用时退化为目测，
    并在收工说明里注明「文字位置为目测，未经测量校正」。
-2. **清单 → figspec**：按清单写 figspec（坐标自己排版：同层等距、
-   分组包络成员留 16px 内边距）。颜色用取色近似即可，结构必须一致。
-3. **渲染对照**：`render_figure` 出 svg/png，与原图并排对比：
-   - 缺节点/缺边/文字错 = blocker，修 figspec 重来
+2. **清单 → scene**：按清单用 `skills/goai-figure-studio/lib/` 重建
+   （`zone` / `card*` / `chain` / `conn` 四级层次；图元取 `lib/motifs.py` 的 36 个原生
+   线描图元，**不要把原图的图标裁成位图贴回去**）。墨量与字号照
+   `skills/goai-figure-studio/references/ink-budget.md`，别另起一套。
+   颜色按 `FAM` 四个语义色族归拢即可，结构必须一致。
+3. **预检与构建对照**：先
+   `python3 skills/goai-figure-studio/scripts/precheck.py <scene.json>`（0 hard 才往下走），
+   再 `img2ppt.sh build` 出 pptx/svg/pdf 与 render png，与原图并排对比：
+   - 缺节点/缺边/文字错 = blocker，修重建脚本重来
    - 布局比例差异 = 可接受（可编辑性优先于像素还原）
    每轮对照后，把检查结论追加写入 `workspace/notes/rebuild_<name>.md`：
    轮次、发现的 blocker（缺节点/缺边/文字错/资产缺失，逐条列出）、
-   本轮修正动作、是否收敛。末轮附终局对账：原图清单条目数 vs figspec
-   条目数 vs 渲染结果三方一致才算过——这份记录就是本次重建的验收凭据。
-4. **复杂元素分层**：照片/纹理/手绘装饰不要试图矢量化——在 figspec 里
-   用占位节点标注 `label:"[asset: xxx]"`，同时把原图裁剪件存
+   本轮修正动作、是否收敛。末轮附终局对账：原图清单条目数 vs scene 元素数
+   vs 构建结果三方一致才算过——这份记录就是本次重建的验收凭据。
+   构建报告里中文图的 `status: fail` 若只来自 VKana 字体命名与中西文墨宽漂移，
+   按 `skills/goai-figure-studio/references/pitfalls.md` 判为已知误报，不算 blocker。
+4. **复杂元素分层**：照片/纹理/手绘装饰不要试图矢量化——在 scene 里
+   用 `image` 元素占位并标注来源，同时把原图裁剪件存
    `workspace/figures/assets/`（命名 `<图名>_asset_<i>.png`），并在重建
-   笔记里记一行来源：源文件、裁剪区域（x, y, w, h）、对应 figspec 占位
-   节点 id——保证日后能追溯每个资产从哪来、贴回哪；
-   drawio 里由用户拖入替换。
+   笔记里记一行来源：源文件、裁剪区域（x, y, w, h）、对应 scene 占位
+   元素 id——保证日后能追溯每个资产从哪来、贴回哪；
+   PPTX 里由用户直接替换。
    3 轮后结构仍对不上 → 停，把差异清单交给用户决策。
 
-## 接入 draw.io 工具链
+**示意图标不算复杂元素**：多面体、衍射峰、温度曲线一律用 `lib/motifs.py` 重画。
+把它们当资产裁进来，正是前几轮图元风格不统一的根因。
+
+## 接入 draw.io 工具链（仅路线 A）
 
 - `.drawio` 文件：draw.io Desktop（`brew install --cask drawio`）或
   app.diagrams.net 直接打开。
@@ -83,11 +95,11 @@ svg_file_to_drawio(svg_path, out_path)
 ## 硬性规则
 
 - 视觉相似 ≠ 可编辑达标：验收看三样——文字是原生文本、形状可拖拽、
-  连线跟随节点（.drawio 里 source/target 绑定）。
-- 文字逐条对账：原图里每条可读文字都必须能在 figspec（节点 label /
-  边 label / 独立 text）里找到归属，缺一条即 blocker；
+  连线端点与线段同源计算（不是独立摆放的箭头头部）。
+- 文字逐条对账：原图里每条可读文字都必须能在 scene（卡片标题 / token /
+  边标签 / 独立 text）里找到归属，缺一条即 blocker；
   路线 A 用工具返回的 nodes/edges/texts 计数做首轮对账。
-- 每次重建都保留 figspec——它是后续一切修改的单一事实源。
+- 每次重建都保留**重建脚本**——它（而不是导出的 pptx/pdf）是后续一切修改的单一事实源。
 - 不虚构原图没有的内容；看不清的文字标 `[?]` 请用户确认。
 - 收工 `loopctl log --stage figures --agent goai-figure-editable
   --event rebuilt --detail "<name> 路线A/B，N 轮收敛"`。

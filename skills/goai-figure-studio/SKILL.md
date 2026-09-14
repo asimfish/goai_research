@@ -225,6 +225,16 @@ if missing: ...        # 报出来，绝不把没译的字串直接发出去
 `retype` 负责收字号、放宽盒子、重排标签行，并丢掉 `font_group`（否则最长的字串会把
 整组按原字号卡住）。
 
+**改过中文标签就必须查覆盖**：翻译表按中文原文做键，改了中文不同步它，英文版就再也
+生不出来。2026-09-14 实际发生过——排版线按术语表改了 15 处标签，翻译表没跟上，13 条
+字串缺译，数天后审计别的东西时才偶然发现。
+
+```bash
+python3 skills/goai-figure-studio/scripts/check_i18n.py --tr <r5_en.py 或 tr.json> <中文 scene.json …>
+```
+
+覆盖不全会逐条列出并退出 1。
+
 ### C6 印刷尺度终检
 
 **在编译好的论文页上看**（`pdftoppm` 出页），不是只看单张图 PDF —— 单张图永远好看。
@@ -251,7 +261,7 @@ python3 skills/goai-figure-studio/scripts/selftest.py
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
   --detail "<N 图 pptx+svg+pdf 齐；precheck 0 hard；img2ppt findings 仅剩 pitfalls
-  列出的已知误报；中英两版无未翻译字串>"`。独立图纸任务（无 loop 会话）不必强行
+  列出的已知误报；中英两版齐全且 check_i18n 覆盖完整>"`。独立图纸任务（无 loop 会话）不必强行
   gate —— 交付登记写进 figure_plan.md 即可。
 
 ## 硬性规则

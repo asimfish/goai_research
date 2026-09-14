@@ -166,7 +166,7 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
      否则 `gate` 命令拒绝——回退渲染器的 PDF 在这里就会被挡住。
    - 达到 max_rounds → 停止，如实汇报未收敛项，绝不谎报完成
 7. **final 交付物**：`workspace/drafts/`（tex+pdf）、`workspace/library/references.bib`、
-   `workspace/figures/{svg,drawio}/`、`workspace/state/CITATION_AUDIT.md`、
+   `workspace/figures/{pptx,svg,pdf}/` 与重建脚本 `scenes/`、`workspace/state/CITATION_AUDIT.md`、
    回环账本全文。汇报时逐项给路径；若终审为降级审稿（provisional），
    汇报中必须写明「终审未经独立模型复核」。
 

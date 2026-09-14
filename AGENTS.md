@@ -12,7 +12,7 @@
 | 核查引用真伪/作者/顺序 | `skills/goai-ref-guard/SKILL.md` |
 | 画论文图 / taxonomy 图 | `skills/goai-figure-studio/SKILL.md` |
 | 学经典综述风格建风格库 | `skills/goai-style-bank/SKILL.md` |
-| 把现成图转 drawio 可编辑 | `skills/goai-figure-editable/SKILL.md` |
+| 把现成图转成可编辑件 | `skills/goai-figure-editable/SKILL.md` |
 | 写综述 / 建 taxonomy / 组稿 | `skills/goai-survey-writer/SKILL.md` |
 | 生成 idea / 实验方案 / 逆合成 | `skills/goai-idea-forge/SKILL.md` |
 | 审稿 / 挑毛病 | `skills/goai-reviewer/SKILL.md` |
@@ -39,8 +39,9 @@
 2. **引用零信任**：只引用 `workspace/library/references.bib` 里
    已过 ref_gate 的 key；任何场合禁止手编 BibTeX 条目、禁止凭记忆写引用。
 3. **产物落盘**：一切结论写进 workspace/ 对应目录，不许只留在对话里。
-4. **图必须双格式**：交付图 = svg + drawio 同源产出（figspec 渲染），
-   位图不算交付物。
+4. **图必须可编辑**：交付图 = pptx + svg + 矢量 pdf 三件套，同源产出自
+   `scene.json`（`skills/goai-figure-studio/lib/` 重建 → super_img2ppt 构建）。
+   位图不算交付物；改图改重建脚本，不改导出件。
 5. **stub 逆合成 ≠ 化学结论**：出现在任何文档里必须带演示标注。
 6. **审稿独立**：执行者不自审；reviewer 不动稿。
 7. 卡住三次就升级人类，不空转。例外：用户已经明确要求无人值守完成整条流水线时，

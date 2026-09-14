@@ -303,8 +303,8 @@ Open Problems（含 idea-forge 产出） → Conclusion。
    套英文模板。任一阻塞项不得记 `draft_complete`，告警项逐条处理或在
    revision_log 说明原因。**编译是硬性步骤，且只能用 TeX**：先
    `tools/check.sh --tex` 确认 xelatex/pdflatex 与模板宏包齐全；齐全则
-   xelatex→bibtex→xelatex×2（中文稿必须 xelatex；图一律先 `drawio_export`
-   出 pdf 再 `\includegraphics`，不依赖 `\includesvg`），编译告警逐条处理。
+   xelatex→bibtex→xelatex×2（中文稿必须 xelatex；图用画图线交付的矢量 pdf
+   直接 `\includegraphics`，不依赖 `\includesvg`），编译告警逐条处理。
    **环境缺 TeX 时 fail-closed**：`draft_complete` 记 FAIL + issue「环境缺
    TeX」，交付 main.tex + references.bib + figures，终报明写「PDF 未编译」；
    **禁止**用 groff/Ghostscript、HTML→Chrome、pandoc、Word 等任何回退渲染器
