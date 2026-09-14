@@ -151,7 +151,7 @@ orchestrator 按级联规则把下游闸门重置复核，`--max-rounds` 限定�
 | style_bank | goai-style-bank | `style_bank_ready` —— 30 篇经典综述风格卡 + 范图库 |
 | ref_gate | goai-ref-guard | `ref_integrity` —— 零 UNVERIFIED / MISMATCH |
 | taxonomy | goai-survey-writer | `taxonomy_ready` —— 每叶 ≥ 3 篇支撑 |
-| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 svg + drawio 齐全，含行文路线图 |
+| figures | goai-figure-studio / -editable | `figures_ready` —— 每图 pptx + svg + 矢量 pdf 齐全、中英两版，含行文路线图 |
 | writing | goai-survey-writer | `draft_complete` —— bib_guard + tex_guard PASS，全节完成 |
 | ideas | goai-idea-forge | `ideas_reviewed` —— 对抗审 + 引用二次核查 |
 | review | goai-reviewer | `review_pass` —— 0 blocker 且 0 major，**必须带回执** |

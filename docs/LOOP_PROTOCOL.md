@@ -12,7 +12,7 @@
 | 1 | lit_search | goai-lit-search | `lit_coverage` | coverage_report 全子主题 ok；档位配额达标（comprehensive ≥100）；材料主题两条强制检索面已做 |
 | 2 | ref_gate | goai-ref-guard | `ref_integrity` | references.bib 零 UNVERIFIED/MISMATCH |
 | 3 | taxonomy | goai-survey-writer | `taxonomy_ready` | 每叶 ≥3 篇支撑；孤儿论文有处置；贡献声明经用户确认（不可达时降级记录） |
-| 4a | figures | goai-figure-studio/-editable | `figures_ready` | 每图 svg+drawio 齐全且过自检；**含行文路线图**；主图走 image-first 候选制 |
+| 4a | figures | goai-figure-studio/-editable | `figures_ready` | 每图 pptx+svg+矢量 pdf 齐全、中英两版、本地 precheck 0 hard；**含行文路线图**；主图走 image-first 候选制 |
 | 4b | writing | goai-survey-writer | `draft_complete` | bib_guard + tex_guard + academic_language_guard + pdf_guard PASS（PDF 须由 TeX 从模板编译：Producer/字体/时效/摘要块/编号标题；缺 TeX 环境 = FAIL 并如实交付未编译源码，禁止回退渲染器）；全节成文；语言契约对应模板；骨架强制项齐（近邻体系节 / 实验结论合集 / 方向→工艺+前驱体 / 结论双段式） |
 | 4c | ideas | goai-idea-forge | `ideas_reviewed` | 每条 idea 过对抗审 + 引用二审；材料 idea 必带 retro MCP 前驱体预测。**合成/制备/生长/烧结/工艺类主题必做**（`loopctl` 按主题机械判定，拒绝「skipped/未要求」类 WARN），需账本建立后的 `predict_precursor_routes` 调用 + `ideas/synthesis_directions.md`（方向→工艺→前驱体表）；只有纯理论/方法学综述可 WARN 跳过 |
 | 5 | review | goai-reviewer | `review_pass` | 0 blocker 且 0 major（PASS 须带审稿回执）；或连续两轮仅 minor；终审三视角含**制作质量**逐页 PDF 审计 |

@@ -82,4 +82,5 @@ class Scene:
         if self.source: slide['source'] = self.source
         if self.notes: slide['notes'] = self.notes
         doc = {'version': 1, 'fonts': {'latin': [LATIN, 'Liberation Sans'], 'cjk': [CJK, 'Noto Sans CJK JP', 'Droid Sans Fallback']}, 'slides': [slide]}
-        Path(path).write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding='utf-8'); return path
+        out = Path(path); out.parent.mkdir(parents=True, exist_ok=True)   # a fresh job dir need not exist yet
+        out.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding='utf-8'); return path

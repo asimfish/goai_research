@@ -155,7 +155,7 @@ the same issue survives three rounds. Full protocol: [docs/LOOP_PROTOCOL.md](LOO
 | style_bank | goai-style-bank | `style_bank_ready` — style cards + exemplar figures from 30 classic surveys |
 | ref_gate | goai-ref-guard | `ref_integrity` — zero UNVERIFIED / MISMATCH entries |
 | taxonomy | goai-survey-writer | `taxonomy_ready` — every leaf backed by ≥ 3 papers |
-| figures | goai-figure-studio / -editable | `figures_ready` — svg + drawio for every figure, incl. the paper roadmap figure |
+| figures | goai-figure-studio / -editable | `figures_ready` — pptx + svg + vector pdf for every figure, both languages, incl. the paper roadmap figure |
 | writing | goai-survey-writer | `draft_complete` — bib_guard + tex_guard PASS, all sections done |
 | ideas | goai-idea-forge | `ideas_reviewed` — adversarial review + second citation pass |
 | review | goai-reviewer | `review_pass` — 0 blockers and 0 majors, **with receipt** |
