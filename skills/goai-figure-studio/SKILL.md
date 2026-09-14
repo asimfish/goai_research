@@ -1,6 +1,6 @@
 ---
 name: goai-figure-studio
-description: Use when the survey needs publication-quality figures — 画图 agent：顶会级主图走「策略合同 → AI 生图两轮候选 → 可编辑化重建」三段管线，辅助图走 figspec 直渲；产物恒为 svg+drawio 可编辑双格式。触发词：「画图」「框架图」「taxonomy 图」「figure」。
+description: Use when the survey needs publication-quality figures — 画图 agent：顶会级主图走「策略合同 → AI 生图两轮候选 → 可编辑化重建」三段管线，辅助图直接按合同用 lib/ 重建；产物恒为 pptx+svg+矢量 pdf 可编辑三件套（设计系统在 lib/，墨量见 references/ink-budget.md）。触发词：「画图」「框架图」「taxonomy 图」「figure」。
 ---
 
 # GoAI Figure-Studio —— 论文图纸 agent
@@ -11,22 +11,22 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 人只看最终产物。工具来自 MCP server `goai-figure`（Codex 宿主把 MCP 工具**延迟加载**：开场工具清单里看不到 goai-* 不等于没挂，先 `tool_search` 搜 server 名或工具名再调用；只有搜也搜不到才按降级记账、走 `.venv/bin/python -c "from server.… import …"` 直调）。
 
 **image-first 是默认路径**：凡进论文的图，一律先用 AI 生图拿视觉参照、
-再按参照做可编辑化重建（figspec → svg + drawio）。生图可用于探索构图、
+再按参照用 lib/ 的原生对象重建（scene.json → super_img2ppt）。生图可用于探索构图、
 晶体/材料纹理和抽象结构意象；但生图模型生成的文字、化学式、数值和箭头
 不具有证据效力，必须在重建阶段由 SVG/Draw.io 原生图元确定性补回。必要时，
 可将经审查的生图作为 Draw.io 中的锁定底图或图像图层，再叠加原生文字、节点、
-曲线和连接器。**生图本身永远不是论文交付物**。直接手写 figspec 只在无生图
+曲线和连接器。**生图本身永远不是论文交付物**。跳过生图直接重建只在无生图
 通道时作为降级路径，且必须 `loopctl log --event decision` 记录降级原因。
 
 ## 图纸分级（先分级再动手）
 
 | 级别 | 适用 | 管线 |
 |---|---|---|
-| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选（4+2） → C 可编辑化重建 |
-| **标准图** | **行文路线图（每篇综述必配）**、时间线、多模块流程 | A 策略合同 → B 单轮 2 候选 → C 可编辑化重建 |
-| **辅助图** | 简单示意、统计小图 | A 策略合同 → 单轮 1 参照图 → figspec 重建（无通道时直渲） |
+| **主图** | taxonomy 总览、框架/机制图、领域地图（读者记住综述靠它） | 三段式：A 策略合同 → B AI 生图两轮候选（4+2） → C 原生对象重建 |
+| **标准图** | **行文路线图（每篇综述必配）**、时间线、多模块流程 | A 策略合同 → B 单轮 2 候选 → C 原生对象重建 |
+| **辅助图** | 简单示意、统计小图 | A 策略合同 → 单轮 1 参照图 → lib/ 原生重建（无通道时直接按合同重建） |
 
-对比矩阵优先建议用表格，不硬画。宿主无生图通道时降级 figspec 直渲，
+对比矩阵优先建议用表格，不硬画。宿主无生图通道时直接按 A2 合同用 lib/ 重建，
 记账说明。**行文路线图**（本文组织结构：各节回答什么问题、怎么推进）
 是综述标配，writer 蓝图登记后由本 skill 按标准图管线出图。
 
@@ -77,7 +77,7 @@ description: Use when the survey needs publication-quality figures — 画图 ag
 ## Phase B：AI 生图候选（主图两轮 4+2；标准图单轮 2；辅助图单轮 1）
 
 生图路由：Codex 宿主用 `image_gen`；Cursor 宿主用 GenerateImage 工具；
-均无 → 降级 figspec 直渲并记账。风格参照：prompt 附
+均无 → 跳过 B 段、直接按 A2 合同用 lib/ 重建并记账。风格参照：prompt 附
 `workspace/style_bank/exemplar_figures/` 的范图路径（支持 reference image
 的通道传入；不支持则在 prompt 里文字化描述风格卡要点）。
 标准图/辅助图走本节的裁剪版：跳过 B1 的 4 候选探索，直接按 A2 合同写
@@ -125,140 +125,144 @@ prompt 生成 2/1 张参照，过一遍 B2 审计要点后进 Phase C。
 - **Prompt 硬约束段**（每条生图 prompt 内必须含）：edge-label-first（变量/指标只在连线、端口、标签上，不作同级模块）；
   两模块之间只有一条捆绑连线；无伪中继；禁止渐变/霓虹/玻璃质感/装饰图标；说明有意抽象掉的细节。
 - **S2/S5 只生图**：Codex 用内置 `image_gen`，其余宿主必须显式指定图像 API；**没有图像通道时不得用 SVG/截图冒充生图候选**，
-  改走 figspec 印刷优先矢量候选（样板：`final_round/figures/gen_fig01.py`，通过 `figspec.lint` 的 ≥6.5 pt 印刷字号规则），
+  改走 Phase C 的原生重建（`lib/` + `references/ink-budget.md` 的印刷字号），
   并把 S0/S1 文档与 prompt package 留在 `workspace/figures/studio/` 等通道恢复后补生图。
 - **S3 复审只看像素**：对照 S1 的 edge/port 合同逐条记 issue，转成 S4 的负约束；S5 终选后由人决定，agent 不再自动改图。
 - 机器人/具身相关的图额外加载 `references/embodied-figure-guide.md`（先锁场景身份、接触、动作含义与时间，再谈风格）。
 
 参考实现与证据：`refs/super_teaser/`（克隆），`final_round/figures/S0_paper_foundation.md`、`S1_figure_strategy.md`。
 
-## Phase C：可编辑化重建（测量驱动，凡有生图参照的图都走）
+## Phase C：原生对象重建（交付物的唯一来源）
 
-把参照定稿重建为 figspec，产出可编辑矢量——这是交付物的唯一来源，
-AI 栅格只是参照。方法论吸收测量驱动重建：**先测量、再重建、后对照**。
+参照定稿只是视觉参照。**进论文的图是用本 skill 的设计系统重画的**，产出可编辑的
+PPTX / SVG / 矢量 PDF。这一步决定质量：一致的墨、一致的图元、可编辑的输出，
+以及在重建时修掉生图模型改不动的语义错误。
 
-1. **测量**：Read 参照图，逐区域记录版式测量表（模块相对位置/尺寸、
-   连线拓扑、颜色采样 hex、文字内容与层级）——写进 figure_plan.md
-   的重建测量节。
-2. **重建**：`figspec_schema()` 拿 schema → 按测量表写 figspec（文字用
-   白名单矫正生图拼写错误；结构以 A2 合同为准，参照图与合同冲突时
-   **合同赢**）→ `validate_figspec` → `render_figure`。
-   figspec 实战要点：深色头带白字用 node 的 `label_color`/`label_bold`；
-   标题样式用顶层 `title_style`；边默认色在 defaults 里键名是
-   `edge_color`/`edge_width`；自动折行按宽度硬切会切词——多词 label
-   一律手工 `\n` 控行；边只能连 node 不能连 group——「连到分组带」的
-   合同边用组边缘的隐形锚点小节点（`label:"", fill/stroke 同组底色`）
-   落点；超长 edge label 改用 texts 独立摆放。**边标签默认压在线段中点上**：
-   水平边的标签会盖住箭杆、穿过组边框的边其标签会骑在虚线框/组标题上（审稿
-   实抓：'assign' 压箭杆、'route class only' 骑在容器边框上）——用边的
-   `label_offset: [dx, dy]`（画布像素）把标签抬到箭杆上方或挪进空白区，SVG、
-   draw.io 与 lint 共用同一锚点；或把两组之间的纵向间隙留够标签高度（行数×
-   1.25×字号 + 20px）。
-   **美学 lint（机械化的合同条款）**：`validate_figspec` / `render_figure` 除排版
-   项外还跑 `server/core/aesthetics.py`——配色色系数、彩虹泳道、饱和色块比例、
-   近失对齐（1–8px）、兄弟节点尺寸一致性、越界/留白失衡、间距过密、连线穿
-   节点、交叉过多、描边档数、标题层级。其中 **≥4 色系、彩虹泳道、越界为
-   error 直接拒绝出图**；其余为 warning——**每条 warning 要么改 figspec 消掉，
-   要么在 figure_plan.md 写一行「保留理由」**（如「徽章有意错开」），不许
-   带着未处理的 warning 置 `figures_ready`。「看起来还行」不是理由：这些指标
-   正是审稿人肉眼说「有点乱」时实际在感知的东西。
-   **出版级版式硬规范**（实测迭代出的顶会观感底线，重建时按此自查）：
-   - **字号按印刷尺度设计**（硬闸门：render_figure 内置 lint，印刷等效
-     `pt = px × target_width_pt / canvas.width`，默认 target = 451pt（A4 单栏
-     \textwidth）；正文类文字 < 6.5pt **拒绝渲染**，< 7.5pt 警告，标题 < 9pt 警告；
-     双栏单列或半宽图在 figspec 里写 `canvas.target_width_mm: 84` 之类，lint 按
-     它折算）。实跑教训：1680px 画布 + 19.5px 字号在单栏里只有 5.2pt，图文
-     全是小字；**先定画布宽再定字号**——单栏满宽图推荐画布 1000–1200px：
+> 历史：C 段曾走 figspec → svg + drawio。经五轮作者返修后废弃 —— drawio 出的图
+> 被明确否掉（「目前画的图还是很丑，不一定必须要 drawio」），且位图裁来的图标
+> 导致图元风格不统一。现行路线是原生 scene 对象 + super_img2ppt。
 
-     | 元素（1000px 画布基准，画布不同按比例换算） | px | 印刷等效 |
-     |---|---|---|
-     | 图标题 | 22–26 | ≥9.9pt |
-     | lane/组标签（渲染器自动加粗） | 20–22 | ≥9.0pt |
-     | 节点主标（**默认加粗**，显式 `label_bold:false` 才取消） | 19–21 | ≥8.6pt |
-     | 节点副文（自动 = 主标×0.85；主标 ≥19 时副文 ≥16.2px ≈ 7.3pt 才过线） | 16.2+ | ≥7.3pt |
-     | 边标签 / 端点徽章 / 脚注 / 图例 | 17–18 | ≥7.7pt |
+### C1 用设计系统重画
 
-     换算口诀：**画布宽 ≤ 最小正文字号 × 60**（1000px 画布 → 最小字号 ≥17px；
-     1500px → ≥25px；1680px → ≥28px）。空间不够时精简文本或压缩布局，
-     **宁缩画布、勿缩字号**，不许把字调到地板下。
-     字号要体现信息层级：**组/lane 标签 ≥ 节点主标**（lint 会对
-     「小标题比正文小」直接告警），主链节点 > 支线节点 > 注释。
-   - **文字-形状适配**（lint 自动查，写 figspec 时预防）：斜边形状的
-     有效文本区远小于外框（diamond 55%、hexagon 70%、ellipse 72%、
-     stadium 86% 宽），长文本放矩形卡，菱形/六边形只放短判定语；
-     多行文本行数由渲染器/lint 共用的按词折行 + Helvetica 真实字宽表（大写≈0.7em、
-     小写≈0.5em、`≤ × ≥`≈0.58em，粗体 ×1.08）算出；行数×1.25×字号不得超过
-     有效高。大写/符号密集的粗体短语（"FWHM ≤ 1.3× · SSA ≥"）比小写句子宽
-     得多，别按字符数目测。draw.io 产物带显式 <br/>，与 SVG 逐行一致。端点徽章（stadium chip）单行放不下就加高到两行
-     体量（h ≥ 字号×2.5×1.25），禁止让文字贴边框。
-   - 密度是**双向约束**：画布宽 ≤ 最小正文字号×60（防字小/稀疏），同时留足
-     呼吸空间（防拥挤，见下）。稀疏时首选**全局坐标等比缩小而字号
-     不变**；缩后必须复查下面的拥挤下限，压过头比稀疏更难看。
-   - 拥挤下限（任何一条不满足就放宽画布，勿缩字号）：
-     列间若放注释文字，走廊宽 ≥ 注释最宽行宽×1.15（三行窄注释优于
-     两行宽注释）；同列卡片纵向间隙 ≥ 字号×0.9；注释/独立文字距
-     画布边缘 ≥ 字号×0.8，禁止顶边。
-   - 层次四件套：标题带/头带 `shadow:true` + 深底白粗字；卡片白底 +
-     中饱和度描边 `stroke_width≥1.6`；容器淡色底（非纯白）+ 浅描边；
-     主链边 `width≥3`（箭头随线宽自动放大）。
-   - 强调元素（如 Route-C 归属叶）用辅色描边 + 加粗 `stroke_width:2`
-     单独高亮；徽章用 stadium 小节点直接携带 `label_color` 文字，
-     不要 texts 绕行。徽章**不许骑跨带文字卡片的边缘**（会遮字）——
-     外置到母卡正下方、间隙 ≈4px 表从属。
-   - 边的出点要避让徽章等贴附元素：必要时加一个与源卡片中心同高的
-     waypoint，强制从卡片左/右缘干净出线，禁止斜穿贴附徽章。
-   - 各区纵向空隙 ≤ 正文字号×4；图例/脚注紧贴主体（空隙 ≤ 字号×5），
-     禁止大片下部留白；图例各组文字间距按实测文字宽排布，禁止重叠。
-3. **对照自检（≤3 轮）**：对照 png 以 `drawio_export` 导出为准
-   （render_figure 的 cairosvg 光栅无字体 fallback，`→/ν/≥` 等字符
-   可能画成豆腐块，勿据此误判；SVG/drawio 源码文字以逐字符核对为准）。
-   Read 导出 png 与参照图并排对照——
-   布局拓扑一致？模块/边无缺漏？文字 ⊆ 白名单（逐字）？配色贴合？
-   渲染级检查：文字溢出？连线穿节点？分组框住成员？
-   语义级：B2/B3 遗留 issue 是否已在重建中修复？
-   **学术观感终检**：与 style_bank 范图并排——配色克制度、信息密度、
-   字号层级是否达到「可以直接印进顶刊」的观感，花哨即回改。
-   注意 drawio 导出按内容裁边、坐标系与画布不同：waypoint/几何对账
-   以 .drawio XML 为准，不做导出图的像素级坐标对账。
-   有问题改 figspec 重渲染；3 轮后仍有硬伤记 issue 交人决策。
-4. 无生图通道的降级路径：跳过 1-2，直接按 A2 合同写 figspec 走 3 的
-   检查单（含学术观感终检）。
+```python
+import sys; sys.path.insert(0, 'skills/goai-figure-studio')
+from lib import Figure, FAM
+
+f = Figure(1536, 1024, notes='图 2 …（F01 分层横带 → super_img2ppt 重建）')
+z = f.zone('zT', [26, 28, 1484, 402], '实验方法', 'exp')        # 一级：分组带
+f.card_stack('c1', [60, 100, 278, 300], '外加助熔',              # 二级：模块卡
+             ['溶解', '保温', '缓冷分离'], fam='exp', glyph='beaker', container=z)
+f.conn('d0', [(199, 404), (199, 448)], label='配比 · 温度')      # 四级：边标签
+f.finish([z]); f.write('workspace/figures/scenes/fig02.json')
+```
+
+A2 合同的四级层次在库里各有对应，别压扁成两级：
+
+| 层 | 方法 | 长相 |
+|---|---|---|
+| 1 宏观分组 | `zone()` | 淡底色带 + 细边 + 小标题 |
+| 2 主模块 | `card()` / `card_stack()` / `card_step()` | 白卡 + 左色条 + 一个线描图元 + 粗标题 |
+| 3 内部机制 | `chain()` / `vchain()` / `ledger()` / `row()` | 小 token 用短箭头串起来、或带勾选的记录网格 —— **不能是一串句子** |
+| 4 标签 | `conn(label=…)` / `pill()` | 变量、记录项、警示，挂在连线和端口上 |
+
+- **色族只有四个**（`FAM`）：`lit` 证据（石板蓝）、`exp` 方法（teal）、`note` 警示（琥珀）、
+  `mute` 范围外（灰）。这就是 A2 配色合同的机器化形式：**琥珀只给警示**，不做第五个色族。
+- **图元用 `lib/motifs.py` 的 36 个原生线描图元**，一种墨、一种线宽。
+  `python3 skills/goai-figure-studio/scripts/glyphs.py` 列清单，
+  `… glyphs.py sheet out.json` 出对照表。缺图元就往 `motifs.py` 里加，
+  **绝不从生图里裁图标** —— 那正是前三轮图元风格不统一的根因。
+- **墨量、字号、CJK 行高**一律照 `references/ink-budget.md`，改任何线宽/颜色前先看那份。
+  数字不是口味，每一条都是作者否掉上一版定出来的；要改就改 `lib/framework.py`，
+  让所有图一起动。
+- **箭头**由 `conn()` / `chain()` 生成，端点与线段同源计算，不存在「独立摆放的箭头头部」
+  这种画法；箭头头长自动小于线段长度。
+- **连线标签成行时不要逐个摆**：`finish()` 会调 `pack_pill_rows()` 把同族标签归到本行主 y、
+  按序去重叠、整行夹在页内。字串一长（换语言、换术语）逐个摆必然互撞。
+
+### C2 保真修正（重建时必做）
+
+生图模型会编造论文里没有的内容，也会画错方向。实测到过：编造的中文子步骤、
+分类图的分支箭头指向枢纽、分叉只喂了两条通道中的一条、非警示的带子用了琥珀。
+**逐条对照论文原文核字串**，不成立的删掉，把审计写进 S3 记录 / figure_plan.md。
+重建是矢量级控制，正是修这些的地方。详见 `references/pitfalls.md` 的 Fidelity 一节。
+
+### C3 本地预检（0 hard 才许发出去）
+
+```bash
+python3 skills/goai-figure-studio/scripts/precheck.py workspace/figures/scenes/*.json
+```
+
+用的宽度模型和 `lib.Scene.measure` 同源，提前挡掉 `text_overflow` /
+`text_shrunk` / `outside_container` / `unintended_overlap`，省一次远端往返。
+
+### C4 构建与装回
+
+```bash
+img2ppt.sh check scene.json --out check/ && img2ppt.sh build scene.json --out build/
+python3 skills/goai-figure-studio/scripts/install_fig.py \
+    --build build/ --s5 build/render/page_001.png --crop render --margin 14 \
+    --project <项目> --name <图名> --figdir <论文>/figures [--media <画廊目录>]
+```
+
+- `--crop render`：按重建自己的 bbox 裁，不按生图位图裁（按位图裁会切掉重建
+  路由到位图范围外的连线）。
+- **中文图的 `validation.json` 会是 `status: fail`** —— 那是 LibreOffice 把 Noto CJK
+  嵌成 `…-VKana` 造成的字体命名假阳性，`rendered_ink_width_drift` 则是中西文混排
+  自动补空。两者都在 `references/pitfalls.md` 里有条目，**不要因此说图失败了**，
+  也不要去追。
+
+### C5 中英两版
+
+同一套几何换字符串，不重画：
+
+```python
+from scripts.relayout import retype
+missing = retype(slide, TR, free_pills=('cav_t', 'leg_t'))
+if missing: ...        # 报出来，绝不把没译的字串直接发出去
+```
+
+术语取论文自己的英文章节和已有英文图，保持全文一套词汇。拉丁文比中文宽约 1.6 倍，
+`retype` 负责收字号、放宽盒子、重排标签行，并丢掉 `font_group`（否则最长的字串会把
+整组按原字号卡住）。
+
+### C6 印刷尺度终检
+
+**在编译好的论文页上看**（`pdftoppm` 出页），不是只看单张图 PDF —— 单张图永远好看。
+`\linewidth` 下 1536px 画布的 19px 字接近 6pt；低于这个就重新构图（一行宽排改 3+3），
+**宁缩画布、勿缩字号**。同时核对 `\includegraphics` 没有残留为旧图调的 `trim=…,clip`。
+
+### 改了 lib 之后
+
+```bash
+python3 skills/goai-figure-studio/scripts/selftest.py
+```
+
+36 个图元全画一遍、四级层次搭一个、标签行打包断言、precheck 必须 0 hard。
+它挡的是只有跑完一次远端构建才会发现的问题。
 
 ## 交付与登记
 
-- 每图四件套：`workspace/figures/svg/<name>.svg`（论文侧，LaTeX 用
-  `drawio_export` 转 pdf/png 嵌入）、`drawio/<name>.drawio`（draw.io
-  Desktop / app.diagrams.net 直接可编辑）、`figspec/<name>.json`
-  （单一事实源）、主图另附 `candidates/<fig>/`（两轮候选与参照定稿，
-  审计可溯源）。
+- 每图四件套：`<论文>/figures/pdf/<name>.pdf`（矢量，LaTeX 直接 `\includegraphics`）、
+  `figures/svg/<name>.svg`、`<name>_editable.pptx`（PowerPoint / WPS 直接可编辑）、
+  `figures/png/<name>.png`；主图另附候选目录（S2/S5 两轮候选与参照定稿，审计可溯源）。
+  中英两版同名，英文加 `_en`。
+- 单一事实源是**重建脚本**（`scenes_*.py`）＋ 它生成的 `scene.json`，不是导出的 PDF/SVG。
+  别人要改图内用词，改脚本重生成，**不要直接改导出件**。
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
-
-### 箭头与连接器专项检查（每张图必做）
-
-- 箭头必须与连线端点绑定：SVG 使用 `marker-end`/`marker-start`，Draw.io
-  使用原生 `source`/`target` 连接器；禁止把三角形箭头头部作为独立装饰图元
-  手工摆在路径旁边。
-- 箭头尖端应落在目标边界（或明确的隐形锚点）上，末段切线与箭头方向一致；
-  曲线和折线在 200% 放大、SVG/PNG 和 PDF 三种输出中均不得出现断缝、反向或
-  飘离端点。导出 Draw.io 后再次检查连接器的 `endArrow`、`endFill`、
-  `targetSpacing` 和折点，避免自动 routing 产生视觉脱节。
-- 生图参照中的箭头只作为构图提示，重建时必须重新计算端点和方向；若发现
-  脱节，优先修正路径几何/连接器属性，不通过移动独立箭头头部补救。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
-  --detail "<N 图 svg+drawio 齐；主图 M 张走两轮候选制（6 生图/图上限），
-  审计 ledger 在 figure_plan.md；lint warning 0 条或逐条附保留理由>"`。
-  置 gate 前对每张图的 figspec 重跑一次 `validate_figspec`，把返回的
-  `typo_warnings` 原文贴进 figure_plan.md 的「lint 收尾」节并逐条对应处置。独立图纸任务（无 loop 会话、
-  `state/ledger.json` 未 init）不必强行 gate——交付登记写进
-  figure_plan.md 即可。
+  --detail "<N 图 pptx+svg+pdf 齐；precheck 0 hard；img2ppt findings 仅剩 pitfalls
+  列出的已知误报；中英两版无未翻译字串>"`。独立图纸任务（无 loop 会话）不必强行
+  gate —— 交付登记写进 figure_plan.md 即可。
 
 ## 硬性规则
 
-- 交付物必须可编辑（svg+drawio）；位图永不直接进论文图池。
-- 两轮候选的每张生图、每条 ledger issue、每次重建对照都要在
-  figure_plan.md 留痕——审计链完整才许过闸。
-- 风格库缺失不阻塞：按合同默认配色执行并记账。
+- **交付物必须可编辑**（pptx + svg + 矢量 pdf）；位图永不直接进论文图池。
+- **图元全部原生**，没有一处位图裁切。
+- 候选生图、ledger issue、保真审计、重建对照都要在 figure_plan.md 留痕 —— 审计链完整才许过闸。
+- 风格库缺失不阻塞：按 `FAM` 与 `references/ink-budget.md` 的默认执行并记账。
 - 交付前对包含图注或图中文字的稿件运行
   `.venv/bin/python tools/academic_language_guard.py workspace/drafts/sections
-  workspace/drafts/main.tex`；命中内部控制术语时先修改图稿和 caption，
-  再进行 figures_ready 登记。
+  workspace/drafts/main.tex`；命中内部控制术语时先修图稿和 caption，再登记。
+- 图内用词必须与正文术语表一致。排版线的 `tools/layout_guard.py` D2 检查会把图件
+  PDF 的文字抽出来和 `templates/glossary_materials_zh.json` 逐条比对 —— **对不上要改图源、
+  不要改正文**（实抓 15 处：热史→热历史、慢冷→缓冷、批量相纯→块体相纯…）。

@@ -39,7 +39,8 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
      这类条目不入 Crossref/OpenAlex 索引，常规路由必然 UNVERIFIED。正确做法是
      **实读官方来源**（摘要集 PDF、机构库、出版社页面），把实读回执写进
      papers.jsonl（access ≥ abstract + 定位），条目写成本身的 author/title/
-     booktitle 或 school/year，`url` 给官方主机，`note` 说明来源与页码，并加
+     booktitle 或 school/year，`url` 给官方主机 —— **openalex / semanticscholar / scholar.google / researchgate 一律不算官方**
+     （refcheck 会直接拒绝），`note` 说明来源与页码，并加
      `verified = {manual: <who> <YYYY-MM-DD> <locator>}`——refcheck 返回 MANUAL，
      闸门放行、报告单列，终审须人眼复核。**禁止**为了让检查通过把条目改成
      整卷/整集的 DOI 与题名（实跑中会议摘要被改写成整本摘要集的题名与 DOI，
@@ -49,7 +50,9 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
      终稿参考文献无法定位到具体一期（审稿实抓：80 篇里 79 篇缺卷期页码）。修完
      裁决后运行 `.venv/bin/python tools/bib_enrich.py <bib> --write --fix-year`
      （Crossref 按 DOI 只补缺、年份统一为出版年），再跑 `tools/bib_polish.py --write`
-     （化学式下标与花括号保护、X-ray、全大写姓名/标题、Rietveld 等专名）。
+          （化学式下标与花括号保护、X-ray、全大写姓名/标题、Rietveld 等专名；另修被错切的
+     花括号、把固溶体链写成单 token `{Ba$_{1-x}$Sr$_x$Zn$_2$Si$_2$O$_7$}`、作者/标题走
+     NFKC，并对拉丁人名里的西里尔/希腊同形字报 warning，`--strict` 时退出 1）。
 3. 修完后**复跑** `verify_bib_file` 直到 gate=PASS，然后
    `loopctl gate --name ref_integrity --status PASS --detail "<N条全过>"`。
    - **不收敛 fallback**：应用 suggested_bibtex 后复跑仍是同一条 MISMATCH，
@@ -60,7 +63,25 @@ arXiv 年份冒充会议年份、v1/v3 标题漂移、作者顺序调换。你�
      并在账本 log 留痕；两条路由都过不了才算真 MISMATCH。
 4. 稿件阶段追加一致性闸门：
    `python3 tools/bib_guard.py workspace/drafts/sections workspace/library/references.bib`
-   （未定义 \cite key = 阻塞；孤儿条目酌情清理）。
+   （未定义 \cite key = 阻塞；孤儿条目酌情清理；`--max-keys-per-cite`（默认 5）拦引用墙 ——
+   一处 `\cite` 挂十几个 key 是「堆引用充数」的信号，不是严谨）。
+
+## 机制化门禁（别只靠人眼）
+
+这些是把审计发现固化成的自动检查，每条都对应一次真实返工，`docs/FAILURE_MODE_FIXES.md` 各有一行。
+
+| 检查 | 拦什么 |
+|---|---|
+| `bib_guard --max-keys-per-cite`（默认 5） | 引用墙：一处 `\cite` 堆十几个 key |
+| `academic_language_guard --negative-claims` | **摘要/结论里的"未见报道""尚无"类负面存在性断言，必须在 `workspace/notes/negative_claims.md` 里有检索回执**；英文内部术语与路径泄漏按整词匹配（`\ref`/`\label`/`\cite` 的参数已屏蔽） |
+| `pdf_guard --lang zh\|en --scope` | 中文稿要有「摘要」「参考文献」标签和真正的 CJK 字族（只有 Droid Sans Fallback/DejaVu 的 Han 字形判失败）；英文稿要有 Abstract + References。loopctl 在 draft_complete 与 check-done 时把 scope.md 的语言传进去 |
+| `tex_guard` 规则 9/11/12 | article+xeCJK 有 `\begin{abstract}` 却没改 `\abstractname`；NA 填充表（NA 单元 >30% 或每文件 `\texttt{NA}` >20）；以「。」结尾的 run-in 标题 |
+| refcheck dataset/component | 数据集/构件记录改提 `@misc`（作者取机构或出版方）；占位作者判 MISMATCH；被截断的题名按登记表补全 |
+| `loopctl` gate 级联 | 重录 review_pass 的任一上游 gate → 它立刻置回 PENDING「上游 gate 重录，需复审」并记 `gate_stale`。**防的是上游改了、下游 PASS 还挂着** |
+| `package_submission.sh` | 对每份待发台账副本跑 `loopctl check-done` 必须通过；`--allow-incomplete` 才放行，并在 MANIFEST.sha256 追加 WARN 行 |
+
+`scripts/build_tex.sh` 已把 `bib_enrich`（离线可跳过）→ `bib_polish --write` 接进编译链，
+并在日志出现 `Missing character` 时直接失败。**别绕过这条链手工编译终稿。**
 
 ## 深度档规程（super_ref）
 
