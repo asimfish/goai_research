@@ -30,9 +30,10 @@ intake → scoping → [lit_search ∥ style_bank]   ← 两路并行
 | style_bank | goai-style-bank | `style_bank_ready`（30 篇经典综述风格卡 + 范图库） |
 | ref_gate | goai-ref-guard | `ref_integrity`（verify_bib_file gate=PASS） |
 | taxonomy | goai-survey-writer（阶段一） | `taxonomy_ready`（分类法 + 每叶 ≥3 篇支撑） |
-| figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 svg+drawio 双产物齐全；**含行文路线图**；主图走 image-first 两轮候选制） |
+| figures | goai-figure-studio / goai-figure-editable | `figures_ready`（每图 pptx+svg+矢量 pdf 三件套齐全，中英两版；**含行文路线图**；主图走 image-first 两轮候选制；本地 precheck 0 hard） |
 | ideas | goai-idea-forge | `ideas_reviewed`（提案经审核+引用二次查验；材料 idea 带 retro MCP 前驱体预测。**合成/制备/生长/烧结/工艺类主题必做**：`loopctl` 拒绝「跳过」类 WARN，并要求账本建立后的 `predict_precursor_routes` 调用记录 + `ideas/` 下写明推荐工艺与前驱体的产出） |
 | writing | goai-survey-writer | `draft_complete`（bib_guard + tex_guard + academic_language_guard + **pdf_guard** PASS + 全节完成 + 骨架强制项齐；缺 TeX 环境 = FAIL，不许回退渲染器冒充 PDF） |
+| typeset | goai-typeset | `typeset_ready`（`tools/build_and_guard.sh` 编出的每份 PDF 都 layout_guard PASS；FAIL 0，WARN 逐条处置或写保留理由） |
 | review | goai-reviewer | `review_pass`（无 open blocker/major；终审含制作质量逐页 PDF 审计） |
 
 ## 执行规程
