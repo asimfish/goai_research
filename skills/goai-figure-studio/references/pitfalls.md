@@ -72,3 +72,8 @@ Every entry cost at least one round trip. Read before debugging something that l
   too wide (a single long word), move the label into the gap above the card instead of widening the lane.
 - **A two-line label is ~86 px tall.** Size the band gap from the label's real height, or it rides into the cards
   above it and hides the arrow it labels.
+- **Both language variants share one project directory.** `install_fig.py` once wrote `scene.resolved.json`,
+  `validation.json`, `fonts.json` and the gallery `render.png` under fixed names, so the English install silently
+  replaced the Chinese records and the gallery showed the English figure as "中文版". Records not already named
+  after the figure now take the variant suffix (`validation_en.json`, `render_en.png`); selftest installs both
+  variants and checks each record.

@@ -46,6 +46,45 @@ def build(path):
     return f
 
 
+def fake_build(root, lang):
+    """The files install_fig.py reads from an img2ppt build, with a per-language marker in each record."""
+    import json
+    import pypdfium2 as pdfium
+    from PIL import Image, ImageDraw
+    b = root / f'build_{lang}'
+    (b / 'render').mkdir(parents=True)
+    (b / 'svg').mkdir()
+    im = Image.new('RGB', (400, 300), 'white')
+    ImageDraw.Draw(im).rectangle([40, 40, 360, 260], fill='black')
+    im.save(b / 'render' / 'page_001.png')
+    doc = pdfium.PdfDocument.new()
+    doc.new_page(400, 300)
+    doc.save(str(b / 'render' / 'editable.pdf'))
+    (b / 'svg' / 'page_001.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg"/>')
+    (b / 'editable.pptx').write_bytes(lang.encode())
+    for rec in ('scene.resolved.json', 'validation.json', 'fonts.json'):
+        (b / rec).write_text(json.dumps({'lang': lang}))
+    return b
+
+
+def install_both(root):
+    import json
+    fig, media = root / 'fig', root / 'media'
+    fig.mkdir()
+    for lang, name in (('zh', 'demo'), ('en', 'demo_en')):
+        b = fake_build(root, lang)
+        subprocess.run([sys.executable, str(HERE / 'install_fig.py'), '--build', str(b),
+                        '--s5', str(b / 'render' / 'page_001.png'), '--project', 'demo', '--name', name,
+                        '--figdir', str(fig), '--crop', 'render', '--media', str(media)],
+                       check=True, capture_output=True)
+    d, m = fig / 'figstudio' / 'demo' / 'deliverables', media / 'demo'
+    for lang, sfx in (('zh', ''), ('en', '_en')):
+        for rec in ('scene.resolved', 'validation', 'fonts'):
+            got = json.loads((d / f'{rec}{sfx}.json').read_text())['lang']
+            assert got == lang, f'{rec}{sfx}.json holds the {got} record'
+        assert (m / f'render{sfx}.png').exists(), f'render{sfx}.png missing from the gallery'
+
+
 def main():
     out = Path(tempfile.mkdtemp()) / 'selftest.json'
     f = build(out)
@@ -90,6 +129,15 @@ def main():
     r = subprocess.run([sys.executable, str(HERE / 'precheck.py'), str(tiny_path)], capture_output=True, text=True)
     assert r.returncode and 'print_too_small' in r.stdout, 'precheck let 5 pt text through'
     print('precheck rejects text below the printed floor')
+
+    # installing the Chinese and English variants into one project must keep both sets of records
+    try:
+        import pypdfium2, PIL  # noqa: F401  (install_fig.py needs both; hosts that only build scenes may not have them)
+    except ImportError as e:
+        print(f'install check SKIPPED: {e.name} is not installed on this host')
+    else:
+        install_both(out.parent)
+        print('install keeps the Chinese and English records apart')
 
     r = subprocess.run([sys.executable, str(HERE / 'precheck.py'), str(out)], capture_output=True, text=True)
     print(r.stdout.strip())
