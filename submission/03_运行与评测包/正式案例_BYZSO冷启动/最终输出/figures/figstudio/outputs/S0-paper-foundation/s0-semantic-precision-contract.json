@@ -1,0 +1,45 @@
+{
+  "project_family": "byzso-survey-figures",
+  "figures": {
+    "fig01_evidence_map": {
+      "figure_intent": "读者一眼看出：哪些文献能回答目标相合成的哪些问题，以及数值可迁移到多远。",
+      "ambiguous_directive_normalization": [
+        {"directive": "体现文献分级", "concrete_meaning": "五类来源按与目标相的距离排序，作为同一比较框架的输入", "visual_safe_instruction": "五个紧凑等级标记（同一列/同一环带序列），只画一次比较框架", "forbidden_interpretation": "为每类来源各画一条完整流程或一套表格"}
+      ],
+      "actor_or_condition_variation_matrix": {"repeated_family": "文献来源类别 ×5", "representation": "compact_markers_in_one_ordered_column"},
+      "role_visual_realization_contract": {"sources": "ordered ladder of 5 compact chips", "comparison": "one central ledger with 6 experiment-item rows", "uses": "one right column with 4 answerable-question cards", "warning": "one boundary label on the source→ledger connector"},
+      "process_instance_budget": {"comparison_ledger": 1, "use_column": 1, "source_ladder": 1},
+      "forbidden_misimplementation_locks": ["no five parallel pipelines", "非相关资料 must not connect to the ledger; it connects only to 排除 note", "no causal arrows from ledger rows to uses beyond the single bundled edge", "no figure title inside image"],
+      "downstream_s1_s4_carry_forward": "source ladder → single ledger → uses; one warning tag on the ladder→ledger bundle; 非相关资料 excluded path drawn dashed."
+    },
+    "fig02_route_matrix": {
+      "figure_intent": "读者一眼看出：五条合成路线在统一实验记录下并列比较，四类互补表征各回答什么。",
+      "ambiguous_directive_normalization": [
+        {"directive": "路线—变量—验证统一比较", "concrete_meaning": "路线是输入，统一记录是唯一比较层，表征是输出解释层", "visual_safe_instruction": "五条短工艺条（≤3 步）汇入一个记录账本；账本到四个表征卡各一条带标签边", "forbidden_interpretation": "每条路线各接一套表征；把变量画成与路线并列的方块"}
+      ],
+      "actor_or_condition_variation_matrix": {"repeated_family": "合成路线 ×5", "representation": "five short strips, distinct steps per strip (source-grounded), merging once"},
+      "role_visual_realization_contract": {"routes": "5 compact strips with 3 step tokens each", "record": "1 ledger card with 4 record rows", "checks": "4 characterization cards with a simple icon motif each", "boundary": "one boundary label under the ledger: 抽取框架 ≠ 实验处方"},
+      "process_instance_budget": {"record_ledger": 1, "checks_group": 1, "route_strips": 5},
+      "forbidden_misimplementation_locks": ["no route→check direct arrows", "no causal wording", "Czochralski marked 工艺参照 (dashed strip outline)", "no title in image", "no more than 5 route strips"],
+      "downstream_s1_s4_carry_forward": "edge labels carry the recorded item names (配比·温度 / 熔体·容器 / 混合·煅烧 / 研磨·污染 / 籽晶·退火) and the check meanings (结构 / 相组成 / 成分 / 高温)."
+    },
+    "fig03_roadmap": {
+      "figure_intent": "读者一眼看出：从文献依据到可检验实验的闭环，以及并行的固相/长晶两支各回答什么。",
+      "ambiguous_directive_normalization": [
+        {"directive": "研究路线", "concrete_meaning": "一条主线 + 一次分叉（固相/长晶）+ 一条反馈环 + 三个待答问题", "visual_safe_instruction": "主线居中，分叉在前驱体之后，合流于结果反馈；反馈环回到结构假设；三个问题作为紧凑标签挂在相应阶段", "forbidden_interpretation": "为 Zn/Mg/Co 三个目标各画一条流程；多条反馈环"}
+      ],
+      "actor_or_condition_variation_matrix": {"repeated_family": "假设目标 Zn/Mg/Co ×3", "representation": "one tag on the precursor module (ZnO / MgO / Co3O4), never three lanes"},
+      "role_visual_realization_contract": {"mainline": "文献依据 → 结构假设 → 前驱体 → {固相成相 | 高温溶液长晶} → 结果反馈", "feedback": "one return edge 结果反馈 → 结构假设, labelled 更新组成与工艺", "questions": "three compact question tags attached to 结构假设 / 分叉 / 结果反馈"},
+      "process_instance_budget": {"mainline": 1, "branches": 2, "feedback_loops": 1},
+      "forbidden_misimplementation_locks": ["no per-element lanes", "no second feedback loop", "precursor module must carry 模型排序≠验证 tag", "no title in image"],
+      "downstream_s1_s4_carry_forward": "branch outputs are distinct: 批量相区与相纯度 (solid) vs 单晶结构与液相选择性 (growth)."
+    }
+  },
+  "palette_human_taste_contract": {
+    "canvas": "#FFFFFF opaque", "ink": "#2B2F33", "panel_fill": "#F3F5F6", "primary_accent": "#1F6F78 (deep teal: mainline / comparison layer)",
+    "secondary_accent": "#B8862B (warm ochre: caveats, model-derived or hypothesis items)", "tertiary_neutral": "#8A9199",
+    "anti_ai_rules": ["no blue-purple gradients", "no neon", "no glass/orb/glow/bokeh", "no 3D extrusion", "no rainbow ramps", "no decorative icons unrelated to the paper"],
+    "grayscale": "distinctions also carried by line style (solid/dashed) and chip shape"
+  },
+  "layout_density_contract": {"density_target": "compact_balanced", "primary_content_pct": "70-80", "context_pct": "<=10", "legend_pct": "<=8", "no_top_banner": true, "no_title": true}
+}

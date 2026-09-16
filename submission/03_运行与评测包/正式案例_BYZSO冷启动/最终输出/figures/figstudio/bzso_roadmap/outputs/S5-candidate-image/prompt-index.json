@@ -1,0 +1,29 @@
+{
+ "project_id": "bzso_roadmap",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "F01",
+   "candidate_title": "箭头带（C04 主导）",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F01.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C04.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "F02",
+   "candidate_title": "蛇形双行（C02 主导）",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F02.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

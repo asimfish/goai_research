@@ -1,0 +1,48 @@
+{
+ "project_id": "bzso_roadmap",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 3,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R01",
+   "candidate_title": "单行六卡（分区着色）",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R01.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R02",
+   "candidate_title": "蛇形双行（分区着色）",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R02.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R03",
+   "candidate_title": "阶梯上升",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R03.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R04",
+   "candidate_title": "垂直时间线",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R04.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

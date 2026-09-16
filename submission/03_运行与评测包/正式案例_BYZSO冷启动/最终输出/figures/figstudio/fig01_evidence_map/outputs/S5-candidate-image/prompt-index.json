@@ -1,0 +1,31 @@
+{
+ "project_id": "fig01_evidence_map",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "F01",
+   "candidate_title": "文献条 + 比较表（C04 主导，融合 C01 的梯度编码）",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F01.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C04.png",
+    "outputs/S2-sketch-explore/generated/C01.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "F02",
+   "candidate_title": "阶梯—账本—扇出（C01 主导）",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F02.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C01.png",
+    "outputs/S2-sketch-explore/generated/C04.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

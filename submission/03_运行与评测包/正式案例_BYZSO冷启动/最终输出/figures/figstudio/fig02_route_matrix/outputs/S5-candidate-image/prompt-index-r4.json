@@ -1,0 +1,28 @@
+{
+ "project_id": "fig02_route_matrix",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 4,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R05",
+   "candidate_title": "三层 + 路线卡内部工艺链",
+   "round": 4,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R05.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R05.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R06",
+   "candidate_title": "三带 + 路线卡内部工艺链",
+   "round": 4,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R06.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R06.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

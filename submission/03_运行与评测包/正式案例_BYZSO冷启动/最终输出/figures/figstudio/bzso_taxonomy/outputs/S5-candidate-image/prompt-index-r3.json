@@ -1,0 +1,48 @@
+{
+ "project_id": "bzso_taxonomy",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 3,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R01",
+   "candidate_title": "辐射式（分区着色）",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R01.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R02",
+   "candidate_title": "左根树（分区着色）",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R02.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R03",
+   "candidate_title": "扇区环",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R03.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R04",
+   "candidate_title": "分组列（分区着色）",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R04.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "project_id": "fig03_roadmap",
+ "stage": "S2-SKETCH-EXPLORE",
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "C01",
+   "candidate_title": "主线 + 反馈弧 + 问题标签",
+   "source_style_combination_id": "SC01",
+   "first_round_default_style_id": "formal_publication_schematic",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C01.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C01.png",
+   "size": "1536x1024",
+   "quality": "high",
+   "reference_image_paths": []
+  },
+  {
+   "candidate_id": "C02",
+   "candidate_title": "闭环",
+   "source_style_combination_id": "SC02",
+   "first_round_default_style_id": "formal_publication_schematic",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C02.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C02.png",
+   "size": "1536x1024",
+   "quality": "high",
+   "reference_image_paths": []
+  },
+  {
+   "candidate_id": "C03",
+   "candidate_title": "双带：主线 + 问题卡",
+   "source_style_combination_id": "SC03",
+   "first_round_default_style_id": "formal_publication_schematic",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C03.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C03.png",
+   "size": "1536x1024",
+   "quality": "high",
+   "reference_image_paths": []
+  },
+  {
+   "candidate_id": "C04",
+   "candidate_title": "并行双支为核心",
+   "source_style_combination_id": "SC04",
+   "first_round_default_style_id": "formal_publication_schematic",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C04.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C04.png",
+   "size": "1536x1024",
+   "quality": "high",
+   "reference_image_paths": []
+  }
+ ]
+}

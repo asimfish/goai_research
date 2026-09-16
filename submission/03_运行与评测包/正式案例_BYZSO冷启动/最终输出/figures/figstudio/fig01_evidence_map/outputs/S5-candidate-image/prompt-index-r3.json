@@ -1,0 +1,48 @@
+{
+ "project_id": "fig01_evidence_map",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 3,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R01",
+   "candidate_title": "三区：证据阶梯 → 比较账本 → 可回答问题",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R01.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R02",
+   "candidate_title": "同心环证据距离 + 账本",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R02.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R03",
+   "candidate_title": "上下三行：来源行 → 比较行 → 结论行",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R03.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R04",
+   "candidate_title": "漏斗汇聚：来源经比较门到结论",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R04.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

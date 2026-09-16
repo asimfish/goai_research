@@ -1,0 +1,48 @@
+{
+ "project_id": "fig02_route_matrix",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 3,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R01",
+   "candidate_title": "三层：路线区 → 统一记录 → 表征区",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R01.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R02",
+   "candidate_title": "三带：路线条 → 账本 → 表征卡",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R02.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R03",
+   "candidate_title": "中心账本 + 两翼",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R03.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R04",
+   "candidate_title": "路线矩阵 + 表征列",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R04.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}
