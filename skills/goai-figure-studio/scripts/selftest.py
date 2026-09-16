@@ -131,8 +131,13 @@ def main():
     print('precheck rejects text below the printed floor')
 
     # installing the Chinese and English variants into one project must keep both sets of records
-    install_both(out.parent)
-    print('install keeps the Chinese and English records apart')
+    try:
+        import pypdfium2, PIL  # noqa: F401  (install_fig.py needs both; hosts that only build scenes may not have them)
+    except ImportError as e:
+        print(f'install check SKIPPED: {e.name} is not installed on this host')
+    else:
+        install_both(out.parent)
+        print('install keeps the Chinese and English records apart')
 
     r = subprocess.run([sys.executable, str(HERE / 'precheck.py'), str(out)], capture_output=True, text=True)
     print(r.stdout.strip())
