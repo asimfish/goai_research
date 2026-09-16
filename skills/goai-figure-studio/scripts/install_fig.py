@@ -1,7 +1,9 @@
 """Install a finished figure-studio figure into the paper tree and the dashboard media.
 usage: install_fig.py --build <img2ppt build dir> --s5 <S5 final png> --project <figstudio project id> --name <figure basename> --figdir <paper figures dir> [--margin 12]
 Writes figures/pdf/<name>.pdf (vector, cropped from render/editable.pdf), figures/png/<name>.png (S5 raster cropped), figures/svg/<name>.svg,
-keeps the figure it replaces in figures/{pdf,png,svg}_prev/, copies deliverables into figures/figstudio/<project>/deliverables/ and, with --media, mirrors the deliverables into a gallery dir."""
+keeps the figure it replaces in figures/{pdf,png,svg}_prev/, copies deliverables into figures/figstudio/<project>/deliverables/ and, with --media, mirrors the deliverables into a gallery dir.
+A project holds both language variants (<name> and <name>_en), so every record that is not already named after the figure
+carries the variant suffix: scene.resolved_en.json, validation_en.json, fonts_en.json, render_en.png."""
 import argparse, shutil, json
 from pathlib import Path
 from PIL import Image, ImageChops
@@ -12,6 +14,7 @@ ap.add_argument('--crop', choices=('union', 'render'), default='union',
                      'render: the reconstruction only (round 4+, where the rebuild sets its own canvas usage)')
 a = ap.parse_args(); B = Path(a.build); F = Path(a.figdir)
 M = Path(a.media) / a.project if a.media else None
+SFX = '_en' if a.name.endswith('_en') else ''   # without it the English install overwrites the Chinese records
 if M: M.mkdir(parents=True, exist_ok=True)
 im = Image.open(a.s5).convert('RGB'); W, H = im.size
 def bbox_of(img):
@@ -45,9 +48,9 @@ src_png.crop((round(x0 * sc), round(y0 * sc), round(x1 * sc), round(y1 * sc))).s
 print('png', (round((x1 - x0) * sc), round((y1 - y0) * sc)), 'from', 'render' if src_png is not im else 'S5 raster')
 shutil.copy2(B / 'svg' / 'page_001.svg', F / 'svg' / f'{a.name}.svg')
 D = F / 'figstudio' / a.project / 'deliverables'; D.mkdir(parents=True, exist_ok=True)
-for src, dst in ((B / 'editable.pptx', f'{a.name}_editable.pptx'), (B / 'render' / 'editable.pdf', f'{a.name}_editable_render.pdf'), (B / 'render' / 'page_001.png', f'{a.name}_render_libreoffice.png'), (B / 'scene.resolved.json', 'scene.resolved.json'), (B / 'validation.json', 'validation.json'), (B / 'fonts.json', 'fonts.json')):
+for src, dst in ((B / 'editable.pptx', f'{a.name}_editable.pptx'), (B / 'render' / 'editable.pdf', f'{a.name}_editable_render.pdf'), (B / 'render' / 'page_001.png', f'{a.name}_render_libreoffice.png'), (B / 'scene.resolved.json', f'scene.resolved{SFX}.json'), (B / 'validation.json', f'validation{SFX}.json'), (B / 'fonts.json', f'fonts{SFX}.json')):
     shutil.copy2(src, D / dst)
 if M:
-    for src, dst in ((B / 'editable.pptx', f'{a.name}_editable.pptx'), (F / 'svg' / f'{a.name}.svg', f'{a.name}_editable.svg'), (F / 'pdf' / f'{a.name}.pdf', f'{a.name}_vector.pdf'), (B / 'render' / 'page_001.png', 'render.png')):
+    for src, dst in ((B / 'editable.pptx', f'{a.name}_editable.pptx'), (F / 'svg' / f'{a.name}.svg', f'{a.name}_editable.svg'), (F / 'pdf' / f'{a.name}.pdf', f'{a.name}_vector.pdf'), (B / 'render' / 'page_001.png', f'render{SFX}.png')):
         shutil.copy2(src, M / dst)
 print('installed', a.name, '→', F, *(('and media', M) if M else ()))

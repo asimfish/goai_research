@@ -213,6 +213,8 @@ python3 skills/goai-figure-studio/scripts/install_fig.py \
 
 - `--crop render`：按重建自己的 bbox 裁，不按生图位图裁（按位图裁会切掉重建
   路由到位图范围外的连线）。
+- 英文版 `--name` 以 `_en` 结尾，同一 `--project` 下的记录自动带后缀
+  （`validation_en.json`、画廊 `render_en.png`），中英两版不会互相覆盖。
 - **中文图的 `validation.json` 会是 `status: fail`** —— 那是 LibreOffice 把 Noto CJK
   嵌成 `…-VKana` 造成的字体命名假阳性，`rendered_ink_width_drift` 则是中西文混排
   自动补空。两者都在 `references/pitfalls.md` 里有条目，**不要因此说图失败了**，
