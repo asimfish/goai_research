@@ -1,0 +1,32 @@
+{
+ "project_id": "bzso_taxonomy",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 2,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "F03",
+   "candidate_title": "辐射式，等角分布（C01 方向）",
+   "round": 2,
+   "prompt_path": "outputs/S5-candidate-image/prompts/F03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F03.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C01.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "F04",
+   "candidate_title": "辐射式，内外两层（C01 方向）",
+   "round": 2,
+   "prompt_path": "outputs/S5-candidate-image/prompts/F04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F04.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C01.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

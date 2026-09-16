@@ -1,0 +1,48 @@
+{
+ "project_id": "fig03_roadmap",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 3,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R01",
+   "candidate_title": "左列证据 → 并行双支方法区 → 反馈",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R01.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R02",
+   "candidate_title": "水平主线 + 反馈弧 + 问题行",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R02.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R03",
+   "candidate_title": "闭环圆盘",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R03.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R04",
+   "candidate_title": "两级：上证据行、下方法行",
+   "round": 3,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R04.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

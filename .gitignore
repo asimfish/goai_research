@@ -41,3 +41,15 @@ dist/
 # 控制台前端（Vite）构建产物随仓库提交，python3 tools/console_server.py 直接托管，不需要 node
 !tools/console/dist/
 tools/console/node_modules/
+
+# --- 图件线的副产品（不是交付件）---
+# install_fig 替换图件时留下的旧版备份
+**/figures/pdf_drawio_v1/
+**/figures/png_drawio_v1/
+**/figures/svg_drawio_v1/
+**/figures/pdf_prev/
+**/figures/png_prev/
+**/figures/svg_prev/
+# 图件线的对照编译与编译日志（正式件是 main_zh3.pdf / main_en.pdf）
+**/main_*_figstudio_r5.pdf
+**/main_zh3_figs.log

@@ -1,0 +1,1501 @@
+{
+  "status": "fail",
+  "visual_review": "required",
+  "automated_checks": {
+    "preflight": {
+      "status": "pass",
+      "findings": [
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "c1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 94.75,
+            "height_px": 34.5,
+            "available_width_px": 182,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 95.25,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "文献依据"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "c2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 94.75,
+            "height_px": 34.5,
+            "available_width_px": 190,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 95.25,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "结构假设"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "c3_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 189.5,
+            "height_px": 34.5,
+            "available_width_px": 190,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 190.0,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "模型筛选的前驱体"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "l1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 94.75,
+            "height_px": 34.5,
+            "available_width_px": 279,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 95.25,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "固相成相"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "l2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 142.25,
+            "height_px": 34.5,
+            "available_width_px": 279,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 142.75,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "高温溶液长晶"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "c5_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 23.6914,
+            "width_px": 94.75,
+            "height_px": 34.5,
+            "available_width_px": 267,
+            "available_height_px": 39,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 95.25,
+            "required_height_px": 35.0,
+            "fits": true,
+            "lines": [
+              "结果反馈"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "q1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 21.869,
+            "width_px": 301.535,
+            "height_px": 32.0,
+            "available_width_px": 491,
+            "available_height_px": 36,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 302.035,
+            "required_height_px": 32.5,
+            "fits": true,
+            "lines": [
+              "Zn 是否进入并与氧计量耦合？"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "q2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 21.869,
+            "width_px": 262.5,
+            "height_px": 32.0,
+            "available_width_px": 491,
+            "available_height_px": 36,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 263.0,
+            "required_height_px": 32.5,
+            "fits": true,
+            "lines": [
+              "稳定相区还是液相选择性？"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "q3_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.911208,
+            "effective_font_size_px": 21.869,
+            "width_px": 306.25,
+            "height_px": 32.0,
+            "available_width_px": 508,
+            "available_height_px": 36,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 306.75,
+            "required_height_px": 32.5,
+            "fits": true,
+            "lines": [
+              "实际组成与结构信号如何对应？"
+            ]
+          }
+        }
+      ],
+      "slides": [
+        {
+          "id": "page_001",
+          "counts": {
+            "shape": 21,
+            "text": 31,
+            "image": 6,
+            "line": 24
+          },
+          "intentional_overlaps": [
+            {
+              "elements": [
+                "zL",
+                "e1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 105.5
+            },
+            {
+              "elements": [
+                "zL",
+                "e2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 93.5
+            },
+            {
+              "elements": [
+                "zL",
+                "fk0_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 50.0
+            },
+            {
+              "elements": [
+                "zL",
+                "fb_3"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 236.0
+            },
+            {
+              "elements": [
+                "zE",
+                "fk1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 119.5
+            },
+            {
+              "elements": [
+                "zE",
+                "fk2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 119.5
+            },
+            {
+              "elements": [
+                "zE",
+                "mg1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 66.0
+            },
+            {
+              "elements": [
+                "zE",
+                "mg2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 66.0
+            },
+            {
+              "elements": [
+                "zR",
+                "mg3_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 105.5
+            },
+            {
+              "elements": [
+                "zR",
+                "fb_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 100.0
+            },
+            {
+              "elements": [
+                "fk0_0",
+                "fkv_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 2.0
+            },
+            {
+              "elements": [
+                "fkv_0",
+                "fk1_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.0
+            },
+            {
+              "elements": [
+                "fkv_0",
+                "fk2_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.0
+            },
+            {
+              "elements": [
+                "mg1_0",
+                "mgv_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.0
+            },
+            {
+              "elements": [
+                "mg2_0",
+                "mgv_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.0
+            },
+            {
+              "elements": [
+                "mgv_0",
+                "mg3_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.0
+            },
+            {
+              "elements": [
+                "fb_0",
+                "fb_2"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.0
+            },
+            {
+              "elements": [
+                "fb_1",
+                "fb_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.0
+            }
+          ],
+          "text_layouts": {
+            "zL_l": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 100,
+              "available_height_px": 33,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "文献证据"
+              ]
+            },
+            "zE_l": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 100,
+              "available_height_px": 33,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "实验方法"
+              ]
+            },
+            "zR_l": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 100,
+              "available_height_px": 33,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "结果反馈"
+              ]
+            },
+            "zQ_l": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 100,
+              "available_height_px": 33,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "判断提醒"
+              ]
+            },
+            "c1_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 94.75,
+              "height_px": 34.5,
+              "available_width_px": 182,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 95.25,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "文献依据"
+              ]
+            },
+            "c1_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 148.555,
+              "height_px": 29.25,
+              "available_width_px": 238,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 149.055,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "Ba–Y–Si–O 谱系"
+              ]
+            },
+            "c1_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 202.75,
+              "height_px": 29.25,
+              "available_width_px": 238,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 203.25,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "Ba–Zn–Si–O 结构近邻"
+              ]
+            },
+            "c1_k2": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 152.824,
+              "height_px": 29.25,
+              "available_width_px": 238,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 153.324,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "Y–Si–O 工艺参照"
+              ]
+            },
+            "c2_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 94.75,
+              "height_px": 34.5,
+              "available_width_px": 190,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 95.25,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "结构假设"
+              ]
+            },
+            "c2_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 120.0,
+              "height_px": 29.25,
+              "available_width_px": 246,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 120.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "局部组成网格"
+              ]
+            },
+            "c2_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 158.598,
+              "height_px": 29.25,
+              "available_width_px": 246,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 159.098,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "Zn–Y–氧计量耦合"
+              ]
+            },
+            "c2_k2": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 140.0,
+              "height_px": 29.25,
+              "available_width_px": 246,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 140.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "竞争相与玻璃区"
+              ]
+            },
+            "c3_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 189.5,
+              "height_px": 34.5,
+              "available_width_px": 190,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 190.0,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "模型筛选的前驱体"
+              ]
+            },
+            "c3_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 227.504,
+              "height_px": 23.5,
+              "available_width_px": 246,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 228.004,
+              "required_height_px": 24.0,
+              "fits": true,
+              "lines": [
+                "BaCO3 + Y2O3 + SiO2"
+              ]
+            },
+            "c3_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 194.25,
+              "height_px": 23.5,
+              "available_width_px": 246,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 194.75,
+              "required_height_px": 24.0,
+              "fits": true,
+              "lines": [
+                "ZnO / MgO / Co3O4"
+              ]
+            },
+            "c3_tgt": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 143.25,
+              "height_px": 27.75,
+              "available_width_px": 155,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 143.75,
+              "required_height_px": 28.25,
+              "fits": true,
+              "lines": [
+                "模型排序 ≠ 验证"
+              ]
+            },
+            "l1_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 94.75,
+              "height_px": 34.5,
+              "available_width_px": 279,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 95.25,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "固相成相"
+              ]
+            },
+            "l1_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 219.0,
+              "height_px": 29.25,
+              "available_width_px": 335,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 219.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "分段煅烧 → 复磨 → 退火"
+              ]
+            },
+            "l1_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 160.0,
+              "height_px": 29.25,
+              "available_width_px": 335,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 160.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "批量相区与相纯度"
+              ]
+            },
+            "l2_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 142.25,
+              "height_px": 34.5,
+              "available_width_px": 279,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 142.75,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "高温溶液长晶"
+              ]
+            },
+            "l2_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 179.0,
+              "height_px": 29.25,
+              "available_width_px": 335,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 179.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "助熔 → 保温 → 慢冷"
+              ]
+            },
+            "l2_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 200.0,
+              "height_px": 29.25,
+              "available_width_px": 335,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 200.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "单晶结构与液相选择性"
+              ]
+            },
+            "c5_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 23.6914,
+              "width_px": 94.75,
+              "height_px": 34.5,
+              "available_width_px": 267,
+              "available_height_px": 39,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 95.25,
+              "required_height_px": 35.0,
+              "fits": true,
+              "lines": [
+                "结果反馈"
+              ]
+            },
+            "c5_k0": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 156.523,
+              "height_px": 23.5,
+              "available_width_px": 323,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 157.023,
+              "required_height_px": 24.0,
+              "fits": true,
+              "lines": [
+                "PXRD / Rietveld"
+              ]
+            },
+            "c5_k1": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 69.75,
+              "height_px": 23.5,
+              "available_width_px": 323,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 70.25,
+              "required_height_px": 24.0,
+              "fits": true,
+              "lines": [
+                "SCXRD"
+              ]
+            },
+            "c5_k2": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 167.25,
+              "height_px": 23.5,
+              "available_width_px": 323,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 167.75,
+              "required_height_px": 24.0,
+              "fits": true,
+              "lines": [
+                "EDS / EPMA / ICP"
+              ]
+            },
+            "c5_k3": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 160.0,
+              "height_px": 29.25,
+              "available_width_px": 323,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 160.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "高温相与冷却产物"
+              ]
+            },
+            "q1_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 21.869,
+              "width_px": 301.535,
+              "height_px": 32.0,
+              "available_width_px": 491,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 302.035,
+              "required_height_px": 32.5,
+              "fits": true,
+              "lines": [
+                "Zn 是否进入并与氧计量耦合？"
+              ]
+            },
+            "q2_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 21.869,
+              "width_px": 262.5,
+              "height_px": 32.0,
+              "available_width_px": 491,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 263.0,
+              "required_height_px": 32.5,
+              "fits": true,
+              "lines": [
+                "稳定相区还是液相选择性？"
+              ]
+            },
+            "q3_t": {
+              "scale": 0.911208,
+              "effective_font_size_px": 21.869,
+              "width_px": 306.25,
+              "height_px": 32.0,
+              "available_width_px": 508,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 306.75,
+              "required_height_px": 32.5,
+              "fits": true,
+              "lines": [
+                "实际组成与结构信号如何对应？"
+              ]
+            },
+            "fb_p_t": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 140.0,
+              "height_px": 29.25,
+              "available_width_px": 156,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 140.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "更新组成与工艺"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "native_objects": {
+      "status": "pass",
+      "findings": [],
+      "slide_count": 1
+    },
+    "rendered_text": {
+      "status": "fail",
+      "renderer": "LibreOffice/PDFium",
+      "findings": [
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zL_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zE_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zR_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zQ_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c1_k0",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c1_k1",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c1_k2",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c2_k0",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c2_k1",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c2_k2",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c3_tgt",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l1_k0",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l1_k1",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l2_k0",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "l2_k1",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c5_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c5_k3",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "q1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "q2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "q3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "fb_p_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        }
+      ],
+      "text_boxes": [
+        {
+          "slide": "page_001",
+          "element": "zL_l",
+          "expected": "文献证据",
+          "rendered": "文献证据 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.75,
+          "rendered_ink_width_px": 86.571
+        },
+        {
+          "slide": "page_001",
+          "element": "zE_l",
+          "expected": "实验方法",
+          "rendered": "实验方法 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.0,
+          "rendered_ink_width_px": 85.65
+        },
+        {
+          "slide": "page_001",
+          "element": "zR_l",
+          "expected": "结果反馈",
+          "rendered": "结果反馈",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 87.25,
+          "rendered_ink_width_px": 86.945
+        },
+        {
+          "slide": "page_001",
+          "element": "zQ_l",
+          "expected": "判断提醒",
+          "rendered": "判断提醒",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.75,
+          "rendered_ink_width_px": 86.462
+        },
+        {
+          "slide": "page_001",
+          "element": "c1_t",
+          "expected": "文献依据",
+          "rendered": "文献依据",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 93.5,
+          "rendered_ink_width_px": 92.963
+        },
+        {
+          "slide": "page_001",
+          "element": "c1_k0",
+          "expected": "Ba–Y–Si–O 谱系",
+          "rendered": "Ba–Y–Si–O 谱系",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 145.555,
+          "rendered_ink_width_px": 149.484
+        },
+        {
+          "slide": "page_001",
+          "element": "c1_k1",
+          "expected": "Ba–Zn–Si–O 结构近邻",
+          "rendered": "Ba–Zn–Si–O 结构近邻",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 199.965,
+          "rendered_ink_width_px": 203.845
+        },
+        {
+          "slide": "page_001",
+          "element": "c1_k2",
+          "expected": "Y–Si–O 工艺参照",
+          "rendered": "Y–Si–O 工艺参照",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 152.074,
+          "rendered_ink_width_px": 155.876
+        },
+        {
+          "slide": "page_001",
+          "element": "c2_t",
+          "expected": "结构假设",
+          "rendered": "结构假设",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 94.0,
+          "rendered_ink_width_px": 93.504
+        },
+        {
+          "slide": "page_001",
+          "element": "c2_k0",
+          "expected": "局部组成网格",
+          "rendered": "局部组成网格",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 119.25,
+          "rendered_ink_width_px": 118.404
+        },
+        {
+          "slide": "page_001",
+          "element": "c2_k1",
+          "expected": "Zn–Y–氧计量耦合",
+          "rendered": "Zn–Y– 氧计量耦合",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 157.348,
+          "rendered_ink_width_px": 161.41
+        },
+        {
+          "slide": "page_001",
+          "element": "c2_k2",
+          "expected": "竞争相与玻璃区",
+          "rendered": "竞争相与玻璃区",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 138.5,
+          "rendered_ink_width_px": 137.416
+        },
+        {
+          "slide": "page_001",
+          "element": "c3_t",
+          "expected": "模型筛选的前驱体",
+          "rendered": "模型筛选的前驱体",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 189.0,
+          "rendered_ink_width_px": 188.397
+        },
+        {
+          "slide": "page_001",
+          "element": "c3_k0",
+          "expected": "BaCO3 + Y2O3 + SiO2",
+          "rendered": "BaCO3 + Y2O3 + SiO2",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 223.75,
+          "rendered_ink_width_px": 222.11
+        },
+        {
+          "slide": "page_001",
+          "element": "c3_k1",
+          "expected": "ZnO / MgO / Co3O4",
+          "rendered": "ZnO / MgO / Co3O4",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 192.5,
+          "rendered_ink_width_px": 190.716
+        },
+        {
+          "slide": "page_001",
+          "element": "c3_tgt",
+          "expected": "模型排序 ≠ 验证",
+          "rendered": "模型排序 ≠ 验证",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 142.398,
+          "rendered_ink_width_px": 141.77
+        },
+        {
+          "slide": "page_001",
+          "element": "l1_t",
+          "expected": "固相成相",
+          "rendered": "固相成相",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 91.5,
+          "rendered_ink_width_px": 91.198
+        },
+        {
+          "slide": "page_001",
+          "element": "l1_k0",
+          "expected": "分段煅烧 → 复磨 → 退火",
+          "rendered": "分段煅烧 → 复磨 → 退火",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 217.453,
+          "rendered_ink_width_px": 215.749
+        },
+        {
+          "slide": "page_001",
+          "element": "l1_k1",
+          "expected": "批量相区与相纯度",
+          "rendered": "批量相区与相纯度",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 158.75,
+          "rendered_ink_width_px": 157.726
+        },
+        {
+          "slide": "page_001",
+          "element": "l2_t",
+          "expected": "高温溶液长晶",
+          "rendered": "高温溶液长晶",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 139.25,
+          "rendered_ink_width_px": 138.832
+        },
+        {
+          "slide": "page_001",
+          "element": "l2_k0",
+          "expected": "助熔 → 保温 → 慢冷",
+          "rendered": "助熔 → 保温 → 慢冷",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 177.703,
+          "rendered_ink_width_px": 176.093
+        },
+        {
+          "slide": "page_001",
+          "element": "l2_k1",
+          "expected": "单晶结构与液相选择性",
+          "rendered": "单晶结构与液相选择性",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 198.0,
+          "rendered_ink_width_px": 196.807
+        },
+        {
+          "slide": "page_001",
+          "element": "c5_t",
+          "expected": "结果反馈",
+          "rendered": "结果反馈",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 93.75,
+          "rendered_ink_width_px": 93.363
+        },
+        {
+          "slide": "page_001",
+          "element": "c5_k0",
+          "expected": "PXRD / Rietveld",
+          "rendered": "PXRD / Rietveld",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 153.0,
+          "rendered_ink_width_px": 151.794
+        },
+        {
+          "slide": "page_001",
+          "element": "c5_k1",
+          "expected": "SCXRD",
+          "rendered": "SCXRD",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 67.25,
+          "rendered_ink_width_px": 66.96
+        },
+        {
+          "slide": "page_001",
+          "element": "c5_k2",
+          "expected": "EDS / EPMA / ICP",
+          "rendered": "EDS / EPMA / ICP",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 165.0,
+          "rendered_ink_width_px": 163.097
+        },
+        {
+          "slide": "page_001",
+          "element": "c5_k3",
+          "expected": "高温相与冷却产物",
+          "rendered": "高温相与冷却产物",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 158.25,
+          "rendered_ink_width_px": 157.007
+        },
+        {
+          "slide": "page_001",
+          "element": "q1_t",
+          "expected": "Zn 是否进入并与氧计量耦合？",
+          "rendered": "Zn 是否进入并与氧计量耦合？ ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 289.285,
+          "rendered_ink_width_px": 293.51
+        },
+        {
+          "slide": "page_001",
+          "element": "q2_t",
+          "expected": "稳定相区还是液相选择性？",
+          "rendered": "稳定相区还是液相选择性？ ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 250.75,
+          "rendered_ink_width_px": 249.714
+        },
+        {
+          "slide": "page_001",
+          "element": "q3_t",
+          "expected": "实际组成与结构信号如何对应？",
+          "rendered": "实际组成与结构信号如何对应？",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 293.5,
+          "rendered_ink_width_px": 292.273
+        },
+        {
+          "slide": "page_001",
+          "element": "fb_p_t",
+          "expected": "更新组成与工艺",
+          "rendered": "更新组成与工艺",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 138.0,
+          "rendered_ink_width_px": 136.897
+        }
+      ],
+      "limitations": "This checks renderer output and glyph bounds; source recognition and target PowerPoint/WPS appearance still need visual review."
+    }
+  },
+  "limitations": [
+    "No claim of exact font identification from pixels.",
+    "Photographs and complex artwork remain independent raster assets.",
+    "PowerPoint/WPS must be checked separately from LibreOffice."
+  ],
+  "source_scene_sha256": "72de96db89eb9d3d9ca6991b08f31cac83b77dcba21b64a8ad3a76217dd2be4a",
+  "font_substitutions": [],
+  "artifacts": {
+    "pptx": "editable.pptx",
+    "svg": "svg/",
+    "scene": "scene.resolved.json",
+    "fonts": "fonts.json",
+    "render": "render/"
+  },
+  "comparisons": [
+    {
+      "slide": "page_001",
+      "mean_absolute_pixel_error": 0.084426,
+      "comparison": "page_001_comparison.png",
+      "interpretation": "Diagnostic only; antialiasing and renderer differences affect this number. It is not an acceptance score."
+    }
+  ]
+}

@@ -1,0 +1,1209 @@
+{
+  "status": "fail",
+  "visual_review": "required",
+  "automated_checks": {
+    "preflight": {
+      "status": "pass",
+      "findings": [
+        {
+          "slide": "page_001",
+          "code": "text_frame_overlap_only",
+          "severity": "info",
+          "elements": [
+            "ring4",
+            "lab_direct"
+          ],
+          "message": "Text-frame overlap is confined to blank space; measured visible ink remains separate"
+        },
+        {
+          "slide": "page_001",
+          "code": "text_frame_overlap_only",
+          "severity": "info",
+          "elements": [
+            "axis_near",
+            "bundle_a"
+          ],
+          "message": "Text-frame overlap is confined to blank space; measured visible ink remains separate"
+        }
+      ],
+      "slides": [
+        {
+          "id": "page_001",
+          "counts": {
+            "shape": 19,
+            "text": 21,
+            "line": 11
+          },
+          "intentional_overlaps": [
+            {
+              "elements": [
+                "ring0",
+                "ring1"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 142124.228
+            },
+            {
+              "elements": [
+                "ring0",
+                "ring2"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 74293.42
+            },
+            {
+              "elements": [
+                "ring0",
+                "ring3"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 33882.511
+            },
+            {
+              "elements": [
+                "ring0",
+                "ring4"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 8799.554
+            },
+            {
+              "elements": [
+                "ring0",
+                "disc"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2283.686
+            },
+            {
+              "elements": [
+                "ring0",
+                "axis"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 613.407
+            },
+            {
+              "elements": [
+                "ring0",
+                "axis_lab"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2662.602
+            },
+            {
+              "elements": [
+                "ring0",
+                "bundle_a"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1290.0
+            },
+            {
+              "elements": [
+                "ring0",
+                "tag"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1378.154
+            },
+            {
+              "elements": [
+                "ring0",
+                "tag_t"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 785.229
+            },
+            {
+              "elements": [
+                "ring1",
+                "ring2"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 74293.42
+            },
+            {
+              "elements": [
+                "ring1",
+                "ring3"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 33882.511
+            },
+            {
+              "elements": [
+                "ring1",
+                "ring4"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 8799.554
+            },
+            {
+              "elements": [
+                "ring1",
+                "ring1_t"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 5654.72
+            },
+            {
+              "elements": [
+                "ring1",
+                "ring2_t"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 6552.0
+            },
+            {
+              "elements": [
+                "ring1",
+                "disc"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2283.686
+            },
+            {
+              "elements": [
+                "ring1",
+                "lab_direct"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 6441.58
+            },
+            {
+              "elements": [
+                "ring1",
+                "lab_lineage"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 9914.677
+            },
+            {
+              "elements": [
+                "ring1",
+                "axis"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 453.748
+            },
+            {
+              "elements": [
+                "ring1",
+                "axis_near"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1360.0
+            },
+            {
+              "elements": [
+                "ring1",
+                "axis_lab"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 530.144
+            },
+            {
+              "elements": [
+                "ring1",
+                "bundle_a"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1091.41
+            },
+            {
+              "elements": [
+                "ring2",
+                "ring3"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 33882.511
+            },
+            {
+              "elements": [
+                "ring2",
+                "ring4"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 8799.554
+            },
+            {
+              "elements": [
+                "ring2",
+                "ring2_t"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 5731.041
+            },
+            {
+              "elements": [
+                "ring2",
+                "disc"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2283.686
+            },
+            {
+              "elements": [
+                "ring2",
+                "lab_direct"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 4222.892
+            },
+            {
+              "elements": [
+                "ring2",
+                "lab_lineage"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2648.542
+            },
+            {
+              "elements": [
+                "ring2",
+                "axis"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 306.563
+            },
+            {
+              "elements": [
+                "ring2",
+                "axis_near"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1360.0
+            },
+            {
+              "elements": [
+                "ring2",
+                "bundle_a"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 737.41
+            },
+            {
+              "elements": [
+                "ring3",
+                "ring4"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 8799.554
+            },
+            {
+              "elements": [
+                "ring3",
+                "disc"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2283.686
+            },
+            {
+              "elements": [
+                "ring3",
+                "lab_direct"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2234.789
+            },
+            {
+              "elements": [
+                "ring3",
+                "axis"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 181.829
+            },
+            {
+              "elements": [
+                "ring3",
+                "axis_near"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 1360.0
+            },
+            {
+              "elements": [
+                "ring3",
+                "bundle_a"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 437.41
+            },
+            {
+              "elements": [
+                "ring4",
+                "disc"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 2283.686
+            },
+            {
+              "elements": [
+                "ring4",
+                "axis"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 54.601
+            },
+            {
+              "elements": [
+                "ring4",
+                "bundle_a"
+              ],
+              "reason": "concentric bands with labels, axis, disc and the bundled arrow drawn over them, visible in source",
+              "area_px2": 131.41
+            },
+            {
+              "elements": [
+                "fan_trunk",
+                "fan_v"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 18.0
+            },
+            {
+              "elements": [
+                "fan_v",
+                "u1_a"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 9.0
+            },
+            {
+              "elements": [
+                "fan_v",
+                "u2_a"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 18.0
+            },
+            {
+              "elements": [
+                "fan_v",
+                "u3_a"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 9.0
+            },
+            {
+              "elements": [
+                "ex1",
+                "ex2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.25
+            }
+          ],
+          "text_layouts": {
+            "ring0_t": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 120.0,
+              "height_px": 35.0,
+              "available_width_px": 134,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 120.5,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "非相关资料"
+              ]
+            },
+            "ring1_t": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 144.0,
+              "height_px": 35.0,
+              "available_width_px": 158,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 144.5,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "工艺参照研究"
+              ]
+            },
+            "ring2_t": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 168.0,
+              "height_px": 35.0,
+              "available_width_px": 182,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 168.5,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "结构相关化合物"
+              ]
+            },
+            "lab_direct": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 216.0,
+              "height_px": 35.0,
+              "available_width_px": 232,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 216.5,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "目标化合物直接报道"
+              ]
+            },
+            "lab_lineage": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 248.578,
+              "height_px": 35.0,
+              "available_width_px": 276,
+              "available_height_px": 36,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 249.078,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "同类 Ba–Y 四方硅酸盐"
+              ]
+            },
+            "axis_near": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 22.0,
+              "height_px": 32.25,
+              "available_width_px": 40,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 22.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "近"
+              ]
+            },
+            "axis_far": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 22.0,
+              "height_px": 32.25,
+              "available_width_px": 40,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 22.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "远"
+              ]
+            },
+            "axis_lab": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 133.0,
+              "height_px": 27.75,
+              "available_width_px": 142,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 133.5,
+              "required_height_px": 28.25,
+              "fits": true,
+              "lines": [
+                "与目标相的距离"
+              ]
+            },
+            "tag_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 231.754,
+              "height_px": 32.25,
+              "available_width_px": 235,
+              "available_height_px": 41,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 232.254,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "近邻条件 ≠ 已验证配方"
+              ]
+            },
+            "ledger_t": {
+              "scale": 1,
+              "effective_font_size_px": 30,
+              "width_px": 270.0,
+              "height_px": 43.75,
+              "available_width_px": 298,
+              "available_height_px": 48,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 270.5,
+              "required_height_px": 44.25,
+              "fits": true,
+              "lines": [
+                "相同实验项目下比较"
+              ]
+            },
+            "row0_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 130.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 130.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "原料与配比"
+              ]
+            },
+            "row1_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 52.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 52.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "热史"
+              ]
+            },
+            "row2_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 52.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 52.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "气氛"
+              ]
+            },
+            "row3_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 156.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 156.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "容器与助熔剂"
+              ]
+            },
+            "row4_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 130.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 130.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "冷却与分离"
+              ]
+            },
+            "row5_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 104.0,
+              "height_px": 37.75,
+              "available_width_px": 271,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 104.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "产物表征"
+              ]
+            },
+            "u1_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 156.0,
+              "height_px": 37.75,
+              "available_width_px": 217,
+              "available_height_px": 82,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 156.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "直接条件复现"
+              ]
+            },
+            "u2_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 156.0,
+              "height_px": 75.5,
+              "available_width_px": 217,
+              "available_height_px": 85,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 156.5,
+              "required_height_px": 76.0,
+              "fits": true,
+              "lines": [
+                "谱系内相图与",
+                "结构比较"
+              ]
+            },
+            "u3_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 182.0,
+              "height_px": 37.75,
+              "available_width_px": 215,
+              "available_height_px": 82,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 182.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "方法与变量结构"
+              ]
+            },
+            "expill_t": {
+              "scale": 1,
+              "effective_font_size_px": 24,
+              "width_px": 48.0,
+              "height_px": 35.0,
+              "available_width_px": 107,
+              "available_height_px": 38,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 48.5,
+              "required_height_px": 35.5,
+              "fits": true,
+              "lines": [
+                "排除"
+              ]
+            },
+            "u4_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 156.0,
+              "height_px": 37.75,
+              "available_width_px": 214,
+              "available_height_px": 82,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 156.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "划定研究范围"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "native_objects": {
+      "status": "pass",
+      "findings": [],
+      "slide_count": 1
+    },
+    "rendered_text": {
+      "status": "fail",
+      "renderer": "LibreOffice/PDFium",
+      "findings": [
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ring0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ring1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ring2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lab_direct",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "lab_lineage",
+          "measured_ink_width_px": 246.328,
+          "rendered_ink_width_px": 257.73,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lab_lineage",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "axis_near",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "axis_far",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "axis_lab",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "tag_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ledger_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row4_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "row5_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "u1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "u2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "u3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "expill_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "u4_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        }
+      ],
+      "text_boxes": [
+        {
+          "slide": "page_001",
+          "element": "ring0_t",
+          "expected": "非相关资料",
+          "rendered": "非相关资料",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 118.5,
+          "rendered_ink_width_px": 118.329
+        },
+        {
+          "slide": "page_001",
+          "element": "ring1_t",
+          "expected": "工艺参照研究",
+          "rendered": "工艺参照研究",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 142.5,
+          "rendered_ink_width_px": 142.249
+        },
+        {
+          "slide": "page_001",
+          "element": "ring2_t",
+          "expected": "结构相关化合物",
+          "rendered": "结构相关化合物",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 167.0,
+          "rendered_ink_width_px": 166.744
+        },
+        {
+          "slide": "page_001",
+          "element": "lab_direct",
+          "expected": "目标化合物直接报道",
+          "rendered": "目标化合物直接报道",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 212.25,
+          "rendered_ink_width_px": 211.897
+        },
+        {
+          "slide": "page_001",
+          "element": "lab_lineage",
+          "expected": "同类 Ba–Y 四方硅酸盐",
+          "rendered": "同类 Ba–Y 四方硅酸盐",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 246.328,
+          "rendered_ink_width_px": 257.73
+        },
+        {
+          "slide": "page_001",
+          "element": "axis_near",
+          "expected": "近",
+          "rendered": "近",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 21.0,
+          "rendered_ink_width_px": 20.854
+        },
+        {
+          "slide": "page_001",
+          "element": "axis_far",
+          "expected": "远",
+          "rendered": "远",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 21.0,
+          "rendered_ink_width_px": 20.788
+        },
+        {
+          "slide": "page_001",
+          "element": "axis_lab",
+          "expected": "与目标相的距离",
+          "rendered": "与目标相的距离",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 131.0,
+          "rendered_ink_width_px": 130.486
+        },
+        {
+          "slide": "page_001",
+          "element": "tag_t",
+          "expected": "近邻条件 ≠ 已验证配方",
+          "rendered": "近邻条件 ≠ 已验证配方",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 230.254,
+          "rendered_ink_width_px": 230.505
+        },
+        {
+          "slide": "page_001",
+          "element": "ledger_t",
+          "expected": "相同实验项目下比较",
+          "rendered": "相同实验项目下比较",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 269.25,
+          "rendered_ink_width_px": 268.482
+        },
+        {
+          "slide": "page_001",
+          "element": "row0_t",
+          "expected": "原料与配比",
+          "rendered": "原料与配比",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 128.5,
+          "rendered_ink_width_px": 128.078
+        },
+        {
+          "slide": "page_001",
+          "element": "row1_t",
+          "expected": "热史",
+          "rendered": "热史",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 50.75,
+          "rendered_ink_width_px": 50.536
+        },
+        {
+          "slide": "page_001",
+          "element": "row2_t",
+          "expected": "气氛",
+          "rendered": "气氛",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 51.25,
+          "rendered_ink_width_px": 50.925
+        },
+        {
+          "slide": "page_001",
+          "element": "row3_t",
+          "expected": "容器与助熔剂",
+          "rendered": "容器与助熔剂",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 154.0,
+          "rendered_ink_width_px": 153.32
+        },
+        {
+          "slide": "page_001",
+          "element": "row4_t",
+          "expected": "冷却与分离",
+          "rendered": "冷却与分离",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 128.25,
+          "rendered_ink_width_px": 127.74
+        },
+        {
+          "slide": "page_001",
+          "element": "row5_t",
+          "expected": "产物表征",
+          "rendered": "产物表征",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 103.0,
+          "rendered_ink_width_px": 102.421
+        },
+        {
+          "slide": "page_001",
+          "element": "u1_t",
+          "expected": "直接条件复现",
+          "rendered": "直接条件复现",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 154.5,
+          "rendered_ink_width_px": 153.838
+        },
+        {
+          "slide": "page_001",
+          "element": "u2_t",
+          "expected": "谱系内相图与\n结构比较",
+          "rendered": "谱系内相图与\r\n结构比较",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 153.25,
+          "rendered_ink_width_px": 152.515
+        },
+        {
+          "slide": "page_001",
+          "element": "u3_t",
+          "expected": "方法与变量结构",
+          "rendered": "方法与变量结构",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 180.0,
+          "rendered_ink_width_px": 179.34
+        },
+        {
+          "slide": "page_001",
+          "element": "expill_t",
+          "expected": "排除",
+          "rendered": "排除 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 47.25,
+          "rendered_ink_width_px": 46.952
+        },
+        {
+          "slide": "page_001",
+          "element": "u4_t",
+          "expected": "划定研究范围",
+          "rendered": "划定研究范围",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 153.75,
+          "rendered_ink_width_px": 153.19
+        }
+      ],
+      "limitations": "This checks renderer output and glyph bounds; source recognition and target PowerPoint/WPS appearance still need visual review."
+    }
+  },
+  "limitations": [
+    "No claim of exact font identification from pixels.",
+    "Photographs and complex artwork remain independent raster assets.",
+    "PowerPoint/WPS must be checked separately from LibreOffice."
+  ],
+  "source_scene_sha256": "bb2a0af00a6869749060012c9181f7902417150e3b7272e9b52c79a3f2ba4ec4",
+  "font_substitutions": [],
+  "artifacts": {
+    "pptx": "editable.pptx",
+    "svg": "svg/",
+    "scene": "scene.resolved.json",
+    "fonts": "fonts.json",
+    "render": "render/"
+  },
+  "comparisons": [
+    {
+      "slide": "page_001",
+      "mean_absolute_pixel_error": 0.048412,
+      "comparison": "page_001_comparison.png",
+      "interpretation": "Diagnostic only; antialiasing and renderer differences affect this number. It is not an acceptance score."
+    }
+  ]
+}

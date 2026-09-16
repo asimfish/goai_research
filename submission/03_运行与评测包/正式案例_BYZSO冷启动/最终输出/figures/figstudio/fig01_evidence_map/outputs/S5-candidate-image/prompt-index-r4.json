@@ -1,0 +1,28 @@
+{
+ "project_id": "fig01_evidence_map",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 4,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "R05",
+   "candidate_title": "三组 + 账本内部栅格（层次强化）",
+   "round": 4,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R05.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R05.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "R06",
+   "candidate_title": "嵌套距离带 + 账本内部栅格",
+   "round": 4,
+   "prompt_path": "outputs/S5-candidate-image/prompts/R06.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/R06.png",
+   "reference_image_paths": [],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}

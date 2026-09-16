@@ -1,0 +1,32 @@
+{
+ "project_id": "fig01_evidence_map",
+ "stage": "S5-CANDIDATE-IMAGE",
+ "round": 2,
+ "image_route": "codex image_gen",
+ "candidates": [
+  {
+   "candidate_id": "F03",
+   "candidate_title": "同心圆环（C02 方向，正圆版）",
+   "round": 2,
+   "prompt_path": "outputs/S5-candidate-image/prompts/F03.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F03.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  },
+  {
+   "candidate_id": "F04",
+   "candidate_title": "半环（C02 方向，半圆版）",
+   "round": 2,
+   "prompt_path": "outputs/S5-candidate-image/prompts/F04.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F04.png",
+   "reference_image_paths": [
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "size": "1536x1024",
+   "quality": "high"
+  }
+ ]
+}
