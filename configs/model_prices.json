@@ -1,0 +1,51 @@
+{
+  "schema": "goai-pricing/1",
+  "version": "2026-09-16",
+  "currency": "USD",
+  "unit_tokens": 1000000,
+  "sources": [
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "https://api-docs.deepseek.com/quick_start/pricing/"
+  ],
+  "models": {
+    "gpt-5.6-sol": {
+      "aliases": ["gpt-5.6", "GPT 5.6", "Sol"],
+      "rates": {"input": "4", "output": "20", "cache_read": "0.4", "cache_write": "5"},
+      "long_context_threshold": 272000,
+      "long_context_multipliers": {"input": "2", "output": "1.5", "cache_read": "2", "cache_write": "2"},
+      "service_tiers": {"standard": "1", "default": "1", "priority": "2", "fast": "2", "batch": "0.5", "flex": "0.5"}
+    },
+    "gpt-5.6-luna": {
+      "aliases": ["Luna"],
+      "rates": {"input": "0.2", "output": "1.2", "cache_read": "0.02", "cache_write": "0.25"},
+      "long_context_threshold": 272000,
+      "long_context_multipliers": {"input": "2", "output": "1.5", "cache_read": "2", "cache_write": "2"},
+      "service_tiers": {"standard": "1", "default": "1", "priority": "2", "fast": "2", "batch": "0.5", "flex": "0.5"}
+    },
+    "gpt-5.6-terra": {
+      "aliases": ["Terra"],
+      "rates": {"input": "2", "output": "12", "cache_read": "0.2", "cache_write": "2.5"},
+      "long_context_threshold": 272000,
+      "long_context_multipliers": {"input": "2", "output": "1.5", "cache_read": "2", "cache_write": "2"},
+      "service_tiers": {"standard": "1", "default": "1", "priority": "2", "fast": "2", "batch": "0.5", "flex": "0.5"}
+    },
+    "gpt-6-astra": {
+      "aliases": ["Astra"],
+      "rates": {"input": "10", "output": "50", "cache_read": "1", "cache_write": "12.5"},
+      "long_context_threshold": 272000,
+      "long_context_multipliers": {"input": "2", "output": "1.5", "cache_read": "2", "cache_write": "2"},
+      "service_tiers": {"standard": "1", "default": "1", "priority": "2", "fast": "2", "batch": "0.5", "flex": "0.5"}
+    },
+    "deepseek-flash": {
+      "aliases": ["DeepSeek", "deepseek-v4-flash", "deepseek-v4-flash-vision-exp", "deepseek-v4-pro"],
+      "rates": {"input": "0.15", "output": "0.6", "cache_read": "0.003", "cache_write": "0"},
+      "service_tiers": {"standard": "1", "default": "1"},
+      "peak_utc": {"weekdays": [0, 1, 2, 3, 4], "hours": [[1, 4], [6, 10]], "multiplier": "2"},
+      "note": "2026-09-14 04:00 UTC 起，官方 deepseek-v4-pro 路由至 Flash 并按 Flash 计价。更早记录或第三方路由需要对应价格表；不把 miss tokens 当作另一次 cache write。"
+    }
+  },
+  "tools": {},
+  "local_mcp_servers": ["goai-litsearch", "goai-refcheck", "goai-figure", "goai-retro", "goai_catalog", "goai_workflow", "goai_research", "unilab"],
+  "note": "价格为官方 API 公开费率的可配置快照，不代表 Codex 订阅或第三方转售账户的实际扣款。没有 usage 的会话不能算作零费用。"
+}

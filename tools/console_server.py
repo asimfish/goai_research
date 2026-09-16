@@ -28,6 +28,7 @@ import hashlib
 import json
 import mimetypes
 import os
+from pathlib import Path
 import re
 import signal
 import subprocess
@@ -39,7 +40,10 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))
 import live_view  # noqa: E402  (同目录)
+from server.core.usage_cost import PriceBook
+from server.core.usage_sources import BillingReader, append_usage, initialize_billing
 
 # ----------------------------------------------------------------------------- 角色
 # 与 skills/*/SKILL.md 一一对应；description 从 frontmatter 读，这里只放 skill 里没有的结构信息。
@@ -306,6 +310,8 @@ class Workspaces:
         self.launched: dict[str, subprocess.Popen] = {}
         self.adopted: set[str] = set()
         self.lock = threading.Lock()
+        self.billing = BillingReader(os.path.join(repo, "workspace/.billing/cache.sqlite3"),
+                                     os.environ.get("GOAI_PRICE_CONFIG", os.path.join(repo, "configs/model_prices.json")))
         self.adopt_orphans()
 
     # -- 服务重启后接管仍在跑的运行 -------------------------------------------------
@@ -362,6 +368,7 @@ class Workspaces:
             os.path.join(self.repo, "workspace_runs", "*"),
             os.path.join(self.repo, "workspace_runs", "*", "*"),
             os.path.join(self.runs_root, "*"),
+            os.path.join(self.repo, "workspace", "finals_execution_*"),
         ] + self.extra_globs
         seen, out = set(), []
         for pat in pats:
@@ -489,7 +496,8 @@ class Workspaces:
 
     # -- 运行控制 ---------------------------------------------------------------
     def launch(self, topic: str, corpus: str, model: str, effort: str, codex_home: str,
-               private_env: dict, slug: str | None = None, model_fallback: str | None = None) -> dict:
+               private_env: dict, slug: str | None = None, model_fallback: str | None = None,
+               billing_task_id: str | None = None) -> dict:
         topic = topic.strip()
         if not topic:
             raise ValueError("主题不能为空")
@@ -501,6 +509,7 @@ class Workspaces:
         slug = re.sub(r"[^0-9A-Za-z\u4e00-\u9fff_-]+", "_", (slug or topic))[:40].strip("_") or "run"
         ws = os.path.join(self.runs_root, f"{stamp}_{slug}")
         os.makedirs(os.path.join(ws, "state"), exist_ok=True)
+        billing_context = initialize_billing(Path(ws), self.billing.prices, billing_task_id)
         with open(os.path.join(ws, "topic_only.txt"), "w", encoding="utf-8") as f:
             f.write(topic + "\n")
         codex_bin = resolve_codex_path()
@@ -508,6 +517,7 @@ class Workspaces:
             raise ValueError("服务端找不到 codex CLI（PATH 与 ~/.nvm 下都没有）；请在启动控制台的 shell 里加载 nvm 或安装 @openai/codex")
         env = {**os.environ, "CODEX_HOME": os.path.expanduser(codex_home), "GOAI_CORPUS": corpus,
                "GOAI_MODEL": model, "GOAI_REASONING_EFFORT": effort,
+               "GOAI_BILLING_TASK_ID": billing_context["task_id"],
                "PATH": os.path.dirname(codex_bin) + os.pathsep + os.environ.get("PATH", "")}
         if model_fallback and model_fallback != model:
             env["GOAI_MODEL_FALLBACK"] = model_fallback   # reproduce_core.sh：第三次容量不足后切换
@@ -640,6 +650,12 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
             try:
                 if parts[1:] == ["config"]:
                     return self._json(cfg_public(cfg))
+                if parts[1:] == ["billing", "prices"]:
+                    book = PriceBook.load(ws.billing.prices)
+                    return self._json({"config": book.config, "revision": book.revision})
+                if parts[1:] == ["billing", "summary"]:
+                    return self._json(ws.billing.report([Path(p) for p in ws.candidate_paths()],
+                        task_id=q.get("task_id", [None])[0], session_id=q.get("session_id", [None])[0]))
                 if parts[1:] == ["roles"]:
                     return self._json({"roles": load_roles(ws.repo), "stats": {**roles_stats(ws.repo), "stages": STAGE_ORDER,
                                                                              "runs": len(ws.candidate_paths())},
@@ -665,6 +681,9 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
                         return self._json({"error": "workspace not found"}, 404)
                     if sub == "info":
                         return self._json(ws.describe(path))
+                    if sub == "costs":
+                        return self._json(ws.billing.report([Path(path)], task_id=q.get("task_id", [None])[0],
+                            session_id=q.get("session_id", [None])[0]))
                     if sub == "state":
                         mon = ws.monitor(wid)
                         st = mon.state(recent=int(q.get("recent", ["30"])[0]), show_all=True)
@@ -725,12 +744,20 @@ def make_handler(ws: Workspaces, cfg: dict, dist: str, fallback_html: str):
             parts = [unquote(p) for p in u.path.strip("/").split("/") if p]
             body = self._body()
             try:
+                if parts[1:] == ["billing", "prices"]:
+                    return self._json(ws.billing.update_prices(body["config"], body["expected_revision"]))
+                if len(parts) == 4 and parts[:2] == ["api", "workspaces"] and parts[3] == "usage":
+                    path = ws.find(parts[2])
+                    if not path:
+                        return self._json({"error": "workspace not found"}, 404)
+                    return self._json(append_usage(Path(path), body))
                 if parts[1:] == ["runs"]:
                     res = ws.launch(
                         topic=body.get("topic", ""), corpus=body.get("corpus", "public"),
                         model=body.get("model") or cfg["model"], effort=body.get("effort") or cfg["effort"],
                         codex_home=cfg["codex_home"], private_env=cfg["private_env"], slug=body.get("slug"),
                         model_fallback=body.get("model_fallback") or cfg.get("model_fallback") or None,
+                        billing_task_id=body.get("billing_task_id") or None,
                     )
                     return self._json({"ok": True, **res})
                 if len(parts) == 4 and parts[1] == "workspaces" and parts[3] == "stop":

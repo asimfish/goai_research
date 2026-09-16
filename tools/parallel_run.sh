@@ -171,7 +171,8 @@ fi
 cat >"$LOG_DIR/RUN_INFO.json" <<JSON
 {"run_id": "$RUN_ID", "tasks_file": "$(_json_str "$TASKS_FILE")", "backend": "$RUNNER", "jobs": $MAX_PAR,
  "runner_args": "$(_json_str "${RUNNER_ARGS:-}")", "profile": "$(_json_str "$CODEX_PROFILE")",
- "model": "$(_json_str "${_model_from_args:-${GOAI_MODEL:-}}")", "sandbox": "$RUNNER_SANDBOX",
+ "model": "$(_json_str "${_model_from_args:-${GOAI_MODEL:-}}")", "service_tier": "$(_json_str "${GOAI_SERVICE_TIER:-}")", "sandbox": "$RUNNER_SANDBOX",
+ "billing_task_id": "$(_json_str "${GOAI_BILLING_TASK_ID:-}")",
  "timeout": $RUNNER_TIMEOUT, "timeout_artifact_policy": "$RUNNER_TIMEOUT_ARTIFACT_POLICY",
  "cwd": "$(_json_str "$RUNNER_CWD")", "workspace": "$(_json_str "$WS")",
  "started_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", "mcp_warning": "$(_json_str "$MCP_WARNING")"}

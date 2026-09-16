@@ -7,6 +7,7 @@ import RoleView from './views/RoleView.vue'
 import SkillsMcpView from './views/SkillsMcpView.vue'
 import ResultsView from './views/ResultsView.vue'
 import RunIndexView from './views/RunIndexView.vue'
+import CostView from './views/CostView.vue'
 
 // hash 路由：后端是纯静态托管，不需要 SPA 回退规则也能深链接。
 export const router = createRouter({
@@ -21,5 +22,6 @@ export const router = createRouter({
     { path: '/run/:id', name: 'run', component: RunView, props: true, meta: { title: '运行实时观察' } },
     { path: '/results', name: 'results', component: ResultsView, meta: { title: '成果与历史回看' } },
     { path: '/settings', name: 'settings', component: SettingsView, meta: { title: '设置' } },
+    { path: '/costs', name: 'costs', component: CostView, meta: { title: '算力 / 费用统计' } },
   ],
 })
