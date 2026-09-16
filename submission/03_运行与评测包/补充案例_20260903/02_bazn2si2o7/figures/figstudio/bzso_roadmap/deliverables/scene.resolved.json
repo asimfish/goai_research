@@ -15,7 +15,7 @@
     {
       "id": "page_001",
       "width": 1536,
-      "height": 900,
+      "height": 822,
       "background": "#FFFFFF",
       "reviewed": true,
       "elements": [
@@ -24,10 +24,10 @@
           "kind": "shape",
           "z": 1,
           "box": [
-            30,
-            40,
-            1476,
-            382
+            26,
+            26,
+            1484,
+            346
           ],
           "shape": "round_rect",
           "fill": "#EEF2F7",
@@ -43,19 +43,19 @@
             "e1_p_t",
             "e2_0"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connectors and labels drawn over the group zone, visible in source"
         },
         {
           "id": "zA_l",
           "kind": "text",
           "z": 2,
           "box": [
-            48,
-            50,
-            327,
-            45
+            44,
+            36,
+            350,
+            48
           ],
-          "font_size": 26,
+          "font_size": 28,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -65,13 +65,12 @@
           "wrap": false,
           "fit": "strict",
           "container": "zA",
-          "min_font_size": 18,
           "runs": [
             {
               "text": "Literature Evidence",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 26,
+              "font_size": 28,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -83,10 +82,10 @@
           "kind": "shape",
           "z": 3,
           "box": [
-            30,
-            470,
-            1476,
-            390
+            26,
+            450,
+            1484,
+            346
           ],
           "shape": "round_rect",
           "fill": "#E6F2F3",
@@ -95,8 +94,6 @@
           "radius": 14,
           "allow_overlap_with": [
             "e2_2",
-            "e2_p",
-            "e2_p_t",
             "e3_0",
             "e3_p",
             "e3_p_t",
@@ -104,19 +101,19 @@
             "e4_p",
             "e4_p_t"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connectors and labels drawn over the group zone, visible in source"
         },
         {
           "id": "zB_l",
           "kind": "text",
           "z": 4,
           "box": [
-            48,
-            480,
-            311,
-            45
+            44,
+            460,
+            333,
+            48
           ],
-          "font_size": 26,
+          "font_size": 28,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -126,13 +123,12 @@
           "wrap": false,
           "fit": "strict",
           "container": "zB",
-          "min_font_size": 18,
           "runs": [
             {
               "text": "Experimental Items",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 26,
+              "font_size": 28,
               "bold": true,
               "italic": false,
               "color": "#0F4F58"
@@ -144,10 +140,10 @@
           "kind": "shape",
           "z": 5,
           "box": [
-            70,
-            112,
-            420,
-            278
+            42,
+            94,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -171,10 +167,10 @@
           "kind": "shape",
           "z": 6,
           "box": [
-            70,
-            112,
+            42,
+            94,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -186,12 +182,12 @@
           "kind": "text",
           "z": 7,
           "box": [
-            98,
-            130,
-            92,
-            61
+            70,
+            112,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -201,12 +197,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n1",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "01",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -219,16 +216,16 @@
           "z": 8,
           "points": [
             [
-              408,
-              133
+              432,
+              117
             ],
             [
-              445,
-              157
+              458,
+              134
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -247,16 +244,16 @@
           "z": 9,
           "points": [
             [
-              445,
-              157
+              458,
+              134
             ],
             [
-              428,
-              207
+              446,
+              168
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -275,16 +272,16 @@
           "z": 10,
           "points": [
             [
-              428,
-              207
+              446,
+              168
             ],
             [
-              388,
-              207
+              418,
+              168
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -303,16 +300,16 @@
           "z": 11,
           "points": [
             [
-              388,
-              207
+              418,
+              168
             ],
             [
-              371,
-              157
+              406,
+              134
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -331,16 +328,16 @@
           "z": 12,
           "points": [
             [
-              371,
-              157
+              406,
+              134
             ],
             [
-              408,
-              133
+              432,
+              117
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -359,16 +356,16 @@
           "z": 13,
           "points": [
             [
-              408,
-              133
+              432,
+              117
             ],
             [
-              408,
-              207
+              432,
+              168
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_b",
@@ -387,16 +384,16 @@
           "z": 14,
           "points": [
             [
-              371,
-              157
+              406,
+              134
             ],
             [
-              445,
-              157
+              458,
+              134
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n1",
             "n1_g_a",
@@ -414,9 +411,9 @@
           "kind": "text",
           "z": 15,
           "box": [
-            98,
-            228,
-            374,
+            70,
+            184,
+            394,
             43
           ],
           "font_size": 27,
@@ -429,7 +426,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n1",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Structural Basis",
@@ -448,12 +445,12 @@
           "z": 16,
           "points": [
             [
-              104,
-              285
+              76,
+              239
             ],
             [
-              466,
-              285
+              458,
+              239
             ]
           ],
           "stroke": "#CBD5DE",
@@ -465,10 +462,10 @@
           "kind": "shape",
           "z": 17,
           "box": [
-            98,
-            336,
-            374,
-            36
+            70,
+            253,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -482,29 +479,29 @@
           "kind": "text",
           "z": 18,
           "box": [
-            105,
-            340,
-            360,
-            28
+            77,
+            257,
+            380,
+            75
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n1_p",
-          "min_font_size": 12,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "LT and HT polymorphs",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 18,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -515,10 +512,10 @@
           "kind": "shape",
           "z": 19,
           "box": [
-            570,
-            112,
-            420,
-            278
+            548,
+            94,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -539,10 +536,10 @@
           "kind": "shape",
           "z": 20,
           "box": [
-            570,
-            112,
+            548,
+            94,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -554,12 +551,12 @@
           "kind": "text",
           "z": 21,
           "box": [
-            598,
-            130,
-            92,
-            61
+            576,
+            112,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -569,12 +566,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n2",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "02",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -587,16 +585,16 @@
           "z": 22,
           "points": [
             [
-              882,
-              154
+              920,
+              131
             ],
             [
-              891,
-              203
+              926,
+              166
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n2",
             "n2_g_b_1",
@@ -612,16 +610,16 @@
           "z": 23,
           "points": [
             [
-              891,
-              203
+              926,
+              166
             ],
             [
-              925,
-              203
+              950,
+              166
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n2",
             "n2_g_b_0",
@@ -637,16 +635,16 @@
           "z": 24,
           "points": [
             [
-              925,
-              203
+              950,
+              166
             ],
             [
-              934,
-              154
+              956,
+              131
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n2",
             "n2_g_b_0",
@@ -662,16 +660,16 @@
           "z": 25,
           "points": [
             [
-              877,
-              154
+              916,
+              131
             ],
             [
-              939,
-              154
+              960,
+              131
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n2",
             "n2_g_b_0",
@@ -686,9 +684,9 @@
           "kind": "text",
           "z": 26,
           "box": [
-            598,
-            228,
-            374,
+            576,
+            184,
+            394,
             43
           ],
           "font_size": 27,
@@ -701,7 +699,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n2",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Synthesis Routes",
@@ -720,12 +718,12 @@
           "z": 27,
           "points": [
             [
-              604,
-              285
+              582,
+              239
             ],
             [
-              966,
-              285
+              964,
+              239
             ]
           ],
           "stroke": "#CBD5DE",
@@ -737,10 +735,10 @@
           "kind": "shape",
           "z": 28,
           "box": [
-            598,
-            336,
-            374,
-            36
+            576,
+            253,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -754,29 +752,29 @@
           "kind": "text",
           "z": 29,
           "box": [
-            605,
-            340,
-            360,
-            28
+            583,
+            257,
+            380,
+            75
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n2_p",
-          "min_font_size": 12,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Solid-state · sol–gel",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 18,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -787,10 +785,10 @@
           "kind": "shape",
           "z": 30,
           "box": [
-            1070,
-            112,
-            420,
-            278
+            1054,
+            94,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -819,10 +817,10 @@
           "kind": "shape",
           "z": 31,
           "box": [
-            1070,
-            112,
+            1054,
+            94,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -834,12 +832,12 @@
           "kind": "text",
           "z": 32,
           "box": [
-            1098,
-            130,
-            92,
-            61
+            1082,
+            112,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -849,12 +847,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n3",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "03",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -867,16 +866,16 @@
           "z": 33,
           "points": [
             [
-              1408,
-              139
+              1444,
+              121
             ],
             [
-              1443,
-              155
+              1468,
+              132
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_1",
@@ -900,16 +899,16 @@
           "z": 34,
           "points": [
             [
-              1443,
-              155
+              1468,
+              132
             ],
             [
-              1408,
-              172
+              1444,
+              144
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -933,16 +932,16 @@
           "z": 35,
           "points": [
             [
-              1408,
-              172
+              1444,
+              144
             ],
             [
-              1373,
-              155
+              1420,
+              132
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -966,16 +965,16 @@
           "z": 36,
           "points": [
             [
-              1373,
-              155
+              1420,
+              132
             ],
             [
-              1408,
-              139
+              1444,
+              121
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -999,16 +998,16 @@
           "z": 37,
           "points": [
             [
-              1408,
-              159
+              1444,
+              135
             ],
             [
-              1443,
-              176
+              1468,
+              147
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1032,16 +1031,16 @@
           "z": 38,
           "points": [
             [
-              1443,
-              176
+              1468,
+              147
             ],
             [
-              1408,
-              192
+              1444,
+              158
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1065,16 +1064,16 @@
           "z": 39,
           "points": [
             [
-              1408,
-              192
+              1444,
+              158
             ],
             [
-              1373,
-              176
+              1420,
+              147
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1098,16 +1097,16 @@
           "z": 40,
           "points": [
             [
-              1373,
-              176
+              1420,
+              147
             ],
             [
-              1408,
-              159
+              1444,
+              135
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1131,16 +1130,16 @@
           "z": 41,
           "points": [
             [
-              1408,
-              179
+              1444,
+              149
             ],
             [
-              1443,
-              196
+              1468,
+              161
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1164,16 +1163,16 @@
           "z": 42,
           "points": [
             [
-              1443,
-              196
+              1468,
+              161
             ],
             [
-              1408,
-              212
+              1444,
+              172
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1197,16 +1196,16 @@
           "z": 43,
           "points": [
             [
-              1408,
-              212
+              1444,
+              172
             ],
             [
-              1373,
-              196
+              1420,
+              161
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1230,16 +1229,16 @@
           "z": 44,
           "points": [
             [
-              1373,
-              196
+              1420,
+              161
             ],
             [
-              1408,
-              179
+              1444,
+              149
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n3",
             "n3_g_d0_0",
@@ -1262,9 +1261,9 @@
           "kind": "text",
           "z": 45,
           "box": [
-            1098,
-            228,
-            374,
+            1082,
+            184,
+            394,
             43
           ],
           "font_size": 27,
@@ -1277,7 +1276,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n3",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Phase Control",
@@ -1296,12 +1295,12 @@
           "z": 46,
           "points": [
             [
-              1104,
-              285
+              1088,
+              239
             ],
             [
-              1466,
-              285
+              1470,
+              239
             ]
           ],
           "stroke": "#CBD5DE",
@@ -1313,10 +1312,10 @@
           "kind": "shape",
           "z": 47,
           "box": [
-            1098,
-            336,
-            374,
-            36
+            1082,
+            253,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -1330,29 +1329,29 @@
           "kind": "text",
           "z": 48,
           "box": [
-            1105,
-            340,
-            360,
-            28
+            1089,
+            257,
+            380,
+            75
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n3_p",
-          "min_font_size": 12,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Composition · annealing",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 18,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -1363,10 +1362,10 @@
           "kind": "shape",
           "z": 49,
           "box": [
-            70,
-            542,
-            420,
-            278
+            42,
+            518,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -1388,10 +1387,10 @@
           "kind": "shape",
           "z": 50,
           "box": [
-            70,
-            542,
+            42,
+            518,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#1F7F8C",
@@ -1403,12 +1402,12 @@
           "kind": "text",
           "z": 51,
           "box": [
-            98,
-            560,
-            92,
-            61
+            70,
+            536,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -1418,12 +1417,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n4",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "04",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#0F4F58"
@@ -1435,14 +1435,14 @@
           "kind": "shape",
           "z": 52,
           "box": [
-            395,
-            563,
-            26,
-            26
+            423,
+            541,
+            18,
+            18
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n4",
             "n4_g_b",
@@ -1458,14 +1458,14 @@
           "kind": "shape",
           "z": 53,
           "box": [
-            368,
-            611,
-            26,
-            26
+            404,
+            574,
+            18,
+            18
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n4",
             "n4_g_a",
@@ -1481,14 +1481,14 @@
           "kind": "shape",
           "z": 54,
           "box": [
-            423,
-            611,
-            26,
-            26
+            442,
+            574,
+            18,
+            18
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n4",
             "n4_g_a",
@@ -1505,16 +1505,16 @@
           "z": 55,
           "points": [
             [
-              408,
-              589
+              432,
+              559
             ],
             [
-              380,
-              611
+              413,
+              574
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n4",
             "n4_g_a",
@@ -1531,16 +1531,16 @@
           "z": 56,
           "points": [
             [
-              408,
-              589
+              432,
+              559
             ],
             [
-              436,
-              611
+              451,
+              574
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n4",
             "n4_g_a",
@@ -1556,9 +1556,9 @@
           "kind": "text",
           "z": 57,
           "box": [
-            98,
-            658,
-            374,
+            70,
+            608,
+            394,
             43
           ],
           "font_size": 27,
@@ -1571,7 +1571,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n4",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Neighbor Systems",
@@ -1590,12 +1590,12 @@
           "z": 58,
           "points": [
             [
-              104,
-              715
+              76,
+              663
             ],
             [
-              466,
-              715
+              458,
+              663
             ]
           ],
           "stroke": "#CBD5DE",
@@ -1607,10 +1607,10 @@
           "kind": "shape",
           "z": 59,
           "box": [
-            98,
-            766,
-            374,
-            36
+            70,
+            677,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -1624,29 +1624,29 @@
           "kind": "text",
           "z": 60,
           "box": [
-            105,
-            770,
-            360,
-            28
+            77,
+            681,
+            380,
+            75
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n4_p",
-          "min_font_size": 16,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Ba–Sr–Zn–Si",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 20,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -1657,10 +1657,10 @@
           "kind": "shape",
           "z": 61,
           "box": [
-            570,
-            542,
-            420,
-            278
+            548,
+            518,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFAF0",
@@ -1686,10 +1686,10 @@
           "kind": "shape",
           "z": 62,
           "box": [
-            570,
-            542,
+            548,
+            518,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#C48A24",
@@ -1701,12 +1701,12 @@
           "kind": "text",
           "z": 63,
           "box": [
-            598,
-            560,
-            92,
-            61
+            576,
+            536,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -1716,12 +1716,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n5",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "05",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#7A5410"
@@ -1734,16 +1735,16 @@
           "z": 64,
           "points": [
             [
-              908,
-              569
+              938,
+              545
             ],
             [
-              908,
-              628
+              938,
+              586
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1764,16 +1765,16 @@
           "z": 65,
           "points": [
             [
-              877,
-              582
+              916,
+              554
             ],
             [
-              939,
-              582
+              960,
+              554
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_f",
@@ -1794,16 +1795,16 @@
           "z": 66,
           "points": [
             [
-              877,
-              582
+              916,
+              554
             ],
             [
-              868,
-              602
+              910,
+              568
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1824,16 +1825,16 @@
           "z": 67,
           "points": [
             [
-              868,
-              602
+              910,
+              568
             ],
             [
-              886,
-              602
+              923,
+              568
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1854,16 +1855,16 @@
           "z": 68,
           "points": [
             [
-              886,
-              602
+              923,
+              568
             ],
             [
-              877,
-              582
+              916,
+              554
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1884,16 +1885,16 @@
           "z": 69,
           "points": [
             [
-              939,
-              582
+              960,
+              554
             ],
             [
-              930,
-              602
+              953,
+              568
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1914,16 +1915,16 @@
           "z": 70,
           "points": [
             [
-              930,
-              602
+              953,
+              568
             ],
             [
-              948,
-              602
+              966,
+              568
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1944,16 +1945,16 @@
           "z": 71,
           "points": [
             [
-              948,
-              602
+              966,
+              568
             ],
             [
-              939,
-              582
+              960,
+              554
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -1974,16 +1975,16 @@
           "z": 72,
           "points": [
             [
-              890,
-              635
+              925,
+              591
             ],
             [
-              926,
-              635
+              951,
+              591
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n5",
             "n5_g_b",
@@ -2003,9 +2004,9 @@
           "kind": "text",
           "z": 73,
           "box": [
-            598,
-            658,
-            374,
+            576,
+            608,
+            394,
             43
           ],
           "font_size": 27,
@@ -2018,7 +2019,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n5",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Analogue Criteria",
@@ -2037,12 +2038,12 @@
           "z": 74,
           "points": [
             [
-              604,
-              715
+              582,
+              663
             ],
             [
-              966,
-              715
+              964,
+              663
             ]
           ],
           "stroke": "#CBD5DE",
@@ -2054,10 +2055,10 @@
           "kind": "shape",
           "z": 75,
           "box": [
-            598,
-            766,
-            374,
-            36
+            576,
+            677,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2071,29 +2072,29 @@
           "kind": "text",
           "z": 76,
           "box": [
-            605,
-            770,
-            360,
-            28
+            583,
+            681,
+            380,
+            75
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n5_p",
-          "min_font_size": 16,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Ba5Y12Zn[O(SiO4)]8",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 20,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2104,10 +2105,10 @@
           "kind": "shape",
           "z": 77,
           "box": [
-            1070,
-            542,
-            420,
-            278
+            1054,
+            518,
+            440,
+            260
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -2134,10 +2135,10 @@
           "kind": "shape",
           "z": 78,
           "box": [
-            1070,
-            542,
+            1054,
+            518,
             10,
-            278
+            260
           ],
           "shape": "round_rect",
           "fill": "#1F7F8C",
@@ -2149,12 +2150,12 @@
           "kind": "text",
           "z": 79,
           "box": [
-            1098,
-            560,
-            92,
-            61
+            1082,
+            536,
+            110,
+            62
           ],
-          "font_size": 36,
+          "font_size": 37,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -2164,12 +2165,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "n6",
+          "min_font_size": 34,
           "runs": [
             {
               "text": "06",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 36,
+              "font_size": 37,
               "bold": true,
               "italic": false,
               "color": "#0F4F58"
@@ -2181,14 +2183,14 @@
           "kind": "shape",
           "z": 80,
           "box": [
-            1373,
-            574,
-            18,
-            18
+            1420,
+            549,
+            13,
+            13
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b1",
@@ -2210,16 +2212,16 @@
           "z": 81,
           "points": [
             [
-              1402,
-              584
+              1440,
+              555
             ],
             [
-              1445,
-              584
+              1470,
+              555
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2241,16 +2243,16 @@
           "z": 82,
           "points": [
             [
-              1377,
-              585
+              1422,
+              556
             ],
             [
-              1381,
-              589
+              1425,
+              559
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2272,16 +2274,16 @@
           "z": 83,
           "points": [
             [
-              1381,
-              589
+              1425,
+              559
             ],
             [
-              1390,
-              578
+              1431,
+              551
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2302,14 +2304,14 @@
           "kind": "shape",
           "z": 84,
           "box": [
-            1373,
-            598,
-            18,
-            18
+            1420,
+            565,
+            13,
+            13
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2331,16 +2333,16 @@
           "z": 85,
           "points": [
             [
-              1402,
-              608
+              1440,
+              572
             ],
             [
-              1445,
-              608
+              1470,
+              572
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2362,16 +2364,16 @@
           "z": 86,
           "points": [
             [
-              1377,
-              608
+              1422,
+              572
             ],
             [
-              1381,
-              613
+              1425,
+              576
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2393,16 +2395,16 @@
           "z": 87,
           "points": [
             [
-              1381,
-              613
+              1425,
+              576
             ],
             [
-              1390,
-              602
+              1431,
+              568
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2423,14 +2425,14 @@
           "kind": "shape",
           "z": 88,
           "box": [
-            1373,
-            622,
-            18,
-            18
+            1420,
+            582,
+            13,
+            13
           ],
           "shape": "rect",
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2452,16 +2454,16 @@
           "z": 89,
           "points": [
             [
-              1402,
-              631
+              1440,
+              588
             ],
             [
-              1445,
-              631
+              1470,
+              588
             ]
           ],
           "stroke": "#111A24",
-          "stroke_width": 2.4840000000000004,
+          "stroke_width": 2.295,
           "allow_overlap_with": [
             "n6",
             "n6_g_b0",
@@ -2482,9 +2484,9 @@
           "kind": "text",
           "z": 90,
           "box": [
-            1098,
-            658,
-            374,
+            1082,
+            608,
+            394,
             43
           ],
           "font_size": 27,
@@ -2497,7 +2499,7 @@
           "wrap": false,
           "fit": "strict",
           "container": "n6",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
               "text": "Test Priorities",
@@ -2516,12 +2518,12 @@
           "z": 91,
           "points": [
             [
-              1104,
-              715
+              1088,
+              663
             ],
             [
-              1466,
-              715
+              1470,
+              663
             ]
           ],
           "stroke": "#CBD5DE",
@@ -2533,10 +2535,10 @@
           "kind": "shape",
           "z": 92,
           "box": [
-            1098,
-            766,
-            374,
-            36
+            1082,
+            677,
+            394,
+            83
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2550,29 +2552,38 @@
           "kind": "text",
           "z": 93,
           "box": [
-            1105,
-            770,
-            360,
-            28
+            1089,
+            681,
+            380,
+            75
           ],
-          "font_size": 14.265563964843748,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "n6_p",
-          "min_font_size": 12,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "Phase diagram · structure · thermodynamics",
+              "text": "Phase diagram · structure · \n",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 14.265563964843748,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
+              "italic": false,
+              "color": "#27303A"
+            },
+            {
+              "text": "thermodynamics",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2584,12 +2595,12 @@
           "z": 94,
           "points": [
             [
-              498,
-              251
+              488,
+              224
             ],
             [
-              562,
-              251
+              542,
+              224
             ]
           ],
           "stroke": "#3C4753",
@@ -2610,36 +2621,36 @@
           "kind": "shape",
           "z": 95,
           "box": [
-            406,
-            58,
-            249,
-            39
+            430,
+            36,
+            355,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 19.5,
+          "radius": 24.0,
           "allow_overlap_with": [
             "e0_0",
             "zA"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connector routed across the group zones, visible in source"
         },
         {
           "id": "e0_p_t",
           "kind": "text",
           "z": 96,
           "box": [
-            416,
-            62,
-            229,
-            31
+            440,
+            40,
+            335,
+            40
           ],
-          "font_size": 16,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -2649,15 +2660,14 @@
           "allow_overlap_with": [
             "zA"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source",
-          "min_font_size": 12,
+          "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
               "text": "Structural constraints",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 16,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2669,12 +2679,12 @@
           "z": 97,
           "points": [
             [
-              998,
-              251
+              994,
+              224
             ],
             [
-              1062,
-              251
+              1048,
+              224
             ]
           ],
           "stroke": "#3C4753",
@@ -2695,36 +2705,36 @@
           "kind": "shape",
           "z": 98,
           "box": [
-            936,
-            58,
-            189,
-            39
+            888,
+            36,
+            266,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 19.5,
+          "radius": 24.0,
           "allow_overlap_with": [
             "e1_0",
             "zA"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connector routed across the group zones, visible in source"
         },
         {
           "id": "e1_p_t",
           "kind": "text",
           "z": 99,
           "box": [
-            946,
-            62,
-            169,
-            31
+            898,
+            40,
+            246,
+            40
           ],
-          "font_size": 16,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -2734,15 +2744,14 @@
           "allow_overlap_with": [
             "zA"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source",
-          "min_font_size": 12,
+          "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
               "text": "Condition window",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 16,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2754,12 +2763,12 @@
           "z": 100,
           "points": [
             [
-              498,
-              681
+              488,
+              648
             ],
             [
-              562,
-              681
+              542,
+              648
             ]
           ],
           "stroke": "#3C4753",
@@ -2780,36 +2789,36 @@
           "kind": "shape",
           "z": 101,
           "box": [
-            420,
-            488,
-            219,
-            39
+            446,
+            460,
+            311,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 19.5,
+          "radius": 24.0,
           "allow_overlap_with": [
             "e3_0",
             "zB"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connector routed across the group zones, visible in source"
         },
         {
           "id": "e3_p_t",
           "kind": "text",
           "z": 102,
           "box": [
-            430,
-            492,
-            199,
-            31
+            456,
+            464,
+            291,
+            40
           ],
-          "font_size": 16,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -2819,15 +2828,14 @@
           "allow_overlap_with": [
             "zB"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source",
-          "min_font_size": 12,
+          "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
               "text": "Comparison boundary",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 16,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2839,12 +2847,12 @@
           "z": 103,
           "points": [
             [
-              998,
-              681
+              994,
+              648
             ],
             [
-              1062,
-              681
+              1048,
+              648
             ]
           ],
           "stroke": "#3C4753",
@@ -2865,36 +2873,36 @@
           "kind": "shape",
           "z": 104,
           "box": [
-            962,
-            488,
-            135,
-            39
+            929,
+            460,
+            184,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 19.5,
+          "radius": 24.0,
           "allow_overlap_with": [
             "e4_0",
             "zB"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connector routed across the group zones, visible in source"
         },
         {
           "id": "e4_p_t",
           "kind": "text",
           "z": 105,
           "box": [
-            972,
-            492,
-            115,
-            31
+            939,
+            464,
+            164,
+            40
           ],
-          "font_size": 16,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -2904,15 +2912,14 @@
           "allow_overlap_with": [
             "zB"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source",
-          "min_font_size": 12,
+          "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
               "text": "Gap-driven",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 16,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2924,12 +2931,12 @@
           "z": 106,
           "points": [
             [
-              1280,
-              394
+              1274,
+              358
             ],
             [
-              1280,
-              446
+              1274,
+              411
             ]
           ],
           "stroke": "#3C4753",
@@ -2948,12 +2955,12 @@
           "z": 107,
           "points": [
             [
-              1280,
-              446
+              1274,
+              411
             ],
             [
-              360,
-              446
+              425,
+              411
             ]
           ],
           "stroke": "#3C4753",
@@ -2961,9 +2968,10 @@
           "allow_overlap_with": [
             "e2_0",
             "e2_2",
-            "e2_p"
+            "e2_p",
+            "e2_p_t"
           ],
-          "overlap_reason": "connector joints, visible in source"
+          "overlap_reason": "connector label sits on its connector, visible in source"
         },
         {
           "id": "e2_2",
@@ -2971,12 +2979,12 @@
           "z": 108,
           "points": [
             [
-              360,
-              446
+              425,
+              411
             ],
             [
-              360,
-              538
+              425,
+              514
             ]
           ],
           "stroke": "#3C4753",
@@ -2999,38 +3007,37 @@
           "kind": "shape",
           "z": 109,
           "box": [
-            696,
-            488,
-            249,
-            39
+            590,
+            387,
+            355,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 19.5,
+          "radius": 24.0,
           "allow_overlap_with": [
             "e2_0",
             "e2_1",
-            "e2_2",
-            "zB"
+            "e2_2"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source"
+          "overlap_reason": "connector label sits on its connector, visible in source"
         },
         {
           "id": "e2_p_t",
           "kind": "text",
           "z": 110,
           "box": [
-            706,
-            492,
-            229,
-            31
+            600,
+            391,
+            335,
+            40
           ],
-          "font_size": 16,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -3038,24 +3045,23 @@
           "fit": "strict",
           "container": "e2_p",
           "allow_overlap_with": [
-            "zB"
+            "e2_1"
           ],
-          "overlap_reason": "connector label sits on what it annotates, visible in source",
-          "min_font_size": 12,
+          "overlap_reason": "connector label sits on its connector, visible in source",
           "runs": [
             {
               "text": "Transferable variables",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 16,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
           ]
         }
       ],
-      "notes": "BaZn2Si2O7 · Reading roadmap of this review (round 5, F02)."
+      "notes": "BaZn2Si2O7 本文的行文路线图（第六轮：印刷字号 + 内容定尺寸；3+3 两行） [paper=bzso] [print_width_pt=451.4]"
     }
   ]
 }

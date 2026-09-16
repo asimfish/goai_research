@@ -28,6 +28,19 @@ CONN = '#3C4753'; ITEM = '#27303A'; HAIR = '#CBD5DE'; TOKEN_EDGE = '#AEBBC7'; TO
 W_ZONE, W_CARD, W_TOKEN, W_CONN, W_STEP, W_PILL, W_RULE = 1.6, 1.9, 1.6, 2.5, 2.2, 1.6, 1.6
 HEAD = {'length': 15, 'width': 12}
 
+# Type scale in PRINTED points, one size per role. A figure that declares its printed width gets its px sizes
+# from here, so every figure in every paper sets the same role at the same size on paper.
+#   body 8 pt sits a step under the 9 pt caption; nothing prints below MIN_PRINT_PT.
+TYPE_PT = {'group': 9.5, 'title': 9.0, 'number': 12.0, 'body': 8.0, 'label': 7.5}
+# Latin needs less than CJK to stay legible (CJK strokes are dense; Nature sets figure text at 5–7 pt),
+# and English runs ~1.6x wider, so English figures use a scale one step down — still one scale for every figure.
+TYPE_PT_EN = {'group': 8.5, 'title': 8.0, 'number': 11.0, 'body': 7.0, 'label': 7.0}
+MIN_PRINT_PT = 7.0
+# Two weights only. Bold marks structure (group, card title, step number); everything read as content is
+# regular. Making every string bold (round 5) erased the difference between a heading and the text under it.
+BOLD_ROLES = {'group', 'title', 'number'}
+PRINT_TAG = re.compile(r'\[print_width_pt=([\d.]+)\]')
+
 
 
 def pack_pill_rows(els, page_w, gap=12, band=64, margin=6):
@@ -74,28 +87,61 @@ def pack_pill_rows(els, page_w, gap=12, band=64, margin=6):
 
 
 class Framework:
-    def __init__(self, w, h, source=None, notes=''):
+    def __init__(self, w, h, source=None, notes='', print_width_pt=None, crop_px=24, type_scale=None):
+        # print_width_pt: the width the figure is printed at (\\linewidth of the paper). With it, sizes come from
+        # TYPE_PT and body text is regular; without it (round-5 scenes) the literal sizes and all-bold remain.
+        # crop_px: install_fig crops the render to its content plus a margin, so the printed width maps onto
+        # roughly the canvas less this much.
+        self.print_width_pt = print_width_pt
+        if print_width_pt:
+            self.pt_per_px = print_width_pt / (w - crop_px)
+            self.floor_px = math.ceil(MIN_PRINT_PT / self.pt_per_px - 1e-9)
+            # rounding must never take a role below the printed floor
+            self.T = {role: max(int(round(pt / self.pt_per_px)), self.floor_px)
+                      for role, pt in (type_scale or TYPE_PT).items()}
+            notes = f'{notes} [print_width_pt={print_width_pt:g}]'.strip()
+        else:
+            self.pt_per_px, self.T, self.floor_px = None, None, None
         self.sc = Scene(w, h, source=source, notes=notes)
         self.pills = []
         self.m = Motifs(self.sc, ink=INK, width=2.7)
         self.w, self.h = w, h
 
+    # ------------------------------------------------------------------ type scale
+    def size(self, role, legacy=None):
+        """px size for a role — from the printed type scale when the figure declares its print width."""
+        return self.T[role] if self.T else legacy
+
+    def bold(self, role):
+        return role in BOLD_ROLES if self.T else True
+
+    def shrink_floor(self, size, drop):
+        """Smallest size fit=shrink may reach: never below the printed floor once a print width is known."""
+        return max(size - drop, self.floor_px) if self.floor_px else size - drop
+
     # ------------------------------------------------------------------ tier 1
-    def zone(self, zid, box, label=None, fam='lit', label_size=21, label_pos='top'):
+    def zone(self, zid, box, label=None, fam='lit', label_size=None, label_pos='top'):
+        label_size = label_size or self.size('group', 21)
         f = FAM[fam]
         self.sc.shape(zid, box, fill=f['zone'], stroke=f['edge'], stroke_width=W_ZONE, radius=14)
         if label:
             x, y, w, h = box
             tw = Scene.measure(label, label_size) + 26; lh = int(label_size * 1.6) + 4
             ly = y + 10 if label_pos == 'top' else y + h - 10 - lh
+            extra = {}
+            if self.T and tw > w - 36:          # a long (English) label must stay inside its zone
+                tw = w - 36
+                extra = dict(fit='shrink', min_font_size=self.floor_px)
             self.sc.text(zid + '_l', [x + 18, ly, tw, lh], label, label_size, bold=True,
-                         color=f['text'], align='left', container=zid, font_group='zone')
+                         color=f['text'], align='left', container=zid, font_group='zone', **extra)
         return zid
 
     # ------------------------------------------------------------------ tier 2
-    def module(self, cid, box, title, fam='lit', glyph=None, dashed=False, accent=True, title_size=26,
+    def module(self, cid, box, title, fam='lit', glyph=None, dashed=False, accent=True, title_size=None,
                pad=14, padx=None, container=None, tag=None, tag_fam='note', tag_size=18, glyph_w=34,
                title_align='left', glyph_above=False, tag_at='bottom', title_valign='top'):
+        title_size = title_size or self.size('title', 26)
+        tag_size = self.size('label', tag_size) if self.T else tag_size
         f = FAM[fam]; x, y, w, h = box
         padx = pad if padx is None else padx
         accent = accent and not dashed
@@ -119,37 +165,44 @@ class Framework:
         if tag and tag_at == 'title':
             tw_avail -= Scene.measure(tag, tag_size) + 34
         self.sc.text(cid + '_t', [tx, ty, tw_avail, th], title, title_size, bold=True, color=f['text'],
-                     align=title_align, container=cid, font_group='modtitle', fit='shrink', min_font_size=title_size - 5)
+                     align=title_align, container=cid, font_group='modtitle', fit='shrink',
+                     min_font_size=self.shrink_floor(title_size, 5))
         if tag:
             g = FAM[tag_fam]; tw = Scene.measure(tag, tag_size) + 26; thh = int(tag_size * 1.5) + 12
             bx = x + w - padx - tw
             by = ty + (th - thh) / 2 if tag_at == 'title' else y + h - 12 - thh
             self.sc.shape(cid + '_tg', [bx, by, tw, thh], fill=g['zone'], stroke=g['edge'], stroke_width=W_PILL,
                           radius=thh / 2, container=cid)
-            self.sc.text(cid + '_tgt', [bx + 8, by + 4, tw - 16, thh - 8], tag, tag_size, bold=True, color=g['text'],
+            self.sc.text(cid + '_tgt', [bx + 8, by + 4, tw - 16, thh - 8], tag, tag_size, bold=self.bold('label'),
+                         color=g['text'],
                          container=cid + '_tg', font_group='tag')
         return ty + th + 10   # y where the internal mechanism may start
 
     # ------------------------------------------------------------------ tier 3
-    def token(self, tid, box, text, size=19, container=None, fam=None, strong=False):
+    def token(self, tid, box, text, size=None, container=None, fam=None, strong=False, align='center', wrap=False):
+        size = size or self.size('body', 19)
         f = FAM[fam] if fam else None
         self.sc.shape(tid, box, fill=(f['zone'] if f else TOKEN_FILL), stroke=(f['edge'] if f else TOKEN_EDGE),
                       stroke_width=W_TOKEN, radius=6, container=container)
-        # record text is set semibold: at these sizes a regular CJK face disappears next to the card titles
-        self.sc.text(tid + '_t', [box[0] + 7, box[1] + 4, box[2] - 14, box[3] - 8], text, size, bold=True,
+        # regular weight once sizes follow the printed scale (strong=True keeps an outcome token bold);
+        # round-5 scenes stay all-bold
+        self.sc.text(tid + '_t', [box[0] + 7, box[1] + 4, box[2] - 14, box[3] - 8], text, size,
+                     bold=(True if (strong and self.T) else self.bold('body')),
                      color=(f['text'] if f else ITEM), container=tid, font_group='token', fit='shrink',
-                     min_font_size=size - 4)
+                     min_font_size=self.shrink_floor(size, 4), align=align, wrap=wrap)
         return tid
 
-    def vstack(self, cid, box, items, container=None, size=19, gap=12, fam=None, strong_last=False):
+    def vstack(self, cid, box, items, container=None, size=None, gap=12, fam=None, strong_last=False):
         """Vertical stack of record tokens filling the box — the module's recorded items."""
+        size = size or self.size('body', 19)
         x, y, w, h = box; n = len(items); th = (h - gap * (n - 1)) / n
         return [self.token(f'{cid}_t{k}', [x, y + k * (th + gap), w, th], t, size=size, container=container,
                            fam=(fam if (strong_last and k == n - 1) else None), strong=(strong_last and k == n - 1))
                 for k, t in enumerate(items)]
 
-    def vchain(self, cid, box, steps, container=None, size=19, gap=20):
+    def vchain(self, cid, box, steps, container=None, size=None, gap=20):
         """Vertical mini-chain: tokens joined by short down arrows — input → operation → output."""
+        size = size or self.size('body', 19)
         x, y, w, h = box; n = len(steps); th = (h - gap * (n - 1)) / n
         ids = []
         for k, s in enumerate(steps):
@@ -163,8 +216,9 @@ class Framework:
                              arrow=True, head={'length': hl, 'width': max(4.0, hl * 0.9)}, container=container)
         return ids
 
-    def chain(self, cid, box, steps, container=None, size=19, gap=20, outcome=None, outcome_fam=None, height=None):
+    def chain(self, cid, box, steps, container=None, size=None, gap=20, outcome=None, outcome_fam=None, height=None):
         """Horizontal mini-chain: tokens joined by short arrows — the module's input → operation → output."""
+        size = size or self.size('body', 19)
         x, y, w, h = box; th = height or h
         items = list(steps) + ([outcome] if outcome else [])
         n = len(items)
@@ -183,8 +237,9 @@ class Framework:
                              arrow=True, head={'length': hl, 'width': max(4.0, hl * 0.9)}, container=container)
         return ids
 
-    def ledger(self, cid, box, rows, container=None, size=20, gap=10, cols=1, tick=True):
+    def ledger(self, cid, box, rows, container=None, size=None, gap=10, cols=1, tick=True):
         """Record grid: one token per recorded item, each with a tick mark, laid out in `cols` columns."""
+        size = size or self.size('body', 20)
         x, y, w, h = box
         per = math.ceil(len(rows) / cols)
         cw = (w - 16 * (cols - 1)) / cols
@@ -204,20 +259,33 @@ class Framework:
                         el['overlap_reason'] = 'tick mark drawn inside its record token'
 
     # ------------------------------------------------------------------ tier 4
-    def pill(self, pid, cx, cy, text, size=18, fam=None, padx=16, pady=6):
+    def pill(self, pid, cx, cy, text, size=None, fam=None, padx=16, pady=6, max_w=None, container=None):
+        """Capsule label. With max_w, a label wider than that breaks onto two lines instead of reaching
+        the next connector (English runs ~1.6x wider than the Chinese it replaces)."""
+        size = size or self.size('label', 18)
         f = FAM[fam] if fam else None
         tw = Scene.measure(text, size) + 2 * padx; th = int(size * 1.5) + 2 * pady
+        lines = 1
+        if max_w and tw > max_w and ' ' in text:
+            words = text.split(' ')
+            best = min(range(1, len(words)), key=lambda k: max(Scene.measure(' '.join(words[:k]), size),
+                                                                Scene.measure(' '.join(words[k:]), size)))
+            half = max(Scene.measure(' '.join(words[:best]), size), Scene.measure(' '.join(words[best:]), size))
+            tw = half + 2 * padx + 8
+            th = int(size * 3.1) + 2 * pady
+            lines = 2
         box = [cx - tw / 2, cy - th / 2, tw, th]
         self.sc.shape(pid, box, fill=(f['zone'] if f else '#FFFFFF'), stroke=(f['edge'] if f else '#CBD3DA'),
-                      stroke_width=W_PILL, radius=th / 2)
+                      stroke_width=W_PILL, radius=th / 2, container=container)
         self.sc.text(pid + '_t', [box[0] + padx - 6, box[1] + pady - 2, tw - 2 * padx + 12, th - 2 * pady + 4],
-                     text, size, bold=True, color=(f['text'] if f else ITEM), container=pid,
-                     font_group='edgelabel')
+                     text, size, bold=self.bold('label'), color=(f['text'] if f else ITEM), container=pid,
+                     font_group='edgelabel', wrap=lines > 1)
         self.pills.append(pid)
         return box
 
     def conn(self, cid, pts, dashed=False, arrow=True, width=W_CONN, color=CONN, label=None, label_at=None,
-             label_size=18, label_fam=None):
+             label_size=None, label_fam=None, label_max_w=None):
+        label_size = label_size or self.size('label', 18)
         ids = []; pts = [(float(a), float(b)) for a, b in pts]
         segs = list(zip(pts[:-1], pts[1:]))
         for k, (p0, p1) in enumerate(segs):
@@ -226,7 +294,8 @@ class Framework:
                          arrow=(last and arrow), head=(HEAD if (last and arrow and not dashed) else None))
             ids.append(sid)
         # the label is drawn last so it masks the connector it annotates instead of being struck through by it
-        pbox = self.pill(cid + '_p', *(label_at or segs[len(segs) // 2][0]), label, size=label_size, fam=label_fam) if label else None
+        pbox = self.pill(cid + '_p', *(label_at or segs[len(segs) // 2][0]), label, size=label_size, fam=label_fam,
+                         max_w=label_max_w) if label else None
         mates = ids + ([cid + '_p'] if pbox else [])
         for el in self.sc.els:
             if el['id'] in mates:
@@ -234,18 +303,22 @@ class Framework:
                 el['overlap_reason'] = 'connector joints and its label, visible in source'
         return ids
 
-    def axis(self, aid, x, y0, y1, near='近', far='远', label=None, size=18, container=None, label_x=None):
+    def axis(self, aid, x, y0, y1, near='近', far='远', label=None, size=None, container=None, label_x=None):
+        size = size or self.size('label', 18)
+        ends = self.size('body', size)
         mid = (y0 + y1) / 2
         self.sc.line(aid + '_u', [(x, mid - 42), (x, y0 + 24)], stroke=ITEM, width=W_STEP, arrow=True,
                      head={'length': 14, 'width': 11}, container=container)
         self.sc.line(aid + '_d', [(x, mid + 42), (x, y1 - 24)], stroke=ITEM, width=W_STEP, arrow=True,
                      head={'length': 14, 'width': 11}, container=container)
-        self.sc.text(aid + '_n', [x - 24, y0 - 12, 48, 34], near, size, bold=True, color=ITEM, container=container)
-        self.sc.text(aid + '_f', [x - 24, y1 - 24, 48, 34], far, size, bold=True, color=ITEM, container=container)
+        eh = int(ends * 1.75) if self.T else 34
+        self.sc.text(aid + '_n', [x - 24, y0 - 12, 48, eh], near, ends, bold=True, color=ITEM, container=container)
+        self.sc.text(aid + '_f', [x - 24, y1 - 24, 48, eh], far, ends, bold=True, color=ITEM, container=container)
         if label:
             lw = Scene.measure(label, size) + 20; lh = int(size * 1.75)
             self.sc.text(aid + '_l', [(label_x if label_x is not None else x) - lw / 2, mid - lh / 2, lw, lh],
-                         label, size, bold=True, color=ITEM, rotation=-90, container=container, font_group='axis')
+                         label, size, bold=self.bold('label'), color=ITEM, rotation=-90, container=container,
+                         font_group='axis')
 
     # ------------------------------------------------------------------ finishing
     @staticmethod
@@ -270,10 +343,17 @@ class Framework:
                         x['overlap_reason'] = 'connector joints, visible in source'
         fam = set(self.pills) | {p + '_t' for p in self.pills}
         pills = [e for e in self.sc.els if e['id'] in fam]
+        # A pill masks the line it annotates and may sit on a zone's tint — that is intended. Once a figure
+        # follows the printed type scale, a pill over anyone else's text or card is NOT declared: it stays a
+        # finding, so a label pushed onto a hub title or out of its zone fails the precheck instead of
+        # shipping. (Round-5 scenes keep the old blanket exemption so they still rebuild byte-identically.)
+        zone_set = set(zone_ids)
         for a in pills:
             ba = self._bbox(a)
             for b in self.sc.els:
                 if b['id'] == a['id'] or b['id'] in fam or b['id'] == a['id'].replace('_t', ''): continue
+                if self.T and not (b['kind'] == 'line' or b['id'] in zone_set):
+                    continue
                 bb = self._bbox(b)
                 if ba[0] < bb[2] and ba[2] > bb[0] and ba[1] < bb[3] and ba[3] > bb[1]:
                     for x, y in ((a, b), (b, a)):

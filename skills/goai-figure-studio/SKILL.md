@@ -146,9 +146,12 @@ PPTX / SVG / 矢量 PDF。这一步决定质量：一致的墨、一致的图元
 
 ```python
 import sys; sys.path.insert(0, 'skills/goai-figure-studio')
-from lib import Figure, FAM
+from lib import Figure, FAM, TYPE_PT, TYPE_PT_EN
 
-f = Figure(1536, 1024, notes='图 2 …（F01 分层横带 → super_img2ppt 重建）')
+# print_width_pt：图在论文里的放置宽度（用 print_audit.py 从编好的 PDF 里读，不要估）。
+# 传了它，所有构件的字号都按「印刷 pt × 角色」换算，正文自动用常规体；不传就是旧的写死 px。
+f = Figure(1536, 1024, notes='图 2 …（F01 分层横带 → super_img2ppt 重建）',
+           print_width_pt=435.2, type_scale=TYPE_PT)          # 英文：451.4 与 TYPE_PT_EN
 z = f.zone('zT', [26, 28, 1484, 402], '实验方法', 'exp')        # 一级：分组带
 f.card_stack('c1', [60, 100, 278, 300], '外加助熔',              # 二级：模块卡
              ['溶解', '保温', '缓冷分离'], fam='exp', glyph='beaker', container=z)
@@ -171,6 +174,10 @@ A2 合同的四级层次在库里各有对应，别压扁成两级：
   `python3 skills/goai-figure-studio/scripts/glyphs.py` 列清单，
   `… glyphs.py sheet out.json` 出对照表。缺图元就往 `motifs.py` 里加，
   **绝不从生图里裁图标** —— 那正是前三轮图元风格不统一的根因。
+- **字号按印刷 pt 定、按角色取**：中文 分组 9.5 / 标题 9 / 步骤号 12 / 正文 8 / 标签 7.5 pt，英文各降一档，
+  下限 7 pt。**只有分组名、卡片标题、步骤号加粗**，其余常规体——全加粗等于没有层次。
+  **卡片尺寸由内容算出**（先量字再定框，放不下就折行），不要先定整齐的框再往里塞小字。
+  实例：`submission/03_运行与评测包/figure_scenes/scenes_r6.py`。
 - **墨量、字号、CJK 行高**一律照 `references/ink-budget.md`，改任何线宽/颜色前先看那份。
   数字不是口味，每一条都是作者否掉上一版定出来的；要改就改 `lib/framework.py`，
   让所有图一起动。
@@ -237,7 +244,12 @@ python3 skills/goai-figure-studio/scripts/check_i18n.py --tr <r5_en.py 或 tr.js
 
 ### C6 印刷尺度终检
 
-**在编译好的论文页上看**（`pdftoppm` 出页），不是只看单张图 PDF —— 单张图永远好看。
+```bash
+python3 skills/goai-figure-studio/scripts/print_audit.py --paper <编好的论文.pdf> <图.pdf>=<scene.json> …
+```
+
+它从编好的 PDF 里找到每张图的实际放置宽度，报出每类文字印出来多少 pt，低于 7 pt 就失败。
+然后**在编译好的论文页上看**（`pdftoppm` 出页），不是只看单张图 PDF —— 单张图永远好看。
 `\linewidth` 下 1536px 画布的 19px 字接近 6pt；低于这个就重新构图（一行宽排改 3+3），
 **宁缩画布、勿缩字号**。同时核对 `\includegraphics` 没有残留为旧图调的 `trim=…,clip`。
 
@@ -260,7 +272,7 @@ python3 skills/goai-figure-studio/scripts/selftest.py
   别人要改图内用词，改脚本重生成，**不要直接改导出件**。
 - 每图写 caption 草稿（图讲什么 + 符号约定）存 figure_plan.md 供 writer。
 - 全部图完成后 `loopctl gate --name figures_ready --status PASS
-  --detail "<N 图 pptx+svg+pdf 齐；precheck 0 hard；img2ppt findings 仅剩 pitfalls
+  --detail "<N 图 pptx+svg+pdf 齐；precheck 0 hard；print_audit 最小 ≥7pt 且同角色跨图同字号；img2ppt findings 仅剩 pitfalls
   列出的已知误报；中英两版齐全且 check_i18n 覆盖完整>"`。独立图纸任务（无 loop 会话）不必强行
   gate —— 交付登记写进 figure_plan.md 即可。
 

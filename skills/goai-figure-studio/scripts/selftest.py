@@ -13,7 +13,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
-from lib import Figure, pack_pill_rows
+from lib import Figure, pack_pill_rows, TYPE_PT, TYPE_PT_EN, MIN_PRINT_PT, BOLD_ROLES
 from lib.motifs import NAMES
 
 
@@ -66,6 +66,30 @@ def main():
     assert all(a['box'][0] + a['box'][2] <= b['box'][0] for a, b in zip(pills, pills[1:])), 'labels overlap'
     assert pills[-1]['box'][0] + pills[-1]['box'][2] <= f.sc.w, 'last label runs off the page'
     print(f'label row packed: {len(pills)} pills on y={ys.pop()}')
+
+    # print-scale mode: sizes come from the printed table, only headings are bold, nothing prints under the floor
+    for scale, pw in ((TYPE_PT, 435.2), (TYPE_PT_EN, 451.4)):
+        g = Figure(1536, 400, print_width_pt=pw, type_scale=scale)
+        for role, pt in scale.items():
+            got = g.T[role] * g.pt_per_px
+            assert abs(got - max(pt, MIN_PRINT_PT)) < 0.25, f'{role}: {got:.2f} pt, wanted {pt}'
+            assert got >= MIN_PRINT_PT - 0.05, f'{role} prints below the floor'
+        assert g.bold('title') and g.bold('group') and g.bold('number')
+        assert not g.bold('body') and not g.bold('label'), 'body/label must be regular in print-scale mode'
+        z = g.zone('z', [26, 20, 1484, 360], '分组', 'lit')
+        g.card_stack('c', [60, 90, 600, 200], '标题', ['条目一', '条目二'], fam='lit', container=z)
+        weights = {e['id']: e.get('bold') for e in g.sc.els if e['kind'] == 'text'}
+        assert weights['c_t'] and weights['z_l'] and not weights['c_i0_t'], weights
+    print('print scale: sizes, floor and two-weight hierarchy OK')
+
+    # the printed-size gate must reject a scene whose text would print below the floor
+    tiny = Figure(1536, 300, print_width_pt=435.2)
+    tiny.sc.text('t', [40, 40, 600, 40], '太小的字', 18, color='#27303A')
+    tiny_path = out.with_name('tiny.json')
+    tiny.write(tiny_path)
+    r = subprocess.run([sys.executable, str(HERE / 'precheck.py'), str(tiny_path)], capture_output=True, text=True)
+    assert r.returncode and 'print_too_small' in r.stdout, 'precheck let 5 pt text through'
+    print('precheck rejects text below the printed floor')
 
     r = subprocess.run([sys.executable, str(HERE / 'precheck.py'), str(out)], capture_output=True, text=True)
     print(r.stdout.strip())

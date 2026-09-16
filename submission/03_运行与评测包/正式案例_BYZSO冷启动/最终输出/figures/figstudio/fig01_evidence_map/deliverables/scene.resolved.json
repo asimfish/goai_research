@@ -15,7 +15,7 @@
     {
       "id": "page_001",
       "width": 1536,
-      "height": 1024,
+      "height": 1071,
       "background": "#FFFFFF",
       "reviewed": true,
       "elements": [
@@ -24,10 +24,10 @@
           "kind": "shape",
           "z": 1,
           "box": [
-            110,
-            50,
-            462,
-            806
+            26,
+            26,
+            536,
+            1019
           ],
           "shape": "round_rect",
           "fill": "#EEF2F7",
@@ -35,7 +35,6 @@
           "stroke_width": 1.6,
           "radius": 14,
           "allow_overlap_with": [
-            "ax_l",
             "br_a1_0",
             "br_a2_0",
             "br_a3_0",
@@ -49,12 +48,12 @@
           "kind": "text",
           "z": 2,
           "box": [
-            128,
-            60,
-            134,
-            45
+            44,
+            36,
+            350,
+            48
           ],
-          "font_size": 26,
+          "font_size": 28,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -66,10 +65,10 @@
           "container": "zL",
           "runs": [
             {
-              "text": "文献证据",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 26,
+              "text": "Literature Evidence",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 28,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -81,10 +80,10 @@
           "kind": "shape",
           "z": 3,
           "box": [
-            592,
-            50,
-            440,
-            806
+            586,
+            26,
+            400,
+            1019
           ],
           "shape": "round_rect",
           "fill": "#E6F2F3",
@@ -96,11 +95,7 @@
             "ex_0",
             "ex_p",
             "ex_p_t",
-            "fan0_0",
-            "fan1_0",
-            "fan2_0",
-            "fan3_0",
-            "fanv_0"
+            "fan0_0"
           ],
           "overlap_reason": "connectors and labels drawn over the group zone, visible in source"
         },
@@ -109,12 +104,12 @@
           "kind": "text",
           "z": 4,
           "box": [
-            610,
-            60,
-            134,
-            45
+            604,
+            36,
+            333,
+            48
           ],
-          "font_size": 26,
+          "font_size": 28,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -126,10 +121,10 @@
           "container": "zE",
           "runs": [
             {
-              "text": "实验方法",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 26,
+              "text": "Experimental Items",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 28,
               "bold": true,
               "italic": false,
               "color": "#0F4F58"
@@ -141,10 +136,10 @@
           "kind": "shape",
           "z": 5,
           "box": [
-            1052,
-            50,
-            458,
-            806
+            1010,
+            26,
+            500,
+            1019
           ],
           "shape": "round_rect",
           "fill": "#FFF6E3",
@@ -166,12 +161,12 @@
           "kind": "text",
           "z": 6,
           "box": [
-            1070,
-            60,
-            186,
-            45
+            1028,
+            36,
+            368,
+            48
           ],
-          "font_size": 26,
+          "font_size": 28,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -183,10 +178,10 @@
           "container": "zQ",
           "runs": [
             {
-              "text": "可回答的问题",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 26,
+              "text": "Answerable Questions",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 28,
               "bold": true,
               "italic": false,
               "color": "#7A5410"
@@ -198,10 +193,10 @@
           "kind": "shape",
           "z": 7,
           "box": [
-            130,
-            150,
-            420,
-            102
+            128,
+            94,
+            418,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -222,10 +217,10 @@
           "kind": "shape",
           "z": 8,
           "box": [
-            130,
-            150,
-            8,
-            102
+            128,
+            94,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -237,8 +232,8 @@
           "kind": "shape",
           "z": 9,
           "box": [
-            161,
-            187,
+            153,
+            162,
             19,
             29
           ],
@@ -260,12 +255,12 @@
           "z": 10,
           "points": [
             [
-              166,
-              197
+              158,
+              172
             ],
             [
-              179,
-              197
+              171,
+              172
             ]
           ],
           "stroke": "#111A24",
@@ -285,12 +280,12 @@
           "z": 11,
           "points": [
             [
-              166,
-              203
+              158,
+              178
             ],
             [
-              179,
-              203
+              171,
+              178
             ]
           ],
           "stroke": "#111A24",
@@ -310,12 +305,12 @@
           "z": 12,
           "points": [
             [
-              166,
-              208
+              158,
+              184
             ],
             [
-              175,
-              208
+              167,
+              184
             ]
           ],
           "stroke": "#111A24",
@@ -334,12 +329,12 @@
           "kind": "text",
           "z": 13,
           "box": [
-            206,
-            180,
-            328,
-            41
+            196,
+            109,
+            338,
+            135
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -349,13 +344,22 @@
           "wrap": false,
           "fit": "strict",
           "container": "a1",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "目标化合物直接报道",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Direct Reports on \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
+              "bold": true,
+              "italic": false,
+              "color": "#2B3E57"
+            },
+            {
+              "text": "Target",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -367,10 +371,10 @@
           "kind": "shape",
           "z": 14,
           "box": [
-            130,
-            262,
-            420,
-            102
+            128,
+            283,
+            418,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -394,10 +398,10 @@
           "kind": "shape",
           "z": 15,
           "box": [
-            130,
-            262,
-            8,
-            102
+            128,
+            283,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -410,12 +414,12 @@
           "z": 16,
           "points": [
             [
-              174,
-              296
+              166,
+              349
             ],
             [
-              190,
-              307
+              182,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -438,12 +442,12 @@
           "z": 17,
           "points": [
             [
-              190,
-              307
+              182,
+              359
             ],
             [
-              183,
-              328
+              175,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -466,12 +470,12 @@
           "z": 18,
           "points": [
             [
-              183,
-              328
+              175,
+              381
             ],
             [
-              165,
-              328
+              157,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -494,12 +498,12 @@
           "z": 19,
           "points": [
             [
-              165,
-              328
+              157,
+              381
             ],
             [
-              158,
-              307
+              150,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -522,12 +526,12 @@
           "z": 20,
           "points": [
             [
-              158,
-              307
+              150,
+              359
             ],
             [
-              174,
-              296
+              166,
+              349
             ]
           ],
           "stroke": "#111A24",
@@ -550,12 +554,12 @@
           "z": 21,
           "points": [
             [
-              174,
-              296
+              166,
+              349
             ],
             [
-              174,
-              328
+              166,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -578,12 +582,12 @@
           "z": 22,
           "points": [
             [
-              158,
-              307
+              150,
+              359
             ],
             [
-              190,
-              307
+              182,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -605,12 +609,12 @@
           "kind": "text",
           "z": 23,
           "box": [
-            206,
-            292,
-            328,
-            41
+            196,
+            298,
+            338,
+            135
           ],
-          "font_size": 24,
+          "font_size": 26.31642150878906,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -620,31 +624,22 @@
           "wrap": false,
           "fit": "strict",
           "container": "a2",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "同类",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
-              "bold": true,
-              "italic": false,
-              "color": "#2B3E57"
-            },
-            {
-              "text": " Ba–Y ",
+              "text": "Same Ba–Y Tetragonal \n",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 24,
+              "font_size": 26.31642150878906,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
             },
             {
-              "text": "四方硅酸盐",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Silicates",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 26.31642150878906,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -656,10 +651,10 @@
           "kind": "shape",
           "z": 24,
           "box": [
-            130,
-            374,
-            420,
-            102
+            128,
+            472,
+            418,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -691,10 +686,10 @@
           "kind": "shape",
           "z": 25,
           "box": [
-            130,
-            374,
-            8,
-            102
+            128,
+            472,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -707,12 +702,12 @@
           "z": 26,
           "points": [
             [
-              161,
-              412
+              153,
+              542
             ],
             [
-              187,
-              412
+              179,
+              542
             ]
           ],
           "stroke": "#111A24",
@@ -743,12 +738,12 @@
           "z": 27,
           "points": [
             [
-              161,
-              412
+              153,
+              542
             ],
             [
-              161,
-              438
+              153,
+              567
             ]
           ],
           "stroke": "#111A24",
@@ -779,12 +774,12 @@
           "z": 28,
           "points": [
             [
-              161,
-              425
+              153,
+              554
             ],
             [
-              187,
-              425
+              179,
+              554
             ]
           ],
           "stroke": "#111A24",
@@ -815,12 +810,12 @@
           "z": 29,
           "points": [
             [
-              174,
-              412
+              166,
+              542
             ],
             [
-              174,
-              438
+              166,
+              567
             ]
           ],
           "stroke": "#111A24",
@@ -851,12 +846,12 @@
           "z": 30,
           "points": [
             [
-              161,
-              438
+              153,
+              567
             ],
             [
-              187,
-              438
+              179,
+              567
             ]
           ],
           "stroke": "#111A24",
@@ -887,12 +882,12 @@
           "z": 31,
           "points": [
             [
-              187,
-              412
+              179,
+              542
             ],
             [
-              187,
-              438
+              179,
+              567
             ]
           ],
           "stroke": "#111A24",
@@ -922,8 +917,8 @@
           "kind": "shape",
           "z": 32,
           "box": [
-            158,
-            409,
+            150,
+            539,
             6,
             6
           ],
@@ -954,8 +949,8 @@
           "kind": "shape",
           "z": 33,
           "box": [
-            158,
-            422,
+            150,
+            552,
             6,
             6
           ],
@@ -986,8 +981,8 @@
           "kind": "shape",
           "z": 34,
           "box": [
-            158,
-            435,
+            150,
+            564,
             6,
             6
           ],
@@ -1018,8 +1013,8 @@
           "kind": "shape",
           "z": 35,
           "box": [
-            171,
-            409,
+            163,
+            539,
             6,
             6
           ],
@@ -1050,8 +1045,8 @@
           "kind": "shape",
           "z": 36,
           "box": [
-            171,
-            422,
+            163,
+            552,
             6,
             6
           ],
@@ -1082,8 +1077,8 @@
           "kind": "shape",
           "z": 37,
           "box": [
-            171,
-            435,
+            163,
+            564,
             6,
             6
           ],
@@ -1114,8 +1109,8 @@
           "kind": "shape",
           "z": 38,
           "box": [
-            184,
-            409,
+            176,
+            539,
             6,
             6
           ],
@@ -1146,8 +1141,8 @@
           "kind": "shape",
           "z": 39,
           "box": [
-            184,
-            422,
+            176,
+            552,
             6,
             6
           ],
@@ -1178,8 +1173,8 @@
           "kind": "shape",
           "z": 40,
           "box": [
-            184,
-            435,
+            176,
+            564,
             6,
             6
           ],
@@ -1210,12 +1205,12 @@
           "kind": "text",
           "z": 41,
           "box": [
-            206,
-            404,
-            328,
-            41
+            196,
+            487,
+            338,
+            135
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -1225,13 +1220,22 @@
           "wrap": false,
           "fit": "strict",
           "container": "a3",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "结构相关化合物",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Crystal-Chemical \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
+              "bold": true,
+              "italic": false,
+              "color": "#2B3E57"
+            },
+            {
+              "text": "Neighbors",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -1243,10 +1247,10 @@
           "kind": "shape",
           "z": 42,
           "box": [
-            130,
-            486,
-            420,
-            102
+            128,
+            661,
+            418,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -1267,10 +1271,10 @@
           "kind": "shape",
           "z": 43,
           "box": [
-            130,
-            486,
-            8,
-            102
+            128,
+            661,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#5B7592",
@@ -1283,12 +1287,12 @@
           "z": 44,
           "points": [
             [
-              163,
-              529
+              155,
+              736
             ],
             [
-              167,
-              551
+              159,
+              757
             ]
           ],
           "stroke": "#111A24",
@@ -1308,12 +1312,12 @@
           "z": 45,
           "points": [
             [
-              167,
-              551
+              159,
+              757
             ],
             [
-              181,
-              551
+              173,
+              757
             ]
           ],
           "stroke": "#111A24",
@@ -1333,12 +1337,12 @@
           "z": 46,
           "points": [
             [
-              181,
-              551
+              173,
+              757
             ],
             [
-              185,
-              529
+              177,
+              736
             ]
           ],
           "stroke": "#111A24",
@@ -1358,12 +1362,12 @@
           "z": 47,
           "points": [
             [
-              160,
-              529
+              152,
+              736
             ],
             [
-              188,
-              529
+              180,
+              736
             ]
           ],
           "stroke": "#111A24",
@@ -1382,12 +1386,12 @@
           "kind": "text",
           "z": 48,
           "box": [
-            206,
-            516,
-            328,
-            41
+            196,
+            676,
+            338,
+            135
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -1397,13 +1401,22 @@
           "wrap": false,
           "fit": "strict",
           "container": "a4",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "工艺参照研究",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Process Reference \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
+              "bold": true,
+              "italic": false,
+              "color": "#2B3E57"
+            },
+            {
+              "text": "Studies",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#2B3E57"
@@ -1415,10 +1428,10 @@
           "kind": "shape",
           "z": 49,
           "box": [
-            130,
-            700,
-            420,
-            112
+            128,
+            862,
+            418,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -1444,8 +1457,8 @@
           "kind": "shape",
           "z": 50,
           "box": [
-            163,
-            742,
+            153,
+            930,
             19,
             29
           ],
@@ -1468,12 +1481,12 @@
           "z": 51,
           "points": [
             [
-              168,
-              752
+              158,
+              940
             ],
             [
-              181,
-              752
+              171,
+              940
             ]
           ],
           "stroke": "#111A24",
@@ -1494,12 +1507,12 @@
           "z": 52,
           "points": [
             [
-              168,
-              758
+              158,
+              946
             ],
             [
-              181,
-              758
+              171,
+              946
             ]
           ],
           "stroke": "#111A24",
@@ -1520,12 +1533,12 @@
           "z": 53,
           "points": [
             [
-              168,
-              763
+              158,
+              952
             ],
             [
-              177,
-              763
+              167,
+              952
             ]
           ],
           "stroke": "#111A24",
@@ -1546,12 +1559,12 @@
           "z": 54,
           "points": [
             [
-              162,
-              772
+              152,
+              960
             ],
             [
-              190,
-              740
+              180,
+              928
             ]
           ],
           "stroke": "#111A24",
@@ -1571,12 +1584,12 @@
           "kind": "text",
           "z": 55,
           "box": [
-            208,
-            736,
-            324,
-            41
+            196,
+            877,
+            338,
+            135
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -1586,13 +1599,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "a5",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "非相关资料",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Outside Study Scope",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#5B6570"
@@ -1600,75 +1613,32 @@
           ]
         },
         {
-          "id": "ax_u",
-          "kind": "line",
-          "z": 56,
-          "points": [
-            [
-              62,
-              439
-            ],
-            [
-              62,
-              174
-            ]
-          ],
-          "stroke": "#27303A",
-          "stroke_width": 2.2,
-          "arrow": true,
-          "arrow_head": {
-            "length": 14,
-            "width": 11
-          }
-        },
-        {
-          "id": "ax_d",
-          "kind": "line",
-          "z": 57,
-          "points": [
-            [
-              62,
-              523
-            ],
-            [
-              62,
-              788
-            ]
-          ],
-          "stroke": "#27303A",
-          "stroke_width": 2.2,
-          "arrow": true,
-          "arrow_head": {
-            "length": 14,
-            "width": 11
-          }
-        },
-        {
           "id": "ax_n",
           "kind": "text",
-          "z": 58,
+          "z": 56,
           "box": [
-            38,
-            138,
-            48,
-            34
+            44,
+            94,
+            82,
+            40
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
+          "container": "zL",
           "runs": [
             {
-              "text": "近",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 18,
-              "bold": true,
+              "text": "Near",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -1677,29 +1647,30 @@
         {
           "id": "ax_f",
           "kind": "text",
-          "z": 59,
+          "z": 57,
           "box": [
-            38,
-            788,
-            48,
-            34
+            44,
+            786,
+            82,
+            40
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
+          "container": "zL",
           "runs": [
             {
-              "text": "远",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 18,
-              "bold": true,
+              "text": "Far",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -1708,48 +1679,86 @@
         {
           "id": "ax_l",
           "kind": "text",
-          "z": 60,
+          "z": 58,
           "box": [
-            -33,
-            466,
-            150,
-            31
+            -64,
+            439,
+            299,
+            42
           ],
-          "font_size": 18,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
+          "container": "zL",
           "rotation": -90,
-          "allow_overlap_with": [
-            "zL"
-          ],
-          "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
-              "text": "与目标相的距离",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 18,
-              "bold": true,
+              "text": "Distance from target",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
           ]
         },
         {
+          "id": "ax_u",
+          "kind": "line",
+          "z": 59,
+          "points": [
+            [
+              85,
+              140
+            ],
+            [
+              85,
+              302
+            ]
+          ],
+          "stroke": "#27303A",
+          "stroke_width": 2.2,
+          "container": "zL"
+        },
+        {
+          "id": "ax_d",
+          "kind": "line",
+          "z": 60,
+          "points": [
+            [
+              85,
+              618
+            ],
+            [
+              85,
+              780
+            ]
+          ],
+          "stroke": "#27303A",
+          "stroke_width": 2.2,
+          "container": "zL",
+          "arrow": true,
+          "arrow_head": {
+            "length": 13,
+            "width": 10
+          }
+        },
+        {
           "id": "led",
           "kind": "shape",
           "z": 61,
           "box": [
-            620,
-            150,
-            382,
-            540
+            602,
+            94,
+            368,
+            732
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -1771,10 +1780,10 @@
           "kind": "shape",
           "z": 62,
           "box": [
-            620,
-            150,
-            11,
-            540
+            602,
+            94,
+            6,
+            732
           ],
           "shape": "round_rect",
           "fill": "#1F7F8C",
@@ -1786,8 +1795,8 @@
           "kind": "shape",
           "z": 63,
           "box": [
-            653,
-            186,
+            772,
+            118,
             33,
             29
           ],
@@ -1810,12 +1819,12 @@
           "z": 64,
           "points": [
             [
-              653,
-              196
+              772,
+              128
             ],
             [
-              687,
-              196
+              806,
+              128
             ]
           ],
           "stroke": "#111A24",
@@ -1836,12 +1845,12 @@
           "z": 65,
           "points": [
             [
-              653,
-              205
+              772,
+              137
             ],
             [
-              687,
-              205
+              806,
+              137
             ]
           ],
           "stroke": "#111A24",
@@ -1862,12 +1871,12 @@
           "z": 66,
           "points": [
             [
-              664,
-              186
+              783,
+              118
             ],
             [
-              664,
-              215
+              783,
+              147
             ]
           ],
           "stroke": "#111A24",
@@ -1888,12 +1897,12 @@
           "z": 67,
           "points": [
             [
-              676,
-              186
+              795,
+              118
             ],
             [
-              676,
-              215
+              795,
+              147
             ]
           ],
           "stroke": "#111A24",
@@ -1913,27 +1922,37 @@
           "kind": "text",
           "z": 68,
           "box": [
-            704,
-            178,
-            282,
-            44
+            622,
+            162,
+            334,
+            94
           ],
-          "font_size": 25,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
           "color": "#0F4F58",
-          "align": "left",
+          "align": "center",
           "valign": "middle",
           "wrap": false,
           "fit": "strict",
           "container": "led",
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "相同实验项目下比较",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 25,
+              "text": "Compared on Shared \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
+              "bold": true,
+              "italic": false,
+              "color": "#0F4F58"
+            },
+            {
+              "text": "Items",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#0F4F58"
@@ -1945,10 +1964,10 @@
           "kind": "shape",
           "z": 69,
           "box": [
-            648,
-            248,
-            330,
-            61
+            622,
+            268,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -1968,10 +1987,10 @@
           "kind": "shape",
           "z": 70,
           "box": [
-            662,
-            269,
-            18,
-            18
+            636,
+            303,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -1990,12 +2009,12 @@
           "z": 71,
           "points": [
             [
-              666,
-              279
+              639,
+              311
             ],
             [
-              670,
-              283
+              642,
+              314
             ]
           ],
           "stroke": "#111A24",
@@ -2014,12 +2033,12 @@
           "z": 72,
           "points": [
             [
-              670,
-              283
+              642,
+              314
             ],
             [
-              677,
-              274
+              648,
+              307
             ]
           ],
           "stroke": "#111A24",
@@ -2037,15 +2056,15 @@
           "kind": "text",
           "z": 73,
           "box": [
-            694,
-            261,
-            268,
-            35
+            665,
+            271,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2054,11 +2073,20 @@
           "container": "ledr_r0",
           "runs": [
             {
-              "text": "原料与配比",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Ratio and raw \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
+              "italic": false,
+              "color": "#27303A"
+            },
+            {
+              "text": "materials",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2069,10 +2097,10 @@
           "kind": "shape",
           "z": 74,
           "box": [
-            648,
-            319,
-            330,
-            61
+            622,
+            359,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2092,10 +2120,10 @@
           "kind": "shape",
           "z": 75,
           "box": [
-            662,
-            340,
-            18,
-            18
+            636,
+            394,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -2114,12 +2142,12 @@
           "z": 76,
           "points": [
             [
-              666,
-              349
+              639,
+              402
             ],
             [
-              670,
-              353
+              642,
+              406
             ]
           ],
           "stroke": "#111A24",
@@ -2138,12 +2166,12 @@
           "z": 77,
           "points": [
             [
-              670,
-              353
+              642,
+              406
             ],
             [
-              677,
-              345
+              648,
+              398
             ]
           ],
           "stroke": "#111A24",
@@ -2161,15 +2189,15 @@
           "kind": "text",
           "z": 78,
           "box": [
-            694,
-            331,
-            268,
-            35
+            665,
+            362,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2178,11 +2206,11 @@
           "container": "ledr_r1",
           "runs": [
             {
-              "text": "热历史",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Thermal history",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2193,10 +2221,10 @@
           "kind": "shape",
           "z": 79,
           "box": [
-            648,
-            389,
-            330,
-            61
+            622,
+            451,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2216,10 +2244,10 @@
           "kind": "shape",
           "z": 80,
           "box": [
-            662,
-            410,
-            18,
-            18
+            636,
+            485,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -2238,12 +2266,12 @@
           "z": 81,
           "points": [
             [
-              666,
-              420
+              639,
+              494
             ],
             [
-              670,
-              424
+              642,
+              497
             ]
           ],
           "stroke": "#111A24",
@@ -2262,12 +2290,12 @@
           "z": 82,
           "points": [
             [
-              670,
-              424
+              642,
+              497
             ],
             [
-              677,
-              415
+              648,
+              490
             ]
           ],
           "stroke": "#111A24",
@@ -2285,15 +2313,15 @@
           "kind": "text",
           "z": 83,
           "box": [
-            694,
-            402,
-            268,
-            35
+            665,
+            454,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2302,11 +2330,11 @@
           "container": "ledr_r2",
           "runs": [
             {
-              "text": "气氛",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Atmosphere",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2317,10 +2345,10 @@
           "kind": "shape",
           "z": 84,
           "box": [
-            648,
-            460,
-            330,
-            61
+            622,
+            542,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2340,10 +2368,10 @@
           "kind": "shape",
           "z": 85,
           "box": [
-            662,
-            481,
-            18,
-            18
+            636,
+            577,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -2362,12 +2390,12 @@
           "z": 86,
           "points": [
             [
-              666,
-              491
+              639,
+              585
             ],
             [
-              670,
-              495
+              642,
+              588
             ]
           ],
           "stroke": "#111A24",
@@ -2386,12 +2414,12 @@
           "z": 87,
           "points": [
             [
-              670,
-              495
+              642,
+              588
             ],
             [
-              677,
-              486
+              648,
+              581
             ]
           ],
           "stroke": "#111A24",
@@ -2409,15 +2437,15 @@
           "kind": "text",
           "z": 88,
           "box": [
-            694,
-            473,
-            268,
-            35
+            665,
+            545,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2426,11 +2454,11 @@
           "container": "ledr_r3",
           "runs": [
             {
-              "text": "容器与助熔剂",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Crucible and flux",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2441,10 +2469,10 @@
           "kind": "shape",
           "z": 89,
           "box": [
-            648,
-            531,
-            330,
-            61
+            622,
+            633,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2464,10 +2492,10 @@
           "kind": "shape",
           "z": 90,
           "box": [
-            662,
-            552,
-            18,
-            18
+            636,
+            668,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -2486,12 +2514,12 @@
           "z": 91,
           "points": [
             [
-              666,
-              561
+              639,
+              676
             ],
             [
-              670,
-              565
+              642,
+              680
             ]
           ],
           "stroke": "#111A24",
@@ -2510,12 +2538,12 @@
           "z": 92,
           "points": [
             [
-              670,
-              565
+              642,
+              680
             ],
             [
-              677,
-              557
+              648,
+              672
             ]
           ],
           "stroke": "#111A24",
@@ -2533,15 +2561,15 @@
           "kind": "text",
           "z": 93,
           "box": [
-            694,
-            544,
-            268,
-            35
+            665,
+            636,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2550,11 +2578,20 @@
           "container": "ledr_r4",
           "runs": [
             {
-              "text": "冷却与分离",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Cooling and \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
+              "italic": false,
+              "color": "#27303A"
+            },
+            {
+              "text": "separation",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2565,10 +2602,10 @@
           "kind": "shape",
           "z": 94,
           "box": [
-            648,
-            601,
-            330,
-            61
+            622,
+            725,
+            334,
+            85
           ],
           "shape": "round_rect",
           "fill": "#F4F7FA",
@@ -2588,10 +2625,10 @@
           "kind": "shape",
           "z": 95,
           "box": [
-            662,
-            622,
-            18,
-            18
+            636,
+            759,
+            16,
+            16
           ],
           "shape": "rect",
           "stroke": "#111A24",
@@ -2610,12 +2647,12 @@
           "z": 96,
           "points": [
             [
-              666,
-              632
+              639,
+              768
             ],
             [
-              670,
-              636
+              642,
+              771
             ]
           ],
           "stroke": "#111A24",
@@ -2634,12 +2671,12 @@
           "z": 97,
           "points": [
             [
-              670,
-              636
+              642,
+              771
             ],
             [
-              677,
-              627
+              648,
+              764
             ]
           ],
           "stroke": "#111A24",
@@ -2657,15 +2694,15 @@
           "kind": "text",
           "z": 98,
           "box": [
-            694,
-            614,
-            268,
-            35
+            665,
+            728,
+            275,
+            79
           ],
-          "font_size": 20,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "left",
           "valign": "middle",
@@ -2674,11 +2711,11 @@
           "container": "ledr_r5",
           "runs": [
             {
-              "text": "产物表征",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 20,
-              "bold": true,
+              "text": "Characterization",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
@@ -2689,10 +2726,10 @@
           "kind": "shape",
           "z": 99,
           "box": [
-            1076,
-            150,
-            410,
-            112
+            1026,
+            94,
+            468,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -2717,10 +2754,10 @@
           "kind": "shape",
           "z": 100,
           "box": [
-            1076,
-            150,
-            8,
-            112
+            1026,
+            94,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#C48A24",
@@ -2733,12 +2770,12 @@
           "z": 101,
           "points": [
             [
-              1118,
-              190
+              1060,
+              160
             ],
             [
-              1118,
-              201
+              1060,
+              172
             ]
           ],
           "stroke": "#111A24",
@@ -2762,12 +2799,12 @@
           "z": 102,
           "points": [
             [
-              1118,
-              201
+              1060,
+              172
             ],
             [
-              1108,
-              221
+              1050,
+              192
             ]
           ],
           "stroke": "#111A24",
@@ -2791,12 +2828,12 @@
           "z": 103,
           "points": [
             [
-              1108,
-              221
+              1050,
+              192
             ],
             [
-              1136,
-              221
+              1078,
+              192
             ]
           ],
           "stroke": "#111A24",
@@ -2820,12 +2857,12 @@
           "z": 104,
           "points": [
             [
-              1136,
-              221
+              1078,
+              192
             ],
             [
-              1126,
-              201
+              1068,
+              172
             ]
           ],
           "stroke": "#111A24",
@@ -2849,12 +2886,12 @@
           "z": 105,
           "points": [
             [
-              1126,
-              201
+              1068,
+              172
             ],
             [
-              1126,
-              190
+              1068,
+              160
             ]
           ],
           "stroke": "#111A24",
@@ -2878,12 +2915,12 @@
           "z": 106,
           "points": [
             [
-              1116,
-              190
+              1058,
+              160
             ],
             [
-              1128,
-              190
+              1070,
+              160
             ]
           ],
           "stroke": "#111A24",
@@ -2906,8 +2943,8 @@
           "kind": "shape",
           "z": 107,
           "box": [
-            1117,
-            212,
+            1059,
+            183,
             3,
             3
           ],
@@ -2932,8 +2969,8 @@
           "kind": "shape",
           "z": 108,
           "box": [
-            1124,
-            215,
+            1066,
+            186,
             2,
             2
           ],
@@ -2958,12 +2995,12 @@
           "kind": "text",
           "z": 109,
           "box": [
-            1154,
-            186,
-            314,
-            41
+            1094,
+            130,
+            388,
+            94
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -2973,13 +3010,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "u1",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "直接条件复现",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Direct Reproduction",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#7A5410"
@@ -2991,10 +3028,10 @@
           "kind": "shape",
           "z": 110,
           "box": [
-            1076,
-            282,
-            410,
-            112
+            1026,
+            283,
+            468,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -3018,10 +3055,10 @@
           "kind": "shape",
           "z": 111,
           "box": [
-            1076,
-            282,
-            8,
-            112
+            1026,
+            283,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#C48A24",
@@ -3034,12 +3071,12 @@
           "z": 112,
           "points": [
             [
-              1122,
-              321
+              1064,
+              349
             ],
             [
-              1138,
-              332
+              1080,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -3062,12 +3099,12 @@
           "z": 113,
           "points": [
             [
-              1138,
-              332
+              1080,
+              359
             ],
             [
-              1131,
-              353
+              1073,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -3090,12 +3127,12 @@
           "z": 114,
           "points": [
             [
-              1131,
-              353
+              1073,
+              381
             ],
             [
-              1113,
-              353
+              1055,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -3118,12 +3155,12 @@
           "z": 115,
           "points": [
             [
-              1113,
-              353
+              1055,
+              381
             ],
             [
-              1106,
-              332
+              1048,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -3146,12 +3183,12 @@
           "z": 116,
           "points": [
             [
-              1106,
-              332
+              1048,
+              359
             ],
             [
-              1122,
-              321
+              1064,
+              349
             ]
           ],
           "stroke": "#111A24",
@@ -3174,12 +3211,12 @@
           "z": 117,
           "points": [
             [
-              1122,
-              321
+              1064,
+              349
             ],
             [
-              1122,
-              353
+              1064,
+              381
             ]
           ],
           "stroke": "#111A24",
@@ -3202,12 +3239,12 @@
           "z": 118,
           "points": [
             [
-              1106,
-              332
+              1048,
+              359
             ],
             [
-              1138,
-              332
+              1080,
+              359
             ]
           ],
           "stroke": "#111A24",
@@ -3229,12 +3266,12 @@
           "kind": "text",
           "z": 119,
           "box": [
-            1154,
+            1094,
             318,
-            314,
-            41
+            388,
+            94
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -3244,13 +3281,22 @@
           "wrap": false,
           "fit": "strict",
           "container": "u2",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "系列内相图与结构比较",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Family Phase \n",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
+              "bold": true,
+              "italic": false,
+              "color": "#7A5410"
+            },
+            {
+              "text": "Comparison",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#7A5410"
@@ -3262,10 +3308,10 @@
           "kind": "shape",
           "z": 120,
           "box": [
-            1076,
-            414,
-            410,
-            112
+            1026,
+            472,
+            468,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -3291,10 +3337,10 @@
           "kind": "shape",
           "z": 121,
           "box": [
-            1076,
-            414,
-            8,
-            112
+            1026,
+            472,
+            6,
+            165
           ],
           "shape": "round_rect",
           "fill": "#C48A24",
@@ -3307,12 +3353,12 @@
           "z": 122,
           "points": [
             [
-              1122,
-              456
+              1064,
+              540
             ],
             [
-              1122,
-              481
+              1064,
+              566
             ]
           ],
           "stroke": "#111A24",
@@ -3337,12 +3383,12 @@
           "z": 123,
           "points": [
             [
-              1108,
-              461
+              1050,
+              546
             ],
             [
-              1136,
-              461
+              1078,
+              546
             ]
           ],
           "stroke": "#111A24",
@@ -3367,12 +3413,12 @@
           "z": 124,
           "points": [
             [
-              1108,
-              461
+              1050,
+              546
             ],
             [
-              1104,
-              470
+              1046,
+              554
             ]
           ],
           "stroke": "#111A24",
@@ -3397,12 +3443,12 @@
           "z": 125,
           "points": [
             [
-              1104,
-              470
+              1046,
+              554
             ],
             [
-              1112,
-              470
+              1054,
+              554
             ]
           ],
           "stroke": "#111A24",
@@ -3427,12 +3473,12 @@
           "z": 126,
           "points": [
             [
-              1112,
-              470
+              1054,
+              554
             ],
             [
-              1108,
-              461
+              1050,
+              546
             ]
           ],
           "stroke": "#111A24",
@@ -3457,12 +3503,12 @@
           "z": 127,
           "points": [
             [
-              1136,
-              461
+              1078,
+              546
             ],
             [
-              1132,
-              470
+              1074,
+              554
             ]
           ],
           "stroke": "#111A24",
@@ -3487,12 +3533,12 @@
           "z": 128,
           "points": [
             [
-              1132,
-              470
+              1074,
+              554
             ],
             [
-              1140,
-              470
+              1082,
+              554
             ]
           ],
           "stroke": "#111A24",
@@ -3517,12 +3563,12 @@
           "z": 129,
           "points": [
             [
-              1140,
-              470
+              1082,
+              554
             ],
             [
-              1136,
-              461
+              1078,
+              546
             ]
           ],
           "stroke": "#111A24",
@@ -3547,12 +3593,12 @@
           "z": 130,
           "points": [
             [
-              1114,
-              484
+              1056,
+              569
             ],
             [
-              1130,
-              484
+              1072,
+              569
             ]
           ],
           "stroke": "#111A24",
@@ -3576,12 +3622,12 @@
           "kind": "text",
           "z": 131,
           "box": [
-            1154,
-            450,
-            314,
-            41
+            1094,
+            508,
+            388,
+            94
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -3591,13 +3637,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "u3",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "方法与变量结构",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Methods and Variables",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#7A5410"
@@ -3609,16 +3655,16 @@
           "kind": "shape",
           "z": 132,
           "box": [
-            1166,
-            580,
-            230,
-            40
+            1100,
+            688,
+            319,
+            86
           ],
           "shape": "round_rect",
           "fill": "#FFF6E3",
           "stroke": "#C48A24",
           "stroke_width": 1.6,
-          "radius": 20.0,
+          "radius": 43.0,
           "allow_overlap_with": [
             "zQ"
           ],
@@ -3629,15 +3675,15 @@
           "kind": "text",
           "z": 133,
           "box": [
-            1176,
-            584,
-            210,
-            32
+            1110,
+            692,
+            299,
+            78
           ],
-          "font_size": 19,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#7A5410",
           "align": "center",
           "valign": "middle",
@@ -3650,29 +3696,20 @@
           "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
-              "text": "近邻条件",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 19,
-              "bold": true,
-              "italic": false,
-              "color": "#7A5410"
-            },
-            {
-              "text": " ≠ ",
+              "text": "Neighbor conditions ≠ \n",
               "font_family": "DejaVu Sans",
               "cjk_font_family": "DejaVu Sans",
-              "font_size": 19,
-              "bold": true,
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#7A5410"
             },
             {
-              "text": "已验证配方",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 19,
-              "bold": true,
+              "text": "proven recipe",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#7A5410"
             }
@@ -3683,10 +3720,10 @@
           "kind": "shape",
           "z": 134,
           "box": [
-            1076,
-            700,
-            410,
-            112
+            1026,
+            862,
+            468,
+            165
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
@@ -3713,8 +3750,8 @@
           "kind": "shape",
           "z": 135,
           "box": [
-            1110,
-            744,
+            1052,
+            932,
             24,
             24
           ],
@@ -3737,8 +3774,8 @@
           "kind": "shape",
           "z": 136,
           "box": [
-            1118,
-            752,
+            1060,
+            940,
             8,
             8
           ],
@@ -3762,12 +3799,12 @@
           "z": 137,
           "points": [
             [
-              1122,
-              738
+              1064,
+              927
             ],
             [
-              1122,
-              745
+              1064,
+              933
             ]
           ],
           "stroke": "#111A24",
@@ -3789,12 +3826,12 @@
           "z": 138,
           "points": [
             [
-              1122,
-              767
+              1064,
+              956
             ],
             [
-              1122,
-              774
+              1064,
+              962
             ]
           ],
           "stroke": "#111A24",
@@ -3816,12 +3853,12 @@
           "z": 139,
           "points": [
             [
-              1104,
-              756
+              1046,
+              944
             ],
             [
-              1111,
-              756
+              1053,
+              944
             ]
           ],
           "stroke": "#111A24",
@@ -3843,12 +3880,12 @@
           "z": 140,
           "points": [
             [
-              1133,
-              756
+              1075,
+              944
             ],
             [
-              1140,
-              756
+              1082,
+              944
             ]
           ],
           "stroke": "#111A24",
@@ -3869,12 +3906,12 @@
           "kind": "text",
           "z": 141,
           "box": [
-            1154,
-            736,
-            314,
-            41
+            1094,
+            898,
+            388,
+            94
           ],
-          "font_size": 24,
+          "font_size": 27,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
           "bold": true,
@@ -3884,13 +3921,13 @@
           "wrap": false,
           "fit": "strict",
           "container": "u4",
-          "min_font_size": 19,
+          "min_font_size": 24,
           "runs": [
             {
-              "text": "划定研究范围",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 24,
+              "text": "Study Boundary Only",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 27,
               "bold": true,
               "italic": false,
               "color": "#5B6570"
@@ -3903,12 +3940,12 @@
           "z": 142,
           "points": [
             [
-              554,
-              201
+              551,
+              176
             ],
             [
-              584,
-              201
+              574,
+              176
             ]
           ],
           "stroke": "#3C4753",
@@ -3925,12 +3962,12 @@
           "z": 143,
           "points": [
             [
-              554,
-              313
+              551,
+              366
             ],
             [
-              584,
-              313
+              574,
+              366
             ]
           ],
           "stroke": "#3C4753",
@@ -3947,12 +3984,12 @@
           "z": 144,
           "points": [
             [
-              554,
-              425
+              551,
+              554
             ],
             [
-              584,
-              425
+              574,
+              554
             ]
           ],
           "stroke": "#3C4753",
@@ -3969,12 +4006,12 @@
           "z": 145,
           "points": [
             [
-              554,
-              537
+              551,
+              744
             ],
             [
-              584,
-              537
+              574,
+              744
             ]
           ],
           "stroke": "#3C4753",
@@ -3991,12 +4028,12 @@
           "z": 146,
           "points": [
             [
-              584,
-              201
+              574,
+              176
             ],
             [
-              584,
-              537
+              574,
+              744
             ]
           ],
           "stroke": "#3C4753",
@@ -4016,12 +4053,12 @@
           "z": 147,
           "points": [
             [
-              584,
-              369
+              574,
+              460
             ],
             [
-              616,
-              369
+              599,
+              460
             ]
           ],
           "stroke": "#3C4753",
@@ -4043,12 +4080,12 @@
           "z": 148,
           "points": [
             [
-              1006,
-              420
+              975,
+              460
             ],
             [
-              1030,
-              420
+              998,
+              460
             ]
           ],
           "stroke": "#3C4753",
@@ -4065,12 +4102,12 @@
           "z": 149,
           "points": [
             [
-              1030,
-              206
+              998,
+              176
             ],
             [
-              1030,
-              470
+              998,
+              554
             ]
           ],
           "stroke": "#3C4753",
@@ -4079,10 +4116,9 @@
             "fan0_0",
             "fan1_0",
             "fan2_0",
-            "fan3_0",
-            "zE"
+            "fan3_0"
           ],
-          "overlap_reason": "connector routed across the group zones, visible in source"
+          "overlap_reason": "connector joints, visible in source"
         },
         {
           "id": "fan1_0",
@@ -4090,12 +4126,12 @@
           "z": 150,
           "points": [
             [
-              1030,
-              206
+              998,
+              176
             ],
             [
-              1072,
-              206
+              1023,
+              176
             ]
           ],
           "stroke": "#3C4753",
@@ -4107,7 +4143,6 @@
           },
           "allow_overlap_with": [
             "fanv_0",
-            "zE",
             "zQ"
           ],
           "overlap_reason": "connector routed across the group zones, visible in source"
@@ -4118,12 +4153,12 @@
           "z": 151,
           "points": [
             [
-              1030,
-              338
+              998,
+              366
             ],
             [
-              1072,
-              338
+              1023,
+              366
             ]
           ],
           "stroke": "#3C4753",
@@ -4135,7 +4170,6 @@
           },
           "allow_overlap_with": [
             "fanv_0",
-            "zE",
             "zQ"
           ],
           "overlap_reason": "connector routed across the group zones, visible in source"
@@ -4146,12 +4180,12 @@
           "z": 152,
           "points": [
             [
-              1030,
-              470
+              998,
+              554
             ],
             [
-              1072,
-              470
+              1023,
+              554
             ]
           ],
           "stroke": "#3C4753",
@@ -4163,7 +4197,6 @@
           },
           "allow_overlap_with": [
             "fanv_0",
-            "zE",
             "zQ"
           ],
           "overlap_reason": "connector routed across the group zones, visible in source"
@@ -4174,12 +4207,12 @@
           "z": 153,
           "points": [
             [
-              554,
-              756
+              551,
+              944
             ],
             [
-              1072,
-              756
+              1022,
+              944
             ]
           ],
           "stroke": "#3C4753",
@@ -4203,16 +4236,16 @@
           "kind": "shape",
           "z": 154,
           "box": [
-            776,
-            736,
-            74,
-            40
+            708,
+            920,
+            155,
+            48
           ],
           "shape": "round_rect",
           "fill": "#FFFFFF",
           "stroke": "#CBD3DA",
           "stroke_width": 1.6,
-          "radius": 20.0,
+          "radius": 24.0,
           "allow_overlap_with": [
             "ex_0",
             "zE"
@@ -4224,15 +4257,15 @@
           "kind": "text",
           "z": 155,
           "box": [
-            786,
-            740,
-            54,
-            32
+            718,
+            924,
+            135,
+            40
           ],
-          "font_size": 19,
+          "font_size": 24,
           "font_family": "DejaVu Sans",
           "cjk_font_family": "Noto Sans CJK SC",
-          "bold": true,
+          "bold": false,
           "color": "#27303A",
           "align": "center",
           "valign": "middle",
@@ -4246,18 +4279,18 @@
           "overlap_reason": "connector routed across the group zones, visible in source",
           "runs": [
             {
-              "text": "排除",
-              "font_family": "Noto Sans CJK SC",
-              "cjk_font_family": "Noto Sans CJK SC",
-              "font_size": 19,
-              "bold": true,
+              "text": "Excluded",
+              "font_family": "DejaVu Sans",
+              "cjk_font_family": "DejaVu Sans",
+              "font_size": 24,
+              "bold": false,
               "italic": false,
               "color": "#27303A"
             }
           ]
         }
       ],
-      "notes": "图 1 不同文献对目标化合物合成研究的适用范围（第五轮 F02 嵌套容器 → super_img2ppt 重建）"
+      "notes": "图 1 不同文献对目标化合物合成研究的适用范围（第六轮：印刷字号 + 内容定尺寸） [paper=byzso] [print_width_pt=451.4]"
     }
   ]
 }

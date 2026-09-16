@@ -1,6 +1,6 @@
 """Local pre-flight for scene.json: predicts the super_img2ppt findings that cost a remote round-trip.
 
-Reproduces, conservatively, four of the validator's checks — text_overflow, text_shrunk, outside_container and
+Adds a printed-size gate for scenes that declare [print_width_pt=…], and reproduces, conservatively, four of the validator's checks — text_overflow, text_shrunk, outside_container and
 unintended_overlap — using the same width model as i2p_scene.Scene.measure. Text boxes are compared on their
 measured ink (placed by align/valign) so that frame-only overlaps are reported separately, as the validator does.
 
@@ -8,7 +8,7 @@ usage: python3 skills/goai-figure-studio/scripts/precheck.py jobs/<fig>/scene.js
 """
 import json, math, pathlib, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
-from lib import Scene
+from lib import Scene, MIN_PRINT_PT, PRINT_TAG
 
 RESERVE = 1.0
 
@@ -52,6 +52,18 @@ def main(paths):
         els = sl['elements']
         by = {e['id']: e for e in els}
         out = []
+        # printed size: a scene that declares its print width must not set any text below MIN_PRINT_PT on paper
+        # (fit=shrink may take a string down to min_font_size, so that is the size that has to clear the floor)
+        m = PRINT_TAG.search(sl.get('notes', ''))
+        if m:
+            ppx = float(m.group(1)) / (sl['width'] - 24)
+            for e in els:
+                if e['kind'] != 'text':
+                    continue
+                low = e.get('min_font_size', e['font_size']) if e.get('fit') == 'shrink' else e['font_size']
+                if low * ppx < MIN_PRINT_PT - 0.05:
+                    out.append(('print_too_small', f"{e['id']} can print at {low * ppx:.1f} pt "
+                                f"(< {MIN_PRINT_PT:g}) — '{e['text'][:24]}'"))
         for e in els:
             if e['kind'] == 'text':
                 x, y, w, h = e['box']
@@ -89,7 +101,7 @@ def main(paths):
                 kind = 'unintended_overlap' if isect(ink(a), ink(b)) else 'text_frame_overlap_only'
                 if kind == 'unintended_overlap' or 'text' in (a['kind'], b['kind']):
                     out.append((kind, f"{a['id']} × {b['id']}"))
-        hard = [o for o in out if o[0] in ('text_overflow', 'outside_container', 'unintended_overlap')]
+        hard = [o for o in out if o[0] in ('text_overflow', 'outside_container', 'unintended_overlap', 'print_too_small')]
         soft = [o for o in out if o not in hard]
         print(f"== {path}: {len(hard)} hard, {len(soft)} soft ({len(els)} elements)")
         for code, msg in hard: print('   !', code, msg)
