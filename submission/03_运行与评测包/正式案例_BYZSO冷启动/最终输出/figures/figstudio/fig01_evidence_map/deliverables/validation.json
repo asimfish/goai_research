@@ -1,10 +1,36 @@
 {
-  "status": "fail",
+  "status": "pass",
   "visual_review": "required",
   "automated_checks": {
     "preflight": {
       "status": "pass",
-      "findings": [],
+      "findings": [
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "a2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.974682,
+            "effective_font_size_px": 26.3164,
+            "width_px": 337.5,
+            "height_px": 61.5,
+            "available_width_px": 338,
+            "available_height_px": 135,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 338.0,
+            "required_height_px": 62.0,
+            "fits": true,
+            "lines": [
+              "Same Ba–Y Tetragonal ",
+              "Silicates"
+            ]
+          }
+        }
+      ],
       "slides": [
         {
           "id": "page_001",
@@ -20,7 +46,7 @@
                 "br_a1_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 45.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -28,7 +54,7 @@
                 "br_a2_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 45.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -36,7 +62,7 @@
                 "br_a3_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 45.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -44,7 +70,7 @@
                 "br_a4_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 45.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -52,7 +78,7 @@
                 "ex_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 45.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -60,7 +86,7 @@
                 "brh_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 112.5
+              "area_px2": 67.6
             },
             {
               "elements": [
@@ -68,39 +94,7 @@
                 "fan0_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 60.0
-            },
-            {
-              "elements": [
-                "zE",
-                "fanv_0"
-              ],
-              "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 660.0
-            },
-            {
-              "elements": [
-                "zE",
-                "fan1_0"
-              ],
-              "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 5.0
-            },
-            {
-              "elements": [
-                "zE",
-                "fan2_0"
-              ],
-              "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 5.0
-            },
-            {
-              "elements": [
-                "zE",
-                "fan3_0"
-              ],
-              "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 5.0
+              "area_px2": 27.5
             },
             {
               "elements": [
@@ -108,7 +102,7 @@
                 "ex_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 1100.0
+              "area_px2": 1000.0
             },
             {
               "elements": [
@@ -116,7 +110,7 @@
                 "ex_p"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 2960.0
+              "area_px2": 7440.0
             },
             {
               "elements": [
@@ -124,7 +118,7 @@
                 "ex_p_t"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 1728.0
+              "area_px2": 5400.0
             },
             {
               "elements": [
@@ -132,7 +126,7 @@
                 "cav"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 9200.0
+              "area_px2": 27434.0
             },
             {
               "elements": [
@@ -140,7 +134,7 @@
                 "cav_t"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 6720.0
+              "area_px2": 23322.0
             },
             {
               "elements": [
@@ -148,7 +142,7 @@
                 "fan1_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 102.5
+              "area_px2": 67.6
             },
             {
               "elements": [
@@ -156,7 +150,7 @@
                 "fan2_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 102.5
+              "area_px2": 67.6
             },
             {
               "elements": [
@@ -164,7 +158,7 @@
                 "fan3_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 102.5
+              "area_px2": 67.6
             },
             {
               "elements": [
@@ -172,7 +166,7 @@
                 "ex_0"
               ],
               "reason": "connectors and labels drawn over the group zone, visible in source",
-              "area_px2": 125.0
+              "area_px2": 72.0
             },
             {
               "elements": [
@@ -204,7 +198,7 @@
                 "a2_g_o_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.991
+              "area_px2": 1.022
             },
             {
               "elements": [
@@ -212,7 +206,7 @@
                 "a2_g_o_4"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.905
+              "area_px2": 0.823
             },
             {
               "elements": [
@@ -220,7 +214,7 @@
                 "a2_g_a"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.503
+              "area_px2": 2.376
             },
             {
               "elements": [
@@ -228,7 +222,7 @@
                 "a2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 4.24
+              "area_px2": 4.591
             },
             {
               "elements": [
@@ -236,7 +230,7 @@
                 "a2_g_o_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.949
+              "area_px2": 0.963
             },
             {
               "elements": [
@@ -244,7 +238,7 @@
                 "a2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.827
+              "area_px2": 1.801
             },
             {
               "elements": [
@@ -252,7 +246,7 @@
                 "a2_g_o_3"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.949
+              "area_px2": 0.963
             },
             {
               "elements": [
@@ -268,7 +262,7 @@
                 "a2_g_o_4"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.991
+              "area_px2": 1.022
             },
             {
               "elements": [
@@ -276,7 +270,7 @@
                 "a2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.827
+              "area_px2": 1.801
             },
             {
               "elements": [
@@ -284,7 +278,7 @@
                 "a2_g_a"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.503
+              "area_px2": 2.376
             },
             {
               "elements": [
@@ -292,7 +286,7 @@
                 "a2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 4.24
+              "area_px2": 4.591
             },
             {
               "elements": [
@@ -412,7 +406,7 @@
                 "a3_g_d01"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 6.703
+              "area_px2": 6.271
             },
             {
               "elements": [
@@ -420,7 +414,7 @@
                 "a3_g_d11"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 13.406
+              "area_px2": 12.542
             },
             {
               "elements": [
@@ -428,7 +422,7 @@
                 "a3_g_d21"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 6.703
+              "area_px2": 6.271
             },
             {
               "elements": [
@@ -524,7 +518,7 @@
                 "a4_g_b_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.099
+              "area_px2": 1.09
             },
             {
               "elements": [
@@ -532,7 +526,7 @@
                 "a4_g_r"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.677
+              "area_px2": 2.681
             },
             {
               "elements": [
@@ -540,7 +534,7 @@
                 "a4_g_b_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.099
+              "area_px2": 1.09
             },
             {
               "elements": [
@@ -548,7 +542,7 @@
                 "a4_g_r"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.677
+              "area_px2": 2.681
             },
             {
               "elements": [
@@ -604,7 +598,7 @@
                 "a5_g_x"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 6.754
+              "area_px2": 5.663
             },
             {
               "elements": [
@@ -676,7 +670,7 @@
                 "ledr_c0_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 12.658
             },
             {
               "elements": [
@@ -684,7 +678,7 @@
                 "ledr_c0_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 34.017
+              "area_px2": 27.507
             },
             {
               "elements": [
@@ -692,7 +686,7 @@
                 "ledr_c0_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.521
+              "area_px2": 2.403
             },
             {
               "elements": [
@@ -700,7 +694,7 @@
                 "ledr_c1_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 14.917
             },
             {
               "elements": [
@@ -708,7 +702,7 @@
                 "ledr_c1_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 31.715
+              "area_px2": 29.835
             },
             {
               "elements": [
@@ -716,7 +710,7 @@
                 "ledr_c1_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.379
+              "area_px2": 2.967
             },
             {
               "elements": [
@@ -724,7 +718,7 @@
                 "ledr_c2_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 12.658
             },
             {
               "elements": [
@@ -732,7 +726,7 @@
                 "ledr_c2_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 34.017
+              "area_px2": 27.507
             },
             {
               "elements": [
@@ -740,7 +734,7 @@
                 "ledr_c2_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.521
+              "area_px2": 2.403
             },
             {
               "elements": [
@@ -748,7 +742,7 @@
                 "ledr_c3_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 12.658
             },
             {
               "elements": [
@@ -756,7 +750,7 @@
                 "ledr_c3_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 34.017
+              "area_px2": 27.507
             },
             {
               "elements": [
@@ -764,7 +758,7 @@
                 "ledr_c3_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.521
+              "area_px2": 2.403
             },
             {
               "elements": [
@@ -772,7 +766,7 @@
                 "ledr_c4_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 14.917
             },
             {
               "elements": [
@@ -780,7 +774,7 @@
                 "ledr_c4_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 31.715
+              "area_px2": 29.835
             },
             {
               "elements": [
@@ -788,7 +782,7 @@
                 "ledr_c4_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.379
+              "area_px2": 2.967
             },
             {
               "elements": [
@@ -796,7 +790,7 @@
                 "ledr_c5_k_0"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 16.877
+              "area_px2": 12.658
             },
             {
               "elements": [
@@ -804,7 +798,7 @@
                 "ledr_c5_k_1"
               ],
               "reason": "strokes of one line-art glyph",
-              "area_px2": 34.017
+              "area_px2": 27.507
             },
             {
               "elements": [
@@ -812,7 +806,7 @@
                 "ledr_c5_k_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.521
+              "area_px2": 2.403
             },
             {
               "elements": [
@@ -852,7 +846,7 @@
                 "u2_g_o_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.991
+              "area_px2": 1.022
             },
             {
               "elements": [
@@ -860,7 +854,7 @@
                 "u2_g_o_4"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.905
+              "area_px2": 0.823
             },
             {
               "elements": [
@@ -868,7 +862,7 @@
                 "u2_g_a"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.503
+              "area_px2": 2.376
             },
             {
               "elements": [
@@ -876,7 +870,7 @@
                 "u2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 4.24
+              "area_px2": 4.591
             },
             {
               "elements": [
@@ -884,7 +878,7 @@
                 "u2_g_o_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.949
+              "area_px2": 0.963
             },
             {
               "elements": [
@@ -892,7 +886,7 @@
                 "u2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.827
+              "area_px2": 1.801
             },
             {
               "elements": [
@@ -900,7 +894,7 @@
                 "u2_g_o_3"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.949
+              "area_px2": 0.963
             },
             {
               "elements": [
@@ -916,7 +910,7 @@
                 "u2_g_o_4"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.991
+              "area_px2": 1.022
             },
             {
               "elements": [
@@ -924,7 +918,7 @@
                 "u2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 1.827
+              "area_px2": 1.801
             },
             {
               "elements": [
@@ -932,7 +926,7 @@
                 "u2_g_a"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.503
+              "area_px2": 2.376
             },
             {
               "elements": [
@@ -940,7 +934,7 @@
                 "u2_g_b"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 4.24
+              "area_px2": 4.591
             },
             {
               "elements": [
@@ -964,7 +958,7 @@
                 "u3_g_l_0"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.856
+              "area_px2": 0.814
             },
             {
               "elements": [
@@ -972,7 +966,7 @@
                 "u3_g_l_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -980,7 +974,7 @@
                 "u3_g_r_0"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -988,7 +982,7 @@
                 "u3_g_r_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 0.856
+              "area_px2": 0.814
             },
             {
               "elements": [
@@ -996,7 +990,7 @@
                 "u3_g_l_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -1004,7 +998,7 @@
                 "u3_g_l_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.963
+              "area_px2": 2.634
             },
             {
               "elements": [
@@ -1012,7 +1006,7 @@
                 "u3_g_l_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -1020,7 +1014,7 @@
                 "u3_g_r_1"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -1028,7 +1022,7 @@
                 "u3_g_r_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.963
+              "area_px2": 2.634
             },
             {
               "elements": [
@@ -1036,7 +1030,7 @@
                 "u3_g_r_2"
               ],
               "reason": "connector joints, visible in source",
-              "area_px2": 2.026
+              "area_px2": 2.131
             },
             {
               "elements": [
@@ -1050,14 +1044,6 @@
               "elements": [
                 "u4_g_o",
                 "u4_g_t506"
-              ],
-              "reason": "strokes of one line-art glyph",
-              "area_px2": 2.209
-            },
-            {
-              "elements": [
-                "u4_g_o",
-                "u4_g_t5078"
               ],
               "reason": "strokes of one line-art glyph",
               "area_px2": 2.209
@@ -1131,7 +1117,7 @@
                 "fanv_0",
                 "fan1_0"
               ],
-              "reason": "connector routed across the group zones, visible in source",
+              "reason": "connector joints, visible in source",
               "area_px2": 1.562
             },
             {
@@ -1139,7 +1125,7 @@
                 "fanv_0",
                 "fan2_0"
               ],
-              "reason": "connector routed across the group zones, visible in source",
+              "reason": "connector joints, visible in source",
               "area_px2": 3.125
             },
             {
@@ -1147,7 +1133,7 @@
                 "fanv_0",
                 "fan3_0"
               ],
-              "reason": "connector routed across the group zones, visible in source",
+              "reason": "connector joints, visible in source",
               "area_px2": 1.562
             },
             {
@@ -1156,7 +1142,7 @@
                 "ex_p"
               ],
               "reason": "connector routed across the group zones, visible in source",
-              "area_px2": 185.0
+              "area_px2": 387.5
             },
             {
               "elements": [
@@ -1164,368 +1150,377 @@
                 "ex_p_t"
               ],
               "reason": "connector routed across the group zones, visible in source",
-              "area_px2": 135.0
+              "area_px2": 337.5
             }
           ],
           "text_layouts": {
             "zL_l": {
               "scale": 1,
-              "effective_font_size_px": 26,
-              "width_px": 104.0,
-              "height_px": 37.75,
-              "available_width_px": 134,
-              "available_height_px": 45,
+              "effective_font_size_px": 28,
+              "width_px": 310.0,
+              "height_px": 32.75,
+              "available_width_px": 350,
+              "available_height_px": 48,
               "safety_reserve_px": 0.5,
-              "required_width_px": 104.5,
-              "required_height_px": 38.25,
+              "required_width_px": 310.5,
+              "required_height_px": 33.25,
               "fits": true,
               "lines": [
-                "文献证据"
+                "Literature Evidence"
               ]
             },
             "zE_l": {
               "scale": 1,
-              "effective_font_size_px": 26,
-              "width_px": 104.0,
-              "height_px": 37.75,
-              "available_width_px": 134,
-              "available_height_px": 45,
+              "effective_font_size_px": 28,
+              "width_px": 308.004,
+              "height_px": 32.75,
+              "available_width_px": 333,
+              "available_height_px": 48,
               "safety_reserve_px": 0.5,
-              "required_width_px": 104.5,
-              "required_height_px": 38.25,
+              "required_width_px": 308.504,
+              "required_height_px": 33.25,
               "fits": true,
               "lines": [
-                "实验方法"
+                "Experimental Items"
               ]
             },
             "zQ_l": {
               "scale": 1,
-              "effective_font_size_px": 26,
-              "width_px": 156.0,
-              "height_px": 37.75,
-              "available_width_px": 186,
-              "available_height_px": 45,
+              "effective_font_size_px": 28,
+              "width_px": 352.5,
+              "height_px": 32.75,
+              "available_width_px": 368,
+              "available_height_px": 48,
               "safety_reserve_px": 0.5,
-              "required_width_px": 156.5,
-              "required_height_px": 38.25,
+              "required_width_px": 353.0,
+              "required_height_px": 33.25,
               "fits": true,
               "lines": [
-                "可回答的问题"
+                "Answerable Questions"
               ]
             },
             "a1_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 216.0,
-              "height_px": 35.0,
-              "available_width_px": 328,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 277.5,
+              "height_px": 63.5,
+              "available_width_px": 338,
+              "available_height_px": 135,
               "safety_reserve_px": 0.5,
-              "required_width_px": 216.5,
-              "required_height_px": 35.5,
+              "required_width_px": 278.0,
+              "required_height_px": 64.0,
               "fits": true,
               "lines": [
-                "目标化合物直接报道"
+                "Direct Reports on ",
+                "Target"
               ]
             },
             "a2_t": {
-              "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 248.578,
-              "height_px": 35.0,
-              "available_width_px": 328,
-              "available_height_px": 41,
+              "scale": 0.974682,
+              "effective_font_size_px": 26.3164,
+              "width_px": 337.5,
+              "height_px": 61.5,
+              "available_width_px": 338,
+              "available_height_px": 135,
               "safety_reserve_px": 0.5,
-              "required_width_px": 249.078,
-              "required_height_px": 35.5,
+              "required_width_px": 338.0,
+              "required_height_px": 62.0,
               "fits": true,
               "lines": [
-                "同类 Ba–Y 四方硅酸盐"
+                "Same Ba–Y Tetragonal ",
+                "Silicates"
               ]
             },
             "a3_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 168.0,
-              "height_px": 35.0,
-              "available_width_px": 328,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 266.004,
+              "height_px": 63.5,
+              "available_width_px": 338,
+              "available_height_px": 135,
               "safety_reserve_px": 0.5,
-              "required_width_px": 168.5,
-              "required_height_px": 35.5,
+              "required_width_px": 266.504,
+              "required_height_px": 64.0,
               "fits": true,
               "lines": [
-                "结构相关化合物"
+                "Crystal-Chemical ",
+                "Neighbors"
               ]
             },
             "a4_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 144.0,
-              "height_px": 35.0,
-              "available_width_px": 328,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 291.25,
+              "height_px": 63.5,
+              "available_width_px": 338,
+              "available_height_px": 135,
               "safety_reserve_px": 0.5,
-              "required_width_px": 144.5,
-              "required_height_px": 35.5,
+              "required_width_px": 291.75,
+              "required_height_px": 64.0,
               "fits": true,
               "lines": [
-                "工艺参照研究"
+                "Process Reference ",
+                "Studies"
               ]
             },
             "a5_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 120.0,
-              "height_px": 35.0,
-              "available_width_px": 324,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 317.0,
+              "height_px": 31.75,
+              "available_width_px": 338,
+              "available_height_px": 135,
               "safety_reserve_px": 0.5,
-              "required_width_px": 120.5,
-              "required_height_px": 35.5,
+              "required_width_px": 317.5,
+              "required_height_px": 32.25,
               "fits": true,
               "lines": [
-                "非相关资料"
+                "Outside Study Scope"
               ]
             },
             "ax_n": {
               "scale": 1,
-              "effective_font_size_px": 18,
-              "width_px": 18.0,
-              "height_px": 26.25,
-              "available_width_px": 48,
-              "available_height_px": 34,
+              "effective_font_size_px": 24,
+              "width_px": 57.5,
+              "height_px": 28.25,
+              "available_width_px": 82,
+              "available_height_px": 40,
               "safety_reserve_px": 0.5,
-              "required_width_px": 18.5,
-              "required_height_px": 26.75,
+              "required_width_px": 58.0,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "近"
+                "Near"
               ]
             },
             "ax_f": {
               "scale": 1,
-              "effective_font_size_px": 18,
-              "width_px": 18.0,
-              "height_px": 26.25,
-              "available_width_px": 48,
-              "available_height_px": 34,
+              "effective_font_size_px": 24,
+              "width_px": 36.25,
+              "height_px": 28.25,
+              "available_width_px": 82,
+              "available_height_px": 40,
               "safety_reserve_px": 0.5,
-              "required_width_px": 18.5,
-              "required_height_px": 26.75,
+              "required_width_px": 36.75,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "远"
+                "Far"
               ]
             },
             "ax_l": {
               "scale": 1,
-              "effective_font_size_px": 18,
-              "width_px": 126.0,
-              "height_px": 26.25,
-              "available_width_px": 150,
-              "available_height_px": 31,
+              "effective_font_size_px": 24,
+              "width_px": 249.023,
+              "height_px": 28.25,
+              "available_width_px": 299,
+              "available_height_px": 42,
               "safety_reserve_px": 0.5,
-              "required_width_px": 126.5,
-              "required_height_px": 26.75,
+              "required_width_px": 249.523,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "与目标相的距离"
+                "Distance from target"
               ]
             },
             "led_t": {
               "scale": 1,
-              "effective_font_size_px": 25,
-              "width_px": 225.0,
-              "height_px": 36.25,
-              "available_width_px": 282,
-              "available_height_px": 44,
+              "effective_font_size_px": 27,
+              "width_px": 328.816,
+              "height_px": 63.5,
+              "available_width_px": 334,
+              "available_height_px": 94,
               "safety_reserve_px": 0.5,
-              "required_width_px": 225.5,
-              "required_height_px": 36.75,
+              "required_width_px": 329.316,
+              "required_height_px": 64.0,
               "fits": true,
               "lines": [
-                "相同实验项目下比较"
+                "Compared on Shared ",
+                "Items"
               ]
             },
             "ledr_x0": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 100.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 173.859,
+              "height_px": 56.5,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 100.5,
-              "required_height_px": 29.75,
+              "required_width_px": 174.359,
+              "required_height_px": 57.0,
               "fits": true,
               "lines": [
-                "原料与配比"
+                "Ratio and raw ",
+                "materials"
               ]
             },
             "ledr_x1": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 60.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 189.262,
+              "height_px": 28.25,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 60.5,
-              "required_height_px": 29.75,
+              "required_width_px": 189.762,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "热历史"
+                "Thermal history"
               ]
             },
             "ledr_x2": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 40.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 145.289,
+              "height_px": 28.25,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 40.5,
-              "required_height_px": 29.75,
+              "required_width_px": 145.789,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "气氛"
+                "Atmosphere"
               ]
             },
             "ledr_x3": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 120.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 203.309,
+              "height_px": 28.25,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 120.5,
-              "required_height_px": 29.75,
+              "required_width_px": 203.809,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "容器与助熔剂"
+                "Crucible and flux"
               ]
             },
             "ledr_x4": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 100.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 150.316,
+              "height_px": 56.5,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 100.5,
-              "required_height_px": 29.75,
+              "required_width_px": 150.816,
+              "required_height_px": 57.0,
               "fits": true,
               "lines": [
-                "冷却与分离"
+                "Cooling and ",
+                "separation"
               ]
             },
             "ledr_x5": {
               "scale": 1,
-              "effective_font_size_px": 20,
-              "width_px": 80.0,
-              "height_px": 29.25,
-              "available_width_px": 268,
-              "available_height_px": 35,
+              "effective_font_size_px": 24,
+              "width_px": 198.5,
+              "height_px": 28.25,
+              "available_width_px": 275,
+              "available_height_px": 79,
               "safety_reserve_px": 0.5,
-              "required_width_px": 80.5,
-              "required_height_px": 29.75,
+              "required_width_px": 199.0,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "产物表征"
+                "Characterization"
               ]
             },
             "u1_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 144.0,
-              "height_px": 35.0,
-              "available_width_px": 314,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 306.5,
+              "height_px": 31.75,
+              "available_width_px": 388,
+              "available_height_px": 94,
               "safety_reserve_px": 0.5,
-              "required_width_px": 144.5,
-              "required_height_px": 35.5,
+              "required_width_px": 307.0,
+              "required_height_px": 32.25,
               "fits": true,
               "lines": [
-                "直接条件复现"
+                "Direct Reproduction"
               ]
             },
             "u2_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 240.0,
-              "height_px": 35.0,
-              "available_width_px": 314,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 209.75,
+              "height_px": 63.5,
+              "available_width_px": 388,
+              "available_height_px": 94,
               "safety_reserve_px": 0.5,
-              "required_width_px": 240.5,
-              "required_height_px": 35.5,
+              "required_width_px": 210.25,
+              "required_height_px": 64.0,
               "fits": true,
               "lines": [
-                "系列内相图与结构比较"
+                "Family Phase ",
+                "Comparison"
               ]
             },
             "u3_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 168.0,
-              "height_px": 35.0,
-              "available_width_px": 314,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 348.25,
+              "height_px": 31.75,
+              "available_width_px": 388,
+              "available_height_px": 94,
               "safety_reserve_px": 0.5,
-              "required_width_px": 168.5,
-              "required_height_px": 35.5,
+              "required_width_px": 348.75,
+              "required_height_px": 32.25,
               "fits": true,
               "lines": [
-                "方法与变量结构"
+                "Methods and Variables"
               ]
             },
             "cav_t": {
               "scale": 1,
-              "effective_font_size_px": 19,
-              "width_px": 200.25,
-              "height_px": 27.75,
-              "available_width_px": 210,
-              "available_height_px": 32,
+              "effective_font_size_px": 24,
+              "width_px": 276.082,
+              "height_px": 56.5,
+              "available_width_px": 299,
+              "available_height_px": 78,
               "safety_reserve_px": 0.5,
-              "required_width_px": 200.75,
-              "required_height_px": 28.25,
+              "required_width_px": 276.582,
+              "required_height_px": 57.0,
               "fits": true,
               "lines": [
-                "近邻条件 ≠ 已验证配方"
+                "Neighbor conditions ≠ ",
+                "proven recipe"
               ]
             },
             "u4_t": {
               "scale": 1,
-              "effective_font_size_px": 24,
-              "width_px": 144.0,
-              "height_px": 35.0,
-              "available_width_px": 314,
-              "available_height_px": 41,
+              "effective_font_size_px": 27,
+              "width_px": 322.371,
+              "height_px": 31.75,
+              "available_width_px": 388,
+              "available_height_px": 94,
               "safety_reserve_px": 0.5,
-              "required_width_px": 144.5,
-              "required_height_px": 35.5,
+              "required_width_px": 322.871,
+              "required_height_px": 32.25,
               "fits": true,
               "lines": [
-                "划定研究范围"
+                "Study Boundary Only"
               ]
             },
             "ex_p_t": {
               "scale": 1,
-              "effective_font_size_px": 19,
-              "width_px": 38.0,
-              "height_px": 27.75,
-              "available_width_px": 54,
-              "available_height_px": 32,
+              "effective_font_size_px": 24,
+              "width_px": 109.254,
+              "height_px": 28.25,
+              "available_width_px": 135,
+              "available_height_px": 40,
               "safety_reserve_px": 0.5,
-              "required_width_px": 38.5,
-              "required_height_px": 28.25,
+              "required_width_px": 109.754,
+              "required_height_px": 28.75,
               "fits": true,
               "lines": [
-                "排除"
+                "Excluded"
               ]
             }
           }
@@ -1538,525 +1533,297 @@
       "slide_count": 1
     },
     "rendered_text": {
-      "status": "fail",
+      "status": "pass",
       "renderer": "LibreOffice/PDFium",
-      "findings": [
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "zL_l",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "zE_l",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "zQ_l",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "a1_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "rendered_ink_width_drift",
-          "severity": "warning",
-          "slide": "page_001",
-          "element": "a2_t",
-          "measured_ink_width_px": 246.328,
-          "rendered_ink_width_px": 257.911,
-          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "a2_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "a3_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "a4_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "a5_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ax_n",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ax_f",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ax_l",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "led_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x0",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x1",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x2",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x3",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x4",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ledr_x5",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "u1_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "u2_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "u3_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "cav_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "u4_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        },
-        {
-          "code": "renderer_font_substitution",
-          "slide": "page_001",
-          "element": "ex_p_t",
-          "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
-          ],
-          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
-        }
-      ],
+      "findings": [],
       "text_boxes": [
         {
           "slide": "page_001",
           "element": "zL_l",
-          "expected": "文献证据",
-          "rendered": "文献证据 ",
+          "expected": "Literature Evidence",
+          "rendered": "Literature Evidence ",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 102.5,
-          "rendered_ink_width_px": 102.109
+          "measured_ink_width_px": 306.25,
+          "rendered_ink_width_px": 306.005
         },
         {
           "slide": "page_001",
           "element": "zE_l",
-          "expected": "实验方法",
-          "rendered": "实验方法 ",
+          "expected": "Experimental Items",
+          "rendered": "Experimental Items ",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 101.25,
-          "rendered_ink_width_px": 101.02
+          "measured_ink_width_px": 304.25,
+          "rendered_ink_width_px": 304.074
         },
         {
           "slide": "page_001",
           "element": "zQ_l",
-          "expected": "可回答的问题",
-          "rendered": "可回答的问题",
+          "expected": "Answerable Questions",
+          "rendered": "Answerable Questions",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 154.5,
-          "rendered_ink_width_px": 153.761
+          "measured_ink_width_px": 351.25,
+          "rendered_ink_width_px": 350.947
         },
         {
           "slide": "page_001",
           "element": "a1_t",
-          "expected": "目标化合物直接报道",
-          "rendered": "目标化合物直接报道",
+          "expected": "Direct Reports on Target",
+          "rendered": "Direct Reports on \r\nTarget",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 212.25,
-          "rendered_ink_width_px": 211.897
+          "measured_ink_width_px": 266.0,
+          "rendered_ink_width_px": 264.506
         },
         {
           "slide": "page_001",
           "element": "a2_t",
-          "expected": "同类 Ba–Y 四方硅酸盐",
-          "rendered": "同类 Ba–Y 四方硅酸盐",
+          "expected": "Same Ba–Y Tetragonal Silicates",
+          "rendered": "Same Ba–Y Tetragonal \r\nSilicates",
           "matches": true,
           "actual_fonts": [
-            "DejaVuSans-Bold",
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 246.328,
-          "rendered_ink_width_px": 257.911
+          "measured_ink_width_px": 324.5,
+          "rendered_ink_width_px": 323.98
         },
         {
           "slide": "page_001",
           "element": "a3_t",
-          "expected": "结构相关化合物",
-          "rendered": "结构相关化合物",
+          "expected": "Crystal-Chemical Neighbors",
+          "rendered": "Crystal-Chemical \r\nNeighbors",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 167.0,
-          "rendered_ink_width_px": 166.744
+          "measured_ink_width_px": 253.0,
+          "rendered_ink_width_px": 251.651
         },
         {
           "slide": "page_001",
           "element": "a4_t",
-          "expected": "工艺参照研究",
-          "rendered": "工艺参照研究",
+          "expected": "Process Reference Studies",
+          "rendered": "Process Reference \r\nStudies",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 142.5,
-          "rendered_ink_width_px": 142.249
+          "measured_ink_width_px": 279.0,
+          "rendered_ink_width_px": 277.362
         },
         {
           "slide": "page_001",
           "element": "a5_t",
-          "expected": "非相关资料",
-          "rendered": "非相关资料",
+          "expected": "Outside Study Scope",
+          "rendered": "Outside Study Scope",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 118.5,
-          "rendered_ink_width_px": 118.353
+          "measured_ink_width_px": 314.75,
+          "rendered_ink_width_px": 312.755
         },
         {
           "slide": "page_001",
           "element": "ax_n",
-          "expected": "近",
-          "rendered": "近",
+          "expected": "Near",
+          "rendered": "Near",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 17.5,
-          "rendered_ink_width_px": 17.227
+          "measured_ink_width_px": 55.25,
+          "rendered_ink_width_px": 54.942
         },
         {
           "slide": "page_001",
           "element": "ax_f",
-          "expected": "远",
-          "rendered": "远",
+          "expected": "Far",
+          "rendered": "Far",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 17.25,
-          "rendered_ink_width_px": 17.173
+          "measured_ink_width_px": 34.0,
+          "rendered_ink_width_px": 33.709
         },
         {
           "slide": "page_001",
           "element": "ax_l",
-          "expected": "与目标相的距离",
-          "rendered": "与\r\n目\r\n标\r\n相\r\n的\r\n距\r\n离",
+          "expected": "Distance from target",
+          "rendered": "Dis\r\nt\r\na\r\nn\r\nc\r\ne\r\nf\r\nr\r\no\r\nm\r\nt\r\na\r\nr\r\ng\r\ne\r\nt",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 124.5,
-          "rendered_ink_width_px": 124.584
+          "measured_ink_width_px": 246.25,
+          "rendered_ink_width_px": 246.356
         },
         {
           "slide": "page_001",
           "element": "led_t",
-          "expected": "相同实验项目下比较",
-          "rendered": "相同实验项目下比较",
+          "expected": "Compared on Shared Items",
+          "rendered": "Compared on Shared \r\nItems",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 224.5,
-          "rendered_ink_width_px": 223.637
+          "measured_ink_width_px": 316.0,
+          "rendered_ink_width_px": 314.315
         },
         {
           "slide": "page_001",
           "element": "ledr_x0",
-          "expected": "原料与配比",
-          "rendered": "原料与配比",
+          "expected": "Ratio and raw materials",
+          "rendered": "Ratio and raw \r\nmaterials",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 99.0,
-          "rendered_ink_width_px": 98.588
+          "measured_ink_width_px": 163.25,
+          "rendered_ink_width_px": 162.906
         },
         {
           "slide": "page_001",
           "element": "ledr_x1",
-          "expected": "热历史",
-          "rendered": "热历史",
+          "expected": "Thermal history",
+          "rendered": "Thermal history",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 59.25,
-          "rendered_ink_width_px": 58.965
+          "measured_ink_width_px": 188.5,
+          "rendered_ink_width_px": 188.049
         },
         {
           "slide": "page_001",
           "element": "ledr_x2",
-          "expected": "气氛",
-          "rendered": "气氛",
+          "expected": "Atmosphere",
+          "rendered": "Atmosphere",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 39.5,
-          "rendered_ink_width_px": 39.263
+          "measured_ink_width_px": 144.0,
+          "rendered_ink_width_px": 143.568
         },
         {
           "slide": "page_001",
           "element": "ledr_x3",
-          "expected": "容器与助熔剂",
-          "rendered": "容器与助熔剂",
+          "expected": "Crucible and flux",
+          "rendered": "Crucible and flux",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 118.5,
-          "rendered_ink_width_px": 118.049
+          "measured_ink_width_px": 201.25,
+          "rendered_ink_width_px": 200.909
         },
         {
           "slide": "page_001",
           "element": "ledr_x4",
-          "expected": "冷却与分离",
-          "rendered": "冷却与分离",
+          "expected": "Cooling and separation",
+          "rendered": "Cooling and \r\nseparation",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 98.75,
-          "rendered_ink_width_px": 98.328
+          "measured_ink_width_px": 139.5,
+          "rendered_ink_width_px": 138.938
         },
         {
           "slide": "page_001",
           "element": "ledr_x5",
-          "expected": "产物表征",
-          "rendered": "产物表征",
+          "expected": "Characterization",
+          "rendered": "Characterization",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 79.25,
-          "rendered_ink_width_px": 78.806
+          "measured_ink_width_px": 195.25,
+          "rendered_ink_width_px": 194.863
         },
         {
           "slide": "page_001",
           "element": "u1_t",
-          "expected": "直接条件复现",
-          "rendered": "直接条件复现",
+          "expected": "Direct Reproduction",
+          "rendered": "Direct Reproduction",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 142.5,
-          "rendered_ink_width_px": 142.273
+          "measured_ink_width_px": 302.25,
+          "rendered_ink_width_px": 300.222
         },
         {
           "slide": "page_001",
           "element": "u2_t",
-          "expected": "系列内相图与结构比较",
-          "rendered": "系列内相图与结构比较",
+          "expected": "Family Phase Comparison",
+          "rendered": "Family Phase \r\nComparison",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 239.0,
-          "rendered_ink_width_px": 238.624
+          "measured_ink_width_px": 198.0,
+          "rendered_ink_width_px": 196.517
         },
         {
           "slide": "page_001",
           "element": "u3_t",
-          "expected": "方法与变量结构",
-          "rendered": "方法与变量结构",
+          "expected": "Methods and Variables",
+          "rendered": "Methods and Variables",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 166.0,
-          "rendered_ink_width_px": 165.857
+          "measured_ink_width_px": 345.0,
+          "rendered_ink_width_px": 342.608
         },
         {
           "slide": "page_001",
           "element": "cav_t",
-          "expected": "近邻条件 ≠ 已验证配方",
-          "rendered": "近邻条件 ≠ 已验证配方",
+          "expected": "Neighbor conditions ≠ proven recipe",
+          "rendered": "Neighbor conditions ≠ \r\nproven recipe",
           "matches": true,
           "actual_fonts": [
-            "DejaVuSans-Bold",
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 199.148,
-          "rendered_ink_width_px": 198.268
+          "measured_ink_width_px": 263.75,
+          "rendered_ink_width_px": 262.904
         },
         {
           "slide": "page_001",
           "element": "u4_t",
-          "expected": "划定研究范围",
-          "rendered": "划定研究范围",
+          "expected": "Study Boundary Only",
+          "rendered": "Study Boundary Only",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans-Bold"
           ],
-          "measured_ink_width_px": 142.0,
-          "rendered_ink_width_px": 141.673
+          "measured_ink_width_px": 320.25,
+          "rendered_ink_width_px": 318.51
         },
         {
           "slide": "page_001",
           "element": "ex_p_t",
-          "expected": "排除",
-          "rendered": "排除 ",
+          "expected": "Excluded",
+          "rendered": "Excluded ",
           "matches": true,
           "actual_fonts": [
-            "NotoSansCJKsc-Bold-VKana"
+            "DejaVuSans"
           ],
-          "measured_ink_width_px": 37.25,
-          "rendered_ink_width_px": 37.055
+          "measured_ink_width_px": 105.0,
+          "rendered_ink_width_px": 104.677
         }
       ],
       "limitations": "This checks renderer output and glyph bounds; source recognition and target PowerPoint/WPS appearance still need visual review."
@@ -2067,7 +1834,7 @@
     "Photographs and complex artwork remain independent raster assets.",
     "PowerPoint/WPS must be checked separately from LibreOffice."
   ],
-  "source_scene_sha256": "c9129b3122ba087fbabb1365bde3f90e7071d454bd0cf12721b8855d824ace4a",
+  "source_scene_sha256": "ce4e5371f5ba6221ca9b3bb086a742589e4391b73e53d04acc9890454136b348",
   "font_substitutions": [],
   "artifacts": {
     "pptx": "editable.pptx",

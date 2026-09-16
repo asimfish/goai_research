@@ -54,3 +54,21 @@ Every entry cost at least one round trip. Read before debugging something that l
 - **Remove stale `trim=…,clip`** from `\includegraphics` when replacing older figures — trims tuned for a
   loose PDF will cut a tight one.
 - **Re-check the figure in the compiled paper page.** A standalone figure PDF always looks right.
+
+## Round 6 (print-scale type)
+
+- **A label pill over someone else's text is a defect, not an intended overlap.** `finish()` used to declare every
+  pill overlap intentional, so a lane label pushed onto the hub title — or out of its zone by a sign error — still
+  passed precheck. In print-scale mode a pill is exempt only against lines and zone tints; if it genuinely
+  belongs to a card (a caveat in the card header), pass `pill(container=…)`.
+- **Leave 5 px between a connector end and the card it leaves.** The stroke is 2.5 px wide; starting 2 px out puts
+  half the line inside the card and the checker reports `unintended_overlap`.
+- **Estimate line counts one reserve above the real width.** A measure that is 1 px conservative turns a
+  one-line item into a two-line box and doubles the token height; check the render, not just the precheck.
+- **Break long English terms where the language does, before shrinking.** `Mechanochemical` does not fit a
+  route card at print size and cannot wrap; the standard two-word term `Mechanical Activation` does. A string
+  with a hand-placed space inside a hyphenated word renders correctly but fails `rendered_text_mismatch`.
+- **English edge labels do not fit a connector lane.** `pill(max_w=…)` wraps them to two lines; when even that is
+  too wide (a single long word), move the label into the gap above the card instead of widening the lane.
+- **A two-line label is ~86 px tall.** Size the band gap from the label's real height, or it rides into the cards
+  above it and hides the arrow it labels.
