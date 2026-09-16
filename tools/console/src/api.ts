@@ -1,6 +1,7 @@
 import type {
   Artifacts, Chain, ConsoleConfig, FeedEvent, McpServer, Role, RoleTask, RolesStats, StateResponse, TaskDetail, WorkspaceInfo,
 } from './types'
+import type { CostReport, PricingConfig } from './billing'
 
 async function get<T>(url: string): Promise<T> {
   const r = await fetch(url, { cache: 'no-store' })
@@ -23,6 +24,9 @@ async function post<T>(url: string, body?: unknown): Promise<T> {
 }
 
 export const api = {
+  costs: (research?: string) => get<CostReport>(research ? `/api/workspaces/${encodeURIComponent(research)}/costs` : '/api/billing/summary'),
+  prices: () => get<{ config: PricingConfig; revision: string }>('/api/billing/prices'),
+  savePrices: (config: PricingConfig, expected_revision: string) => post<{ config: PricingConfig; revision: string }>('/api/billing/prices', { config, expected_revision }),
   config: () => get<ConsoleConfig>('/api/config'),
   roles: () => get<{ roles: Role[]; stats: RolesStats; chains: Chain[] }>('/api/roles'),
   skill: (id: string) => get<{ id: string; markdown: string }>(`/api/roles/${encodeURIComponent(id)}/skill`),
@@ -38,7 +42,7 @@ export const api = {
   file: (id: string, path: string) => get<{ path: string; text: string }>(`/api/workspaces/${id}/file?path=${encodeURIComponent(path)}`),
   pdfUrl: (id: string) => `/api/workspaces/${id}/pdf`,
   bundleUrl: (id: string) => `/api/workspaces/${id}/bundle.zip`,
-  launch: (body: { topic: string; corpus: 'public' | 'private'; model?: string; effort?: string; slug?: string; model_fallback?: string }) =>
+  launch: (body: { topic: string; corpus: 'public' | 'private'; model?: string; effort?: string; slug?: string; model_fallback?: string; billing_task_id?: string }) =>
     post<{ ok: boolean; id: string; path: string; pid: number }>('/api/runs', body),
   stop: (id: string) => post<{ ok: boolean; message: string; pid?: number }>(`/api/workspaces/${id}/stop`),
 }

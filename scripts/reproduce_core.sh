@@ -66,6 +66,7 @@ STAMP="$(date +%Y%m%d_%H%M%S)"
 WORKDIR="${WORKDIR:-$REPO/workspace_repro_$STAMP}"
 mkdir -p "$WORKDIR"/{library/pdfs,notes,memory,style_bank/{pdfs,exemplar_figures},figures/{svg,drawio,figspec,assets,candidates},drafts/sections,ideas,state/{parallel,review_traces},inputs}
 LOGDIR="$WORKDIR/state/orchestrator"; mkdir -p "$LOGDIR"
+.venv/bin/python tools/usage_cost.py init --workspace "$WORKDIR" >/dev/null
 
 # --- corpus: public package of the cited full texts by default -----------------------
 if [[ "${GOAI_CORPUS:-public}" == "public" ]]; then
@@ -107,28 +108,28 @@ model_reasoning_effort = "$EFFORT"
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/litsearch_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { $LIT_ENV }
 
 [mcp_servers.goai-refcheck]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/refcheck_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_EMAIL = "$(toml_str "$GOAI_EMAIL")", GOAI_WORKSPACE = "$WORKDIR_T" }
 
 [mcp_servers.goai-figure]
 command = "$REPO/.venv/bin/python"
 args = ["$REPO/server/figure_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_WORKSPACE = "$WORKDIR_T" }
 
 [mcp_servers.goai-retro]
 command = "$REPO/$RETRO_PY"
 args = ["$REPO/server/retro_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]  # parallel_run.sh 子任务归因 → tool_calls.jsonl.run_id
 env = { GOAI_WORKSPACE = "$WORKDIR_T", GOAI_INORGANIC_RETRO_ROOT = "$(toml_str "$GOAI_INORGANIC_RETRO_ROOT")", GOAI_RETRO_DEVICE = "$GOAI_RETRO_DEVICE" }
 TOML
 echo "codex profile written: $CODEX_HOME/$PROFILE.config.toml (model=$MODEL, effort=$EFFORT)"
@@ -166,6 +167,8 @@ echo "live view: GOAI_WORKSPACE=$WORKDIR python3 tools/live_view.py --follow   (
 run_orchestrator() {   # $1 = 事件流/回执文件名后缀（"" 或 ".resumeN"）
   local suffix="$1" rc
   export GOAI_RUN_ID="orchestrator/orchestrator${suffix}" GOAI_TASK_NAME="orchestrator${suffix}"
+  .venv/bin/python tools/usage_cost.py attempt --workspace "$WORKDIR" \
+    --trace "$LOGDIR/orchestrator${suffix}.jsonl" --model "$MODEL" >/dev/null
   set +e
   codex -a never -s danger-full-access -p "$PROFILE" --search exec --ephemeral --json \
     -C "$REPO" -o "$LOGDIR/orchestrator${suffix}.final.md" "$TOPIC" </dev/null \

@@ -4,7 +4,7 @@ import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import {
   NConfigProvider, NDialogProvider, NGlobalStyle, NIcon, NMessageProvider, NNotificationProvider, NTooltip, dateZhCN, zhCN,
 } from 'naive-ui'
-import { DocumentTextOutline, ExtensionPuzzleOutline, PeopleOutline, PulseOutline, ReaderOutline, SettingsOutline } from '@vicons/ionicons5'
+import { DocumentTextOutline, ExtensionPuzzleOutline, PeopleOutline, PulseOutline, ReaderOutline, SettingsOutline, WalletOutline } from '@vicons/ionicons5'
 import { api } from './api'
 import type { ConsoleConfig, WorkspaceInfo } from './types'
 import { WS_STATUS_LABEL } from './format'
@@ -23,6 +23,7 @@ const nav = [
   { key: 'run', to: '/run', label: '运行', icon: PulseOutline, match: ['run', 'runIndex'] },
   { key: 'skills', to: '/skills', label: '技能', icon: ExtensionPuzzleOutline, match: ['skills'] },
   { key: 'results', to: '/results', label: '成果', icon: DocumentTextOutline, match: ['results'] },
+  { key: 'costs', to: '/costs', label: '费用', icon: WalletOutline, match: ['costs'] },
 ]
 const activeKey = computed(() => nav.find((n) => n.match.includes(String(route.name)))?.key || '')
 
@@ -68,7 +69,7 @@ const themeOverrides = {
   <NConfigProvider :theme-overrides="themeOverrides" :locale="zhCN" :date-locale="dateZhCN">
     <NGlobalStyle />
     <NMessageProvider><NDialogProvider><NNotificationProvider>
-      <div class="shell">
+      <div class="shell" :class="{ 'cost-page': route.name === 'costs' }">
         <nav class="rail">
           <RouterLink to="/roles" class="brand" title="循证台 · goai research">
             <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
@@ -138,4 +139,5 @@ const themeOverrides = {
 .ctx-topic:hover { text-decoration: underline; }
 .ctx-right { display: flex; gap: 22px; color: var(--slate); white-space: nowrap; }
 .content { flex: 1; overflow: auto; }
+@media (max-width: 700px) { .cost-page .ctx { padding: 0 16px; }.cost-page .ctx-right { display: none; } }
 </style>

@@ -188,6 +188,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
       <span class="topic ellipsis" :title="info.topic">{{ info.topic || info.label }}</span>
       <span class="small"><span class="st-dot" :class="headlineKind" />{{ WS_STATUS_LABEL[info.status] || info.status }}</span>
       <span style="flex: 1" />
+      <NButton size="small" @click="router.push({ path: '/costs', query: { research: id } })">算力 / 费用</NButton>
       <NSelect v-if="(st.all_runs.length || 0) > 1" v-model:value="runFilter" :options="runOptions" size="small" style="width: 220px" />
       <NButton v-if="info.final_pdf" size="small" tag="a" :href="api.pdfUrl(id)" target="_blank"><template #icon><NIcon><DocumentTextOutline /></NIcon></template>综述 PDF</NButton>
       <NPopconfirm v-if="isLive && info.launcher.alive" @positive-click="stopRun">

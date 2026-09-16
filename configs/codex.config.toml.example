@@ -9,7 +9,7 @@
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/litsearch_server.py"]
 default_tools_approval_mode = "approve" # 非交互codex exec批次自动执行本项目工具
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]  # 从 parallel_run.sh 子进程透传任务归因（codex 默认不传父进程 env）
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]  # 从 parallel_run.sh 子进程透传任务归因（codex 默认不传父进程 env）
 env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
 # 私有全文库运行时，把上面的 env 扩展为：
 # env = { GOAI_EMAIL = "you@example.com", GOAI_LOCAL_CORPUS_ROOTS = "/path/markdown-v1-final", GOAI_LOCAL_CORPUS_EXPECTED_INDEX = "/path/markdown_expected.sqlite", GOAI_LOCAL_CORPUS_SHARD_ROOT = "/path/markdown-v1/shards" }
@@ -21,14 +21,14 @@ env = { GOAI_EMAIL = "you@example.com" }   # Crossref/OpenAlex polite pool 用
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/refcheck_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]
 env = { GOAI_EMAIL = "you@example.com" }
 
 [mcp_servers.goai-figure]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/figure_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]
 # macOS + brew cairo：让 cairosvg 找到 libcairo（png 自检输出用，可选）
 env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 
@@ -36,7 +36,7 @@ env = { DYLD_FALLBACK_LIBRARY_PATH = "/opt/homebrew/lib" }
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/retro_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]
 # 无机两步模型默认读取仓库内vendor/two_stage_retro，输入化学式并返回Top-5前驱体组合。
 # env = { GOAI_RETRO_DEVICE = "cuda:0" }
 # 接真实逆合成后端时打开：
@@ -46,7 +46,7 @@ env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
 command = "/ABSOLUTE/PATH/TO/goai_research/.venv/bin/python"
 args = ["/ABSOLUTE/PATH/TO/goai_research/server/workflow_server.py"]
 default_tools_approval_mode = "approve"
-env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME"]
+env_vars = ["GOAI_RUN_ID", "GOAI_TASK_NAME", "GOAI_BILLING_TASK_ID", "GOAI_SESSION_ID"]
 # 实验工作流生成：仪器目录（A-Lab）、模板实例化、机械校验、SafeLab YAML + Isaac Sim 清单导出。
 # GOAI_BIB_PATH 指向已过 ref_gate 的 references.bib，evidence[].cite 零信任核对；
 # GOAI_ASSET_REGISTRY 可覆盖 configs/safelab_asset_registry.json（5090 NAS 资产登记表）。

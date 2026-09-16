@@ -17,6 +17,7 @@ const model = ref('')
 const effort = ref('')
 const slug = ref('')
 const fallback = ref('')
+const billingTask = ref('')
 const submitting = ref(false)
 const input = ref<InstanceType<typeof NInput> | null>(null)
 
@@ -43,7 +44,7 @@ async function submit() {
   try {
     // 交付语言写进主题行：编排器定范围时以用户指定为准（skills/goai-orchestrator 语言契约）
     const topicLine = language.value === 'en' && !/english|英文/i.test(preview.value) ? `${preview.value}（English delivery）` : preview.value
-    const r = await api.launch({ topic: topicLine, corpus: privateCorpus.value ? 'private' : 'public', model: model.value, effort: effort.value, slug: slug.value || undefined, model_fallback: fallback.value || undefined })
+    const r = await api.launch({ topic: topicLine, corpus: privateCorpus.value ? 'private' : 'public', model: model.value, effort: effort.value, slug: slug.value || undefined, model_fallback: fallback.value || undefined, billing_task_id: billingTask.value.trim() || undefined })
     message.success(`研究已开始：${r.path.split('/').pop()}`)
     emit('launched', r.id)
     topic.value = ''; slug.value = ''
@@ -84,6 +85,7 @@ async function submit() {
           <NSelect v-model:value="model" :options="modelOptions" size="small" filterable tag style="width: 180px" />
           <NSelect v-model:value="effort" :options="effortOptions" size="small" style="width: 150px" :render-label="effortLabel" />
           <NInput v-model:value="slug" size="small" placeholder="目录名后缀（可选）" style="width: 170px" />
+          <NInput v-model:value="billingTask" size="small" placeholder="整轮任务编号（可选，合并费用）" style="width: 270px" />
         </div>
         <div class="adv-row" style="margin-top: 8px; align-items: center">
           <NSelect v-model:value="fallback" :options="fallbackOptions" size="small" style="width: 280px" />

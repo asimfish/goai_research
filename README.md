@@ -48,6 +48,7 @@ python3 tools/live_view.py --follow        # 终端版：按角色实时看各�
 
 ## 系统与框架文档
 
+- [`docs/USAGE_COST.md`](docs/USAGE_COST.md) **算力 / 费用统计**：四类 token 计价、可配置价格、研究 / 会话 / 整轮汇总、MCP 内部模型用量与真实数字示例。
 - [`docs/RUNBOOK.md`](docs/RUNBOOK.md) **运行手册**：怎么跑（控制台 / 全流程脚本 / 单批子任务 / 无 LLM 验证）、怎么接真实 Parquet 全库、怎么看整个流程（控制台与 `tools/live_view.py`）
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) 三层架构 · [`docs/LOOP_PROTOCOL.md`](docs/LOOP_PROTOCOL.md) 账本驱动回环协议 · [`docs/FAILURE_MODE_FIXES.md`](docs/FAILURE_MODE_FIXES.md) 失效模式与守卫
 - [`docs/FRAMEWORK_CN.md`](docs/FRAMEWORK_CN.md) / [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) 开源框架使用指南（宿主接入、配置、测试、FAQ）
