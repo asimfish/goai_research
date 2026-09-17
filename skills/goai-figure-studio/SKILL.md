@@ -220,6 +220,15 @@ python3 skills/goai-figure-studio/scripts/install_fig.py \
   自动补空。两者都在 `references/pitfalls.md` 里有条目，**不要因此说图失败了**，
   也不要去追。
 
+### C4b 幻灯片图（答辩 PPT）
+
+同一套设计系统，画布 1536×864 = 一整页 16:9（img2ppt 把 1536 px 映射到 960 pt 页宽），
+字号按幻灯片 pt 取（分组 16 / 标题 14 / 步骤号 18 / 正文 12 / 标签 11，`print_width_pt=960, crop_px=0`），
+内容避开模板标题栏（y < 122 px）。构建后用 `scripts/deck_merge.py` 把整页形状 1:1 复制进模板的新页
+（沿用模板标题占位符与蓝色标题条，可 `--font 微软雅黑` 换成作者机器上的字体）。
+实例：`submission/03_运行与评测包/figure_scenes/scenes_deck.py`、`docs/competition/deck_figures/`。
+生图通道在 Codex 宿主上是 `scripts/image_gen_codex.py`（标准库实现；登录过期先 `scripts/codex_refresh.py`）。
+
 ### C5 中英两版
 
 同一套几何换字符串，不重画：

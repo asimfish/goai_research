@@ -1,0 +1,32 @@
+[
+ {
+  "module": "四条互搏通道",
+  "internal_mechanism": "一对角色 token + 一个双向短箭头 + 一行判据（tier 3）",
+  "evidence": "OR 第 3 条四条通道"
+ },
+ {
+  "module": "issue 路由表",
+  "internal_mechanism": "六行\"问题 → 阶段\"记录项，无箭头（tier 3）",
+  "evidence": "LP Issue 路由表"
+ },
+ {
+  "module": "级联失效",
+  "internal_mechanism": "四步机理链（tier 3）",
+  "evidence": "LP 级联规则、AR 指纹"
+ },
+ {
+  "module": "loopctl 拒绝写入",
+  "internal_mechanism": "五行勾选记录项（tier 3）",
+  "evidence": "LP 流程机械约束表"
+ },
+ {
+  "module": "check-done",
+  "internal_mechanism": "四步机理链 + 出口标签（tier 3）",
+  "evidence": "LP 终止条件 1 (a)–(d)"
+ },
+ {
+  "module": "终止旁路",
+  "internal_mechanism": "三个 token，无箭头（tier 3）",
+  "evidence": "LP 终止条件 2、3、反空转"
+ }
+]

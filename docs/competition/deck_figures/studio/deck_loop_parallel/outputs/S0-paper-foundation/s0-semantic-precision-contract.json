@@ -1,0 +1,50 @@
+{
+ "project_id": "deck_loop_parallel",
+ "figure": "多智能体并行回环（一）· 账本驱动的状态机与并行分派",
+ "primary_reader_question": "一个研究主题进来后，七个专职智能体怎样被账本按阶段分派、并行干活而互不冲突？",
+ "visual_mainline_decision": "研究主题 → 范围界定 → [文献检索 ∥ 风格库] → 引用核查 → 分类法 → [图件 ∥ 写作 ∥ 实验构想] → 对抗审稿 → 终稿交付；回环账本是唯一状态源，每个阶段的出口闸门落在账本上",
+ "contribution_type_visual_priority": "system/process",
+ "role_visual_realization_contract": [
+  {
+   "role": "七个专职智能体的并行",
+   "scientific_meaning": "并行 = 各自只写自己的分片文件，收工在账本记一条 done；账本靠文件锁串行化；汇合者等全部退出码",
+   "positive_visual_instruction": "在两个分叉点把并行支线画成并排的等宽卡（2 路和 3 路），从同一个分叉点出发、在同一个汇合点并入一束",
+   "negative_visual_instruction": "禁止把七个智能体画成七条各自完整的流水线；禁止画智能体之间互相对话的连线"
+  },
+  {
+   "role": "闸门",
+   "scientific_meaning": "闸门是阶段的出口条件，记录在账本里，由 loopctl 机械核验",
+   "positive_visual_instruction": "闸门名做成 tier-4 药丸，坐在账本带上、与对应阶段对齐",
+   "negative_visual_instruction": "禁止把闸门画成卡片或菱形判定框；禁止把闸门名放进阶段卡标题"
+  },
+  {
+   "role": "账本",
+   "scientific_meaning": "唯一状态源：gates / issues / log 三个字段 + 产物指纹",
+   "positive_visual_instruction": "一张宽账本卡或一条横贯全幅的账本带，卡内三行记录项",
+   "negative_visual_instruction": "禁止画成数据库圆柱或云；禁止让阶段卡各拉一条线到账本（用对齐表示落账）"
+  },
+  {
+   "role": "审稿返工",
+   "scientific_meaning": "issue 带 target 路由回责任阶段；细节在下一页",
+   "positive_visual_instruction": "一条虚线从对抗审稿回到主干，标签 issue 路由返工",
+   "negative_visual_instruction": "禁止从审稿卡向每个阶段各画一条线"
+  }
+ ],
+ "forbidden_misimplementation_locks": [
+  "不得把七个智能体画成七条完整流水线（并行 = 分片写 + 账本汇合，不是复制流程）",
+  "不得画智能体之间互相对话的连线（口头交接无效，账本是唯一状态源）",
+  "闸门不是模块：只能是账本带上的药丸，不得画成卡片或菱形",
+  "不得从审稿卡向每个阶段各画一条返工线（只画一条虚线回主干）",
+  "不得把 MCP 服务器画成独立模块（工具调用只出现在统计标签里）",
+  "不得出现\"大脑\"\"机器人\"类隐喻图元"
+ ],
+ "process_instance_budget": {
+  "default_canonical_process_count": 1,
+  "note": "全图只有一条阶段主干；两个分叉各自并回主干"
+ },
+ "downstream_s1_s4_carry_forward": [
+  "S1/S4 的 forbidden-edge list 必须含\"智能体 ↔ 智能体\"与\"阶段卡 → 账本逐一拉线\"两条",
+  "S4 的 dashed-line budget 只允许一条虚线语义：issue 路由返工",
+  "并行支线必须是等宽并排卡 + 同源分叉 + 同点汇合；分叉点旁挂并发证据标签"
+ ]
+}
