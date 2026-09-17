@@ -110,3 +110,17 @@ Every entry cost at least one round trip. Read before debugging something that l
   stay longer than its arrow head, and a dashed arrow cannot carry a custom head (keep its last segment > 15 px).
 - **A card shadow is a second shape**: declare its overlaps (the card, everything inside it, connectors ending at the edge)
   or the checker reports dozens of false overlaps.
+
+## Slides, round 3 (deck theme + domain content, 2026-09-17)
+
+- **img2ppt sets one CJK text line at 1.4565 × font size (+0.5 px reserve).** A `fit='strict'` single-line box lower than
+  that fails the WHOLE build (only validation.json comes back). Give such boxes `int(1.5 × size) + 1`. The local precheck
+  is looser on height, so "0 hard" locally does not guarantee the build. Digits / Latin lines are lower and unaffected.
+- **The renderer sets bold Latin, " + " and " × " wider than `Scene.measure`.** Leave ~6 % slack on the grey one-liners in
+  cards and avoid spaced operators ("路线×条件×表征", not "路线 × 条件 × 表征"); `rendered_glyph_overflow` is the symptom.
+- Unicode subscripts (BaCO₃, Y₂O₃) render correctly with Noto CJK — keep formulas as editable text.
+- Dashed arrows cannot carry a custom head and need a last segment > 15 px; the gap between two phase bands must be
+  ≥ 28 px to hold a sequence arrow with a legible head.
+- A label pill placed ON a curve hides most of it (layout B's return arc): put the pill beside the line.
+- **Re-derive every number from the ledger before it goes on a slide.** Round 2 said "round-1 review 7 issues → round 2: 0";
+  `ledger.json` (`round_opened`) says 5 + 2, and three of the nine gates are WARN, not PASS. Draw what the ledger says.

@@ -1,0 +1,48 @@
+{
+ "stage": "ASSETS",
+ "project_id": "deck_assets_c",
+ "grid": [
+  4,
+  3
+ ],
+ "cells": [
+  "litdb",
+  "structure",
+  "phasediagram",
+  "condtable",
+  "precursors",
+  "recipe",
+  "furnace",
+  "fluxgrowth",
+  "xrd",
+  "workflow",
+  "robotlab",
+  "plan"
+ ],
+ "candidates": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ],
+ "rows": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ]
+}
