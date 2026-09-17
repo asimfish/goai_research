@@ -4,7 +4,7 @@ import { NIcon, NTooltip } from 'naive-ui'
 import { CheckmarkOutline, RefreshOutline } from '@vicons/ionicons5'
 import type { LedgerSummary } from '../types'
 import { GATE_ORDER } from '../roles'
-import { checkStatus, gateLabel } from '../labels'
+import { checkStatus, gateLabel, checkSummary } from '../labels'
 
 /** 九项质量检查的 3×3 印章矩阵：通过 = 实心圈勾，警告 = 琥珀叹号，未通过 = 朱砂，返工中 = 回转箭头，待完成 = 空心圈 */
 const props = defineProps<{ ledger: LedgerSummary; dense?: boolean }>()
@@ -34,7 +34,7 @@ const passed = computed(() => rows.value.filter((r) => r.status === 'PASS' || r.
             <span v-if="!dense" class="st small dim">{{ r.rework ? '返工中' : checkStatus(r.status) }}</span>
           </div>
         </template>
-        <div style="max-width: 400px; font-size: 12.5px"><b>{{ gateLabel(r.id) }}</b>（{{ r.id }}）· {{ checkStatus(r.status) }}{{ r.round ? ` · 第 ${r.round} 轮` : '' }}<div v-if="r.detail">{{ r.detail }}</div></div>
+        <div style="max-width: 280px; font-size: 12.5px; line-height: 1.8"><b>{{ gateLabel(r.id) }}</b> · {{ checkStatus(r.status) }}{{ r.round ? ` · 第 ${r.round} 轮` : '' }}<div>{{ checkSummary(r.id, r.detail) }}</div></div>
       </NTooltip>
     </div>
   </div>

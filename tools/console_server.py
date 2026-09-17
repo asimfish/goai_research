@@ -369,6 +369,7 @@ class Workspaces:
             os.path.join(self.repo, "workspace_runs", "*", "*"),
             os.path.join(self.runs_root, "*"),
             os.path.join(self.repo, "workspace", "finals_execution_*"),
+            os.path.join(self.repo, "workspace", "finals_materials_workbench"),
         ] + self.extra_globs
         seen, out = set(), []
         for pat in pats:

@@ -20,7 +20,18 @@ from uuid import uuid4
 
 from .usage_cost import PriceBook, DEFAULT_PRICES, digest, normalize_usage, summarize
 
-PARSER_VERSION = 2
+PARSER_VERSION = 3
+
+
+def activity_totals(records: list[dict]) -> dict:
+    """Observed conversation activity, independent of billable usage receipts."""
+    if not records:
+        return {"conversation_count": None, "reply_count": None, "turn_count": None}
+    return {
+        "conversation_count": len({r["session_id"] for r in records if r["activity"] == "conversation"}),
+        "reply_count": sum(r["activity"] == "reply" for r in records),
+        "turn_count": sum(r["activity"] == "turn" for r in records),
+    }
 
 
 def read_json(path: Path, default=None):
@@ -184,13 +195,26 @@ class BillingReader:
         records = []
         final_usage = False
         base = {**meta, "source": str(path), "warnings": []}
+        # Invocation identity survives copied workspaces, while resumed invocations
+        # can reuse item IDs without collapsing distinct replies. No message text
+        # or tool output is retained in the accounting cache.
+        invocation = digest([meta.get("agent_task_id"), meta.get("timestamp")])[:20]
+
+        def activity(kind, key, line=0):
+            records.append({**base, "kind": "activity", "activity": kind, "line": line,
+                            "session_id": session,
+                            "event_id": f"activity:{session}:{invocation}:{kind}:{key}"})
+
         for line, event in self._lines(path):
             etype = event.get("type")
             if etype == "thread.started":
                 session = event.get("thread_id") or session
+                if event.get("thread_id"):
+                    activity("conversation", session, line)
             elif etype == "turn.started":
                 turn += 1
                 final_usage = False
+                activity("turn", event.get("turn_id") or turn, line)
             elif etype in ("turn.completed", "response.completed", "usage.reported") and event.get("usage"):
                 usage = event["usage"]
                 event_id = event.get("event_id") or event.get("response_id") or f"codex:{session}:turn:{turn}:{digest(usage)[:16]}"
@@ -207,6 +231,8 @@ class BillingReader:
                 final_usage = True
             elif etype == "item.completed":
                 item = event.get("item") or {}
+                if item.get("type") == "agent_message":
+                    activity("reply", f"{turn}:{item.get('id', line)}", line)
                 if item.get("type") == "mcp_tool_call":
                     records.append({**base, "kind": "tool", "event_id": f"mcp:{session}:{item.get('id', line)}",
                         "session_id": session, "line": line, "server": item.get("server") or "unknown",
@@ -218,6 +244,7 @@ class BillingReader:
         if not final_usage:
             records.append({**base, "kind": "missing", "event_id": f"missing:{session}:turn:{turn}",
                 "session_id": session, "reason": "usage_not_reported"})
+        activity("trace", "observed")
         return records
 
     def _reported(self, path: Path, meta: dict) -> list[dict]:
@@ -251,7 +278,7 @@ class BillingReader:
                 "timestamp": event.get("timestamp"), "warnings": ["mcp_attribution_missing"] if agent == "unattributed" else []})
         return rows
 
-    def workspace(self, workspace: Path) -> list[dict]:
+    def workspace(self, workspace: Path, *, include_activity: bool = False) -> list[dict]:
         workspace = Path(workspace).absolute()
         context = read_json(workspace / "state/billing_context.json", {})
         rid = research_id(workspace)
@@ -327,21 +354,33 @@ class BillingReader:
         snapshot = workspace / "state/billing_prices.json"
         book = PriceBook.load(snapshot if snapshot.exists() else self.prices)
         for r in records:
-            if not snapshot.exists():
+            if r["kind"] != "activity" and not snapshot.exists():
                 r["warnings"] = [*r.get("warnings", []), "current_tariff_for_historical_usage"]
-        return [book.price(r) for r in records]
+        return [r if r["kind"] == "activity" else book.price(r) for r in records
+                if include_activity or r["kind"] != "activity"]
 
     def report(self, workspaces: list[Path], *, task_id: str | None = None, session_id: str | None = None,
                include_records: bool = False) -> dict:
         rows = []
         for workspace in workspaces:
-            rows.extend(self.workspace(workspace))
+            rows.extend(self.workspace(workspace, include_activity=True))
         if task_id is not None:
             rows = [r for r in rows if r["task_id"] == task_id]
         if session_id is not None:
             rows = [r for r in rows if r["session_id"] == session_id]
+        # Keep activity out of the billing ledger: message counts must never
+        # create fees, missing-price warnings, or duplicate usage records.
+        activity = {}
+        for row in sorted(rows, key=lambda r: str(r.get("source", ""))):
+            if row["kind"] == "activity":
+                activity.setdefault(row["event_id"], row)
+        observed = list(activity.values())
         result = {"schema": "goai-cost-report/1", "generated_at": datetime.now(timezone.utc).isoformat(),
-                  "price_config": str(self.prices), **summarize(rows)}
+                  "price_config": str(self.prices), **summarize([r for r in rows if r["kind"] != "activity"])}
+        result["summary"].update(activity_totals(observed))
+        for name, key in (("researches", "research_id"), ("sessions", "session_id"), ("tasks", "task_id"), ("models", "model")):
+            for group in result[name]:
+                group.update(activity_totals([r for r in observed if (r.get(key) or "(unknown)") == group["id"]]))
         if not include_records:
             result.pop("records")
         return result

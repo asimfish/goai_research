@@ -8,9 +8,9 @@ import {
 import { ChevronDownOutline, ChevronUpOutline, DocumentTextOutline, GitNetworkOutline, StopOutline, TimeOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { Artifacts, FeedEvent, StateResponse, TaskSummary, WorkspaceInfo } from '../types'
-import { WS_STATUS_LABEL, ago, bytes, dateTime, dur, hms, oneLine, statusType, tok } from '../format'
+import { WS_STATUS_LABEL, ago, bytes, dateTime, dur, hms, oneLine, statusType, tok, researchNumber } from '../format'
 import { STAGE_LABEL, roleVisual } from '../roles'
-import { SEVERITY_LABEL, commandLabel, gateLabel, taskStatus } from '../labels'
+import { SEVERITY_LABEL, commandLabel, gateLabel, taskStatus, failureSummary } from '../labels'
 import StageSpine from '../components/StageSpine.vue'
 import QualityStampGrid from '../components/QualityStampGrid.vue'
 import ActiveAgentCard from '../components/ActiveAgentCard.vue'
@@ -39,10 +39,10 @@ let timer: number | undefined
 let ticking = false
 
 const isLive = computed(() => info.value?.status === 'running')
-const interval = computed(() => (isLive.value ? 1500 : 6000))
+const interval = computed(() => (isLive.value ? 10000 : 30000))
 
 async function tick() {
-  if (ticking) return
+  if (ticking || document.hidden) return
   ticking = true
   try {
     const s = await api.state(props.id, 40)
@@ -60,7 +60,8 @@ async function tick() {
   } catch (e) { error.value = (e as Error).message } finally { ticking = false }
 }
 function schedule() { if (timer) clearInterval(timer); timer = window.setInterval(tick, interval.value) }
-onMounted(async () => { await tick(); schedule(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
+function onVisibilityChange() { if (!document.hidden) void tick() }
+onMounted(async () => { document.addEventListener("visibilitychange", onVisibilityChange); await tick(); schedule(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
 /** 失败 / 终止的运行：自动读启动日志，把最后一条错误直接放到横幅下 */
 watch(() => info.value?.status, async (s) => { if ((s === 'failed' || s === 'stopped' || s === 'ended') && !launcherLog.value) await loadLauncherLog() }, { immediate: true })
 /** 编排器事件流里最近的错误（容量不足 / 网络 / 用量上限），比 stderr 更接近真实原因 */
@@ -77,11 +78,11 @@ const orchError = computed(() => {
 })
 const failReason = computed(() => {
   if (info.value?.status !== 'failed') return ''
-  if (orchError.value) return /at capacity/i.test(orchError.value) ? `模型容量不足：${orchError.value}（换一个模型，或在高级选项里设置备用模型后重新发起）` : orchError.value.slice(0, 300)
+  if (orchError.value) return failureSummary(orchError.value)
   if (!launcherLog.value) return ''
   const lines = (launcherLog.value.stderr || '').replace(/\x1b\[[0-9;]*m/g, '').split('\n').map((l) => l.trim()).filter((l) => l && !/^Reading additional input/.test(l))
-  const err = lines.find((l) => /error|失败|not found|denied|Traceback|退出|拒绝/i.test(l)) || lines[0] || ''
-  return err.slice(0, 300)
+  const err = lines.find((l) => /\b(?:error|fatal|exception|Traceback|denied|timeout)\b|失败|拒绝|timed out|at capacity|rate limit/i.test(l)) || ''
+  return failureSummary(err)
 })
 /** 运行中但编排器正在重连 / 等容量：横幅下给一句提示 */
 const transient = computed(() => {
@@ -92,7 +93,7 @@ const transient = computed(() => {
 })
 watch(interval, schedule)
 watch(() => props.id, async () => { st.value = null; feed.value = []; lastSeq = 0; await tick(); artifacts.value = await api.artifacts(props.id).catch(() => null) })
-onBeforeUnmount(() => { if (timer) clearInterval(timer) })
+onBeforeUnmount(() => { document.removeEventListener("visibilitychange", onVisibilityChange); if (timer) clearInterval(timer) })
 
 function normalize(t: TaskSummary): TaskSummary {
   if (info.value?.status === 'running') return t
@@ -130,7 +131,7 @@ const headline = computed(() => {
     if (running.value.length) return `正在${stage}：${running.value.length} 个角色在工作${openIssues.value.length ? `，${openIssues.value.length} 条审稿意见待处理` : '，未发现阻塞'}`
     return `${stage}阶段进行中，编排器正在派发或验收`
   }
-  if (w.status === 'done') return `研究已交付：质量检查 ${checksPassed.value} / 9 通过`
+  if (w.status === 'done') return `研究已交付：结果质量检查 ${checksPassed.value} / 9 通过`
   if (w.status === 'stopped') return `运行已被手动终止，停在${stage || '起点'}`
   if (w.status === 'failed') return `运行失败，停在${stage || '起点'}${w.launcher.exit ? `（退出码 ${w.launcher.exit}）` : ''}`
   return `运行已结束，停在${stage || '起点'}`
@@ -183,9 +184,7 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
 <template>
   <div class="page" v-if="st && info">
     <div class="hd">
-      <h1>运行实时观察</h1>
-      <span class="dim">·</span>
-      <span class="topic ellipsis" :title="info.topic">{{ info.topic || info.label }}</span>
+      <span class="research-number">{{ researchNumber(info.id) }}</span><span class="topic ellipsis" :title="info.topic">{{ info.topic || info.label }}</span>
       <span class="small"><span class="st-dot" :class="headlineKind" />{{ WS_STATUS_LABEL[info.status] || info.status }}</span>
       <span style="flex: 1" />
       <NButton size="small" @click="router.push({ path: '/costs', query: { research: id } })">算力 / 费用</NButton>
@@ -205,18 +204,18 @@ function issueRole(target: string) { return ({ lit_search: 'goai-lit-search', re
       <div>
         <div class="banner-text">{{ headline }}</div>
         <div class="small dim">{{ elapsedText }}<template v-if="elapsedText"> · </template>最近更新 {{ ago(info.last_activity, st.now) }}<template v-if="info.launcher.stopped"> · 于 {{ info.launcher.stopped }} 终止</template></div>
-        <div v-if="failReason" class="fail-reason small"><span class="mono">{{ failReason }}</span> <a @click="showEvents = true">查看启动日志 ›</a></div>
+        <div v-if="failReason" class="fail-reason small"><span>{{ failReason }}</span> <a @click="showEvents = true">查看运行日志 ›</a></div>
         <div v-else-if="transient" class="fail-reason small warn">{{ transient }}</div>
       </div>
     </div>
 
     <div class="row1">
       <div class="sheet panel progress">
-        <div class="ph"><span class="card-h">研究推进 <span class="dim small" style="font-weight: 400">阶段 · 负责角色</span></span><span class="dim small">{{ ledger.stage ? `第 ${ledger.round}/${ledger.max_rounds} 轮` : '账本尚未初始化' }}</span></div>
+        <div class="ph"><strong class="card-h">研究推进 <span class="dim small" style="font-weight: 600">阶段 · 负责角色</span></strong><span class="dim small">{{ ledger.stage ? `第 ${ledger.round}/${ledger.max_rounds} 轮` : '尚未开始' }}</span></div>
         <StageSpine :ledger="ledger" :tasks="scoped" />
       </div>
       <div class="sheet panel checks">
-        <div class="ph"><span class="card-h">质量检查</span></div>
+        <div class="ph"><span class="card-h">结果质量检查</span></div>
         <QualityStampGrid :ledger="ledger" />
       </div>
     </div>

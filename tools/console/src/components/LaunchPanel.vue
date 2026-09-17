@@ -58,7 +58,7 @@ async function submit() {
 
 <template>
   <div class="sheet panel launch">
-    <h2 class="serif">发起一项研究</h2>
+    <h2>发起一项研究</h2>
     <NAlert v-if="config && !loggedIn" type="warning" :bordered="false" style="margin-bottom: 12px">
       Codex 尚未登录（{{ config.codex_home }}），启动后编排器可能立刻退出。
     </NAlert>
@@ -73,10 +73,10 @@ async function submit() {
 
     <div class="sheet toggle">
       <div>
-        <div class="card-h" style="font-size: 14px">接入私有语料</div>
-        <div class="dim small">{{ config?.private_corpus_available ? '使用 NAS 上的全文 Parquet 库；仅在本次运行中使用，不会上传' : '服务端未配置私有语料，将使用随仓库提交的公开精简包' }}</div>
+        <div class="card-h" style="font-size: 14px">接入个人 PDF 语料库</div>
+        <div v-if="config && !config.private_corpus_available" class="dim small">尚未接入</div>
       </div>
-      <NSwitch v-model:value="privateCorpus" :disabled="!config?.private_corpus_available" />
+      <NSwitch v-model:value="privateCorpus" :disabled="!config?.private_corpus_available" aria-label="接入个人 PDF 语料库" />
     </div>
 
     <NCollapse class="adv" arrow-placement="right">
@@ -97,7 +97,7 @@ async function submit() {
     </NCollapse>
 
     <div class="facts small dim">
-      <span>11 个研究阶段</span><span>9 项质量检查</span><span>{{ model }} / {{ effort }}</span><span>可随时终止，过程可回放</span>
+      <span>11 个研究阶段</span><span>9 项结果质量检查</span><span>{{ model }} / {{ effort }}</span><span>可随时终止，过程可回放</span>
     </div>
     <NButton type="primary" size="large" block :loading="submitting" @click="submit" style="height: 48px; font-size: 16px">开始研究</NButton>
   </div>
@@ -114,6 +114,7 @@ async function submit() {
 .toggle { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 16px; margin-bottom: 12px; }
 .adv { margin-bottom: 8px; }
 .adv-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.facts { display: flex; gap: 18px; margin: 14px 0 12px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; margin: 14px 0 16px; }
+.facts span { min-width: 0; overflow-wrap: anywhere; }
 .facts span::before { content: '◦ '; }
 </style>

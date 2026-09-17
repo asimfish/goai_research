@@ -5,6 +5,7 @@ export interface CostTotal {
   records: number; usage_records: number; mcp_calls: number; missing_usage: number
   unpriced_records: number; mcp_duration_ms: number; warnings: Record<string, number>
   status: 'partial' | 'estimated' | 'complete'
+  conversation_count?: number | null; reply_count?: number | null; turn_count?: number | null
 }
 export interface CostReport {
   summary: CostTotal; generated_at: string; price_config: string
