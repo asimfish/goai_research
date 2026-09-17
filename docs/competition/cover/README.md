@@ -14,11 +14,12 @@
 | 9 道程序化闸门 | `docs/LOOP_PROTOCOL.md`；FINAL_REPORT §1.3「九道流程闸门」 |
 | RECIPE Combo@1 71.81 | FINAL_REPORT §1.3（2,558 条留出测试反应；Combo@20 89.21，MRR 77.48） |
 | 5 条实验工作流 · 158 个机器人原语（仿真） | 站点 `showcase.html` 页首统计（Isaac Sim 数字孪生，非实体实验） |
+| 屏幕标注：三站内容、零穿模 | 站点 `scenes.html`（布局 v4 接触分离审计）、`final_round/05_alab_twin.md` |
 | 5 SOURCES | arXiv / OpenAlex / Crossref / Semantic Scholar / DBLP 五源检索 |
 | 案例 | BYZSO 正式案例、BaZn₂Si₂O₇ 补充案例、LLZO 诊断轮 |
 | 署名 | FINAL_REPORT 题注：AI for Research 赛道 · 算法赛 · 材料科学 · 第 13 队 科学无极 |
 
-笔记本屏幕是站点 `showcase.html` 的真实截图（2×）；无头浏览器不绘制 `<video>`，所以 `make_screen.py` 把该页 wf01 工作流在这个位置播放的两帧仿真画面贴了回去。
+笔记本屏幕是 A-Lab 数字孪生的 Isaac Sim RTX 全景渲染（`scene.jpg` = 站点 `scenes.html` 的「全景（六门全开）」，`final_round/showcase/media/alab_twin_v4/rtx/open_overview_1.png`），作者要求换成"最好看、最真实的场景"。屏幕上的标注全部来自 `scenes.html` 与 `final_round/05_alab_twin.md`：A 站配料与干燥、B 站四台马弗炉 + 导轨 UR5e、C 站 XRD 与粉体回收；「PhysX 接触审计 · 零穿模」= 布局 v4 的接触分离审计（67 对接触，器材间最小分离为正）。它是仿真渲染，不是实验室照片，屏幕左上角标了 ISAAC SIM · RTX RENDER。
 
 ## 重渲染
 
