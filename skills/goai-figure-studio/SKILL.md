@@ -247,6 +247,18 @@ python3 skills/goai-figure-studio/scripts/install_fig.py \
 
 实例与全流程记录：`docs/competition/deck_figures/`（README、`studio_r2/`）。
 
+### C4d 放进别人的 PPT：先读它的色板和叙事
+
+第三轮，作者原话："和我们的风格统一下，包括我们的化学流程，注意用词要专业"。
+
+- 先从目标 PPT 里取色（theme1.xml 的 accent/dk，和内容页真正用到的 srgbClr），写成 `deckstyle.THEMES` 的一项，用
+  `use_theme()` 整体换色；数字卡、标题条照它已有页面的样式画（`tile()` / `headline_bar()`），图例用一行的 `hlegend()`。
+- 卡片内容用项目**自己的领域环节**命名并配领域小插画（再开一张无文字素材表即可），不要只讲通用的"检索/写作/审稿"。
+- 每个数字回到账本核对一次再上页（`ledger.json` 的 issues 有 `round_opened`，别凭记忆写"7 → 0"）；闸门的 WARN 如实画。
+- 作者点了多个候选构图时，同一份内容各出一页（`parallel_bands()` / `parallel_ring()`），合进同一份 PPT 供挑选。
+- 构件：`band()`（横向相位带，左侧页签）、`rflow()`（圆角折线回路，末段保留整只箭头）、`curve()`（三次曲线，环的四分之一圈）、
+  `pgroup`（蓝虚线框 +「并行 ×N」= 并发语义，一进一出，不画分叉总线）。
+
 ### C5 中英两版
 
 同一套几何换字符串，不重画：
