@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>SAGE-Mat 宣传封面</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<style>
+/* palette and type = the project site (goai-dashboard): light ground, white panels, heat-orange + tele-teal accents */
+:root{--ground:#F1F4F7;--panel:#FFFFFF;--line:#D7DEE6;--text:#13202C;--muted:#5A6A7A;--faint:#8A97A5;
+ --ink:#0B1017;--tele:#1E8FA8;--tele-l:#5FB3C9;--heat:#E06A1B;--heat-l:#FF8A3D;--ok:#1F9D62;--door:#3D63D6;--grasp:#1C9A85;
+ --sans:"IBM Plex Sans","Noto Sans SC",sans-serif;--cn:"Noto Sans SC","IBM Plex Sans",sans-serif;
+ --head:"Chakra Petch","Noto Sans SC",sans-serif;--mono:"IBM Plex Mono","Noto Sans SC",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:810px;overflow:hidden}
+body{position:relative;font-family:var(--sans);color:var(--text);
+ background:radial-gradient(1200px 700px at 78% 40%,#FFFFFF 0%,#F6F9FB 45%,var(--ground) 100%)}
+svg.contour{position:absolute;inset:0;width:1440px;height:810px;opacity:.55}
+.abs{position:absolute}
+
+/* ---- title block */
+.eyebrow{left:58px;top:40px;font:500 12.5px/1 var(--mono);letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+.en{left:54px;top:62px;font:700 84px/1 var(--head);letter-spacing:-.01em;color:var(--ink)}
+.en small{font:500 22px/1 var(--head);letter-spacing:.02em;color:var(--muted);margin-left:18px;vertical-align:14px}
+.cn{left:56px;top:158px;font:900 52px/1.27 var(--cn);letter-spacing:.005em;color:var(--ink)}
+
+/* ---- tagline bar */
+.bar{left:54px;top:350px;width:766px;height:76px;border-radius:14px;background:var(--ink);z-index:5;
+ box-shadow:0 18px 40px -14px rgba(11,16,23,.55);display:flex;align-items:center;padding:0 32px;
+ font:700 30px/1 var(--cn);letter-spacing:.04em;color:#F3F6F9;white-space:nowrap}
+.bar b{font-weight:700;background:linear-gradient(90deg,var(--tele-l) 0%,#9AD9C0 45%,#FFC46B 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---- facts */
+.facts{left:58px;top:446px;width:760px;font:500 18px/1.66 var(--cn);color:#33414F;letter-spacing:.015em;white-space:nowrap}
+.facts i{font-style:normal;font-weight:700;color:var(--tele);font-family:var(--head);font-size:20px;letter-spacing:.01em}
+.facts .sep{color:#A9B5C1;margin:0 7px}
+.case{left:58px;top:524px;display:flex;gap:8px;align-items:center;font:500 12.5px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.case span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.8)}
+.case span.k{border-color:#F3C9A8;color:#B4500F;background:#FFF6EE}
+.case sub{font-size:.78em;vertical-align:-.22em;letter-spacing:0}
+
+/* ---- pipeline strip */
+.strip{left:54px;top:576px;width:728px;height:120px;border-radius:20px;background:var(--panel);
+ box-shadow:0 1px 0 #fff inset,0 14px 34px -18px rgba(19,32,44,.35),0 0 0 1px rgba(215,222,230,.9);
+ display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.step{width:108px;text-align:center}
+.tile{width:50px;height:50px;border-radius:13px;margin:0 auto 9px;display:flex;align-items:center;justify-content:center;
+ box-shadow:0 6px 14px -8px rgba(19,32,44,.45)}
+.tile img{max-width:38px;max-height:38px}
+.step h4{font:700 15.5px/1.2 var(--cn);letter-spacing:.06em;color:var(--text)}
+.step p{margin-top:5px;font:500 9.2px/1.2 var(--mono);letter-spacing:.05em;color:var(--faint);white-space:nowrap}
+.chev{color:#B7C2CD;font:500 15px/1 var(--mono);margin-top:-30px}
+.t1{background:linear-gradient(140deg,#E6F0FF,#C9DCFB)}.t2{background:linear-gradient(140deg,#E3F4F7,#C4E6EC)}
+.t3{background:linear-gradient(140deg,#FFF0E2,#FDD9B8)}.t4{background:linear-gradient(140deg,#E6F6EC,#C8EAD6)}
+.t5{background:linear-gradient(140deg,#EEEBFD,#D8D0F8)}.t6{background:linear-gradient(140deg,#E8EEF4,#CFDAE5)}
+
+/* ---- feature cards */
+.feat{right:48px;width:262px;border-radius:18px;color:#fff;padding:16px 18px;display:flex;gap:14px;align-items:center;z-index:6;
+ box-shadow:0 18px 36px -16px rgba(11,16,23,.55)}
+.feat .ic{flex:0 0 54px;height:54px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;
+ box-shadow:0 0 0 1px rgba(255,255,255,.22) inset}
+.feat .ic img{max-width:40px;max-height:40px}
+.feat h3{font:700 23px/1.15 var(--cn);letter-spacing:.06em}
+.feat p{margin-top:6px;font:500 13.2px/1.38 var(--cn);letter-spacing:.03em;opacity:.95}
+.f1{top:44px;background:linear-gradient(135deg,#2F5FDE 0%,#3D46D6 100%)}
+.f2{top:162px;background:linear-gradient(135deg,#12A27F 0%,#0E8590 100%)}
+.f3{top:280px;background:linear-gradient(135deg,#F59A1B 0%,#E0591B 100%)}
+
+/* ---- laptop */
+.lap{left:806px;top:222px;width:602px;z-index:3}
+.lid{background:#10151D;border-radius:16px 16px 4px 4px;padding:9px 9px 11px;box-shadow:0 30px 50px -24px rgba(11,16,23,.55)}
+.chrome{height:26px;display:flex;align-items:center;gap:6px;padding:0 8px;font:500 11px/1 var(--mono);color:#93A1AF;letter-spacing:.03em}
+.chrome u{width:9px;height:9px;border-radius:50%;display:inline-block;text-decoration:none}
+.chrome u:nth-child(1){background:#F26B5E}.chrome u:nth-child(2){background:#F4BE4F}.chrome u:nth-child(3){background:#5BC66A}
+.chrome em{font-style:normal;margin-left:10px;color:#C6D0DA}
+.screen{width:584px;height:389px;border-radius:3px;overflow:hidden;background:#F1F4F7}
+.screen img{width:584px;display:block}
+.base{height:15px;margin:0 -20px;background:linear-gradient(#1A212B,#0C1016);border-radius:2px 2px 14px 14px;position:relative}
+.base:before{content:"";position:absolute;left:50%;top:0;width:92px;height:5px;margin-left:-46px;border-radius:0 0 8px 8px;background:#2A3340}
+
+/* ---- formula + footer */
+.formula{left:0;top:728px;width:1440px;text-align:center;font:700 25px/1 var(--cn);letter-spacing:.09em;color:var(--ink)}
+.formula s{text-decoration:none;color:#A9B5C1;font-weight:500;margin:0 18px}
+.formula b{color:#0E7C86}
+.foot{top:780px;font:500 12.5px/1 var(--mono);letter-spacing:.11em;color:var(--faint)}
+.foot.l{left:56px}.foot.r{right:54px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+</style></head><body>
+
+<svg class="contour" viewBox="0 0 1440 810" fill="none" stroke="#DCE4EB" stroke-width="1">
+ <path d="M-20 600 C 260 520, 520 690, 820 610 S 1300 520, 1470 600"/>
+ <path d="M-20 650 C 300 570, 560 740, 860 660 S 1320 580, 1470 650"/>
+ <path d="M-20 120 C 300 60, 620 170, 900 90 S 1300 40, 1470 110"/>
+ <path d="M-20 170 C 320 110, 640 220, 920 140 S 1320 90, 1470 160" opacity=".6"/>
+ <path d="M-20 705 C 340 640, 600 790, 900 715 S 1330 640, 1470 700" opacity=".6"/>
+</svg>
+
+<div class="abs eyebrow">GoAI · AI for Research · Materials Science</div>
+<div class="abs en">SAGE-Mat<small>Evidence-Constrained Self-Cyclic Agent</small></div>
+<div class="abs cn">面向无机材料发现与合成规划的<br>证据约束自循环智能体</div>
+
+<div class="abs bar">多智能体自主科研：<b>从文献证据到可执行合成方案</b></div>
+
+<div class="abs facts">
+ <i>51/51</i> 篇参考文献逐条核验<span class="sep">·</span><i>219</i> 次引用、整合率 <i>100%</i><span class="sep">·</span><i>9</i> 道程序化闸门<br>
+ RECIPE 前驱体预测 Combo@1 <i>71.81</i><span class="sep">·</span><i>5</i> 条实验工作流<span class="sep">·</span><i>158</i> 个机器人原语（仿真）
+</div>
+<div class="abs case">
+ <span class="k">CASE</span>
+ <span>Ba<sub>5</sub>Y<sub>12</sub>Zn[O(SiO<sub>4</sub>)]<sub>8</sub> 及结构近邻</span>
+ <span>BaZn<sub>2</sub>Si<sub>2</sub>O<sub>7</sub></span>
+ <span>Li<sub>7</sub>La<sub>3</sub>Zr<sub>2</sub>O<sub>12</sub></span>
+</div>
+
+<div class="abs strip">
+ <div class="step"><div class="tile t1"><img src="art/litdb.png"></div><h4>文献核验</h4><p>5 SOURCES · 51/51</p></div><div class="chev">›</div>
+ <div class="step"><div class="tile t2"><img src="art/condtable.png"></div><h4>条件抽取</h4><p>ROUTE · T–t · ATM</p></div><div class="chev">›</div>
+ <div class="step"><div class="tile t3"><img src="art/recipe.png"></div><h4>前驱体预测</h4><p>RECIPE · COMBO@1</p></div><div class="chev">›</div>
+ <div class="step"><div class="tile t4"><img src="art/plan.png"></div><h4>方案生成</h4><p>EVIDENCE-GRADED</p></div><div class="chev">›</div>
+ <div class="step"><div class="tile t5"><img src="art/robotlab.png"></div><h4>仿真执行</h4><p>OPENLAB · SIM</p></div><div class="chev">›</div>
+ <div class="step"><div class="tile t6"><img src="art/xrd.png"></div><h4>表征反馈</h4><p>XRD · PHASE ID</p></div>
+</div>
+
+<div class="abs feat f1"><div class="ic"><img src="art/refguard.png"></div><div><h3>证据可溯源</h3><p>结论 → 引用键 → DOI<br>→ 原文段落</p></div></div>
+<div class="abs feat f2"><div class="ic"><img src="art/precursors.png"></div><div><h3>集合级预测</h3><p>RECIPE · 变长前驱体<br>集合的生成与重排</p></div></div>
+<div class="abs feat f3"><div class="ic"><img src="art/checkdone.png"></div><div><h3>程序化放行</h3><p>模型提案 · 程序裁决</p></div></div>
+
+<div class="abs lap">
+ <div class="lid">
+  <div class="chrome"><u></u><u></u><u></u><em>asimfish.github.io/goai-dashboard/showcase.html</em></div>
+  <div class="screen"><img src="screen.jpg"></div>
+ </div>
+ <div class="base"></div>
+</div>
+
+<div class="abs formula">文献证据<s>+</s>集合级预测<s>+</s>程序化闸门<s>=</s><b>可追溯、可执行的合成方案</b></div>
+<div class="abs foot l">世界人工智能开源大赛 · AI FOR RESEARCH 赛道 · 材料科学 · 第 13 队 科学无极</div>
+<div class="abs foot r">github.com/asimfish/goai_research</div>
+</body></html>
