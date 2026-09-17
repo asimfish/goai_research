@@ -92,3 +92,21 @@ Every entry cost at least one round trip. Read before debugging something that l
 - **Deck titles at 28 pt wrap past ~24 CJK characters**; a two-line title pushes into the figure.
 - **A two-line pill can still overflow by a glyph**: LibreOffice fills line 1 greedily, our split minimises the wider
   half; give wrapped pills `padx=30` or accept a 1 px `rendered_glyph_overflow` on the first glyph.
+
+## Slides, round 2 (loop-engineering style, 2026-09-17)
+
+- **The paper surface style on a talk slide reads as "low quality".** Muted four-family palette, line-art glyphs only and
+  ~55 locked strings gave a flat org chart — natively AND from the image model, because the prompts enforced it. A slide
+  needs a brief (title + one line per node), numbered pastel panels, flow kinds in colour with a legend, characters or
+  small illustrations on core nodes, and an evidence strip. See SKILL.md C4c.
+- **Image models keep the look and break the topology.** All eight S2 sketches drew parallel stages as serial chains, moved
+  cards between phases or started the retry arc at the wrong node. Lock the semantics with a labelled blueprint render as
+  the layout reference; all four conditioned bakes reproduced it.
+- **Do not reject a raster over its pixel count.** "1536x1024" in the task made the agent skip four good 1672×941 images.
+  Ask for the aspect, register the native size.
+- **Asset sheets are not on an exact grid.** Equal-cell cropping cut into neighbours; split rows and columns at the widest
+  ink-free bands instead, and flood-fill transparency only from the crop border (white inside the art must stay).
+- **img2ppt lines are two-point.** A curved loop is a run of short segments (`Deck.arc` / `Deck.ubend`); the last one must
+  stay longer than its arrow head, and a dashed arrow cannot carry a custom head (keep its last segment > 15 px).
+- **A card shadow is a second shape**: declare its overlaps (the card, everything inside it, connectors ending at the edge)
+  or the checker reports dozens of false overlaps.

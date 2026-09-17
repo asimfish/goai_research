@@ -1,0 +1,72 @@
+{
+ "stage": "S5-CANDIDATE-IMAGE",
+ "project_id": "deck_loop_parallel_r2",
+ "candidates": [
+  {
+   "candidate_id": "F01",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F01.png",
+   "reference_image_paths": [
+    "outputs/S4-candidate-brief/condition.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png",
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "refined_from_first_round_candidate_ids": [
+    "C02"
+   ],
+   "lineage_role": "blueprint_conditioned_bake",
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "F02",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F02.png",
+   "reference_image_paths": [
+    "outputs/S4-candidate-brief/condition.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png",
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "refined_from_first_round_candidate_ids": [
+    "C02"
+   ],
+   "lineage_role": "blueprint_conditioned_bake",
+   "skip": false,
+   "size": "16:9"
+  }
+ ],
+ "rows": [
+  {
+   "candidate_id": "F01",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F01.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F01.png",
+   "reference_image_paths": [
+    "outputs/S4-candidate-brief/condition.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png",
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "refined_from_first_round_candidate_ids": [
+    "C02"
+   ],
+   "lineage_role": "blueprint_conditioned_bake",
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "F02",
+   "prompt_path": "outputs/S5-candidate-image/prompts/F02.md",
+   "target_image_path": "outputs/S5-candidate-image/generated/F02.png",
+   "reference_image_paths": [
+    "outputs/S4-candidate-brief/condition.png",
+    "../deck_cast/outputs/CAST/generated/CAST.png",
+    "outputs/S2-sketch-explore/generated/C02.png"
+   ],
+   "refined_from_first_round_candidate_ids": [
+    "C02"
+   ],
+   "lineage_role": "blueprint_conditioned_bake",
+   "skip": false,
+   "size": "16:9"
+  }
+ ]
+}

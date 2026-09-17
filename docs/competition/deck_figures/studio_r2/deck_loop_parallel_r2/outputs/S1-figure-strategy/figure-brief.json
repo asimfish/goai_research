@@ -1,0 +1,252 @@
+{
+ "schema": "goai-deck/brief/v1",
+ "figure_id": "deck_loop_parallel_r2",
+ "figure_purpose": "一行主题进，九道闸门出",
+ "headline_claim": "完成与否由程序判定，不由模型自报",
+ "headline_number": "9 道闸门 · 29 批 / 40 个子任务",
+ "caption_thesis": "编排器只做四件事：建账本、分派、验闸门、路由返工；七个专职智能体各写自己的分片，闸门落在同一本账上。",
+ "phases": [
+  {
+   "id": "p1",
+   "label": "1 · 立项取证",
+   "members": [
+    "scope",
+    "lit",
+    "style",
+    "ref"
+   ]
+  },
+  {
+   "id": "p2",
+   "label": "2 · 并行生产",
+   "members": [
+    "tax",
+    "fig",
+    "write",
+    "idea"
+   ]
+  },
+  {
+   "id": "p3",
+   "label": "3 · 对抗审稿与交付",
+   "members": [
+    "review",
+    "verdict",
+    "deliver"
+   ]
+  }
+ ],
+ "components": [
+  {
+   "id": "topic",
+   "label": "研究主题",
+   "one_line": "一行输入",
+   "role": "input",
+   "character": "研究者"
+  },
+  {
+   "id": "orc",
+   "label": "编排器",
+   "one_line": "建账本 · 分派 · 验闸门 · 路由返工",
+   "role": "control",
+   "character": "编排器",
+   "priority": "core"
+  },
+  {
+   "id": "scope",
+   "label": "范围界定",
+   "one_line": "子主题与边界",
+   "phase": "p1"
+  },
+  {
+   "id": "lit",
+   "label": "文献检索",
+   "one_line": "≥3 路分片并发",
+   "phase": "p1",
+   "character": "执行者",
+   "priority": "core"
+  },
+  {
+   "id": "style",
+   "label": "风格库",
+   "one_line": "30 篇范文",
+   "phase": "p1"
+  },
+  {
+   "id": "ref",
+   "label": "引用核查",
+   "one_line": "51/51 逐条核对",
+   "phase": "p1",
+   "icon": "shield"
+  },
+  {
+   "id": "tax",
+   "label": "分类法",
+   "one_line": "每叶 ≥3 篇",
+   "phase": "p2"
+  },
+  {
+   "id": "fig",
+   "label": "图件",
+   "one_line": "可编辑三件套",
+   "phase": "p2",
+   "character": "执行者"
+  },
+  {
+   "id": "write",
+   "label": "写作",
+   "one_line": "按章节并发",
+   "phase": "p2",
+   "character": "执行者"
+  },
+  {
+   "id": "idea",
+   "label": "实验构想",
+   "one_line": "前驱体预测",
+   "phase": "p2",
+   "character": "执行者"
+  },
+  {
+   "id": "review",
+   "label": "对抗审稿",
+   "one_line": "独立上下文 · 三视角",
+   "phase": "p3",
+   "character": "审稿人",
+   "priority": "core"
+  },
+  {
+   "id": "verdict",
+   "label": "裁决",
+   "one_line": "0 blocker / major ?",
+   "phase": "p3",
+   "shape": "diamond"
+  },
+  {
+   "id": "deliver",
+   "label": "终稿交付",
+   "one_line": "tex · pdf · bib · 账本",
+   "phase": "p3"
+  },
+  {
+   "id": "ledger",
+   "label": "回环账本 ledger.json",
+   "one_line": "九道闸门落账 · 文件锁 · 产物指纹",
+   "role": "single source of truth",
+   "priority": "core"
+  }
+ ],
+ "flows": [
+  {
+   "frm": "topic",
+   "to": "scope",
+   "kind": "flow"
+  },
+  {
+   "frm": "scope",
+   "to": "lit",
+   "kind": "flow"
+  },
+  {
+   "frm": "scope",
+   "to": "style",
+   "kind": "flow"
+  },
+  {
+   "frm": "lit",
+   "to": "ref",
+   "kind": "flow"
+  },
+  {
+   "frm": "style",
+   "to": "ref",
+   "kind": "flow"
+  },
+  {
+   "frm": "ref",
+   "to": "tax",
+   "kind": "flow"
+  },
+  {
+   "frm": "tax",
+   "to": "fig",
+   "kind": "flow"
+  },
+  {
+   "frm": "tax",
+   "to": "write",
+   "kind": "flow"
+  },
+  {
+   "frm": "tax",
+   "to": "idea",
+   "kind": "flow"
+  },
+  {
+   "frm": "fig",
+   "to": "review",
+   "kind": "flow"
+  },
+  {
+   "frm": "write",
+   "to": "review",
+   "kind": "flow"
+  },
+  {
+   "frm": "idea",
+   "to": "review",
+   "kind": "flow"
+  },
+  {
+   "frm": "review",
+   "to": "verdict",
+   "kind": "flow"
+  },
+  {
+   "frm": "verdict",
+   "to": "deliver",
+   "kind": "keep",
+   "label": "PASS"
+  },
+  {
+   "frm": "verdict",
+   "to": "tax",
+   "kind": "retry",
+   "label": "issue 路由返工 · 最多 5 轮"
+  },
+  {
+   "frm": "orc",
+   "to": "p1/p2/p3",
+   "kind": "dispatch",
+   "label": "分派"
+  },
+  {
+   "frm": "each stage",
+   "to": "ledger",
+   "kind": "write",
+   "label": "落账"
+  }
+ ],
+ "legend": [
+  "主流程",
+  "并行分派",
+  "返工回路",
+  "落账"
+ ],
+ "gates": [
+  "scope_confirmed",
+  "lit_coverage",
+  "style_bank_ready",
+  "ref_integrity",
+  "taxonomy_ready",
+  "figures_ready",
+  "draft_complete",
+  "ideas_reviewed",
+  "review_pass"
+ ],
+ "evidence": [
+  "29 批",
+  "40 个子任务",
+  "≤4 路并行",
+  "134 次工具调用"
+ ]
+}

@@ -2,7 +2,8 @@
 
 An img2ppt build maps its canvas onto a 960 pt-wide slide; a 1536×864 scene is therefore exactly one 16:9 slide,
 so its shapes are copied 1:1 (no scaling) onto a new slide that uses the deck's own title bar (title placeholder +
-the two blue rectangles every content slide carries).
+the two blue rectangles every content slide carries). Pictures (raster art kept as independent assets) are carried
+over with their image parts.
 
 usage: deck_merge.py --deck deck.pptx --out out.pptx [--font 微软雅黑] [--after 9] \
            <build/editable.pptx>::<slide title> [<build2/editable.pptx>::<title 2> ...]
@@ -58,6 +59,22 @@ def copy_shape(el, dst_spTree, next_id):
     return new
 
 
+R_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+
+
+def carry_picture(pic_el, src_slide, dst_slide):
+    """A copied <p:pic> still points at the source slide's relationship id: add the image to the destination slide's
+    package and point the blip at the new relationship."""
+    import io
+    for blip in pic_el.iter('{%s}blip' % NS['a']):
+        rid = blip.get('{%s}embed' % R_NS)
+        if not rid:
+            continue
+        image_part = src_slide.part.related_part(rid)
+        new_part, new_rid = dst_slide.part.get_or_add_image_part(io.BytesIO(image_part.blob))
+        blip.set('{%s}embed' % R_NS, new_rid)
+
+
 def retype(el, font):
     """Point every explicit typeface at the deck's font (Noto Sans CJK SC exists on the render host, not on the author's PC)."""
     for tag in ('latin', 'ea', 'cs'):
@@ -91,7 +108,6 @@ def main():
         assert a.any_height or abs(src.slide_height - prs.slide_height) < 200000, \
             f'{src_path}: slide height {src.slide_height / 12700:.0f} pt, deck {prs.slide_height / 12700:.0f} pt (scene must be 1536×864)'
         s_src = src.slides[0]
-        assert not any(sh.shape_type == 13 for sh in s_src.shapes), 'img2ppt slide contains pictures; rels would be needed'
 
         slide = prs.slides.add_slide(layout)
         # only the title placeholder survives; the deck's content slides carry no body placeholders
@@ -115,6 +131,8 @@ def main():
             if tag in ('nvGrpSpPr', 'grpSpPr'):
                 continue
             new = copy_shape(el, spTree, next_id)
+            if tag == 'pic':
+                carry_picture(new, s_src, slide)
             if a.font:
                 retype(new, a.font)
             n += 1
