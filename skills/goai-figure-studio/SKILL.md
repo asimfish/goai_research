@@ -229,6 +229,24 @@ python3 skills/goai-figure-studio/scripts/install_fig.py \
 实例：`submission/03_运行与评测包/figure_scenes/scenes_deck.py`、`docs/competition/deck_figures/`。
 生图通道在 Codex 宿主上是 `scripts/image_gen_codex.py`（标准库实现；登录过期先 `scripts/codex_refresh.py`）。
 
+### C4c 幻灯片图的表面风格：别把论文图的克制搬上讲台
+
+论文图的契约（克制四色、纯线稿图元、几十条锁定字串）用在答辩幻灯片上会显得平——作者原话"没有顶会的质感"。
+幻灯片走 **loop-engineering 风格**（参考 ARIS `/method-figure`），构件在 `figure_scenes/deckstyle.py`：
+
+- **brief 化**：≤14 个组件，每个"标题 + 一句话"，一个论断 + 一个数字；其余留给讲者。
+- 三条**编号淡彩色带**（实色标题条）、带投影的白卡、核心卡配角色或小插画；确定性工具画成图标而不是角色。
+- **连线按含义上色并配图例**：深蓝粗线主流程、橙色回环弧是视觉主角（写明上限）、蓝虚线分派、细灰线落账、绿色放行、红虚线升级人类。
+- **证据条**用真实轮次数据讲回环（issue 数逐轮下降），而不是角落里一行统计。
+- **条件线框锁语义**：生图模型画风可以很好，但不守拓扑（并行画成串行、卡片换组、弧线起止点错）。先用原生构件画出语义正确、
+  文字到位的线框，S5 让模型"照它出图，只提升质感"；可编辑交付件 = 线框 + 从**无文字素材表**裁出的插画
+  （`scripts/crop_assets.py`，按墨迹空白带切格、只去掉与边相连的白底）。
+- 提示词写**正面描述**、3–4K 字符即可；堆禁令和长白名单会把结果压平。尺寸只要求"16:9 横版"，按工具原生像素登记。
+- 生图可以委托给有内置 `image_gen` 的 Codex agent：提示词包 + `register_image.py`（逐字节登记 + 来源记录）放进它的工作区，
+  任务书写明"只用 image_gen、提示词原样、不审计"。
+
+实例与全流程记录：`docs/competition/deck_figures/`（README、`studio_r2/`）。
+
 ### C5 中英两版
 
 同一套几何换字符串，不重画：

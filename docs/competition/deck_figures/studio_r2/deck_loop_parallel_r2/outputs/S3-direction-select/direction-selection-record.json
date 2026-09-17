@@ -1,0 +1,72 @@
+{
+ "project_id": "deck_loop_parallel_r2",
+ "issue_ledger": {
+  "C01": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "立项取证带内 范围界定→文献检索→风格库→引用核查 被画成串行链；并行生产带内 分类法→图件→写作→实验构想 也被串成一条线——并行语义丢失"
+   },
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "返工弧从「终稿交付」出发（应从「裁决」）"
+   },
+   {
+    "severity": "medium",
+    "kind": "semantic",
+    "finding": "研究者角色出现在 范围界定/风格库/引用核查/终稿交付 四张卡里，角色分工被冲淡"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "三条横向色带 + 左侧编排器分派 + 账本轨九枚闸门 + KPI 条，层次清楚"
+   }
+  ],
+  "C02": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "「引用核查」被挪进第 2 段，「实验构想」缺失"
+   },
+   {
+    "severity": "medium",
+    "kind": "semantic",
+    "finding": "并行只靠卡片堆叠暗示，没有分叉/汇合"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "三相位并排 + 顶部编排器扇形分派 + 账本轨 + 四色 KPI，最克制、最像会议报告图"
+   }
+  ],
+  "C03": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "「引用核查」落在第 3 段，「风格库」缺失；PASS 弧终点指向「实验构想」，返工弧从账本出发"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "账本居中成环，橙色返工弧与绿色 PASS 弧围成回环——\"回环\"的视觉隐喻最强"
+   }
+  ],
+  "C04": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "相位成员被重排（风格库/引用核查/分类法/图件 在第 2 段，写作/实验构想 在第 3 段），且全部串行"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "顶部控制泳道把编排器四个动词做成 chip，账本轨编号 1–9"
+   }
+  ]
+ },
+ "selected_direction": "C02 的构图（三相位并排 + 顶部编排器分派 + 底部账本轨 + KPI 条）为主方向；吸收 C01 的卡内角色与小插画、C04 的闸门轨节奏",
+ "user_preferred_first_round_candidate_ids": [],
+ "avoid": "任何把并行画成串行链的走线；返工弧起点不在「裁决」；相位成员漂移",
+ "transform": "语义由条件线框锁死：P1 范围界定→[文献检索∥风格库]→引用核查；P2 分类法→[图件∥写作∥实验构想]；P3 对抗审稿→裁决→PASS→终稿交付；返工弧 裁决→并行生产"
+}

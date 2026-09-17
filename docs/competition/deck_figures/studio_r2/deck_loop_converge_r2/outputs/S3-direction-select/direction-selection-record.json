@@ -1,0 +1,57 @@
+{
+ "project_id": "deck_loop_converge_r2",
+ "issue_ledger": {
+  "C01": [
+   {
+    "severity": "medium",
+    "kind": "semantic",
+    "finding": "「写不进去」「不收敛」两条线从 loopctl 指向 升级人类（应分别指向账本写入口、出自回环）"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "大回环 + 2×2 互搏卡（角色成对）+ 四张轮次卡 4/7/0/=0，信息最完整"
+   }
+  ],
+  "C02": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "编排器角色出现在「路由返工」段；loopctl 被串进主流程；结尾的 Done! 庆祝偏娱乐"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "角色表现力强"
+   }
+  ],
+  "C03": [
+   {
+    "severity": "high",
+    "kind": "semantic",
+    "finding": "气泡方向与发言人不符（\"第 1 轮：7 项 issue\" 应由审稿人发出）"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "对话式回环最像 ARIS 的 auto-review hero：轮次即叙事，机械闸门在右侧成列"
+   }
+  ],
+  "C04": [
+   {
+    "severity": "medium",
+    "kind": "visual",
+    "finding": "收敛阶梯与下方轮次卡重复表达同一组数字"
+   },
+   {
+    "severity": "none",
+    "kind": "visual",
+    "finding": "阶梯上的角色让\"4→7→0\"一眼可读"
+   }
+  ]
+ },
+ "selected_direction": "C01 的构图（本轮产物 → 2×2 互搏卡 → 路由返工 → 大回环；机械放行在右；底部四张轮次卡）为主方向；C03 的对话式回环留作备选构图",
+ "user_preferred_first_round_candidate_ids": [],
+ "avoid": "loopctl 串进主流程；升级人类接回回环；庆祝式装饰",
+ "transform": "语义由条件线框锁死：绿色 0 blocker/major 直通 check-done；橙色 U 形回环 级联失效→本轮产物；红色虚线 不收敛→升级人类"
+}

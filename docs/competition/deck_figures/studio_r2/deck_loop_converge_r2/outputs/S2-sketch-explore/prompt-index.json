@@ -1,0 +1,89 @@
+{
+ "stage": "S2-SKETCH-EXPLORE",
+ "project_id": "deck_loop_converge_r2",
+ "first_round_surface_style": "loop_engineering_method_figure",
+ "candidates": [
+  {
+   "candidate_id": "C01",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C01.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C01.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C02",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C02.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C02.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C03",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C03.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C03.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C04",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C04.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C04.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ],
+ "rows": [
+  {
+   "candidate_id": "C01",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C01.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C01.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C02",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C02.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C02.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C03",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C03.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C03.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  },
+  {
+   "candidate_id": "C04",
+   "prompt_path": "outputs/S2-sketch-explore/prompts/C04.md",
+   "target_image_path": "outputs/S2-sketch-explore/generated/C04.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ]
+}

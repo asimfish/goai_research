@@ -1,0 +1,172 @@
+{
+ "schema": "goai-deck/brief/v1",
+ "figure_id": "deck_loop_converge_r2",
+ "figure_purpose": "回环为什么收敛",
+ "headline_claim": "模型说了不算：检查不过即返工",
+ "headline_number": "7 → 0 项 issue（两轮）",
+ "caption_thesis": "四条互搏通道负责挑错，issue 带 target 回到责任阶段，只重跑受影响链路；放行由 loopctl 与 check-done 机械判定。",
+ "phases": [
+  {
+   "id": "p1",
+   "label": "1 · 互搏挑错",
+   "members": [
+    "c1",
+    "c2",
+    "c3",
+    "c4"
+   ]
+  },
+  {
+   "id": "p2",
+   "label": "2 · 路由返工",
+   "members": [
+    "route",
+    "cascade"
+   ]
+  },
+  {
+   "id": "p3",
+   "label": "3 · 机械放行",
+   "members": [
+    "loopctl",
+    "checkdone",
+    "deliver"
+   ]
+  }
+ ],
+ "components": [
+  {
+   "id": "prod",
+   "label": "本轮产物",
+   "one_line": "稿件 · 图件 · 方案 · 引用库",
+   "role": "input"
+  },
+  {
+   "id": "c1",
+   "label": "执行者 ⇄ 审稿人",
+   "one_line": "独立上下文 · 三视角",
+   "phase": "p1",
+   "character": "执行者 + 审稿人",
+   "priority": "core"
+  },
+  {
+   "id": "c2",
+   "label": "提案者 ⇄ 攻击者",
+   "one_line": "实验构想内部对抗",
+   "phase": "p1"
+  },
+  {
+   "id": "c3",
+   "label": "候选 ⇄ 审计",
+   "one_line": "图件两轮候选制",
+   "phase": "p1"
+  },
+  {
+   "id": "c4",
+   "label": "稿件 ⇄ 机械守卫",
+   "one_line": "bib · tex · pdf · 语言守卫",
+   "phase": "p1",
+   "icon": "shield"
+  },
+  {
+   "id": "route",
+   "label": "issue 路由表",
+   "one_line": "target → 责任阶段",
+   "phase": "p2",
+   "priority": "core"
+  },
+  {
+   "id": "cascade",
+   "label": "级联失效",
+   "one_line": "指纹变更 → 闸门回 PENDING",
+   "phase": "p2"
+  },
+  {
+   "id": "loopctl",
+   "label": "loopctl 拒绝写入",
+   "one_line": "跳阶段 · 单轮审稿 · 无回执",
+   "phase": "p3",
+   "icon": "padlock"
+  },
+  {
+   "id": "checkdone",
+   "label": "check-done",
+   "one_line": "九道闸门全过 · 退出码 0",
+   "phase": "p3",
+   "icon": "gate",
+   "priority": "core"
+  },
+  {
+   "id": "deliver",
+   "label": "交付",
+   "one_line": "23 页 PDF · 51/51 引用",
+   "phase": "p3"
+  },
+  {
+   "id": "human",
+   "label": "升级人类",
+   "one_line": "三轮未收敛 / 轮次用尽",
+   "role": "outside the loop"
+  }
+ ],
+ "flows": [
+  {
+   "frm": "prod",
+   "to": "p1",
+   "kind": "flow"
+  },
+  {
+   "frm": "p1",
+   "to": "route",
+   "kind": "flow",
+   "label": "issue 带 target · severity"
+  },
+  {
+   "frm": "route",
+   "to": "cascade",
+   "kind": "flow"
+  },
+  {
+   "frm": "cascade",
+   "to": "prod",
+   "kind": "retry",
+   "label": "只重跑责任阶段 · 最多 5 轮"
+  },
+  {
+   "frm": "p1",
+   "to": "checkdone",
+   "kind": "keep",
+   "label": "0 blocker / major"
+  },
+  {
+   "frm": "checkdone",
+   "to": "deliver",
+   "kind": "keep",
+   "label": "退出码 0"
+  },
+  {
+   "frm": "loopctl",
+   "to": "ledger writes",
+   "kind": "write",
+   "label": "写不进去"
+  },
+  {
+   "frm": "loop",
+   "to": "human",
+   "kind": "escalate",
+   "label": "不收敛"
+  }
+ ],
+ "legend": [
+  "主流程",
+  "返工回路",
+  "机械放行",
+  "升级人类"
+ ],
+ "evidence": [
+  "生产阶段 · 闸门拦下 4 项",
+  "第 1 轮审稿 · 7 项 → 路由返工",
+  "第 2 轮审稿 · 0 项 → PASS",
+  "check-done = 0"
+ ]
+}

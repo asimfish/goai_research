@@ -1,0 +1,50 @@
+{
+ "stage": "ASSETS",
+ "project_id": "deck_assets_a",
+ "grid": [
+  4,
+  4
+ ],
+ "cells": [
+  "researcher",
+  "orchestrator",
+  "scope",
+  "search",
+  "style",
+  "refguard",
+  "taxonomy",
+  "figure",
+  "writer",
+  "idea",
+  "reviewer",
+  "deliver",
+  "ledger",
+  "padlock",
+  "checkdone",
+  "pdf"
+ ],
+ "candidates": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ],
+ "rows": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_cast/outputs/CAST/generated/CAST.png"
+   ],
+   "skip": false,
+   "size": "16:9"
+  }
+ ]
+}
