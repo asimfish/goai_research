@@ -1,0 +1,50 @@
+{
+ "project_id": "deck_loop_converge",
+ "figure": "多智能体并行回环（二）· 四条互搏通道与机械闸门收敛",
+ "primary_reader_question": "这个回环为什么会收敛——谁在互相挑错，谁在机械把关，什么时候停？",
+ "visual_mainline_decision": "本轮产物 → 四条互搏通道挑错 → issue 带 target 经路由表回责任阶段 → 只重跑受影响链路、指纹变更把下游闸门置回 PENDING → 下一轮；无 issue 时 check-done 机械放行 → 交付；三条终止旁路通向人",
+ "contribution_type_visual_priority": "mechanism",
+ "role_visual_realization_contract": [
+  {
+   "role": "互搏通道",
+   "scientific_meaning": "两个职责分离的角色互相挑错：审稿人独立上下文，守卫是确定性脚本",
+   "positive_visual_instruction": "一张卡内一对角色 token 用一个双向短箭头相连，下面一行判据",
+   "negative_visual_instruction": "禁止把一条通道画成两条流水线；禁止画成打架、盾牌对撞的隐喻"
+  },
+  {
+   "role": "issue 路由",
+   "scientific_meaning": "issue 带 target 与 severity，经路由表回到责任阶段，只重跑受影响链路",
+   "positive_visual_instruction": "四条通道并入一束进路由表；路由表是唯一的中继，一条虚线闭环回到本轮产物",
+   "negative_visual_instruction": "禁止从每条通道各拉线到各阶段（蛛网）"
+  },
+  {
+   "role": "机械放行",
+   "scientific_meaning": "check-done 只按四个机械判据返回 0；loopctl 在写入时拒绝绕过",
+   "positive_visual_instruction": "两张 teal 工具卡，判据做成勾选行 / 机理链，出口标签 退出码 0",
+   "negative_visual_instruction": "禁止把 check-done 画成智能体或人"
+  },
+  {
+   "role": "终止旁路",
+   "scientific_meaning": "轮次上限、三轮未收敛、空转三种情况把决定交给人",
+   "positive_visual_instruction": "一张 gray 卡在回环之外，一条实线从回环出去，不接回",
+   "negative_visual_instruction": "禁止把升级人类接回主环；禁止画人形"
+  }
+ ],
+ "forbidden_misimplementation_locks": [
+  "互搏通道不是两条流水线：一张卡内一对角色 token + 一个双向短箭头",
+  "不得从审稿直接向各阶段拉线；issue 只经路由表回流",
+  "升级人类是灰族旁路，不接回主环",
+  "只允许一种虚线语义：下一轮返工",
+  "check-done 与 loopctl 不是智能体，是 teal 工具卡",
+  "不得出现打架、拳击、盾牌、法官、天平等隐喻图元"
+ ],
+ "process_instance_budget": {
+  "default_canonical_process_count": 1,
+  "note": "一条闭合回环 + 一个放行出口 + 一个旁路出口"
+ },
+ "downstream_s1_s4_carry_forward": [
+  "S1/S4 的 forbidden-edge list 必须含\"通道 → 阶段（绕过路由表）\"与\"升级人类 → 主环\"两条",
+  "S4 的 dashed-line budget 只允许一条虚线语义：下一轮返工",
+  "四条通道必须等宽并排，卡内机理是\"一对 token + 双向短箭头 + 判据行\""
+ ]
+}

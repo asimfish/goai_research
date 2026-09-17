@@ -1,0 +1,3755 @@
+{
+  "status": "fail",
+  "visual_review": "required",
+  "automated_checks": {
+    "preflight": {
+      "status": "pass",
+      "findings": [
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "orc_c_t0_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 52.371,
+            "height_px": 25.5,
+            "available_width_px": 84,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 52.871,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "建账本"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "orc_c_t1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 35.0,
+            "height_px": 25.5,
+            "available_width_px": 84,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 35.5,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "分派"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "orc_c_t2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 52.371,
+            "height_px": 25.5,
+            "available_width_px": 84,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 52.871,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "验闸门"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "orc_c_t3_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 69.828,
+            "height_px": 25.5,
+            "available_width_px": 84,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 70.328,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "路由返工"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "run_c_t0_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 77.75,
+            "height_px": 20.5,
+            "available_width_px": 112,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 78.25,
+            "required_height_px": 21.0,
+            "fits": true,
+            "lines": [
+              "tasks.tsv"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "run_c_t1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 52.371,
+            "height_px": 25.5,
+            "available_width_px": 72,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 52.871,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "子进程"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "run_c_t2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 157.113,
+            "height_px": 25.5,
+            "available_width_px": 186,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 157.613,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "各写自己的分片文件"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "run_c_t3_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 35.0,
+            "height_px": 25.5,
+            "available_width_px": 52,
+            "available_height_px": 28,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 35.5,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "汇合"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "s1_k0_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 16.5419,
+            "width_px": 10.523,
+            "height_px": 19.5,
+            "available_width_px": 18,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 11.023,
+            "required_height_px": 20.0,
+            "fits": true,
+            "lines": [
+              "1"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "s1_k1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 16.5419,
+            "width_px": 10.523,
+            "height_px": 19.5,
+            "available_width_px": 18,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 11.023,
+            "required_height_px": 20.0,
+            "fits": true,
+            "lines": [
+              "2"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "s1_k2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 16.5419,
+            "width_px": 10.523,
+            "height_px": 19.5,
+            "available_width_px": 18,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 11.023,
+            "required_height_px": 20.0,
+            "fits": true,
+            "lines": [
+              "3"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "led_r0_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 89.008,
+            "height_px": 25.5,
+            "available_width_px": 115,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 89.508,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "闸门 gates"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "led_r1_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 94.5,
+            "height_px": 25.5,
+            "available_width_px": 127,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 95.0,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "问题 issues"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "led_r2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 67.25,
+            "height_px": 25.5,
+            "available_width_px": 92,
+            "available_height_px": 26,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 67.75,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "日志 log"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "end2_t"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.918997,
+            "effective_font_size_px": 17.4609,
+            "width_px": 69.828,
+            "height_px": 25.5,
+            "available_width_px": 98,
+            "available_height_px": 27,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 70.328,
+            "required_height_px": 26.0,
+            "fits": true,
+            "lines": [
+              "终稿交付"
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_frame_overlap_only",
+          "severity": "info",
+          "elements": [
+            "ev1_t",
+            "dsp_0"
+          ],
+          "message": "Text-frame overlap is confined to blank space; measured visible ink remains separate"
+        }
+      ],
+      "slides": [
+        {
+          "id": "page_001",
+          "counts": {
+            "shape": 76,
+            "text": 58,
+            "line": 109
+          },
+          "intentional_overlaps": [
+            {
+              "elements": [
+                "zC",
+                "stat"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22378.0
+            },
+            {
+              "elements": [
+                "zC",
+                "stat_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 16874.0
+            },
+            {
+              "elements": [
+                "zC",
+                "r1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 5.0
+            },
+            {
+              "elements": [
+                "zC",
+                "r2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 5.0
+            },
+            {
+              "elements": [
+                "zC",
+                "dsp_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 5.0
+            },
+            {
+              "elements": [
+                "zC",
+                "lk_f_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 42.5
+            },
+            {
+              "elements": [
+                "zC",
+                "lk_f_1"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 71.25
+            },
+            {
+              "elements": [
+                "zC",
+                "lk_b_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "f1t_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "f1b_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 287.5
+            },
+            {
+              "elements": [
+                "zA",
+                "f1a0_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "f1a1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "m1a0_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m1a1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m1b_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 287.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m1t_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "e23_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 117.5
+            },
+            {
+              "elements": [
+                "zA",
+                "f2t_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "f2b_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 475.0
+            },
+            {
+              "elements": [
+                "zA",
+                "f2a0_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "f2a1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "f2a2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "m2a0_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m2a1_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m2a2_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 22.5
+            },
+            {
+              "elements": [
+                "zA",
+                "m2b_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 475.0
+            },
+            {
+              "elements": [
+                "zA",
+                "m2t_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 95.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ev1"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 10179.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ev1_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 7471.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ev2"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 10335.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ev2_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 7595.0
+            },
+            {
+              "elements": [
+                "zA",
+                "r1_2"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 105.0
+            },
+            {
+              "elements": [
+                "zA",
+                "r2_2"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 105.0
+            },
+            {
+              "elements": [
+                "zA",
+                "dsp_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 440.0
+            },
+            {
+              "elements": [
+                "zA",
+                "dsp_p"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 2808.0
+            },
+            {
+              "elements": [
+                "zA",
+                "dsp_p_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 1612.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ret_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 237.5
+            },
+            {
+              "elements": [
+                "zA",
+                "ret_1"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 1210.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ret_2"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 312.5
+            },
+            {
+              "elements": [
+                "zA",
+                "ret_p"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 6591.0
+            },
+            {
+              "elements": [
+                "zA",
+                "ret_p_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 4619.0
+            },
+            {
+              "elements": [
+                "zA",
+                "e_end_0"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 272.4
+            },
+            {
+              "elements": [
+                "zA",
+                "lk_f_1"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 440.0
+            },
+            {
+              "elements": [
+                "zA",
+                "lk_f_p"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 8853.0
+            },
+            {
+              "elements": [
+                "zA",
+                "lk_f_p_t"
+              ],
+              "reason": "connectors and labels drawn over the group zone, visible in source",
+              "area_px2": 6541.0
+            },
+            {
+              "elements": [
+                "orc_g_s",
+                "orc_g_h"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.634
+            },
+            {
+              "elements": [
+                "orc_g_h",
+                "orc_g_l"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.317
+            },
+            {
+              "elements": [
+                "orc_g_h",
+                "orc_g_r"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.317
+            },
+            {
+              "elements": [
+                "run_g_d0_0",
+                "run_g_d0_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.634
+            },
+            {
+              "elements": [
+                "run_g_d0_0",
+                "run_g_d0_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.658
+            },
+            {
+              "elements": [
+                "run_g_d0_1",
+                "run_g_d0_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.658
+            },
+            {
+              "elements": [
+                "run_g_d0_1",
+                "run_g_d1_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.959
+            },
+            {
+              "elements": [
+                "run_g_d0_2",
+                "run_g_d0_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.634
+            },
+            {
+              "elements": [
+                "run_g_d0_2",
+                "run_g_d1_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.959
+            },
+            {
+              "elements": [
+                "run_g_d1_0",
+                "run_g_d1_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.877
+            },
+            {
+              "elements": [
+                "run_g_d1_0",
+                "run_g_d1_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.549
+            },
+            {
+              "elements": [
+                "run_g_d1_1",
+                "run_g_d1_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.658
+            },
+            {
+              "elements": [
+                "run_g_d1_1",
+                "run_g_d2_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.959
+            },
+            {
+              "elements": [
+                "run_g_d1_2",
+                "run_g_d1_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.877
+            },
+            {
+              "elements": [
+                "run_g_d1_2",
+                "run_g_d2_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.959
+            },
+            {
+              "elements": [
+                "run_g_d2_0",
+                "run_g_d2_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.877
+            },
+            {
+              "elements": [
+                "run_g_d2_0",
+                "run_g_d2_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.549
+            },
+            {
+              "elements": [
+                "run_g_d2_1",
+                "run_g_d2_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.658
+            },
+            {
+              "elements": [
+                "run_g_d2_2",
+                "run_g_d2_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.877
+            },
+            {
+              "elements": [
+                "s1_g_s2",
+                "s1_g_s1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 240.0
+            },
+            {
+              "elements": [
+                "s1_g_s2",
+                "s1_g_s0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 153.0
+            },
+            {
+              "elements": [
+                "s1_g_s2",
+                "s1_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 18.36
+            },
+            {
+              "elements": [
+                "s1_g_s2",
+                "s1_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 18.36
+            },
+            {
+              "elements": [
+                "s1_g_s2",
+                "s1_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 11.475
+            },
+            {
+              "elements": [
+                "s1_g_s1",
+                "s1_g_s0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 240.0
+            },
+            {
+              "elements": [
+                "s1_g_s1",
+                "s1_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s1_g_s1",
+                "s1_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s1_g_s1",
+                "s1_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.065
+            },
+            {
+              "elements": [
+                "s1_g_s0",
+                "s1_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s1_g_s0",
+                "s1_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s1_g_s0",
+                "s1_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.065
+            },
+            {
+              "elements": [
+                "s2_g_s0",
+                "s2_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s2_g_s0",
+                "s2_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s2_g_s0",
+                "s2_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.065
+            },
+            {
+              "elements": [
+                "s3_g_a_0",
+                "s3_g_a_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.153
+            },
+            {
+              "elements": [
+                "s3_g_a_1",
+                "s3_g_a_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 9.876
+            },
+            {
+              "elements": [
+                "s3_g_a_2",
+                "s3_g_a_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.153
+            },
+            {
+              "elements": [
+                "s3_g_a_3",
+                "s3_g_a_4"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.079
+            },
+            {
+              "elements": [
+                "s3_g_a_4",
+                "s3_g_a_5"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.584
+            },
+            {
+              "elements": [
+                "s3_g_a_5",
+                "s3_g_a_6"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.079
+            },
+            {
+              "elements": [
+                "s3_g_a_6",
+                "s3_g_a_7"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.115
+            },
+            {
+              "elements": [
+                "s3_g_a_7",
+                "s3_g_a_8"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 7.787
+            },
+            {
+              "elements": [
+                "s3_g_a_8",
+                "s3_g_a_9"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.115
+            },
+            {
+              "elements": [
+                "s3_g_k_0",
+                "s3_g_k_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.518
+            },
+            {
+              "elements": [
+                "s4_g_a",
+                "s4_g_l"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 0.941
+            },
+            {
+              "elements": [
+                "s4_g_a",
+                "s4_g_r"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 0.941
+            },
+            {
+              "elements": [
+                "s4_g_b",
+                "s4_g_l"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 0.941
+            },
+            {
+              "elements": [
+                "s4_g_c",
+                "s4_g_r"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 0.941
+            },
+            {
+              "elements": [
+                "s4_g_l",
+                "s4_g_r"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.922
+            },
+            {
+              "elements": [
+                "s5_g_a_0",
+                "s5_g_a_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.068
+            },
+            {
+              "elements": [
+                "s5_g_a_1",
+                "s5_g_a_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.068
+            },
+            {
+              "elements": [
+                "s5_g_a_2",
+                "s5_g_a_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.015
+            },
+            {
+              "elements": [
+                "s5_g_a_3",
+                "s5_g_a_4"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.015
+            },
+            {
+              "elements": [
+                "s6_g_s0",
+                "s6_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s6_g_s0",
+                "s6_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s6_g_s0",
+                "s6_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.065
+            },
+            {
+              "elements": [
+                "s7_g_n_0",
+                "s7_g_m"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.464
+            },
+            {
+              "elements": [
+                "s7_g_n_1",
+                "s7_g_n_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.251
+            },
+            {
+              "elements": [
+                "s7_g_n_2",
+                "s7_g_n_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.251
+            },
+            {
+              "elements": [
+                "s7_g_n_4",
+                "s7_g_m"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.464
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_l1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_l2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 22.95
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_l3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.065
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_q_0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 11.475
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_q_1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 11.475
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_q_2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 6.885
+            },
+            {
+              "elements": [
+                "s8_g_s0",
+                "s8_g_q_3"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 6.885
+            },
+            {
+              "elements": [
+                "s8_g_l1",
+                "s8_g_q_0"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 6.475
+            },
+            {
+              "elements": [
+                "s8_g_l2",
+                "s8_g_q_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 5.267
+            },
+            {
+              "elements": [
+                "s8_g_l2",
+                "s8_g_q_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 0.885
+            },
+            {
+              "elements": [
+                "s8_g_l3",
+                "s8_g_q_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.634
+            },
+            {
+              "elements": [
+                "s8_g_q_0",
+                "s8_g_q_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.317
+            },
+            {
+              "elements": [
+                "s8_g_q_1",
+                "s8_g_q_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.317
+            },
+            {
+              "elements": [
+                "s8_g_q_2",
+                "s8_g_q_3"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.317
+            },
+            {
+              "elements": [
+                "f1t_0",
+                "f1b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "f1b_0",
+                "f1a0_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "f1b_0",
+                "f1a1_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m1a0_0",
+                "m1b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m1a1_0",
+                "m1b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m1b_0",
+                "m1t_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "f2t_0",
+                "f2b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "f2b_0",
+                "f2a0_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "f2b_0",
+                "f2a1_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "f2b_0",
+                "f2a2_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m2a0_0",
+                "m2b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m2a1_0",
+                "m2b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "m2a2_0",
+                "m2b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "m2b_0",
+                "m2t_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 3.125
+            },
+            {
+              "elements": [
+                "ev1",
+                "dsp_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 97.5
+            },
+            {
+              "elements": [
+                "ev2",
+                "ret_1"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 562.5
+            },
+            {
+              "elements": [
+                "ev2",
+                "ret_2"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 2.5
+            },
+            {
+              "elements": [
+                "r1_0",
+                "r1_1"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "r1_1",
+                "r1_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "r2_0",
+                "r2_1"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "r2_1",
+                "r2_2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "dsp_0",
+                "dsp_p"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 97.5
+            },
+            {
+              "elements": [
+                "dsp_0",
+                "dsp_p_t"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 77.5
+            },
+            {
+              "elements": [
+                "ret_0",
+                "ret_1"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "ret_0",
+                "ret_p"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 47.5
+            },
+            {
+              "elements": [
+                "ret_0",
+                "ret_p_t"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 37.5
+            },
+            {
+              "elements": [
+                "ret_1",
+                "ret_2"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "ret_1",
+                "ret_p"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 312.5
+            },
+            {
+              "elements": [
+                "ret_1",
+                "ret_p_t"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 287.5
+            },
+            {
+              "elements": [
+                "led_g_b",
+                "led_g_r1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 55.08
+            },
+            {
+              "elements": [
+                "led_g_b",
+                "led_g_r2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 55.08
+            },
+            {
+              "elements": [
+                "led_g_b",
+                "led_g_c1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 48.195
+            },
+            {
+              "elements": [
+                "led_g_b",
+                "led_g_c2"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 48.195
+            },
+            {
+              "elements": [
+                "led_g_r1",
+                "led_g_c1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 5.267
+            },
+            {
+              "elements": [
+                "led_g_r1",
+                "led_g_c2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 5.267
+            },
+            {
+              "elements": [
+                "led_g_r2",
+                "led_g_c1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 5.267
+            },
+            {
+              "elements": [
+                "led_g_r2",
+                "led_g_c2"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 5.267
+            },
+            {
+              "elements": [
+                "led_c0_b",
+                "led_c0_k_0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.877
+            },
+            {
+              "elements": [
+                "led_c0_b",
+                "led_c0_k_1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 31.715
+            },
+            {
+              "elements": [
+                "led_c0_k_0",
+                "led_c0_k_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.379
+            },
+            {
+              "elements": [
+                "led_c1_b",
+                "led_c1_k_0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.877
+            },
+            {
+              "elements": [
+                "led_c1_b",
+                "led_c1_k_1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 31.715
+            },
+            {
+              "elements": [
+                "led_c1_k_0",
+                "led_c1_k_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.379
+            },
+            {
+              "elements": [
+                "led_c2_b",
+                "led_c2_k_0"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 16.877
+            },
+            {
+              "elements": [
+                "led_c2_b",
+                "led_c2_k_1"
+              ],
+              "reason": "strokes of one line-art glyph",
+              "area_px2": 31.715
+            },
+            {
+              "elements": [
+                "led_c2_k_0",
+                "led_c2_k_1"
+              ],
+              "reason": "connector joints, visible in source",
+              "area_px2": 2.379
+            },
+            {
+              "elements": [
+                "lk_f_0",
+                "lk_f_1"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "lk_f_0",
+                "lk_b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 38.594
+            },
+            {
+              "elements": [
+                "lk_f_1",
+                "lk_f_2"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            },
+            {
+              "elements": [
+                "lk_f_1",
+                "lk_f_p"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 97.5
+            },
+            {
+              "elements": [
+                "lk_f_1",
+                "lk_b_0"
+              ],
+              "reason": "connector routed across the group zones, visible in source",
+              "area_px2": 1.562
+            }
+          ],
+          "text_layouts": {
+            "zC_l": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 78.0,
+              "height_px": 37.75,
+              "available_width_px": 108,
+              "available_height_px": 45,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 78.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "控制层"
+              ]
+            },
+            "zA_l": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 78.0,
+              "height_px": 37.75,
+              "available_width_px": 108,
+              "available_height_px": 45,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 78.5,
+              "required_height_px": 38.25,
+              "fits": true,
+              "lines": [
+                "认知层"
+              ]
+            },
+            "orc_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 66.0,
+              "height_px": 32.25,
+              "available_width_px": 80,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 66.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "编排器"
+              ]
+            },
+            "orc_s": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 165.0,
+              "height_px": 22.25,
+              "available_width_px": 211,
+              "available_height_px": 32,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 165.5,
+              "required_height_px": 22.75,
+              "fits": true,
+              "lines": [
+                "goai-orchestrator"
+              ]
+            },
+            "orc_c_t0_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 52.371,
+              "height_px": 25.5,
+              "available_width_px": 84,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 52.871,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "建账本"
+              ]
+            },
+            "orc_c_t1_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 35.0,
+              "height_px": 25.5,
+              "available_width_px": 84,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 35.5,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "分派"
+              ]
+            },
+            "orc_c_t2_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 52.371,
+              "height_px": 25.5,
+              "available_width_px": 84,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 52.871,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "验闸门"
+              ]
+            },
+            "orc_c_t3_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 69.828,
+              "height_px": 25.5,
+              "available_width_px": 84,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 70.328,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "路由返工"
+              ]
+            },
+            "run_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 135.5,
+              "height_px": 32.25,
+              "available_width_px": 150,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 136.0,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "并行 runner"
+              ]
+            },
+            "run_s": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 140.066,
+              "height_px": 22.25,
+              "available_width_px": 187,
+              "available_height_px": 32,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 140.566,
+              "required_height_px": 22.75,
+              "fits": true,
+              "lines": [
+                "parallel_run.sh"
+              ]
+            },
+            "run_c_t0_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 77.75,
+              "height_px": 20.5,
+              "available_width_px": 112,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 78.25,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "tasks.tsv"
+              ]
+            },
+            "run_c_t1_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 52.371,
+              "height_px": 25.5,
+              "available_width_px": 72,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 52.871,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "子进程"
+              ]
+            },
+            "run_c_t2_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 157.113,
+              "height_px": 25.5,
+              "available_width_px": 186,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 157.613,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "各写自己的分片文件"
+              ]
+            },
+            "run_c_t3_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 35.0,
+              "height_px": 25.5,
+              "available_width_px": 52,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 35.5,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "汇合"
+              ]
+            },
+            "stat_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 271.797,
+              "height_px": 52.5,
+              "available_width_px": 286,
+              "available_height_px": 59,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 272.297,
+              "required_height_px": 53.0,
+              "fits": true,
+              "lines": [
+                "正式运行：29 批 · 40 个子任务 · ",
+                "单批 ≤4 路 · 134 次 MCP 调用"
+              ]
+            },
+            "s0_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "范围界定"
+              ]
+            },
+            "s0_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 130.035,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 130.535,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-orchestrator"
+              ]
+            },
+            "s1_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "文献检索"
+              ]
+            },
+            "s1_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 107.0,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 107.5,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-lit-search"
+              ]
+            },
+            "s1_kl": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 54.0,
+              "height_px": 26.25,
+              "available_width_px": 65,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 54.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "子主题"
+              ]
+            },
+            "s1_k0_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 16.5419,
+              "width_px": 10.523,
+              "height_px": 19.5,
+              "available_width_px": 18,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 11.023,
+              "required_height_px": 20.0,
+              "fits": true,
+              "lines": [
+                "1"
+              ]
+            },
+            "s1_k1_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 16.5419,
+              "width_px": 10.523,
+              "height_px": 19.5,
+              "available_width_px": 18,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 11.023,
+              "required_height_px": 20.0,
+              "fits": true,
+              "lines": [
+                "2"
+              ]
+            },
+            "s1_k2_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 16.5419,
+              "width_px": 10.523,
+              "height_px": 19.5,
+              "available_width_px": 18,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 11.023,
+              "required_height_px": 20.0,
+              "fits": true,
+              "lines": [
+                "3"
+              ]
+            },
+            "s2_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 66.0,
+              "height_px": 32.25,
+              "available_width_px": 80,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 66.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "风格库"
+              ]
+            },
+            "s2_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 115.773,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 116.273,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-style-bank"
+              ]
+            },
+            "s3_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "引用核查"
+              ]
+            },
+            "s3_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 106.07,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 106.57,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-ref-guard"
+              ]
+            },
+            "s4_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 66.0,
+              "height_px": 32.25,
+              "available_width_px": 80,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 66.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "分类法"
+              ]
+            },
+            "s4_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 137.0,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 137.5,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-survey-writer"
+              ]
+            },
+            "s5_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 44.0,
+              "height_px": 32.25,
+              "available_width_px": 57,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 44.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "图件"
+              ]
+            },
+            "s5_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 132.512,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 133.012,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-figure-studio"
+              ]
+            },
+            "s6_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 44.0,
+              "height_px": 32.25,
+              "available_width_px": 57,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 44.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "写作"
+              ]
+            },
+            "s6_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 137.0,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 137.5,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-survey-writer"
+              ]
+            },
+            "s7_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "实验构想"
+              ]
+            },
+            "s7_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 114.117,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 114.617,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-idea-forge"
+              ]
+            },
+            "s8_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "对抗审稿"
+              ]
+            },
+            "s8_s": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 102.5,
+              "height_px": 17.75,
+              "available_width_px": 176,
+              "available_height_px": 25,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 103.0,
+              "required_height_px": 18.25,
+              "fits": true,
+              "lines": [
+                "goai-reviewer"
+              ]
+            },
+            "ev1_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 226.258,
+              "height_px": 26.25,
+              "available_width_px": 241,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 226.758,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "≥3 路分片 · 各记一条 done"
+              ]
+            },
+            "ev2_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 220.25,
+              "height_px": 26.25,
+              "available_width_px": 245,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 220.75,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "按图 · 按章节 · 按目标 并发"
+              ]
+            },
+            "dsp_p_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 36.0,
+              "height_px": 26.25,
+              "available_width_px": 52,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 36.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "分派"
+              ]
+            },
+            "ret_p_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 124.0,
+              "height_px": 26.25,
+              "available_width_px": 149,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 124.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "issue 路由返工"
+              ]
+            },
+            "led_t": {
+              "scale": 1,
+              "effective_font_size_px": 22,
+              "width_px": 88.0,
+              "height_px": 32.25,
+              "available_width_px": 103,
+              "available_height_px": 37,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 88.5,
+              "required_height_px": 32.75,
+              "fits": true,
+              "lines": [
+                "回环账本"
+              ]
+            },
+            "led_s": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 103.75,
+              "height_px": 22.25,
+              "available_width_px": 140,
+              "available_height_px": 32,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 104.25,
+              "required_height_px": 22.75,
+              "fits": true,
+              "lines": [
+                "ledger.json"
+              ]
+            },
+            "led_r0_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 89.008,
+              "height_px": 25.5,
+              "available_width_px": 115,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 89.508,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "闸门 gates"
+              ]
+            },
+            "led_r1_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 94.5,
+              "height_px": 25.5,
+              "available_width_px": 127,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 95.0,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "问题 issues"
+              ]
+            },
+            "led_r2_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 67.25,
+              "height_px": 25.5,
+              "available_width_px": 92,
+              "available_height_px": 26,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 67.75,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "日志 log"
+              ]
+            },
+            "g_scope_confirmed_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 152.57,
+              "height_px": 21.0,
+              "available_width_px": 183,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 153.07,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "scope_confirmed"
+              ]
+            },
+            "g_lit_coverage_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 109.75,
+              "height_px": 21.0,
+              "available_width_px": 149,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 110.25,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "lit_coverage"
+              ]
+            },
+            "g_style_bank_ready_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 156.75,
+              "height_px": 21.0,
+              "available_width_px": 194,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 157.25,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "style_bank_ready"
+              ]
+            },
+            "g_ref_integrity_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 109.5,
+              "height_px": 21.0,
+              "available_width_px": 161,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 110.0,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "ref_integrity"
+              ]
+            },
+            "g_taxonomy_ready_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 150.0,
+              "height_px": 21.0,
+              "available_width_px": 172,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 150.5,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "taxonomy_ready"
+              ]
+            },
+            "g_figures_ready_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 121.828,
+              "height_px": 21.0,
+              "available_width_px": 161,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 122.328,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "figures_ready"
+              ]
+            },
+            "g_draft_complete_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 136.016,
+              "height_px": 21.0,
+              "available_width_px": 172,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 136.516,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "draft_complete"
+              ]
+            },
+            "g_ideas_reviewed_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 139.0,
+              "height_px": 21.0,
+              "available_width_px": 172,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 139.5,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "ideas_reviewed"
+              ]
+            },
+            "end0_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 109.75,
+              "height_px": 21.0,
+              "available_width_px": 138,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 110.25,
+              "required_height_px": 21.5,
+              "fits": true,
+              "lines": [
+                "review_pass"
+              ]
+            },
+            "end1_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 181.098,
+              "height_px": 26.25,
+              "available_width_px": 203,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 181.598,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "check-done 退出码 0"
+              ]
+            },
+            "end2_t": {
+              "scale": 0.918997,
+              "effective_font_size_px": 17.4609,
+              "width_px": 69.828,
+              "height_px": 25.5,
+              "available_width_px": 98,
+              "available_height_px": 27,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 70.328,
+              "required_height_px": 26.0,
+              "fits": true,
+              "lines": [
+                "终稿交付"
+              ]
+            },
+            "lk_f_p_t": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 173.5,
+              "height_px": 26.25,
+              "available_width_px": 211,
+              "available_height_px": 31,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 174.0,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "loopctl 读写 · 文件锁"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "native_objects": {
+      "status": "pass",
+      "findings": [],
+      "slide_count": 1
+    },
+    "rendered_text": {
+      "status": "fail",
+      "renderer": "LibreOffice/PDFium",
+      "findings": [
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zC_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "zA_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "orc_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "orc_c_t0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "orc_c_t1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "orc_c_t2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "orc_c_t3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "run_t",
+          "measured_ink_width_px": 134.5,
+          "rendered_ink_width_px": 139.819,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "run_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "run_c_t1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "run_c_t2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "run_c_t3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_glyph_overflow",
+          "slide": "page_001",
+          "element": "stat_t",
+          "glyphs": "正",
+          "message": "Rendered glyph ink crosses the text box by more than 0.75 pt"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "stat_t",
+          "measured_ink_width_px": 263.426,
+          "rendered_ink_width_px": 285.598,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "stat_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s1_kl",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s4_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s5_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s6_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s7_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s8_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "ev1_t",
+          "measured_ink_width_px": 223.426,
+          "rendered_ink_width_px": 241.343,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ev1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "ev2_t",
+          "measured_ink_width_px": 219.059,
+          "rendered_ink_width_px": 236.752,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ev2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "dsp_p_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "ret_p_t",
+          "measured_ink_width_px": 121.715,
+          "rendered_ink_width_px": 126.101,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "ret_p_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "led_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "led_r0_t",
+          "measured_ink_width_px": 86.922,
+          "rendered_ink_width_px": 90.795,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "led_r0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "led_r1_t",
+          "measured_ink_width_px": 92.422,
+          "rendered_ink_width_px": 96.065,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "led_r1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "led_r2_t",
+          "measured_ink_width_px": 62.672,
+          "rendered_ink_width_px": 66.577,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "led_r2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "end1_t",
+          "measured_ink_width_px": 179.348,
+          "rendered_ink_width_px": 188.379,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "end1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "end2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "lk_f_p_t",
+          "measured_ink_width_px": 171.297,
+          "rendered_ink_width_px": 184.551,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lk_f_p_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        }
+      ],
+      "text_boxes": [
+        {
+          "slide": "page_001",
+          "element": "zC_l",
+          "expected": "控制层",
+          "rendered": "控制层",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 76.25,
+          "rendered_ink_width_px": 75.752
+        },
+        {
+          "slide": "page_001",
+          "element": "zA_l",
+          "expected": "认知层",
+          "rendered": "认知层",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 75.75,
+          "rendered_ink_width_px": 75.415
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_t",
+          "expected": "编排器",
+          "rendered": "编排器 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 65.25,
+          "rendered_ink_width_px": 65.191
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_s",
+          "expected": "goai-orchestrator",
+          "rendered": "goai-orchestrator",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 164.0,
+          "rendered_ink_width_px": 164.088
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_c_t0_t",
+          "expected": "建账本",
+          "rendered": "建账本 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 51.5,
+          "rendered_ink_width_px": 51.125
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_c_t1_t",
+          "expected": "分派",
+          "rendered": "分派 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 33.75,
+          "rendered_ink_width_px": 33.629
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_c_t2_t",
+          "expected": "验闸门",
+          "rendered": "验闸门 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 50.5,
+          "rendered_ink_width_px": 50.305
+        },
+        {
+          "slide": "page_001",
+          "element": "orc_c_t3_t",
+          "expected": "路由返工",
+          "rendered": "路由返工",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 68.75,
+          "rendered_ink_width_px": 68.324
+        },
+        {
+          "slide": "page_001",
+          "element": "run_t",
+          "expected": "并行 runner",
+          "rendered": "并行 runner ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 134.5,
+          "rendered_ink_width_px": 139.819
+        },
+        {
+          "slide": "page_001",
+          "element": "run_s",
+          "expected": "parallel_run.sh",
+          "rendered": "parallel_run.sh",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 137.0,
+          "rendered_ink_width_px": 137.127
+        },
+        {
+          "slide": "page_001",
+          "element": "run_c_t0_t",
+          "expected": "tasks.tsv",
+          "rendered": "tasks.tsv ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 77.0,
+          "rendered_ink_width_px": 76.705
+        },
+        {
+          "slide": "page_001",
+          "element": "run_c_t1_t",
+          "expected": "子进程",
+          "rendered": "子进程 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 51.25,
+          "rendered_ink_width_px": 50.846
+        },
+        {
+          "slide": "page_001",
+          "element": "run_c_t2_t",
+          "expected": "各写自己的分片文件",
+          "rendered": "各写自己的分片文件 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 156.0,
+          "rendered_ink_width_px": 155.96
+        },
+        {
+          "slide": "page_001",
+          "element": "run_c_t3_t",
+          "expected": "汇合",
+          "rendered": "汇合",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 34.0,
+          "rendered_ink_width_px": 33.647
+        },
+        {
+          "slide": "page_001",
+          "element": "stat_t",
+          "expected": "正式运行：29 批 · 40 个子任务 · 单批 ≤4 路 · 134 次 MCP 调用",
+          "rendered": "正式运行： 29 批 · 40 个子任务 · \r\n单批 ≤ 4 路 · 134 次 MCP 调用",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 263.426,
+          "rendered_ink_width_px": 285.598
+        },
+        {
+          "slide": "page_001",
+          "element": "s0_t",
+          "expected": "范围界定",
+          "rendered": "范围界定",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.5,
+          "rendered_ink_width_px": 86.33
+        },
+        {
+          "slide": "page_001",
+          "element": "s0_s",
+          "expected": "goai-orchestrator",
+          "rendered": "goai-orchestrator",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 129.25,
+          "rendered_ink_width_px": 129.525
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_t",
+          "expected": "文献检索",
+          "rendered": "文献检索",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.5,
+          "rendered_ink_width_px": 86.483
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_s",
+          "expected": "goai-lit-search",
+          "rendered": "goai-lit-search",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 105.0,
+          "rendered_ink_width_px": 105.177
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_kl",
+          "expected": "子主题",
+          "rendered": "子主题 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 52.75,
+          "rendered_ink_width_px": 52.696
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_k0_t",
+          "expected": "1",
+          "rendered": "1 ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 7.25,
+          "rendered_ink_width_px": 7.145
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_k1_t",
+          "expected": "2",
+          "rendered": "2 ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 8.0,
+          "rendered_ink_width_px": 7.623
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_k2_t",
+          "expected": "3",
+          "rendered": "3",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 8.0,
+          "rendered_ink_width_px": 7.903
+        },
+        {
+          "slide": "page_001",
+          "element": "s2_t",
+          "expected": "风格库",
+          "rendered": "风格库",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 64.75,
+          "rendered_ink_width_px": 64.49
+        },
+        {
+          "slide": "page_001",
+          "element": "s2_s",
+          "expected": "goai-style-bank",
+          "rendered": "goai-style-bank",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 115.0,
+          "rendered_ink_width_px": 115.206
+        },
+        {
+          "slide": "page_001",
+          "element": "s3_t",
+          "expected": "引用核查",
+          "rendered": "引用核查",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.0,
+          "rendered_ink_width_px": 85.804
+        },
+        {
+          "slide": "page_001",
+          "element": "s3_s",
+          "expected": "goai-ref-guard",
+          "rendered": "goai-ref-guard",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 104.0,
+          "rendered_ink_width_px": 103.867
+        },
+        {
+          "slide": "page_001",
+          "element": "s4_t",
+          "expected": "分类法",
+          "rendered": "分类法",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 64.75,
+          "rendered_ink_width_px": 64.446
+        },
+        {
+          "slide": "page_001",
+          "element": "s4_s",
+          "expected": "goai-survey-writer",
+          "rendered": "goai-survey-writer",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 136.25,
+          "rendered_ink_width_px": 136.271
+        },
+        {
+          "slide": "page_001",
+          "element": "s5_t",
+          "expected": "图件",
+          "rendered": "图件",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 41.75,
+          "rendered_ink_width_px": 41.621
+        },
+        {
+          "slide": "page_001",
+          "element": "s5_s",
+          "expected": "goai-figure-studio",
+          "rendered": "goai-figure-studio",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 131.0,
+          "rendered_ink_width_px": 130.956
+        },
+        {
+          "slide": "page_001",
+          "element": "s6_t",
+          "expected": "写作",
+          "rendered": "写作",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 42.25,
+          "rendered_ink_width_px": 41.905
+        },
+        {
+          "slide": "page_001",
+          "element": "s6_s",
+          "expected": "goai-survey-writer",
+          "rendered": "goai-survey-writer",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 136.25,
+          "rendered_ink_width_px": 136.256
+        },
+        {
+          "slide": "page_001",
+          "element": "s7_t",
+          "expected": "实验构想",
+          "rendered": "实验构想",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.25,
+          "rendered_ink_width_px": 85.979
+        },
+        {
+          "slide": "page_001",
+          "element": "s7_s",
+          "expected": "goai-idea-forge",
+          "rendered": "goai-idea-forge",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 112.75,
+          "rendered_ink_width_px": 112.781
+        },
+        {
+          "slide": "page_001",
+          "element": "s8_t",
+          "expected": "对抗审稿",
+          "rendered": "对抗审稿",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.75,
+          "rendered_ink_width_px": 86.527
+        },
+        {
+          "slide": "page_001",
+          "element": "s8_s",
+          "expected": "goai-reviewer",
+          "rendered": "goai-reviewer",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 101.75,
+          "rendered_ink_width_px": 101.699
+        },
+        {
+          "slide": "page_001",
+          "element": "ev1_t",
+          "expected": "≥3 路分片 · 各记一条 done",
+          "rendered": "≥3 路分片 · 各记一条 done ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 223.426,
+          "rendered_ink_width_px": 241.343
+        },
+        {
+          "slide": "page_001",
+          "element": "ev2_t",
+          "expected": "按图 · 按章节 · 按目标 并发",
+          "rendered": "按图 · 按章节 · 按目标 并发",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 219.059,
+          "rendered_ink_width_px": 236.752
+        },
+        {
+          "slide": "page_001",
+          "element": "dsp_p_t",
+          "expected": "分派",
+          "rendered": "分派",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 34.75,
+          "rendered_ink_width_px": 34.69
+        },
+        {
+          "slide": "page_001",
+          "element": "ret_p_t",
+          "expected": "issue 路由返工",
+          "rendered": "issue 路由返工",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 121.715,
+          "rendered_ink_width_px": 126.101
+        },
+        {
+          "slide": "page_001",
+          "element": "led_t",
+          "expected": "回环账本",
+          "rendered": "回环账本 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 86.0,
+          "rendered_ink_width_px": 85.848
+        },
+        {
+          "slide": "page_001",
+          "element": "led_s",
+          "expected": "ledger.json",
+          "rendered": "ledger.json ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 100.5,
+          "rendered_ink_width_px": 100.581
+        },
+        {
+          "slide": "page_001",
+          "element": "led_r0_t",
+          "expected": "闸门 gates",
+          "rendered": "闸门 gates ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 86.922,
+          "rendered_ink_width_px": 90.795
+        },
+        {
+          "slide": "page_001",
+          "element": "led_r1_t",
+          "expected": "问题 issues",
+          "rendered": "问题 issues ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 92.422,
+          "rendered_ink_width_px": 96.065
+        },
+        {
+          "slide": "page_001",
+          "element": "led_r2_t",
+          "expected": "日志 log",
+          "rendered": "日志 log",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 62.672,
+          "rendered_ink_width_px": 66.577
+        },
+        {
+          "slide": "page_001",
+          "element": "g_scope_confirmed_t",
+          "expected": "scope_confirmed",
+          "rendered": "scope_confirmed",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 150.5,
+          "rendered_ink_width_px": 150.939
+        },
+        {
+          "slide": "page_001",
+          "element": "g_lit_coverage_t",
+          "expected": "lit_coverage",
+          "rendered": "lit_coverage",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 107.25,
+          "rendered_ink_width_px": 107.653
+        },
+        {
+          "slide": "page_001",
+          "element": "g_style_bank_ready_t",
+          "expected": "style_bank_ready",
+          "rendered": "style_bank_ready",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 155.5,
+          "rendered_ink_width_px": 156.024
+        },
+        {
+          "slide": "page_001",
+          "element": "g_ref_integrity_t",
+          "expected": "ref_integrity",
+          "rendered": "ref_integrity ",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 107.5,
+          "rendered_ink_width_px": 107.816
+        },
+        {
+          "slide": "page_001",
+          "element": "g_taxonomy_ready_t",
+          "expected": "taxonomy_ready",
+          "rendered": "taxonomy_ready",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 149.25,
+          "rendered_ink_width_px": 150.106
+        },
+        {
+          "slide": "page_001",
+          "element": "g_figures_ready_t",
+          "expected": "figures_ready",
+          "rendered": "figures_ready",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 121.25,
+          "rendered_ink_width_px": 121.533
+        },
+        {
+          "slide": "page_001",
+          "element": "g_draft_complete_t",
+          "expected": "draft_complete",
+          "rendered": "draft_complete",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 134.5,
+          "rendered_ink_width_px": 134.924
+        },
+        {
+          "slide": "page_001",
+          "element": "g_ideas_reviewed_t",
+          "expected": "ideas_reviewed",
+          "rendered": "ideas_reviewed",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 136.0,
+          "rendered_ink_width_px": 136.39
+        },
+        {
+          "slide": "page_001",
+          "element": "end0_t",
+          "expected": "review_pass",
+          "rendered": "review_pass",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans"
+          ],
+          "measured_ink_width_px": 107.25,
+          "rendered_ink_width_px": 107.798
+        },
+        {
+          "slide": "page_001",
+          "element": "end1_t",
+          "expected": "check-done 退出码 0",
+          "rendered": "check-done 退出码 0",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 179.348,
+          "rendered_ink_width_px": 188.379
+        },
+        {
+          "slide": "page_001",
+          "element": "end2_t",
+          "expected": "终稿交付",
+          "rendered": "终稿交付",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 69.25,
+          "rendered_ink_width_px": 68.97
+        },
+        {
+          "slide": "page_001",
+          "element": "lk_f_p_t",
+          "expected": "loopctl 读写 · 文件锁",
+          "rendered": "loopctl 读写 · 文件锁",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 171.297,
+          "rendered_ink_width_px": 184.551
+        }
+      ],
+      "limitations": "This checks renderer output and glyph bounds; source recognition and target PowerPoint/WPS appearance still need visual review."
+    }
+  },
+  "limitations": [
+    "No claim of exact font identification from pixels.",
+    "Photographs and complex artwork remain independent raster assets.",
+    "PowerPoint/WPS must be checked separately from LibreOffice."
+  ],
+  "source_scene_sha256": "fc622051eeabaf87b7451134cecbb59f2e8eb16d8c923152282244ffdf7d302c",
+  "font_substitutions": [],
+  "artifacts": {
+    "pptx": "editable.pptx",
+    "svg": "svg/",
+    "scene": "scene.resolved.json",
+    "fonts": "fonts.json",
+    "render": "render/"
+  },
+  "comparisons": []
+}

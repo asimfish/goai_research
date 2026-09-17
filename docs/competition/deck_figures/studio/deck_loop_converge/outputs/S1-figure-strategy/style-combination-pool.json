@@ -1,0 +1,93 @@
+{
+ "planned_combinations": 8,
+ "selected_combinations": 4,
+ "selection_rule": "top four by score, with the constraint that the four differ in layout grammar and narrative role",
+ "mapping": {
+  "C01": "SC2",
+  "C02": "SC1",
+  "C03": "SC8",
+  "C04": "SC7"
+ },
+ "pool": [
+  {
+   "style_combination_id": "SC2",
+   "label": "单主干左右",
+   "layout_grammar": "left-to-right mainline: one horizontal spine of cards, forks and merges only where the source says so, feedback returned as a dashed line below the spine",
+   "narrative_role": "process narrative",
+   "trade_off": "strongest reading order, weakest for wide content",
+   "score": 9,
+   "selected": true,
+   "rationale": "单主干把\"产物 → 挑错 → 路由 → 返工 → 下一轮\"画成一条闭合回环，放行出口在主干末端；最贴近 LP \"一轮 = 阶段 1→5 走完一遍\"。"
+  },
+  {
+   "style_combination_id": "SC1",
+   "label": "分层横带",
+   "layout_grammar": "banded tiers: two to four full-width horizontal group bands stacked top to bottom, one band per semantic group, cards in a row inside each band, vertical connectors between bands",
+   "narrative_role": "stage-by-stage narrative",
+   "trade_off": "high row alignment, easy scaling to a wide slide",
+   "score": 8,
+   "selected": true,
+   "rationale": "分层横带把 互搏通道 / 路由与返工 / 机械放行 三段并列，读者一眼看到\"谁挑错、谁路由、谁把关\"；虚线返工走在带外。"
+  },
+  {
+   "style_combination_id": "SC8",
+   "label": "嵌套容器",
+   "layout_grammar": "nested containment: an outer context frame with inner groups, a small inset for what lies outside the automatic boundary",
+   "narrative_role": "scope narrative",
+   "trade_off": "shows what is inside vs outside the automatic loop",
+   "score": 8,
+   "selected": true,
+   "rationale": "嵌套容器用外框表示自动回环，升级人类落在框外的小插区，直接呈现 LP \"人类介入点\"的边界语义。"
+  },
+  {
+   "style_combination_id": "SC4",
+   "label": "账本为轴",
+   "layout_grammar": "ledger-centric: one wide record band as the pivot in the middle, producers above it, consumers below it",
+   "narrative_role": "comparison narrative",
+   "trade_off": "makes \"everything is written to one ledger\" literal",
+   "score": 7,
+   "selected": false,
+   "rationale": "路由表是中继而非比较轴"
+  },
+  {
+   "style_combination_id": "SC7",
+   "label": "双栏对照",
+   "layout_grammar": "two-column compare: two parallel lanes answering two different questions, a shared header of inputs and a shared footer of outcomes",
+   "narrative_role": "contrast narrative",
+   "trade_off": "best when exactly two mechanisms are compared",
+   "score": 7,
+   "selected": true,
+   "rationale": "双栏对照把\"互相挑错（认知层对抗）\"与\"机械把关（控制层拒绝）\"分成两栏，共享上游产物与下游交付，突出\"模型说了不算\"。"
+  },
+  {
+   "style_combination_id": "SC5",
+   "label": "阶梯＋汇流",
+   "layout_grammar": "ladder and bus: an ordered column on one side with an axis, a bundled bus collecting the members into a single pivot, the excluded member bypassing the pivot",
+   "narrative_role": "ordering narrative",
+   "trade_off": "encodes an order without geometry that reads as a number",
+   "score": 5,
+   "selected": false,
+   "rationale": "通道之间没有序关系"
+  },
+  {
+   "style_combination_id": "SC6",
+   "label": "蛇形分段",
+   "layout_grammar": "serpentine steps: numbered cards wrapping across two or three rows, the wrap arrow carrying the hand-off label",
+   "narrative_role": "itinerary narrative",
+   "trade_off": "keeps type large on wide step sequences",
+   "score": 4,
+   "selected": false,
+   "rationale": "不是步骤序列"
+  },
+  {
+   "style_combination_id": "SC3",
+   "label": "枢纽辐射",
+   "layout_grammar": "hub and branches: one anchor entity at the left or centre, branches fanning to grouped leaves, criteria on the branch labels",
+   "narrative_role": "taxonomy narrative",
+   "trade_off": "best for classification, no implied time order",
+   "score": 3,
+   "selected": false,
+   "rationale": "主干是闭环不是分类"
+  }
+ ]
+}

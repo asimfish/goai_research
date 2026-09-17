@@ -77,3 +77,18 @@ Every entry cost at least one round trip. Read before debugging something that l
   replaced the Chinese records and the gallery showed the English figure as "中文版". Records not already named
   after the figure now take the variant suffix (`validation_en.json`, `render_en.png`); selftest installs both
   variants and checks each record.
+
+## Slides (deck figures, 2026-09-17)
+
+- **img2ppt rejects an arrow whose head is not shorter than its last segment** (`arrow head must be shorter than the
+  line and at least as wide as its stroke`) — the whole build fails, only validation.json comes back. Budget the gap:
+  `HEAD` is 15 px, so a branch from a fork bus needs ≥ 20 px; `vchain(gap=10)` leaves a 4 px segment with a 4 px head
+  and fails too — use gap ≥ 14. Check locally before shipping: every `arrow` line's last segment vs `arrow_head.length`.
+- **A 19 px token is 34 px tall** (`box_h(body) + 2`), not 27: vertical budgets estimated from the font size alone put
+  cards on top of each other. Size stacks from `box_h`, and let precheck's `outside_container` catch the rest.
+- **A slide is one img2ppt page**: a 1536×864 canvas maps to 960×540 pt, so the shapes copy 1:1 into a 16:9 deck
+  (`scripts/deck_merge.py`). Keep y < 122 px empty for the template's title bar; retype to the deck's font (微软雅黑)
+  only in the merged copy — the render host has Noto, the author's PC has YaHei.
+- **Deck titles at 28 pt wrap past ~24 CJK characters**; a two-line title pushes into the figure.
+- **A two-line pill can still overflow by a glyph**: LibreOffice fills line 1 greedily, our split minimises the wider
+  half; give wrapped pills `padx=30` or accept a 1 px `rendered_glyph_overflow` on the first glyph.

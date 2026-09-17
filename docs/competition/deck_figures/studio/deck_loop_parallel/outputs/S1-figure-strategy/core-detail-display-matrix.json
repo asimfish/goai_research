@@ -1,0 +1,27 @@
+[
+ {
+  "module": "编排器",
+  "internal_mechanism": "四步机理链 建账本 → 分派 → 验闸门 → 路由返工（tier 3）",
+  "evidence": "OR 开头"
+ },
+ {
+  "module": "回环账本",
+  "internal_mechanism": "三行记录项 + 勾选标记（tier 3，无箭头）",
+  "evidence": "AR §3"
+ },
+ {
+  "module": "并行 runner",
+  "internal_mechanism": "四步机理链 tasks.tsv → 子进程 → 各写自己的分片文件 → 汇合（tier 3）",
+  "evidence": "PR 头注释、LP 并行执行协议"
+ },
+ {
+  "module": "文献检索",
+  "internal_mechanism": "三个并排分片 token，无箭头（tier 3）",
+  "evidence": "LP 并发证据 ≥3"
+ },
+ {
+  "module": "其余阶段卡",
+  "internal_mechanism": "无内部机理链：源文本只给出口条件，只画标题 + 图元",
+  "evidence": "LP 阶段表"
+ }
+]
