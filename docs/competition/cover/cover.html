@@ -73,7 +73,20 @@ svg.contour{position:absolute;inset:0;width:1440px;height:810px;opacity:.55}
 .chrome u:nth-child(1){background:#F26B5E}.chrome u:nth-child(2){background:#F4BE4F}.chrome u:nth-child(3){background:#5BC66A}
 .chrome em{font-style:normal;margin-left:10px;color:#C6D0DA}
 .screen{width:584px;height:389px;border-radius:3px;overflow:hidden;background:#F1F4F7}
-.screen img{width:584px;display:block}
+.screen{position:relative}
+.screen img{width:584px;height:389px;object-fit:cover;object-position:50% 46%;display:block}
+.hud{position:absolute;font-family:var(--mono);color:#E6ECF2;background:rgba(11,16,23,.74);border:1px solid rgba(230,236,242,.16);
+ border-radius:7px;backdrop-filter:blur(3px)}
+.hud.tl{left:10px;top:10px;padding:7px 10px 8px}
+.hud.tl b{display:block;font:700 13px/1.2 var(--cn);letter-spacing:.06em;color:#fff}
+.hud.tl span{display:block;margin-top:4px;font:500 8.6px/1 var(--mono);letter-spacing:.14em;color:#9FB2C3}
+.hud.tr{right:10px;top:10px;padding:6px 9px;font:500 8.8px/1 var(--mono);letter-spacing:.1em;color:#B8F0D2;border-color:rgba(76,195,138,.45)}
+.hud.tr:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#4CC38A;margin-right:6px;vertical-align:1px}
+.hud.bl{left:10px;right:10px;bottom:10px;padding:7px 10px;display:flex;gap:10px;white-space:nowrap;align-items:center;font:500 10.4px/1 var(--cn);letter-spacing:.05em}
+.hud.bl i{font:600 8.8px/1 var(--mono);font-style:normal;letter-spacing:.1em;color:#FFB07A;margin-right:5px}
+.hud.bl s{text-decoration:none;color:#5C6B7C}
+.hud.bl .ok{margin-left:auto;color:#B8F0D2;font:500 9.4px/1 var(--cn);letter-spacing:.06em;white-space:nowrap}
+.hud.bl .ok:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#4CC38A;margin-right:6px;vertical-align:1px}
 .base{height:15px;margin:0 -20px;background:linear-gradient(#1A212B,#0C1016);border-radius:2px 2px 14px 14px;position:relative}
 .base:before{content:"";position:absolute;left:50%;top:0;width:92px;height:5px;margin-left:-46px;border-radius:0 0 8px 8px;background:#2A3340}
 
@@ -125,8 +138,11 @@ svg.contour{position:absolute;inset:0;width:1440px;height:810px;opacity:.55}
 
 <div class="abs lap">
  <div class="lid">
-  <div class="chrome"><u></u><u></u><u></u><em>asimfish.github.io/goai-dashboard/showcase.html</em></div>
-  <div class="screen"><img src="screen.jpg"></div>
+  <div class="chrome"><u></u><u></u><u></u><em>asimfish.github.io/goai-dashboard/scenes.html</em></div>
+  <div class="screen"><img src="scene.jpg">
+   <div class="hud tl"><b>A-Lab 数字孪生 · 实验室全景</b><span>ISAAC SIM · RTX RENDER</span></div>
+   <div class="hud bl"><span><i>A 站</i>配料与干燥</span><s>/</s><span><i>B 站</i>马弗炉 ×4 · 导轨 UR5e</span><s>/</s><span><i>C 站</i>XRD · 粉体回收</span><span class="ok">PhysX 接触审计 · 零穿模</span></div>
+  </div>
  </div>
  <div class="base"></div>
 </div>
