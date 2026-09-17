@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { NAlert, NButton, NCollapse, NCollapseItem, NInput, NSelect, NTabPane, NTabs, NTag, useMessage } from 'naive-ui'
+import { NAlert, NButton, NCollapse, NCollapseItem, NIcon, NInput, NSelect, NTabPane, NTabs, NTag, NTooltip, useMessage } from 'naive-ui'
+import { ChatbubblesOutline, ChatboxEllipsesOutline, ReceiptOutline, ServerOutline, WalletOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { WorkspaceInfo } from '../types'
+import { researchNumber, researchDate } from '../format'
 import { bucketLabel, buckets, costText, warningLabel } from '../billing'
 import type { CostReport, PricingConfig } from '../billing'
 
@@ -14,10 +16,11 @@ const error = ref(''), busy = ref(false), activeTab = ref('researches')
 const prices = ref<PricingConfig | null>(null), revision = ref(''), rawPrices = ref(''), newModel = ref('')
 let timer: number | undefined
 let pendingRefresh = false
-const options = computed(() => [{ label: '全部研究与后续调用', value: '' }, ...workspaces.value.map(w => ({ label: w.topic || w.label, value: w.id }))])
+const options = computed(() => [...workspaces.value.map((w, index) => ({ label: `${researchNumber(w.id)} · ${researchDate(w.created)} · ${w.topic || w.label}${index === 0 ? ' · 最新' : ''}`, value: w.id })), { label: '全部研究与后续调用', value: '' }])
 const rows = computed(() => report.value ? report.value[activeTab.value as 'researches' | 'sessions' | 'tasks'] : [])
 const summary = computed(() => report.value?.summary)
-const names = computed(() => Object.fromEntries(workspaces.value.map(w => [w.id, w.topic || w.label])))
+const countText = (value?: number | null) => value == null ? '—' : value.toLocaleString()
+const names = computed(() => Object.fromEntries(workspaces.value.map(w => [w.id, `${researchNumber(w.id)} · ${researchDate(w.created)} · ${w.topic || w.label}`])))
 async function refresh() {
   if (busy.value) { pendingRefresh = true; return }
   busy.value = true
@@ -54,23 +57,34 @@ function download() {
   const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'usage-cost.json'; a.click(); URL.revokeObjectURL(url)
 }
 onMounted(async () => {
-  try { workspaces.value = (await api.workspaces()).workspaces; await loadPrices(); await refresh() }
+  try {
+    workspaces.value = (await api.workspaces()).workspaces.slice().sort((a, b) => (Date.parse(b.created || '') || 0) - (Date.parse(a.created || '') || 0))
+    // Choose by creation date, not API order or last activity; explicit deep links win.
+    if (typeof route.query.research !== 'string') selected.value = workspaces.value[0]?.id || ''
+    await loadPrices(); await refresh()
+  }
   catch (e) { error.value = String(e) }
   timer = window.setInterval(refresh, 10000)
+})
+watch(() => route.query.research, (research) => {
+  selected.value = typeof research === 'string' ? research : workspaces.value[0]?.id || ''
+  void refresh()
 })
 onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </script>
 
 <template>
   <div class="page costs">
-    <div class="heading"><div><h1>算力 / 费用统计</h1><p class="dim">研究启动、模型会话与后续 MCP 调用，使用同一份费用记录。</p></div><NButton :loading="busy" @click="refresh">刷新</NButton><NButton :disabled="!report" @click="download">导出 JSON</NButton></div>
-    <NSelect v-model:value="selected" :options="options" filterable @update:value="refresh" style="max-width: 700px; margin-bottom: 18px" />
+    <Teleport to="#page-header-actions"><NButton size="small" :loading="busy" @click="refresh">刷新</NButton><NButton size="small" :disabled="!report" @click="download">导出 JSON</NButton></Teleport>
+    <NSelect v-model:value="selected" :options="options" filterable placeholder="按主题、编号或时间查找研究" @update:value="refresh" style="max-width: 960px; margin-bottom: 18px" />
     <NAlert v-if="error" type="error">{{ error }}</NAlert>
     <template v-if="summary">
       <div class="cards">
-        <section class="sheet"><div class="dim">已计金额</div><strong data-testid="cost-total">{{ costText(summary) }}</strong><NTag size="small" :type="summary.status === 'partial' ? 'warning' : 'info'">{{ summary.status === 'partial' ? '部分用量或单价缺失' : summary.status === 'estimated' ? '按配置费率折算' : '计价完整' }}</NTag></section>
-        <section class="sheet"><div class="dim">有用量回执</div><strong>{{ summary.usage_records }}</strong><span class="dim">{{ summary.missing_usage }} 条缺少完整用量</span></section>
-        <section class="sheet"><div class="dim">MCP 调用</div><strong>{{ summary.mcp_calls }}</strong><span class="dim">已知工具耗时 {{ (summary.mcp_duration_ms / 1000).toFixed(2) }} 秒</span></section>
+        <section class="sheet amount-card"><div class="metric-label">已计金额<NIcon :size="20"><WalletOutline /></NIcon></div><strong data-testid="cost-total">{{ costText(summary) }}</strong><NTag size="small" :type="summary.status === 'partial' ? 'warning' : 'info'">{{ summary.status === 'partial' ? '部分用量或单价缺失' : summary.status === 'estimated' ? '按配置费率折算' : '计价完整' }}</NTag></section>
+        <section class="sheet"><div class="metric-label">对话次数<NIcon :size="20"><ChatbubblesOutline /></NIcon></div><NTooltip><template #trigger><strong data-testid="conversation-count">{{ countText(summary.conversation_count) }}</strong></template>按已记录的模型会话去重，工具调用不算一次对话。</NTooltip><span class="dim small">{{ summary.turn_count == null ? '暂无对话记录' : `${countText(summary.turn_count)} 轮交互` }}</span></section>
+        <section class="sheet"><div class="metric-label">回复条数<NIcon :size="20"><ChatboxEllipsesOutline /></NIcon></div><NTooltip><template #trigger><strong data-testid="reply-count">{{ countText(summary.reply_count) }}</strong></template>已完成的模型消息，含过程说明与最终答复；不含推理内容、工具返回或流式片段。</NTooltip><span class="dim small">{{ summary.reply_count == null ? '暂无消息记录' : '来自已保存的模型消息' }}</span></section>
+        <section class="sheet"><div class="metric-label">MCP 调用<NIcon :size="20"><ServerOutline /></NIcon></div><strong>{{ countText(summary.mcp_calls) }}</strong><span class="dim small">工具耗时 {{ (summary.mcp_duration_ms / 1000).toFixed(2) }} 秒</span></section>
+        <section class="sheet"><div class="metric-label">用量回执<NIcon :size="20"><ReceiptOutline /></NIcon></div><strong>{{ countText(summary.usage_records) }}</strong><span class="dim small">{{ summary.missing_usage }} 条缺少完整用量</span></section>
       </div>
       <div class="sheet panel">
         <h2>四类用量与费用</h2>
@@ -109,9 +123,10 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
 <style scoped>
 .heading { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }.heading > :first-child { flex: 1; }.heading h1, .heading h2 { margin: 0; }.heading p { margin: 6px 0 0; }
-.cards { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 18px; }.cards section { padding: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }.cards strong { font-size: 25px; font-variant-numeric: tabular-nums; }
+.cards { display: grid; grid-template-columns: minmax(220px, 1.7fr) repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }.cards section { padding: 20px 18px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }.cards strong { font-size: 34px; line-height: 42px; font-weight: 650; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--verdigris); }.metric-label { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; font-size: 12px; color: var(--slate); }.metric-label .n-icon { color: var(--verdigris); opacity: .8; }.cards .amount-card { background: var(--ink); border-color: var(--ink); }.amount-card .metric-label, .amount-card .metric-label .n-icon { color: #d2e5df; }.amount-card strong { color: #fbfaf7; font-size: 27px; overflow-wrap: anywhere; }.cards section > .small { margin-top: auto; }
+.amount-card :deep(.n-tag) { color: #e1eee8; background: #29434d; }.amount-card :deep(.n-tag__border) { border-color: #52756d; }.costs > .panel { box-sizing: border-box; min-width: 0; }
 .panel { padding: 22px; margin-bottom: 18px; }.panel h2 { font-size: 18px; }.scroll { overflow-x: auto; }table { width: 100%; border-collapse: collapse; font-size: 13px; }th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }th { color: var(--slate); font-weight: 500; }td:first-child { max-width: 330px; overflow-wrap: anywhere; }td.mono { white-space: nowrap; }.add { display: flex; gap: 10px; margin: 16px 0; }
-@media (max-width: 900px) { .cards { grid-template-columns: 1fr; }.heading { flex-wrap: wrap; } }
+@media (max-width: 1100px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }.amount-card { grid-column: span 2; }.heading { flex-wrap: wrap; } }
 @media (max-width: 700px) {
   .costs { padding: 20px 16px; }.heading > :first-child { flex-basis: 100%; }.panel { box-sizing: border-box; }
   .heading h1 { font-size: 24px; }.panel { padding: 16px; }.cards strong { font-size: 22px; }

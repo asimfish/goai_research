@@ -26,6 +26,16 @@ export function dateTime(ts: number | string | null | undefined): string {
   return d.toLocaleString('zh-CN', { hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 
+/** Existing workspace identity, so adding or sorting studies never renumbers them. */
+export function researchNumber(id: string): string { return `R-${id.toUpperCase()}` }
+export function researchDate(ts: string | number | null | undefined): string {
+  if (!ts) return '时间未记录'
+  const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts)
+  if (Number.isNaN(d.getTime())) return '时间未记录'
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
+}
+
 export function ago(ts: number | null | undefined, now: number): string {
   if (!ts) return '—'
   const s = Math.max(0, now - ts)

@@ -6,7 +6,7 @@ import { CheckmarkCircleOutline, PauseCircleOutline, SearchOutline, SyncOutline,
 import { api } from '../api'
 import type { ConsoleConfig, WorkspaceInfo } from '../types'
 import { GATE_ORDER, STAGE_LABEL } from '../roles'
-import { ago, dateTime } from '../format'
+import { ago, dateTime, researchNumber } from '../format'
 import LaunchPanel from '../components/LaunchPanel.vue'
 
 const router = useRouter()
@@ -44,7 +44,7 @@ const filtered = computed(() => {
     if (tab.value === 'running' && w.status !== 'running') return false
     if (tab.value === 'done' && w.status !== 'done') return false
     if (!q) return true
-    return [w.topic, w.label, w.parent, w.status, w.stage || ''].join(' ').toLowerCase().includes(q)
+    return [researchNumber(w.id), w.topic, w.label, w.parent, w.status, w.stage || ''].join(' ').toLowerCase().includes(q)
   })
 })
 function checks(w: WorkspaceInfo) { return GATE_ORDER.filter((g) => ['PASS', 'WARN'].includes(w.gates[g] || '')).length }
@@ -65,16 +65,15 @@ async function stop(w: WorkspaceInfo) {
 </script>
 
 <template>
-  <div class="page">
-    <div class="page-title"><div><h1>研究</h1><div class="lead">发起一项研究，或回到最近的运行。</div></div></div>
+  <div class="page panel-page history-page">
     <div class="layout">
-      <LaunchPanel :config="config" :focus="!!route.query.new" @launched="(id: string) => router.push(`/run/${id}`)" />
+      <LaunchPanel class="launch-pane" :config="config" :focus="!!route.query.new" @launched="(id: string) => router.push(`/run/${id}`)" />
 
       <div class="sheet panel recent">
         <div class="hd">
-          <h2 class="serif">最近运行</h2>
+          <h2>最近运行</h2>
           <div class="tools">
-            <NInput v-model:value="filter" size="small" clearable placeholder="搜索研究主题" style="width: 200px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
+            <NInput v-model:value="filter" size="small" clearable placeholder="搜索主题或编号" style="width: 200px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
             <div class="seg">
               <button :class="{ on: tab === 'all' }" @click="tab = 'all'">全部</button>
               <button :class="{ on: tab === 'running' }" @click="tab = 'running'">运行中</button>
@@ -94,7 +93,7 @@ async function stop(w: WorkspaceInfo) {
               <div class="meta small dim">
                 <span>{{ dateTime(w.created) }}</span>
                 <NTooltip><template #trigger><span>· 最近活动 {{ ago(w.last_activity, now) }}</span></template>{{ dateTime(w.last_activity) }}</NTooltip>
-                <span class="mono">· {{ w.parent }}/{{ w.label }}</span>
+                <span class="research-number">{{ researchNumber(w.id) }}</span>
               </div>
             </div>
             <div class="status small"><span class="st-dot" :class="statusKind(w)" />{{ statusText(w) }}</div>
@@ -116,16 +115,18 @@ async function stop(w: WorkspaceInfo) {
 </template>
 
 <style scoped>
-.layout { display: grid; grid-template-columns: 5fr 7fr; gap: 24px; align-items: start; }
-.recent { padding: 22px 24px; }
+.layout { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr); gap: 20px; height: 100%; min-height: 0; }
+.launch-pane { min-width: 0; min-height: 0; overflow: auto; box-sizing: border-box; }
+.recent { padding: 20px; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; }
 .hd { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .hd h2 { margin: 0; font-size: 20px; }
-.tools { display: flex; gap: 10px; align-items: center; }
+.tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .seg button { border: 0; background: transparent; padding: 5px 12px; font: inherit; font-size: 13px; color: var(--slate); cursor: pointer; }
 .seg button.on { background: var(--verdigris-soft); color: var(--ink); font-weight: 600; }
-.list { display: flex; flex-direction: column; gap: 8px; }
-.row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 200px auto; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #FBFAF7; cursor: pointer; }
+.list { display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; overflow: auto; }
+.row { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 6px 12px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #FBFAF7; cursor: pointer; flex: none; }
+.row .status, .row .act { grid-column: 2; }
 .row:hover { box-shadow: var(--shadow-float); }
 .icon { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: #EFEDE6; color: var(--slate); }
 .icon.run { background: var(--verdigris-soft); color: var(--verdigris); } .icon.ok { background: var(--verdigris-soft); color: var(--verdigris); }
@@ -135,5 +136,5 @@ async function stop(w: WorkspaceInfo) {
 .status { color: var(--ink); }
 .act { display: flex; gap: 2px; }
 .foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
-@media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } .row { grid-template-columns: 40px 1fr; } }
+@media (max-width: 1100px) { .layout { gap: 14px; }.launch-pane { padding: 18px; }.recent { padding: 16px; } }
 </style>

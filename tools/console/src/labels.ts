@@ -12,6 +12,26 @@ export function gateLabel(id: string): string { return GATE_LABEL[id] || id }
 export const CHECK_STATUS_LABEL: Record<string, string> = { PASS: '通过', WARN: '警告', FAIL: '未通过', PENDING: '待完成' }
 export function checkStatus(s: string | null | undefined): string { return CHECK_STATUS_LABEL[s || 'PENDING'] || s || '待完成' }
 
+export const CHECK_DESCRIPTION: Record<string, string> = {
+  scope_confirmed: '确认研究问题、范围与交付要求', lit_coverage: '检查检索范围与文献覆盖情况',
+  style_bank_ready: '整理参考综述的结构与写作规范', ref_integrity: '核对参考文献及正文引用的一致性',
+  taxonomy_ready: '确认研究分类与章节结构', figures_ready: '检查图表内容与可编辑文件',
+  draft_complete: '完成稿件编写与 PDF 编译', ideas_reviewed: '评估研究方案的依据与可行性', review_pass: '完成审稿与修改检查',
+}
+export function checkSummary(id: string, detail?: string): string {
+  const count = id === 'ref_integrity' ? detail?.match(/(?:audit|核查).*?(\d+)\s*\/\s*(\d+)/i) : null
+  return count ? `已核查 ${count[1]} / ${count[2]} 条参考文献` : CHECK_DESCRIPTION[id] || '查看本阶段的检查结果'
+}
+
+/** Only diagnostic errors belong in the failure banner; editorial output is kept in the log. */
+export function failureSummary(text: string): string {
+  if (/at capacity|rate limit|usage limit/i.test(text)) return '模型服务暂不可用，请稍后重试或更换模型。'
+  if (/timed out|timeout/i.test(text)) return '执行超时，详细信息见运行日志。'
+  if (/connection|network|\b50[234]\b/i.test(text)) return '模型或工具服务连接失败，详细信息见运行日志。'
+  if (/permission denied|access denied/i.test(text)) return '访问权限不足，详细信息见运行日志。'
+  return '本次执行已停止，详细原因见运行日志。'
+}
+
 /** 子任务 / 工作区状态 */
 export const TASK_STATUS_LABEL: Record<string, string> = {
   RUNNING: '运行中', PASS: '通过', WARN: '通过（有警告）', FAIL: '失败', BLOCKED: '被阻塞', DONE: '完成', ENDED: '已结束', STOPPED: '已终止', STALE: '无新输出', PENDING: '等待',

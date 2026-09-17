@@ -5,7 +5,7 @@ import { NButton, NEmpty, NIcon, NInput, NSpin, NTooltip, useMessage } from 'nai
 import { CheckmarkCircleOutline, CloudDownloadOutline, DocumentTextOutline, ImagesOutline, OpenOutline, PeopleOutline, PlayCircleOutline, SearchOutline, TimeOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { Artifacts, WorkspaceInfo } from '../types'
-import { bytes, dateTime } from '../format'
+import { bytes, dateTime, researchNumber } from '../format'
 import { STAGE_LABEL } from '../roles'
 
 /** 成果与历史回看（DESIGN.md 页面 06）：左侧历史时间线，右侧论文阅读器式预览 + 交付清单 + 可核验摘要。 */
@@ -22,7 +22,7 @@ const loading = ref(true)
 const filtered = computed(() => rows.value.filter((w) => {
   if (tab.value === 'done' && w.status !== 'done') return false
   if (tab.value === 'other' && w.status === 'done') return false
-  return !q.value.trim() || (w.topic + w.label).toLowerCase().includes(q.value.trim().toLowerCase())
+  return !q.value.trim() || (researchNumber(w.id) + w.topic + w.label).toLowerCase().includes(q.value.trim().toLowerCase())
 }))
 const selected = computed(() => rows.value.find((w) => w.id === selectedId.value) || null)
 
@@ -44,13 +44,12 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
 </script>
 
 <template>
-  <div class="page">
-    <div class="page-title" style="align-items: center">
-      <div><h1>成果与历史回看</h1></div>
-      <span style="flex: 1" />
-      <NInput v-model:value="q" size="small" clearable placeholder="搜索已完成研究" style="width: 240px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
-    </div>
-    <NSpin :show="loading">
+  <div class="page panel-page results-page">
+    <Teleport to="#page-header-actions">
+      <NButton size="small" @click="router.push('/experiments')">从研究进入材料实验 ↗</NButton>
+      <NInput v-model:value="q" size="small" clearable placeholder="搜索研究主题或编号" style="width: 220px"><template #prefix><NIcon><SearchOutline /></NIcon></template></NInput>
+    </Teleport>
+    <NSpin :show="loading" class="panel-spin">
       <div class="layout">
         <aside class="sheet panel history">
           <div class="hd"><span class="card-h">历史研究</span>
@@ -61,7 +60,7 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
               <span class="tl-dot" :class="kind(w)"><NIcon v-if="w.status === 'done'" :size="12"><CheckmarkCircleOutline /></NIcon><NIcon v-else :size="12"><TimeOutline /></NIcon></span>
               <div class="tl-body">
                 <div class="tl-title ellipsis" :title="w.topic">{{ w.topic }}</div>
-                <div class="small dim">{{ dateTime(w.created) }} · {{ statusText(w) }}<template v-if="w.stage && w.status !== 'done'"> · {{ STAGE_LABEL[w.stage] || w.stage }}</template></div>
+                <div class="research-number">{{ researchNumber(w.id) }}</div><div class="small dim">{{ dateTime(w.created) }} · {{ statusText(w) }}<template v-if="w.stage && w.status !== 'done'"> · {{ STAGE_LABEL[w.stage] || w.stage }}</template></div>
               </div>
             </div>
             <NEmpty v-if="!filtered.length" description="没有匹配的研究" size="small" style="margin: 20px 0" />
@@ -71,8 +70,8 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
         <section class="detail" v-if="selected">
           <div class="d-hd">
             <div>
-              <h2 class="serif">{{ selected.topic }}</h2>
-              <div class="small dim"><span class="st-dot" :class="kind(selected)" />{{ statusText(selected) }} · {{ dateTime(selected.created) }}<template v-if="selected.receipt"> · 复现回执 {{ selected.receipt.status }}</template></div>
+              <h2>{{ selected.topic }}</h2>
+              <div class="small dim"><span class="research-number">{{ researchNumber(selected.id) }}</span> · <span class="st-dot" :class="kind(selected)" />{{ statusText(selected) }} · {{ dateTime(selected.created) }}<template v-if="selected.receipt"> · 复现回执 {{ selected.receipt.status }}</template></div>
             </div>
             <div class="d-actions">
               <NButton v-if="selected.final_pdf" type="primary" tag="a" :href="api.pdfUrl(selected.id)" target="_blank"><template #icon><NIcon><OpenOutline /></NIcon></template>打开 PDF</NButton>
@@ -93,13 +92,13 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
               <div class="sheet panel">
                 <div class="card-h" style="margin-bottom: 8px">交付清单</div>
                 <div v-for="b in artifacts?.bundle_items || []" :key="b.path" class="dl small">
-                  <span class="ellipsis">{{ b.label }} <span class="dim mono">{{ b.path }}</span></span>
-                  <span :class="b.exists ? 'ok' : 'dim'"><NIcon v-if="b.exists" :size="14" style="vertical-align: -2px"><CheckmarkCircleOutline /></NIcon>{{ b.exists ? ' 已就绪' : ' 缺' }}</span>
+                  <span class="delivery-name"><strong>{{ b.label }}</strong><span class="dim mono ellipsis" :title="b.path">{{ b.path }}</span></span>
+                  <span class="delivery-status" :class="b.exists ? 'ok' : 'dim'"><NIcon v-if="b.exists" :size="14"><CheckmarkCircleOutline /></NIcon>{{ b.exists ? '已生成' : '未生成' }}</span>
                 </div>
               </div>
               <div class="sheet panel" v-if="summary">
                 <div class="card-h" style="margin-bottom: 8px">可核验摘要</div>
-                <div class="kv"><span class="k"><NIcon :size="16"><CheckmarkCircleOutline /></NIcon></span><span class="v">{{ summary.checks_passed }} / {{ summary.checks_total }}</span><span class="dim">质量检查通过</span></div>
+                <div class="kv"><span class="k"><NIcon :size="16"><CheckmarkCircleOutline /></NIcon></span><span class="v">{{ summary.checks_passed }} / {{ summary.checks_total }}</span><span class="dim">结果质量检查通过</span></div>
                 <div class="kv"><span class="k">“</span><span class="v">{{ summary.citations }}</span><span class="dim">条参考文献<template v-if="summary.papers">（库内 {{ summary.papers }} 篇）</template></span></div>
                 <div class="kv"><span class="k"><NIcon :size="16"><ImagesOutline /></NIcon></span><span class="v">{{ summary.figures }}</span><span class="dim">张图纸</span></div>
                 <div class="kv"><span class="k"><NIcon :size="16"><PeopleOutline /></NIcon></span><span class="v">{{ summary.review_rounds }}</span><span class="dim">轮审稿</span></div>
@@ -116,31 +115,35 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
 </template>
 
 <style scoped>
-.layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 18px; align-items: start; }
-.history { padding: 16px 16px 14px; }
-.hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+.layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; height: 100%; min-height: 0; }
+.history { padding: 14px 12px; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; flex: none; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .seg button { border: 0; background: transparent; padding: 3px 9px; font: inherit; font-size: 12px; color: var(--slate); cursor: pointer; }
 .seg button.on { background: var(--verdigris-soft); color: var(--ink); font-weight: 600; }
-.tl { display: flex; flex-direction: column; }
+.tl { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; }
 .tl-item { display: flex; gap: 10px; padding: 10px 8px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; }
 .tl-item:hover { background: #F3F1EA; } .tl-item.on { border-color: var(--verdigris); background: #FBFAF7; }
 .tl-dot { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex: none; border: 1.5px solid #9AA6AE; color: var(--slate); background: #FBFAF7; }
 .tl-dot.ok { border-color: var(--verdigris); color: var(--verdigris); } .tl-dot.run { border-color: var(--verdigris); color: var(--verdigris); } .tl-dot.warn { border-color: var(--amber); color: var(--amber); } .tl-dot.bad { border-color: var(--cinnabar); color: var(--cinnabar); }
 .tl-body { min-width: 0; } .tl-title { font-weight: 600; font-size: 14px; }
-.d-hd { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 14px; }
+.detail { min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.d-hd { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; flex: none; }
+.d-hd > div:first-child { min-width: 0; flex: 1 1 320px; }
 .d-hd h2 { margin: 0 0 4px; font-size: 24px; line-height: 32px; }
-.d-actions { display: flex; gap: 8px; flex: none; }
-.d-body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 16px; align-items: start; }
-.preview { height: calc(100vh - 260px); min-height: 520px; overflow: hidden; background: #E9E7DF; }
-.preview iframe { width: 100%; height: 100%; border: 0; }
-.no-pdf { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; }
-.side { display: flex; flex-direction: column; gap: 12px; }
+.d-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.d-body { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; flex: 1; min-height: 0; }
+.preview { min-height: 0; min-width: 0; overflow: auto; background: #E9E7DF; }
+.preview iframe { display: block; width: 100%; height: 100%; border: 0; }
+.no-pdf { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+.side { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: auto; overscroll-behavior: contain; padding-right: 3px; }
+.side > .panel { flex: none; }
 .side .panel { padding: 14px 16px; }
-.dl { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--line-soft); }
+.dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+.delivery-name { display: flex; flex-direction: column; gap: 3px; min-width: 0; }.delivery-name strong { font-weight: 500; }.delivery-name .mono { font-size: 11px; }.delivery-status { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 11px; padding: 3px 7px; border-radius: 6px; background: var(--mist); }.delivery-status.ok { background: var(--verdigris-soft); }
 .ok { color: var(--verdigris); }
 .kv { display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line-soft); }
-.kv .k { color: var(--verdigris); display: inline-flex; align-items: center; font-family: serif; font-size: 18px; }
+.kv .k { color: var(--verdigris); display: inline-flex; align-items: center; font-size: 18px; }
 .kv .v { font-size: 22px; font-weight: 600; line-height: 28px; }
-@media (max-width: 1200px) { .layout { grid-template-columns: 1fr; } .d-body { grid-template-columns: 1fr; } }
+@media (max-width: 1200px) { .layout { grid-template-columns: 220px minmax(0, 1fr); gap: 12px; }.d-body { grid-template-columns: minmax(0, 1fr) 220px; gap: 12px; }.d-hd h2 { font-size: 20px; line-height: 28px; }.side .panel { padding: 12px; }.seg button { padding-inline: 6px; } }
 </style>

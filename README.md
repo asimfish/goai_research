@@ -8,6 +8,10 @@ GOAI 2026 · AI for Research 算法赛 · 材料科学（MaterialsScience）· T
 
 评审入口：[`docs/competition/SUBMISSION.md`](docs/competition/SUBMISSION.md)（模型与 Harness 声明、全部运行记录与筛选规则、数据许可边界、指标复核、追溯链、复现判据）。
 
+新版材料实验工作台（2026-09-17）：[5051 循证台](http://127.0.0.1:5051/#/experiments)，基于最新核对的 OpenLabSite，复用 UniLabOS 0.12.3 纯 Python 环境，73 节点经真实 MCP/设备调度与 Three.js 末帧回执完成。见 [操作手册](docs/competition/材料循证台操作手册.md)、[实跑与录屏交付](docs/competition/材料循证台交付验收_20260917.md)。已部署机器由 `goai_final_lab/materials.sh` 管理同端口入口；下方 `console_server.py --port 5051` 命令适用于独立研究控制台，不与新版网关同时启动。
+
+材料版前端包含相邻 OpenLabSite 源码依赖，修改或重新构建前先按 [前端发布与构建说明](docs/competition/材料前端发布_20260918.md) 准备两个仓库。预构建的循证台静态文件随仓库提交。
+
 ---
 
 ## 六项交付物在哪里

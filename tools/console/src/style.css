@@ -1,20 +1,35 @@
 /* 「循证台」视觉系统（tools/console/design/round3/DESIGN.md）：纸张白 / 深墨蓝 / 铜绿 / 琥珀 / 朱砂 */
 :root {
+  --font-sans: "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  /* Shared OpenLab components use these tokens for headings and data labels. */
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
   --paper: #F5F3ED; --mist: #FBFAF7; --ink: #172B3A; --slate: #66737B; --verdigris: #2D7468; --verdigris-soft: #DDEBE7;
   --amber: #B98032; --amber-soft: #F3E8D5; --cinnabar: #A94D45; --cinnabar-soft: #F1DDDA; --line: #D8DAD6; --line-soft: #E7E8E3;
   --radius-panel: 16px; --radius-card: 12px; --radius-ctl: 10px;
   --shadow-float: 0 12px 36px rgba(23, 43, 58, .10);
 }
-html, body, #app { height: 100%; margin: 0; }
-body { background: var(--paper); color: var(--ink); font-family: Inter, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif; font-size: 14px; line-height: 22px; }
-.serif { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif; }
-.mono { font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; font-size: 12.5px; }
+html, body, #app { height: 100%; margin: 0; overflow: hidden; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-sans); font-size: 14px; line-height: 22px; }
+button, input, select, textarea, code, pre, kbd, samp { font-family: var(--font-sans); }
+.mono { font-family: var(--font-mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
 .dim { color: var(--slate); }
 .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pre { white-space: pre-wrap; word-break: break-word; }
-.page { padding: 24px 40px 40px; max-width: 1520px; margin: 0 auto; }
-.page-title { display: flex; align-items: flex-start; gap: 16px; margin: 0 0 20px; }
-.page-title h1 { font-size: 28px; line-height: 36px; margin: 0 0 4px; font-weight: 600; letter-spacing: .01em; }
+.page { padding: 20px 24px; height: 100%; min-height: 0; box-sizing: border-box; overflow: auto; margin: 0; }
+.page.panel-page { display: flex; flex-direction: column; overflow: hidden; }
+.panel-spin { flex: 1; min-height: 0; }
+.panel-spin > .n-spin-content { height: 100%; min-height: 0; }
+* { scrollbar-width: thin; scrollbar-color: #bac5c1 transparent; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #bac5c1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #90a79f; }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+@supports selector(::-webkit-scrollbar) { * { scrollbar-width: auto !important; scrollbar-color: auto !important; } }
+@media (max-width: 1100px) { .page { padding: 16px; } }
+.page-title { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 18px; }
+.page-title h1 { font-size: 28px; line-height: 36px; margin: 0; font-weight: 600; letter-spacing: .01em; }
 .page-title .lead { color: var(--slate); font-size: 14px; max-width: 760px; }
 /* 纸张卡片：细边、无渐变 */
 .sheet { background: var(--mist); border: 1px solid var(--line); border-radius: var(--radius-card); }
@@ -40,3 +55,4 @@ body { background: var(--paper); color: var(--ink); font-family: Inter, "Noto Sa
 .markdown th, .markdown td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
 .markdown th { background: #EEEDE6; font-weight: 600; }
 .markdown blockquote { border-left: 3px solid var(--amber); margin: 10px 0; padding: 4px 14px; color: var(--slate); background: var(--amber-soft); border-radius: 0 8px 8px 0; }
+.research-number { display: inline-block; font-size: 10px; line-height: 1.6; font-weight: 500; letter-spacing: .02em; color: var(--slate); white-space: nowrap; font-variant-numeric: tabular-nums; }

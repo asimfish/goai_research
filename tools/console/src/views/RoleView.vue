@@ -58,7 +58,7 @@ function jump(i: number) {
         <div class="sheet id-card">
           <div class="dim small">角色 {{ String(role.index).padStart(2, '0') }}</div>
           <RoleBadge :role="role.id" :size="92" style="margin: 14px auto 12px" />
-          <div class="name serif">{{ role.label }}</div>
+          <div class="name">{{ role.label }}</div>
           <div class="verb dim">{{ role.verb }}</div>
         </div>
         <div class="sheet bound"><div class="bt">输入</div><div class="dim small">{{ role.inputs.join('、') || '—' }}</div></div>
@@ -77,7 +77,7 @@ function jump(i: number) {
         <div class="sheet panel reader-wrap">
           <div class="reader-hd">
             <div>
-              <h2 class="serif">技能规程 <span class="mono dim">{{ role.skill_path }}</span></h2>
+              <h2>技能规程 <span class="mono dim">{{ role.skill_path }}</span></h2>
               <div class="dim small">{{ zhDescription(role.description) }}</div>
             </div>
             <div class="facts small">

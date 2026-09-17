@@ -6,7 +6,7 @@ import { AddOutline, DocumentTextOutline } from '@vicons/ionicons5'
 import { api } from '../api'
 import type { Role, StateResponse, WorkspaceInfo } from '../types'
 import { DEFAULT_STAGES, STAGE_LABEL, roleVisual } from '../roles'
-import { ago } from '../format'
+import { ago, researchNumber } from '../format'
 import StageSpine from '../components/StageSpine.vue'
 import RoleBadge from '../components/RoleBadge.vue'
 
@@ -19,12 +19,19 @@ const state = ref<StateResponse | null>(null)
 const loading = ref(true)
 let timer: number | undefined
 
+let loadingCurrent = false
 async function loadCurrent() {
+  if (document.hidden || loadingCurrent) return
+  loadingCurrent = true
+  try {
   const w = await api.workspaces()
   current.value = w.workspaces.find((x) => x.status === 'running') || w.workspaces.find((x) => x.topic) || null
   state.value = current.value ? await api.state(current.value.id, 0).catch(() => null) : null
+  } finally { loadingCurrent = false }
 }
+function refreshCurrent() { void loadCurrent().catch(() => {}) }
 onMounted(async () => {
+  document.addEventListener("visibilitychange", refreshCurrent)
   try {
     const r = await api.roles()
     roles.value = r.roles
@@ -35,9 +42,9 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-  timer = window.setInterval(loadCurrent, 6000)
+  timer = window.setInterval(refreshCurrent, 30000)
 })
-onBeforeUnmount(() => { if (timer) clearInterval(timer) })
+onBeforeUnmount(() => { document.removeEventListener("visibilitychange", refreshCurrent); if (timer) clearInterval(timer) })
 
 const byId = computed(() => Object.fromEntries(roles.value.map((r) => [r.id, r])))
 const ledger = computed(() => state.value?.ledger || {})
@@ -56,23 +63,21 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
 <template>
   <div class="page">
     <section class="top">
-      <div class="hero">
-        <h1 class="serif">让九个角色，共同写出<br>一篇可核验的综述</h1>
-        <p class="dim">从一个研究主题出发，过程清楚，证据可追溯。</p>
+      <Teleport to="#page-header-actions">
         <div class="actions">
-          <NButton type="primary" size="large" @click="router.push('/history?new=1')"><template #icon><NIcon><AddOutline /></NIcon></template>发起一项研究</NButton>
-          <NButton size="large" @click="router.push('/results')"><template #icon><NIcon><DocumentTextOutline /></NIcon></template>查看最近成果</NButton>
+          <NButton type="primary" size="small" @click="router.push('/history?new=1')"><template #icon><NIcon><AddOutline /></NIcon></template>发起一项研究</NButton>
+          <NButton size="small" @click="router.push('/results')"><template #icon><NIcon><DocumentTextOutline /></NIcon></template>预览研究结果</NButton>
         </div>
-      </div>
+      </Teleport>
       <div class="sheet panel ledger">
-        <div class="card-h">共享运行账本</div>
+        <div class="card-h">研究进度 <span v-if="current" class="research-number">{{ researchNumber(current.id) }}</span></div>
         <template v-if="current">
           <StageSpine :ledger="ledger" :tasks="state?.tasks || []" dense />
-          <div class="small dim" style="margin-top: 6px">11 个阶段，由下方三条链上的 9 个角色承担；节点下的色点是负责角色，悬停可看完成标准。</div>
+          <div class="small dim" style="margin-top: 6px">悬停阶段可查看负责人和检查结果。</div>
           <div class="ledger-row">
             <div><span class="dim small">当前</span><span class="big">{{ stageNo ? String(stageNo).padStart(2, '0') : '—' }}</span><span class="dim"> / {{ stageList.length }}</span>
               <span class="stage-name">{{ ledger.stage ? (STAGE_LABEL[ledger.stage] || ledger.stage) : '尚未开始' }}</span></div>
-            <div><span class="dim small">质量检查</span><span class="big amber">{{ checks }}</span><span class="dim"> / 9</span></div>
+            <div><span class="dim small">结果质量检查</span><span class="big amber">{{ checks }}</span><span class="dim"> / 9</span></div>
           </div>
           <div class="ledger-foot small">
             <span class="ellipsis" style="max-width: 360px" :title="current.topic">{{ current.topic }}</span>
@@ -81,7 +86,7 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
             <NButton size="tiny" quaternary @click="router.push(`/run/${current.id}`)">打开观察 ›</NButton>
           </div>
         </template>
-        <div v-else class="dim" style="padding: 20px 0">还没有研究运行。发起一项研究后，这里会显示它的阶段与质量检查。</div>
+        <div v-else class="dim" style="padding: 20px 0">还没有研究运行。发起一项研究后，这里会显示它的阶段与结果质量检查。</div>
       </div>
     </section>
 
@@ -115,9 +120,8 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
 </template>
 
 <style scoped>
-.top { display: grid; grid-template-columns: 5fr 7fr; gap: 24px; margin-bottom: 24px; align-items: stretch; }
-.hero h1 { font-size: 34px; line-height: 44px; margin: 6px 0 10px; font-weight: 600; }
-.hero p { margin: 0 0 22px; font-size: 15px; }
+.top { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }.hero { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.hero h1 { font-size: 28px; line-height: 36px; margin: 0; font-weight: 600; }
 .actions { display: flex; gap: 12px; }
 .ledger { padding: 18px 22px; }
 .ledger .card-h { margin-bottom: 10px; }
@@ -129,7 +133,16 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
 .ledger-foot { display: flex; align-items: center; gap: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
 .chain { display: grid; grid-template-columns: 160px 1fr; gap: 16px; margin-bottom: 14px; }
 .chain-label { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
-.chain-roles { display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.chain-roles { display: flex; align-items: center; gap: 0; overflow-x: auto; padding-bottom: 7px; scrollbar-width: thin; scrollbar-color: #bec7c5 transparent; overscroll-behavior-x: contain; }
+.chain-roles:hover { scrollbar-color: #96aaa5 transparent; }
+.chain-roles::-webkit-scrollbar { height: 5px; }
+.chain-roles::-webkit-scrollbar-track { background: transparent; }
+.chain-roles::-webkit-scrollbar-thumb { background: #bec7c5; border-radius: 999px; }
+.chain-roles::-webkit-scrollbar-thumb:hover { background: #96aaa5; }
+.chain-roles::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+@supports selector(::-webkit-scrollbar) {
+  .chain-roles, .chain-roles:hover { scrollbar-width: auto; scrollbar-color: auto; }
+}
 .role { flex: 1; min-width: 200px; display: flex; gap: 14px; padding: 16px 18px; cursor: pointer; transition: box-shadow .18s; }
 .role:hover { box-shadow: var(--shadow-float); }
 .role-name { font-size: 15px; font-weight: 600; }
@@ -137,5 +150,5 @@ function roleStatus(id: string): { key: 'run' | 'ok' | 'wait'; label: string } {
 .status { color: var(--slate); }
 .link { width: 26px; height: 1.5px; background: #C9CCC6; flex: none; }
 .deliver { display: flex; align-items: center; gap: 10px; padding: 12px 18px; margin-top: 10px; color: var(--slate); }
-@media (max-width: 1100px) { .top { grid-template-columns: 1fr; } .chain { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .chain { grid-template-columns: 1fr; } }
 </style>

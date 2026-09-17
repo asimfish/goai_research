@@ -13,10 +13,6 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <div class="page-title">
-      <h1>设置</h1>
-      <NText depth="3">控制台是只读观察 + 启停的薄层；模型、语料、账本规则都由仓库脚本与 <code>skills/</code> 决定，这里只显示服务端当前生效的配置。</NText>
-    </div>
     <NAlert v-if="error" type="error" :bordered="false">{{ error }}</NAlert>
     <NSpin :show="!config && !error">
       <NCard v-if="config" size="small" title="服务端配置（tools/console_server.py 启动参数）">
