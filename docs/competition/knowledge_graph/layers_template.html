@@ -40,6 +40,7 @@ const G = /*__GRAPH_JSON__*/null;
 const ICONS = /*__ICONS_JSON__*/null;
 const params = new URLSearchParams(location.search);
 if (params.get('movie') === '1') document.body.classList.add('movie');
+const SCHEM = params.get('schematic') === '1'; // schematic: cards as blank blocks + curves to parents, no pills / chrome (explainer thumbnails)
 const nodes = G.nodes, edges = G.edges, byId = new Map(nodes.map(n => [n.id, n]));
 const adj = new Map(nodes.map(n => [n.id, []])); edges.forEach(e => { adj.get(e.s).push(e); adj.get(e.t).push(e); });
 const C = {heat:'#E06A1B', heat2:'#F3A56E', tele:'#1E8FA8', tele2:'#5FB3C9', purple:'#7A4FD6', ok:'#1F9D62', crit:'#C93D2C', gold:'#B0841A', navy:'#156082', text:'#13202C', muted:'#5A6A7A', faint:'#8A97A5', line:'#D7DEE6', line2:'#BFC9D4', x:'#C5CED8', white:'#FFFFFF'};
@@ -273,6 +274,7 @@ function render(t){
   const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八'][k - 1];
   capTitle.text(`第${cn}级：${L.title}（${count}）`); capSum.attr('x', 12 + tw(`第${cn}级：${L.title}（${count}）`, 22) + 22).text(L.sum); cap.attr('opacity', t < INTRO ? ease(t / INTRO) : 1);
   d3.select('#tlabel').text(`${t.toFixed(1)} s · 第 ${k} 级`); d3.select('#seek').property('value', Math.round(1000 * t / TOTAL));
+  if (SCHEM){ gLinks.selectAll('path.cl').attr('stroke-width', 2.2).attr('opacity', d => 0.95 * d.op); gPills.style('display', 'none'); gTop.style('display', 'none'); gCards.selectAll('text').style('display', 'none'); gCards.selectAll('rect.bd').style('display', 'none'); gCards.selectAll('rect.bg').attr('stroke-width', d => Math.max(2.5, d.spec.sw)); }
 }
 // ---------- playback & seek API
 let tNow = params.has('t') ? +params.get('t') : (params.has('level') ? T_LEVEL(+params.get('level')) + TR : 0);
