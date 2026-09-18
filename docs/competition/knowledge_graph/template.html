@@ -57,19 +57,26 @@ footer .ln{width:20px;height:0;border-top:2px solid var(--line-2);display:inline
 .stats{display:flex;gap:10px;flex-wrap:wrap;font:500 11px "IBM Plex Mono",monospace;color:var(--muted)}
 .stats b{color:var(--white);font-size:12px}
 /* svg */
-.n text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif;pointer-events:none;fill:var(--text);paint-order:stroke;stroke:#0B1017;stroke-width:3px;stroke-linejoin:round}
-.n text.lab{font-size:11px}
-.n text.head{font-size:12px;font-weight:600;fill:var(--white)}
-.n text.inner{font-size:9px;font-weight:600;stroke:none;text-anchor:middle;fill:#0B1017}
-.n text.zoom,.n text.zoom2{display:none;fill:var(--muted);font-size:10px}
+.n text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif;pointer-events:none;fill:var(--text);paint-order:stroke;stroke:#0B1017;stroke-width:5px;stroke-linejoin:round}
+.n text.lab{font-size:19px}
+.n text.head{font-size:24px;font-weight:600;fill:var(--white)}
+.n text.inner{font-size:13px;font-weight:700;stroke:none;text-anchor:middle;fill:#0B1017}
+.n text.zoom,.n text.zoom2{display:none;fill:var(--muted);font-size:17px}
+.clab{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif;pointer-events:none;fill:var(--white);paint-order:stroke;stroke:#0B1017;stroke-width:5px;stroke-linejoin:round;font-weight:600}
+.clab.q{font-size:21px}
+.clab.tree{font-size:22px}
+.clab.small{font-size:18px;fill:var(--muted)}
+.clab.dim{opacity:.12}
+.clab.old{opacity:.28}
+.n text.route{font-size:22px;font-weight:600;fill:var(--white)}
 svg.z1 .n text.zoom{display:block}
 svg.z2 .n text.zoom2{display:block}
 .n.dim{opacity:.12}
 .n.hit circle,.n.hit rect{stroke:var(--white);stroke-width:2px}
 .n.old{opacity:.28}
-.e{fill:none;stroke-width:1;opacity:.16;mix-blend-mode:screen}
+.e{fill:none;stroke-width:1.3;opacity:.16;mix-blend-mode:screen}
 .e.dim{opacity:.02}
-.e.hi{opacity:.95;stroke-width:1.6}
+.e.hi{opacity:.95;stroke-width:2.2}
 .e.old{opacity:.03}
 .e.k-tree{stroke:#AEBBC8;opacity:.13}
 .e.k-support,.e.k-reports{opacity:.15}
@@ -81,29 +88,31 @@ svg.z2 .n text.zoom2{display:block}
 .e.k-about,.e.k-candidate,.e.k-predicts_for{stroke:#9085e9;opacity:.22}
 .e.k-evidence{stroke:#e66767;opacity:.25}
 .e.k-duplicate{stroke:#4F5B68;stroke-dasharray:2 2}
-.ring{fill:none;stroke:#1B2531;stroke-width:1}
+.ring{fill:none;stroke:#1E2A38;stroke-width:1.5}
 .ring.old{opacity:.5}
-.ringlab{font:500 10.5px "IBM Plex Mono",monospace;fill:#5F6E7E;letter-spacing:.12em;text-anchor:middle}
-.sector{fill:none;stroke:#34465A;stroke-width:5;stroke-linecap:butt;opacity:.9}
-.sectorlab{font:600 12.5px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:#A9B8C7;letter-spacing:.14em}
+.ringlab{font:500 18px "IBM Plex Mono",monospace;fill:#7C8A99;letter-spacing:.14em;text-anchor:middle}
+.sector{fill:none;stroke:#34465A;stroke-width:7;stroke-linecap:butt;opacity:.9}
+.sectorlab{font:700 30px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:#C5D1DC;letter-spacing:.12em}
 body.poster #app{grid-template-columns:1fr;grid-template-rows:1fr}
 body.poster header,body.poster aside,body.poster footer{display:none}
 body.poster svg{cursor:default}
 #chrome{position:absolute;inset:0;pointer-events:none;display:none}
 body.poster #chrome{display:block}
 #chrome .t{position:absolute;left:44px;top:34px}
-#chrome .t h1{font:700 30px/1.05 "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;margin:0;color:var(--white);letter-spacing:.3px}
-#chrome .t .sub{font:500 13px/1.4 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted);margin-top:8px;max-width:420px}
-#chrome .t .st{font:600 11px "IBM Plex Mono",monospace;color:var(--s-target);letter-spacing:.14em;margin-top:14px}
-#chrome .t .sd{font:400 12px/1.5 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--text);margin-top:6px;max-width:400px}
-#chrome .lg{position:absolute;left:44px;bottom:34px;font:500 11px/1.9 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted)}
-#chrome .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 6px 0 0;vertical-align:-1px}
+#chrome .t h1{font:700 36px/1.05 "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;margin:0;color:var(--white);letter-spacing:.3px}
+#chrome .t .sub{font:500 15px/1.45 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted);margin-top:10px;max-width:440px}
+#chrome .t .st{font:600 13px "IBM Plex Mono",monospace;color:var(--s-target);letter-spacing:.14em;margin-top:16px}
+#chrome .t .sd{font:400 14px/1.5 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--text);margin-top:6px;max-width:420px}
+#chrome .lg{position:absolute;left:44px;bottom:34px;font:500 13px/2 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted)}
+#chrome .lg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 6px 0 0;vertical-align:-1px}
 #chrome .lg b{color:var(--text);font-weight:500}
-#chrome .ks{position:absolute;right:44px;bottom:34px;text-align:right;font:500 11px "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.08em}
+#chrome .ks{position:absolute;right:44px;bottom:34px;text-align:right;font:500 13px "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.08em}
 #chrome .ks div{margin-top:6px}
-#chrome .ks b{display:inline-block;font:700 30px/1 "Chakra Petch","IBM Plex Sans",sans-serif;color:var(--white);margin-right:8px;letter-spacing:0}
-#chrome .rings{position:absolute;right:44px;top:34px;text-align:right;font:400 11px/1.9 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted)}
-#chrome .rings b{font:600 11px "IBM Plex Mono",monospace;color:var(--text);letter-spacing:.1em;margin-right:8px}
+#chrome .ks b{display:inline-block;font:700 34px/1 "Chakra Petch","IBM Plex Sans",sans-serif;color:var(--white);margin-right:8px;letter-spacing:0}
+#chrome .rings{position:absolute;right:44px;top:34px;text-align:right;font:400 14px/1.85 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted)}
+#chrome .rings b{font:600 13px "IBM Plex Mono",monospace;color:var(--text);letter-spacing:.1em;margin-right:8px}
+#chrome .rings .h{font:600 11px "IBM Plex Mono",monospace;color:var(--faint);letter-spacing:.14em;margin:14px 0 2px}
+#chrome .rings .h:first-child{margin-top:0}
 @media (max-width:1000px){#app{grid-template-columns:1fr}aside{display:none}}
 </style>
 </head>
@@ -171,8 +180,8 @@ function sectorOf(n){
   return null;
 }
 // ring groups: radius and desired arc spacing per node
-const RG = {question:[110,44], subtopic:[172,40], branch:[240,70], leaf:[310,24], paper:[380,15], element:[456,30], compound:[502,22], route:[502,36], agent:[502,20], char:[502,24], failure:[502,24], record:[548,18], section:[628,24], claim:[672,8], tree:[756,48], kid:[822,20]};
-const HUB = 148; // cross-sector edges swing around this inner ring instead of through the centre
+const RG = {question:[125,60], subtopic:[196,44], branch:[300,80], leaf:[372,26], paper:[442,17], element:[522,34], compound:[574,40], route:[574,120], agent:[574,22], char:[574,28], failure:[574,44], record:[622,20], section:[702,26], claim:[746,9], tree:[832,110], kid:[904,44]};
+const HUB = 262; // cross-sector edges swing around this inner ring instead of through the centre
 const grp = n => (n.type === 'claim' && n.stage === 4) || ['gap','recipe','direction','workflow','case'].includes(n.type) ? 'kid' : (n.type === 'section' && n.stage === 4) ? 'tree' : n.type;
 // bundling parent
 function parentOf(n){
@@ -215,9 +224,9 @@ place(n => n.type === 'claim', byParentAngle);
 place(n => n.type === 'tree', (a, b) => String(a.id).localeCompare(String(b.id)));
 place(n => n.g === 'kid', (a, b) => { const x = byParentAngle(a, b); return x || (a.rank || 0) - (b.rank || 0); });
 // questions sit at the mean angle of the subtopics they serve
-nodes.filter(n => n.type === 'question').forEach(q => { const ss = adj.get(q.id).filter(e => e.k === 'serves' && e.s === q.id).map(e => byId.get(e.t)); if (ss.length){ const ax = d3.mean(ss, s => Math.cos(s.a)), ay = d3.mean(ss, s => Math.sin(s.a)); q.a = Math.atan2(ay, ax); } });
+nodes.filter(n => n.type === 'question').forEach(q => { q.r = RG.question[0]; const ss = adj.get(q.id).filter(e => e.k === 'serves' && e.s === q.id).map(e => byId.get(e.t)); if (ss.length){ const ax = d3.mean(ss, s => Math.cos(s.a)), ay = d3.mean(ss, s => Math.sin(s.a)); q.a = Math.atan2(ay, ax); } else q.a = 0; });
 // spread the five questions so they never sit closer than 22°
-{ const qs = nodes.filter(n => n.type === 'question').sort((a, b) => a.a - b.a); for (let k = 0; k < 4; k++) for (let i = 1; i < qs.length; i++) if (qs[i].a - qs[i-1].a < 0.38) { qs[i].a = qs[i-1].a + 0.38; } }
+{ const qs = nodes.filter(n => n.type === 'question').sort((a, b) => a.a - b.a); for (let k = 0; k < 6; k++){ for (let i = 1; i < qs.length; i++) if (qs[i].a - qs[i-1].a < 0.9) { qs[i].a = qs[i-1].a + 0.9; } if (qs[0].a + 2 * Math.PI - qs[qs.length-1].a < 0.9) qs[0].a += 0.3; } }
 nodes.forEach(n => { if (n.type !== 'root'){ n.x = n.r * Math.cos(n.a); n.y = n.r * Math.sin(n.a); } });
 const RMAX = RG.kid[0];
 // bundling path through the ancestor chain
@@ -238,49 +247,57 @@ const gl2 = defs.append('filter').attr('id', 'glow2').attr('x', '-100%').attr('y
 gl2.append('feGaussianBlur').attr('stdDeviation', 7).attr('result', 'b'); const m2 = gl2.append('feMerge'); m2.append('feMergeNode').attr('in', 'b'); m2.append('feMergeNode').attr('in', 'b'); m2.append('feMergeNode').attr('in', 'SourceGraphic');
 const zoom = d3.zoom().scaleExtent([0.2, 6]).on('zoom', ev => { rootG.attr('transform', ev.transform); svg.classed('z1', ev.transform.k > 1.5).classed('z2', ev.transform.k > 2.6); });
 svg.call(zoom); if (POSTER) svg.on('.zoom', null);
-const ringG = rootG.append('g'), eG = rootG.append('g'), nG = rootG.append('g');
+const ringG = rootG.append('g'), eG = rootG.append('g'), nG = rootG.append('g'), cG = rootG.append('g');
+function curved(n, radius, text, cls){ const a = n.a, len = tw(text, cls === 'q' ? 21 : 22) + 20, h = len / radius / 2; const upper = Math.sin(a) < 0; const pth = d3.path(); if (upper) pth.arc(0, 0, radius, a - h, a + h); else pth.arc(0, 0, radius, a + h, a - h, true);
+  cG.append('path').attr('id', 'cl_' + n.id).attr('d', pth.toString()).attr('fill', 'none').attr('stroke', 'none');
+  const t = cG.append('text').attr('class', 'clab ' + cls).attr('data-stage', n.stage).attr('data-id', n.id); t.append('textPath').attr('href', '#cl_' + n.id).attr('startOffset', '50%').attr('text-anchor', 'middle').text(text); }
 // stage rings (年轮) + labels at 12 o'clock
-const STAGE_R = [[0, 204], [1, 418], [2, 588], [3, 714], [4, 866]];
-const RL = -150 * Math.PI / 180; // ring labels sit at ten o'clock, tangent to their ring
-STAGE_R.forEach(([s, r]) => { ringG.append('circle').attr('class', 'ring').attr('r', r).attr('data-stage', s); const rr = r - 9; ringG.append('text').attr('class', 'ringlab').attr('data-stage', s).attr('transform', `translate(${rr * Math.cos(RL)},${rr * Math.sin(RL)}) rotate(${RL * 180 / Math.PI + 90})`).text(`${s} · ${G.meta.stages[s].name}`); });
+const STAGE_R = [[0, 248], [1, 482], [2, 662], [3, 788], [4, 962]];
+const RL = -152 * Math.PI / 180; // ring labels sit at ten o'clock, tangent to their ring
+STAGE_R.forEach(([s, r]) => { ringG.append('circle').attr('class', 'ring').attr('r', r).attr('data-stage', s); const rr = r - 14; ringG.append('text').attr('class', 'ringlab').attr('data-stage', s).attr('transform', `translate(${rr * Math.cos(RL)},${rr * Math.sin(RL)}) rotate(${RL * 180 / Math.PI + 90})`).text(`${s} · ${G.meta.stages[s].name}`); });
 // sector arcs + curved labels outside the last ring
 const BRANCH_NAME = {}; nodes.filter(n => n.type === 'branch').forEach(b => BRANCH_NAME[b.id.slice(2)] = b.label.slice(2));
-SECTORS.forEach(s => { const [lo, hi] = span[s]; const arc = d3.arc()({innerRadius: RMAX + 172, outerRadius: RMAX + 172, startAngle: lo + Math.PI / 2, endAngle: hi + Math.PI / 2});
+SECTORS.forEach(s => { const [lo, hi] = span[s]; const arc = d3.arc()({innerRadius: RMAX + 262, outerRadius: RMAX + 262, startAngle: lo + Math.PI / 2, endAngle: hi + Math.PI / 2});
   ringG.append('path').attr('class', 'sector').attr('d', arc).attr('data-stage', 4);
-  const rl = RMAX + 188;
+  const rl = RMAX + 284;
   const p = d3.path(); const upper = Math.sin((lo + hi) / 2) < 0; // top half: text runs clockwise; bottom half: reverse so it reads upright
-  if (upper) p.arc(0, 0, rl, lo, hi); else p.arc(0, 0, rl + 10, hi, lo, true);
+  if (upper) p.arc(0, 0, rl, lo, hi); else p.arc(0, 0, rl + 26, hi, lo, true);
   ringG.append('path').attr('id', 'sec_' + s).attr('d', p.toString()).attr('fill', 'none').attr('stroke', 'none');
   const t = ringG.append('text').attr('class', 'sectorlab').attr('data-stage', 4); t.append('textPath').attr('href', '#sec_' + s).attr('startOffset', '50%').attr('text-anchor', 'middle').text(`${s} · ${BRANCH_NAME[s]}`); });
 // edges
 const eColor = e => { const u = byId.get(e.s), v = byId.get(e.t); const p = u.type === 'paper' ? u : v.type === 'paper' ? v : null; if (p) return LVL[p.level]; const c = u.type === 'compound' ? u : v.type === 'compound' ? v : null; if (c) return LVL[c.level]; return null; };
 const E = eG.selectAll('path').data(edges.filter(e => !e._virtual)).join('path').attr('class', e => `e k-${e.k}`).attr('d', bundlePath).attr('data-stage', e => e.stage).style('stroke', e => eColor(e));
 // nodes
-const R = {root:18, question:9.5, subtopic:4.5, branch:8, leaf:4, paper:4, element:8, compound:5.5, route:7, record:3, agent:4, char:4, failure:4.5, section:4.5, claim:2.2, tree:8, gap:4, recipe:3, direction:5.5, workflow:5.5, case:5.5};
-const rad = n => n.type === 'paper' && n.level === 'D0' ? 7 : n.type === 'compound' && n.level === 'D0' ? 8.5 : n.type === 'claim' && n.stage === 4 ? 4 : n.type === 'recipe' && n.top ? 4.5 : n.type === 'element' && !n.core ? 6.5 : R[n.type];
+const R = {root:38, question:16, subtopic:5.5, branch:13, leaf:4.5, paper:5, element:10, compound:7.5, route:10, record:4, agent:5, char:5, failure:6.5, section:5.5, claim:2.6, tree:11, gap:6, recipe:4, direction:7.5, workflow:7.5, case:7.5};
+const rad = n => n.type === 'paper' && n.level === 'D0' ? 9 : n.type === 'compound' && n.level === 'D0' ? 11 : n.type === 'claim' && n.stage === 4 ? 5.5 : n.type === 'recipe' && n.top ? 6 : n.type === 'element' && !n.core ? 8 : R[n.type];
 const fillOf = n => { switch (n.type){ case 'root': return C.white; case 'question': return C.white; case 'subtopic': return '#7C8A99'; case 'branch': return C.white; case 'leaf': { const l = n.levels.find(l => LVL[l]); return l ? LVL[l] : '#7C8A99'; }
   case 'paper': case 'compound': return LVL[n.level]; case 'element': return n.core ? C.white : '#7C8A99'; case 'route': return n.leaf ? C.white : '#4F5B68'; case 'record': return n.zone.startsWith('A') ? C.target : n.zone.startsWith('B') ? C.lineage : '#C9D4DE';
   case 'agent': return '#C9D4DE'; case 'char': return '#C9D4DE'; case 'failure': return C.crit; case 'section': return n.stage === 4 ? C.white : '#7C8A99'; case 'claim': return n.stage === 4 ? C.target : (n.evidence.some(e => e.strength === 'strong') ? '#C9D4DE' : '#6B7A8B');
   case 'tree': return C.white; case 'gap': return '#0B1017'; case 'recipe': return n.top ? C.ai : '#0B1017'; case 'direction': return C.ai; case 'workflow': return '#C9D4DE'; case 'case': return '#0B1017'; } return '#7C8A99'; };
 const strokeOf = n => n.type === 'gap' ? C.crit : n.type === 'case' ? C.white : n.type === 'recipe' && !n.top ? C.ai : (n.type === 'paper' && n.fulltext) ? C.white : (n.type === 'compound' && n.level === 'H') ? C.ai : (n.type === 'paper' && n.level === 'D0') || (n.type === 'compound' && n.level === 'D0') ? C.white : null;
-const HEAD = n => ['root','question','branch','route','tree','direction','workflow','case'].includes(n.type) || (n.type === 'element' && n.core) || (n.type === 'compound' && (n.level === 'D0' || n.level === 'D1' || n.level === 'H')) || (n.type === 'paper' && n.level === 'D0') || n.type === 'gap' || n.type === 'failure' || (n.type === 'section' && n.stage === 4);
-const ZOOM1 = n => ['subtopic','leaf','paper','compound','agent','char','section','element'].includes(n.type) || (n.type === 'recipe' && n.top) || (n.type === 'claim' && n.stage === 4);
+const HEAD = n => ['root','route','tree','direction','workflow','case'].includes(n.type) || (n.type === 'element' && n.core) || (n.type === 'compound' && (n.level === 'D0' || n.level === 'H')) || (n.type === 'paper' && n.level === 'D0') || n.type === 'gap' || n.type === 'failure' || (n.type === 'section' && n.stage === 4);
+const ZOOM1 = n => ['subtopic','leaf','paper','compound','agent','char','section','element','branch'].includes(n.type) || (n.type === 'recipe' && n.top) || (n.type === 'claim' && n.stage === 4);
 const labelOf = n => { switch (n.type){ case 'root': return '调研主题'; case 'question': return n.label.replace('目标 ', 'Q'); case 'subtopic': return n.label.slice(3); case 'branch': return n.label.slice(2); case 'leaf': return n.label; case 'paper': return n.label; case 'element': return n.sym;
-  case 'route': return n.label.split(' · ')[0]; case 'record': return n.label; case 'tree': return n.label.replace(/（\d+）/, ''); case 'claim': return n.stage === 4 ? short(n.text, 26) : n.label; case 'gap': return n.label; case 'recipe': return plain(n.label); case 'direction': return n.label.replace(/^方向 \d · /, ''); case 'workflow': return n.label.slice(5); case 'case': return n.label; case 'section': return n.label; } return plain(n.label); };
+  case 'route': return n.label.split(' · ')[0]; case 'record': return n.label; case 'tree': return n.label.replace(/（\d+）/, '').replace('优先实验方向', '实验方向').replace('OpenLab 自动化工作流（仿真）', '自动化工作流（仿真）').replace('同根长出的其他调研树', '同根的其他调研'); case 'claim': return n.stage === 4 ? short(n.text, 26) : n.label; case 'gap': return n.label; case 'recipe': return plain(n.label); case 'direction': return n.label.replace(/^方向 \d · /, ''); case 'workflow': return n.label.slice(5); case 'case': return n.label; case 'section': return n.label; } return plain(n.label); };
 const N = nG.selectAll('g').data(nodes).join('g').attr('class', n => `n t-${n.type}`).attr('transform', n => `translate(${n.x},${n.y})`).attr('data-stage', n => n.stage);
 N.each(function(n){ const g = d3.select(this), r = rad(n), f = fillOf(n), s = strokeOf(n);
   if (['root','tree','route','paper','compound','direction','recipe','failure','question'].includes(n.type) || (n.type === 'claim' && n.stage === 4)) g.append('circle').attr('r', r * (n.type === 'root' ? 1.6 : 1.9)).attr('fill', f).attr('opacity', n.type === 'root' ? .35 : (n.type === 'claim' ? .25 : .32)).attr('filter', n.type === 'root' ? 'url(#glow2)' : 'url(#glow)').attr('class', 'halo');
   if (n.type === 'record') g.append('rect').attr('x', -r).attr('y', -r).attr('width', 2 * r).attr('height', 2 * r).attr('fill', f).attr('transform', 'rotate(45)');
   else g.append('circle').attr('r', r).attr('fill', f).attr('stroke', s).attr('stroke-width', s ? 1.6 : 0).attr('stroke-dasharray', (n.type === 'gap' || n.type === 'case' || (n.type === 'recipe' && !n.top) || (n.type === 'compound' && n.level === 'H')) ? '3 2' : null);
-  if (n.type === 'question'){ g.append('circle').attr('r', 2.4).attr('cx', r + 4).attr('cy', -r - 1).attr('fill', n.status === '已回答' ? C.ok : 'none').attr('stroke', n.status === '已回答' ? C.ok : C.target).attr('stroke-width', 1.3); g.append('text').attr('class', 'inner').attr('y', 3.4).text('Q' + n.id.slice(1)); const right = Math.cos(n.a) >= 0; g.append('text').attr('class', 'lab zoom').attr('x', right ? r + 5 : -(r + 5)).attr('y', 4).attr('text-anchor', right ? 'start' : 'end').text(n.label.slice(7)); return; }
-  if (n.type === 'element'){ g.append('text').attr('class', 'inner').attr('y', 3.2).text(n.sym); if (n.core) g.append('text').attr('class', 'lab zoom').attr('x', r + 4).attr('y', 3.5).text(n.label.slice(3)); return; }
+  if (n.type === 'question'){ g.append('circle').attr('r', 4).attr('cx', r + 5).attr('cy', -r - 2).attr('fill', n.status === '已回答' ? C.ok : 'none').attr('stroke', n.status === '已回答' ? C.ok : C.target).attr('stroke-width', 2); g.append('text').attr('class', 'inner').attr('y', 5).text('Q' + n.id.slice(1)); curved(n, RG.question[0] + r + 16, n.label.slice(7), 'q'); return; }
+  if (n.type === 'root'){ g.append('text').attr('class', 'inner').attr('y', -2).style('font-size', '15px').text('调研'); g.append('text').attr('class', 'inner').attr('y', 15).style('font-size', '15px').text('主题'); return; }
+  if (n.type === 'tree' || (n.type === 'section' && n.stage === 4)){ const ring = nodes.filter(m => m.g === 'tree').sort((a, b) => a.a - b.a); const i = ring.indexOf(n); curved(n, i % 2 ? RG.tree[0] + r + 22 : RG.tree[0] - r - 14, labelOf(n), n.type === 'tree' ? 'tree' : 'tree small'); return; }
+  if (n.type === 'branch'){ g.append('text').attr('class', 'inner').attr('y', 5).text(n.id.slice(2)); const right = Math.cos(n.a) >= 0; g.append('text').attr('class', 'lab zoom').attr('x', right ? r + 6 : -(r + 6)).attr('y', 6).attr('text-anchor', right ? 'start' : 'end').text(n.label.slice(2)); return; }
+  if (n.type === 'element'){ g.append('text').attr('class', 'inner').attr('y', 4.5).text(n.sym); if (n.core) g.append('text').attr('class', 'lab zoom').attr('x', r + 5).attr('y', 6).text(n.label.slice(3)); return; }
   const lab = labelOf(n); if (!lab) return;
   const head = HEAD(n), z1 = !head && ZOOM1(n), z2 = !head && !z1;
-  const t = g.append('text').attr('class', head ? 'lab head' : z1 ? 'lab zoom' : 'lab zoom2').text(head ? fit(lab, n.type === 'root' ? 200 : 150, 12) : fit(lab, 150, 10));
-  if (n.type === 'root'){ t.attr('text-anchor', 'middle').attr('y', r + 15); return; }
-  const right = Math.cos(n.a) >= 0; t.attr('x', right ? r + 5 : -(r + 5)).attr('y', 4).attr('text-anchor', right ? 'start' : 'end');
+  const fs = head ? (n.type === 'route' ? 22 : n.g === 'kid' ? 22 : 24) : 17;
+  const t = g.append('text').attr('class', head ? (n.type === 'route' ? 'lab route' : 'lab head') : z1 ? 'lab zoom' : 'lab zoom2').text(head ? fit(lab, n.g === 'kid' ? 215 : 260, fs) : fit(lab, 280, fs));
+  if (n.type === 'root'){ t.attr('text-anchor', 'middle').attr('y', r + 28); return; }
+  const right = Math.cos(n.a) >= 0; t.attr('x', right ? r + 7 : -(r + 7)).attr('y', fs * 0.36).attr('text-anchor', right ? 'start' : 'end');
   if (n.g === 'kid'){ const deg = n.a * 180 / Math.PI; t.attr('transform', right ? `rotate(${deg})` : `rotate(${deg + 180})`); }
-  if (n.type === 'branch'){ t.attr('x', 0).attr('y', -r - 6).attr('text-anchor', 'middle'); }
+  if (n.type === 'route'){ const i = nodes.filter(m => m.type === 'route').sort((a, b) => a.a - b.a).indexOf(n); t.attr('x', 0).attr('text-anchor', 'middle').attr('y', i % 2 ? r + 26 : -r - 12); }
+  if (n.type === 'compound' || n.type === 'failure'){ t.attr('y', fs * 0.36 + (n.type === 'compound' ? (lvlRank[n.level] % 2 ? 14 : -10) : 0)); }
 });
 // ---------- stage visibility
 function applyStage(s, animate, emph){
@@ -303,8 +320,8 @@ function neighborhood(n){ const ids = new Set([n.id]); const es = new Set();
   adj.get(n.id).forEach(e => { if (e._virtual) return; es.add(e); ids.add(e.s); ids.add(e.t); });
   if (['question','section','tree','branch','route','element'].includes(n.type)){ [...ids].forEach(id => { if (id === n.id) return; const m = byId.get(id); if (m.type === 'section' || (n.type === 'branch' && m.type === 'leaf') || n.type === 'tree' || (n.type === 'route' && m.type === 'record')) adj.get(id).forEach(e => { if (e._virtual) return; if (e.k === 'tree' || e.k === 'records' || e.k === 'support' || e.k === 'produces'){ es.add(e); ids.add(e.s); ids.add(e.t); } }); }); }
   return {ids, es}; }
-function highlight(n){ if (!n){ N.classed('dim', false).classed('hit', false); E.classed('dim', false).classed('hi', false).style('display', null); applyEdgeMode(); return; }
-  const {ids, es} = neighborhood(n); N.classed('dim', d => !ids.has(d.id)).classed('hit', d => d.id === n.id); E.classed('dim', e => !es.has(e)).classed('hi', e => es.has(e)).style('display', e => es.has(e) ? null : (d3.select('#alledges').property('checked') ? null : (STRUCT.has(e.k) ? null : 'none'))); }
+function highlight(n){ if (!n){ N.classed('dim', false).classed('hit', false); cG.selectAll('.clab').classed('dim', false); E.classed('dim', false).classed('hi', false).style('display', null); applyEdgeMode(); return; }
+  const {ids, es} = neighborhood(n); N.classed('dim', d => !ids.has(d.id)).classed('hit', d => d.id === n.id); cG.selectAll('.clab').classed('dim', function(){ return !ids.has(this.dataset.id); }); E.classed('dim', e => !es.has(e)).classed('hi', e => es.has(e)).style('display', e => es.has(e) ? null : (d3.select('#alledges').property('checked') ? null : (STRUCT.has(e.k) ? null : 'none'))); }
 N.on('mouseenter', (ev, n) => { if (!pinned) highlight(n); }).on('mouseleave', () => { if (!pinned) highlight(null); }).on('click', (ev, n) => { ev.stopPropagation(); select(n); });
 svg.on('click', () => { pinned = null; highlight(null); showOverview(); });
 function select(n){ pinned = n; highlight(n); showDetails(n); }
@@ -349,8 +366,8 @@ function showOverview(){ const s = G.meta.stats; d3.select('#panel').html(`<div 
 <h3>怎么读</h3><ul style="padding-left:18px;margin:4px 0"><li>颜色 = 证据来源：${lvlTag('D0')}目标相直接证据（白环 + 放大）${lvlTag('D1')}同一身份谱系 ${lvlTag('N1')}晶体化学近邻 ${lvlTag('P1')}工艺近邻（中性）${lvlTag('X')}边界 ${lvlTag('H')}AI 推断 / 预测（紫，虚线，未经实验验证）。</li><li>连线沿层级束化：文献 → 叶节点 → 分支，主张 → 章节，跨扇区的线向中心汇聚。</li><li>放大到 1.5× 显示文献、化合物等次级标签；2.6× 显示全部。悬停看邻接，点击固定。</li><li>「▶ 生长」逐圈长出，已长出的圈淡化。</li></ul>
 <h3>数据来源</h3><div class="src">${G.meta.built_from.map(esc).join('<br>')}</div>`); }
 function centerOn(n){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const k = Math.max(1.6, d3.zoomTransform(svg.node()).k); svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(width/2 - n.x*k, height/2 - n.y*k).scale(k)); }
-function fitView(animate=true){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const ext = STAGE_R[Math.min(4, curStage)][1] + (curStage >= 4 ? 230 : 40); const k = Math.min(width, height) / (2 * ext); const t = d3.zoomIdentity.translate(width/2, height/2).scale(k); (animate ? svg.transition().duration(700) : svg).call(zoom.transform, t); }
-function fitPoster(){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const ext = RMAX + 214; const k = (height - 24) / (2 * ext); svg.call(zoom.transform, d3.zoomIdentity.translate(width/2 + 10, height/2).scale(k)); }
+function fitView(animate=true){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const ext = STAGE_R[Math.min(4, curStage)][1] + (curStage >= 4 ? 300 : 50); const k = Math.min(width, height) / (2 * ext); const t = d3.zoomIdentity.translate(width/2, height/2).scale(k); (animate ? svg.transition().duration(700) : svg).call(zoom.transform, t); }
+function fitPoster(){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const ext = (EMPH || curStage >= 4) ? RMAX + 340 : STAGE_R[curStage][1] + 90; const k = (height - 24) / (2 * ext); svg.call(zoom.transform, d3.zoomIdentity.translate(width/2 + 70, height/2).scale(k)); }
 // ---------- UI
 const stg = d3.select('#stages'); G.meta.stages.forEach(s => stg.append('button').attr('data-i', s.i).text(`${s.i} ${s.name}`).on('click', () => { applyStage(s.i, true); fitView(); }));
 let playing = null; stg.append('button').attr('class', 'play').text('▶ 生长').on('click', function(){ if (playing){ clearInterval(playing); playing = null; this.textContent = '▶ 生长'; applyStage(curStage, false); return; } applyStage(0, true, true); fitView(); let i = 0; this.textContent = '‖ 暂停'; playing = setInterval(() => { i++; if (i > 4){ clearInterval(playing); playing = null; this.textContent = '▶ 生长'; applyStage(4, true); return; } applyStage(i, true, true); fitView(); }, 2200); });
@@ -363,7 +380,7 @@ const lg = d3.select('#legend'); const item = (sw, txt) => lg.append('span').att
 item(`<span class="ln" style="border-color:${C.ok}"></span>`, '章节 → 回答目标'); item(`<span class="ln" style="border-color:${C.target}"></span>`, '根 → 长出新树'); item(`<span class="ln" style="border-color:${C.ai}"></span>`, '新树 → 关联实体');
 lg.append('span').style('margin-left', 'auto').attr('class', 'stats').html(`<span><b>${G.meta.stats.papers}</b> 文献</span><span><b>${G.meta.stats.claims}</b> 主张</span><span><b>${G.meta.stats.records}</b> 条件记录</span><span><b>${G.meta.stats.nodes}</b> 节点</span><span><b>${G.meta.stats.edges}</b> 边</span>`);
 function chrome(){ const s = G.meta.stats, st = G.meta.stages[curStage]; d3.select('#chrome').html(`<div class="t"><h1>SAGE-Mat 知识森林</h1><div class="sub">${G.meta.subtitle}。中心是调研主题，每一圈年轮是一层生长，八个扇区是文献树的八个分支。</div><div class="st">STAGE ${curStage} · ${st.name}</div><div class="sd">${st.desc}</div></div>
-<div class="rings">${G.meta.stages.map(x => `<div style="opacity:${x.i <= curStage ? 1 : .35}"><b>${x.i}</b>${x.name}</div>`).join('')}</div>
+<div class="rings"><div class="h">年轮 · 五层生长</div>${G.meta.stages.map(x => `<div style="opacity:${x.i <= curStage ? 1 : .35}"><b>${x.i}</b>${x.name}</div>`).join('')}<div class="h">扇区 · 文献树八分支</div>${SECTORS.map(k => `<div style="opacity:${curStage >= 1 ? 1 : .35}"><b>${k}</b>${BRANCH_NAME[k]}</div>`).join('')}</div>
 <div class="lg"><div><i style="background:${C.target}"></i><b>D0</b> 目标相直接证据（白环） <i style="background:${C.lineage};margin-left:14px"></i><b>D1</b> 同一身份谱系 <i style="background:${C.near};margin-left:14px"></i><b>N1</b> 晶体化学近邻 <i style="background:${C.proc};margin-left:14px"></i><b>P1</b> 工艺近邻 <i style="background:${C.x};margin-left:14px"></i><b>X</b> 边界</div><div><i style="background:${C.ai}"></i><b>紫</b> AI 推断 / 预测（虚线，未经实验验证） <i style="background:${C.crit};margin-left:14px"></i><b>红</b> 失败模式 · 证据缺口 <i style="background:${C.ok};margin-left:14px"></i><b>绿</b> 目标已回答</div></div>
 <div class="ks"><div><b>${s.papers}</b>篇文献 · 全部通过引用闸门</div><div><b>${s.claims}</b>条主张 · ${s.claims_trace} 条带原始条件溯源</div><div><b>${s.records}</b>条逐字段合成条件记录</div><div><b>${s.nodes}</b>节点 · ${s.edges} 边 · 全部由证据包生成</div></div>`); }
 applyStage(curStage, false, EMPH);
