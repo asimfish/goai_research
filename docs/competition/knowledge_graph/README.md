@@ -12,6 +12,7 @@
 | `graph.json` | 图数据：`meta`（统计、阶段说明、证据等级）、`nodes`、`edges` |
 | `build_graph.py` | 生成脚本：`python3 build_graph.py` 重新生成上面两个文件 |
 | `template.html` | 页面模板（`build_graph.py` 把 JSON 注入 `/*__GRAPH_JSON__*/null`） |
+| `deck_explainer.py` | 讲解幻灯片生成：在比赛模板的内容版式上生成 3 页（搭建机制总览、第 1–4 级、第 5–8 级），`--deck 模板.pptx --img <各级缩略图目录> --out 输出.pptx` |
 | `knowledge_layers.html` / `layers_template.html` | 逐层展开动画版：八级依次展开，当前级贴外框做文字卡片，已展开级收缩成中心的圆点树，卡片与圆点互相形变，底部字幕逐级说明。`?level=1..8` 停在某级，`?t=<秒>` 停在某时刻，`?movie=1` 隐藏控件，`?autoplay=1` 自动播放；页面暴露 `window.__seek(t)` 供逐帧抓取 |
 
 线上：<https://asimfish.github.io/goai-dashboard/knowledge_graph.html>；
