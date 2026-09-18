@@ -12,10 +12,12 @@
 | `graph.json` | 图数据：`meta`（统计、阶段说明、证据等级）、`nodes`、`edges` |
 | `build_graph.py` | 生成脚本：`python3 build_graph.py` 重新生成上面两个文件 |
 | `template.html` | 页面模板（`build_graph.py` 把 JSON 注入 `/*__GRAPH_JSON__*/null`） |
+| `knowledge_layers.html` / `layers_template.html` | 逐层展开动画版：八级依次展开，当前级贴外框做文字卡片，已展开级收缩成中心的圆点树，卡片与圆点互相形变，底部字幕逐级说明。`?level=1..8` 停在某级，`?t=<秒>` 停在某时刻，`?movie=1` 隐藏控件，`?autoplay=1` 自动播放；页面暴露 `window.__seek(t)` 供逐帧抓取 |
 
 线上：<https://asimfish.github.io/goai-dashboard/knowledge_graph.html>；
 五张阶段海报（3072×1728）在看板 `pdf/gallery/sagemat_knowledge_forest_20260918_stage{0..4}_3072x1728.png`；
-逐层生长动画 `pdf/gallery/sagemat_knowledge_forest_20260918_growth_1280x720.gif`（旧层淡化、新层突出，每层停留 2.6 s）。
+逐层生长动画 `pdf/gallery/sagemat_knowledge_forest_20260918_growth_1280x720.gif`（年轮版，旧层淡化、新层突出）；
+逐层展开动画（卡片版）：<https://asimfish.github.io/goai-dashboard/knowledge_layers.html?autoplay=1>，GIF 与八张分级海报 `pdf/gallery/sagemat_knowledge_layers_20260919_*`。
 
 ## 五层怎么长
 
