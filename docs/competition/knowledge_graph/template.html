@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAGE-Mat 知识森林</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{--ground:#F1F4F7;--panel:#FFFFFF;--line:#D7DEE6;--line-2:#BFC9D4;--text:#13202C;--muted:#5A6A7A;--faint:#8A97A5;
+--tele:#1E8FA8;--tele-2:#5FB3C9;--heat:#E06A1B;--heat-soft:rgba(224,106,27,.12);--ok:#1F9D62;--gold:#B0841A;--blue:#3D63D6;--purple:#7A4FD6;--crit:#C93D2C;--grey:#8A97A5;}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ground);color:var(--text);font-family:"IBM Plex Sans","Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:13px}
+#app{display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:1fr 380px;height:100%}
+header{grid-column:1/3;display:flex;align-items:center;gap:18px;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+header h1{font:700 18px/1.1 "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;margin:0;letter-spacing:.2px}
+header h1 small{display:block;font:500 11px/1.3 "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted);margin-top:2px;letter-spacing:0}
+.stages{display:flex;gap:4px;align-items:center}
+.stages button{font:500 12px/1 "IBM Plex Sans","Noto Sans SC",sans-serif;padding:7px 10px;border:1px solid var(--line-2);background:#fff;border-radius:6px;cursor:pointer;color:var(--muted)}
+.stages button.on{background:var(--text);color:#fff;border-color:var(--text)}
+.stages button.done{border-color:var(--tele);color:var(--tele)}
+.stages button.play{border-color:var(--heat);color:var(--heat);font-weight:600}
+.stagedesc{flex:1;min-width:0;color:var(--muted);font-size:12px;line-height:1.35}
+.stagedesc b{color:var(--text)}
+.tools{display:flex;gap:6px;align-items:center}
+.tools input{font:400 12px "IBM Plex Sans","Noto Sans SC",sans-serif;padding:6px 9px;border:1px solid var(--line-2);border-radius:6px;width:190px;background:#fff}
+.tools button,.tools label{font:500 12px "IBM Plex Sans","Noto Sans SC",sans-serif;padding:6px 9px;border:1px solid var(--line-2);background:#fff;border-radius:6px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.tools label input{width:auto;margin:0}
+#stage{position:relative;overflow:hidden;background:var(--ground)}
+svg{width:100%;height:100%;display:block;cursor:grab}
+svg:active{cursor:grabbing}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:14px 16px;font-size:12.5px;line-height:1.5}
+aside h2{font:700 15px/1.25 "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;margin:0 0 6px}
+aside h3{font:600 11px/1.2 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+aside .kicker{font:500 11px "IBM Plex Mono",monospace;color:var(--tele);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+aside .src{font:400 11px "IBM Plex Mono",monospace;color:var(--faint);margin-top:10px;word-break:break-all;border-top:1px dashed var(--line);padding-top:8px}
+aside a{color:var(--tele);text-decoration:none}
+aside a:hover{text-decoration:underline}
+aside code{font:400 11px "IBM Plex Mono",monospace;background:#F1F4F7;padding:1px 4px;border-radius:3px}
+.chip{display:inline-block;font:500 11px "IBM Plex Sans","Noto Sans SC",sans-serif;padding:2px 7px;border:1px solid var(--line-2);border-radius:999px;margin:2px 3px 2px 0;cursor:pointer;background:#fff;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.chip:hover{border-color:var(--tele);color:var(--tele)}
+.chip.lvl-D0{border-color:var(--heat);color:var(--heat)}.chip.lvl-D1{border-color:var(--gold);color:var(--gold)}.chip.lvl-N1{border-color:var(--tele);color:var(--tele)}.chip.lvl-P1{border-color:var(--blue);color:var(--blue)}.chip.lvl-X{border-color:var(--grey);color:var(--grey)}.chip.lvl-H{border-color:var(--purple);color:var(--purple);border-style:dashed}
+.tag{display:inline-block;font:600 10.5px "IBM Plex Mono",monospace;padding:1px 6px;border-radius:4px;color:#fff;background:var(--muted);margin-right:4px;vertical-align:middle}
+.tag.ok{background:var(--ok)}.tag.heat{background:var(--heat)}.tag.tele{background:var(--tele)}.tag.grey{background:var(--grey)}.tag.crit{background:var(--crit)}.tag.purple{background:var(--purple)}.tag.gold{background:var(--gold)}
+.kv{display:grid;grid-template-columns:78px 1fr;gap:3px 8px;margin:6px 0}
+.kv div:nth-child(odd){color:var(--muted);font-size:11.5px}
+.kv .na{color:var(--faint)}
+.claimtext{border-left:3px solid var(--tele);padding:4px 8px;background:#F7FAFB;margin:6px 0;border-radius:0 4px 4px 0}
+.ev{margin:5px 0;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#FBFCFD}
+.ev .t{font-size:12px}
+.ev .n{color:var(--muted);font-size:11.5px;margin-top:2px}
+footer{grid-column:1/3;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;padding:6px 16px;background:var(--panel);border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+footer .lg{display:inline-flex;align-items:center;gap:5px}
+footer .sw{width:11px;height:11px;border-radius:3px;border:1.5px solid var(--line-2);display:inline-block}
+footer .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+footer .ln{width:20px;height:0;border-top:2px solid var(--line-2);display:inline-block}
+.stats{display:flex;gap:10px;flex-wrap:wrap;font:500 11px "IBM Plex Mono",monospace;color:var(--muted)}
+.stats b{color:var(--text);font-size:12px}
+/* svg */
+.n text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif;pointer-events:none;fill:var(--text)}
+.n .lab{font-size:11px}
+.n.dim{opacity:.10}
+.n.hit rect,.n.hit circle{stroke-width:2.5px}
+.e{fill:none;stroke:var(--line-2);stroke-width:1;opacity:.55}
+.e.dim{opacity:.03}
+.e.hi{opacity:.95;stroke-width:1.8}
+.e.k-tree{stroke:#9AA8B6;opacity:.7}
+.e.k-support{stroke:var(--tele);opacity:.28}
+.e.k-cites{stroke:#7F8C9A;opacity:.18}
+.e.k-mentions{stroke:var(--tele);opacity:.12;stroke-dasharray:2 3}
+.e.k-reports,.e.k-produces{stroke:var(--heat);opacity:.30}
+.e.k-records,.e.k-route,.e.k-uses,.e.k-characterised,.e.k-traces{stroke:var(--tele);opacity:.22}
+.e.k-defines,.e.k-maps,.e.k-serves{stroke:#9AA8B6;opacity:.35;stroke-dasharray:3 3}
+.e.k-answers{stroke:var(--ok);opacity:.55;stroke-width:1.6}
+.e.k-grows{stroke:var(--heat);opacity:.8;stroke-width:2}
+.e.k-about,.e.k-candidate,.e.k-predicts_for,.e.k-evidence{stroke:var(--purple);opacity:.30}
+.e.k-duplicate{stroke:var(--grey);stroke-dasharray:2 2}
+.colhead{font:600 12px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted);letter-spacing:.06em}
+.colsub{font:400 10.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--faint)}
+.band{fill:#fff;stroke:var(--line);rx:10}
+.grp{font:500 10px "IBM Plex Mono",monospace;fill:var(--faint);letter-spacing:.06em}
+body.poster #app{grid-template-columns:1fr;grid-template-rows:1fr}
+body.poster header,body.poster aside,body.poster footer{display:none}
+body.poster svg{cursor:default}
+.poster-title{font:700 30px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.poster-sub{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.poster-stage{font:600 13px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.08em}
+.poster-legend{font:500 11.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+@media (max-width:1000px){#app{grid-template-columns:1fr}aside{display:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>SAGE-Mat 知识森林<small id="subtitle"></small></h1>
+    <div class="stages" id="stages"></div>
+    <div class="stagedesc" id="stagedesc"></div>
+    <div class="tools">
+      <input id="q" placeholder="搜索：化合物 / 文献 / 主张 / 路线…">
+      <label title="平时只画结构连线；勾选后画出全部引用与实体连线"><input type="checkbox" id="alledges">全部连线</label>
+      <button id="fit">适配视图</button>
+    </div>
+  </header>
+  <div id="stage"><svg id="svg"></svg></div>
+  <aside id="panel"></aside>
+  <footer id="legend"></footer>
+</div>
+<script>
+const G = /*__GRAPH_JSON__*/null;
+const params = new URLSearchParams(location.search);
+const POSTER = params.get('poster') === '1';
+if (POSTER) document.body.classList.add('poster');
+let curStage = params.has('stage') ? +params.get('stage') : (POSTER ? 4 : 4);
+const nodes = G.nodes, edges = G.edges;
+const byId = new Map(nodes.map(n => [n.id, n]));
+edges.forEach(e => { e.stage = Math.max(byId.get(e.s).stage, byId.get(e.t).stage); });
+const adj = new Map(nodes.map(n => [n.id, []]));
+edges.forEach(e => { adj.get(e.s).push(e); adj.get(e.t).push(e); });
+const C = {tele:'#1E8FA8', heat:'#E06A1B', ok:'#1F9D62', gold:'#B0841A', blue:'#3D63D6', purple:'#7A4FD6', crit:'#C93D2C', grey:'#8A97A5', text:'#13202C', muted:'#5A6A7A', line:'#D7DEE6', line2:'#BFC9D4'};
+const LVL = {D0:C.heat, D1:C.gold, N1:C.tele, P1:C.blue, X:C.grey, H:C.purple};
+const LVLTINT = {D0:'#FDEEE3', D1:'#F7F0DE', N1:'#E6F3F6', P1:'#E8ECFA', X:'#EEF1F4', H:'#F1EBFB'};
+const STRUCT = new Set(['tree','support','records','route','produces','grows','candidate','answers','about','predicts_for','maps','serves','evidence']);
+// ---------- unicode subscripts for SVG labels
+const SUBMAP = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','+':'₊','−':'₋','-':'₋','(':'₍',')':'₎','x':'ₓ','a':'ₐ','e':'ₑ','o':'ₒ','n':'ₙ','m':'ₘ','h':'ₕ','k':'ₖ','l':'ₗ','p':'ₚ','s':'ₛ','t':'ₜ','i':'ᵢ','r':'ᵣ','u':'ᵤ','v':'ᵥ','.':'.','/':'/'};
+const SUPMAP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','−':'⁻','-':'⁻'};
+function plain(h){ // html label -> svg text
+  return String(h).replace(/<sub>(.*?)<\/sub>/g,(m,s)=>[...s].map(c=>SUBMAP[c]||c).join(''))
+                  .replace(/<sup>(.*?)<\/sup>/g,(m,s)=>[...s].map(c=>SUPMAP[c]||c).join(''))
+                  .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+}
+function tw(s, px){ let w=0; for (const ch of s){ const c=ch.codePointAt(0); w += (c>0x2E80)?px:(/[₀-₉ₓ₊₋ₐₑₒₙₘₕₖₗₚₛₜ]/.test(ch)?px*.42:(/[A-Z]/.test(ch)?px*.66:(/[a-z0-9]/.test(ch)?px*.55:px*.4))); } return w; }
+function fit(s, maxPx, px){ if (tw(s,px)<=maxPx) return s; let out=''; for (const ch of s){ if (tw(out+ch+'…',px)>maxPx) break; out+=ch; } return out+'…'; }
+// ---------- geometry per type
+const SZ = {claim4:[206,16], root:[150,34], question:[196,24], subtopic:[176,19], branch:[190,23], leaf:[214,18], paper:[6,6], compound:[212,18], route:[176,21], record:[36,16], agent:[150,16], char:[150,16], failure:[196,16], section:[210,17], claim:[4,4], tree:[200,23], gap:[196,16], recipe:[200,15], direction:[204,18], workflow:[196,16], case:[196,16]};
+const COL = {root:70, question:330, subtopic:600, branch:870, leaf:1140, paper:1395, compound:1690, agent:1690, route:1960, record:1960, char:1960, failure:1960, section:2240, claim:2400, tree:2640, gap:2900, recipe:2900, direction:2900, workflow:2900, case:2900, claim4:2900, section4:2640};
+const HEADS = [[70,'0 · 个人知识树','调研主题 → 预期目标 → 子主题'],[870,'1 · 文献树','分支 → 叶节点 → 51 篇文献'],[1690,'2 · 实体主干','化合物 · 前驱体 | 路线 · 条件记录 · 表征 · 失败'],[2240,'3 · 结论树','章节 → 100 条主张 ↔ 目标'],[2640,'4 · 长出的新树','结论 · 缺口 · 预测 · 方向 · 工作流 · 其他树']];
+const T = n => (n.type==='claim'&&n.stage===4)?'claim4':(n.type==='section'&&n.stage===4)?'section4':n.type;
+const SZof = n => SZ[T(n)] || SZ[n.type];
+const isDot = n => n.type==='paper' || (n.type==='claim' && n.stage<4);
+function layout(){
+  const of = t => nodes.filter(n => T(n)===t);
+  const stack = (arr, gap, y0=0) => { let y=y0; arr.forEach(n => { const h=SZof(n)[1]; n.y = y + h/2; y += h + gap; }); return y; };
+  const mean = arr => arr.reduce((a,n)=>a+n.y,0)/Math.max(1,arr.length);
+  const neigh = (n, kind, dir) => adj.get(n.id).filter(e=>e.k===kind && (dir==='out'?e.s===n.id:e.t===n.id)).map(e=>byId.get(dir==='out'?e.t:e.s));
+  // column 4: leaves grouped by branch
+  const branches = of('branch'); let y=0; const leafOrder=[];
+  branches.forEach(b => { const ls = neigh(b,'tree','out'); y = stack(ls, 3, y); leafOrder.push(...ls); b.y = mean(ls); y += 22; });
+  const H1 = y;
+  // papers: order by first leaf position (then year)
+  const papers = of('paper'); const leafY = new Map(leafOrder.map(l=>[l.id,l.y]));
+  papers.forEach(p => { const ls = p.leaves.map(l=>leafY.get('L_'+l)).filter(v=>v!==undefined); p._k = ls.length?Math.min(...ls):1e9; });
+  papers.sort((a,b)=>a._k-b._k || (a.year||'').localeCompare(b.year||''));
+  const gapP = Math.max(6, (H1 - papers.length*12)/(papers.length-1)); stack(papers, gapP, 0);
+  // column 6: compounds (by level) then agents
+  const comps = of('compound').sort((a,b)=>({D0:0,D1:1,N1:2,P1:3,X:4,H:5})[a.level]-({D0:0,D1:1,N1:2,P1:3,X:4,H:5})[b.level]);
+  let y6 = stack(comps, 3, 0) + 26; y6 = stack(of('agent'), 3, y6);
+  // column 7: routes with their records, then char, then failure
+  const routes = of('route'); let y7 = 0; const recs = of('record'); const placed=new Set();
+  routes.forEach(r => { const rs = recs.filter(x => adj.get(x.id).some(e=>e.k==='route'&&e.t===r.id) && !placed.has(x.id)); r.y = y7 + SZ.route[1]/2; y7 += SZ.route[1] + 4;
+    // lay records in rows of 6 beside the route
+    let cx=0, row=0; rs.forEach((x,i)=>{ x.y = y7 + row*(SZ.record[1]+3) + SZ.record[1]/2; x._dx = (i%6)*(SZ.record[0]+4) - 2.5*(SZ.record[0]+4); placed.add(x.id); if (i%6===5) row++; }); if (rs.length) y7 += (row+ (rs.length%6?1:0))*(SZ.record[1]+3); y7 += 10; });
+  const orphan = recs.filter(x=>!placed.has(x.id)); if (orphan.length){ orphan.forEach((x,i)=>{ x.y=y7+SZ.record[1]/2; x._dx=(i%6)*(SZ.record[0]+4)-2.5*(SZ.record[0]+4);}); y7 += SZ.record[1]+10; }
+  y7 += 12; y7 = stack(of('char'), 3, y7) + 16; y7 = stack(of('failure'), 3, y7);
+  // column 8/9: sections (stage 3) with their claims
+  const secs = of('section'); let y8 = 0; const claims = of('claim');
+  secs.forEach(s => { const cs = claims.filter(c=>c.section===s.id); let cx=0,row=0; cs.forEach((c,i)=>{ c.y = y8 + 9 + row*11; c._dx = (i%10)*10 - 45; if (i%10===9) row++; }); const rows = Math.ceil(cs.length/10); s.y = y8 + Math.max(SZ.section[1], rows*11)/2 + 1; y8 += Math.max(SZ.section[1], rows*11) + 9; });
+  // column 10/11: trees & their children
+  const trees = [...of('section4'), ...of('tree')]; let y10 = 0;
+  trees.forEach(t => { const kids = neigh(t,'tree','out'); y10 = stack(kids, 3, y10); t.y = mean(kids); y10 += 18; });
+  // recipe children are under compounds (targets) — place them after gaps via their own tree: handled by 'candidate' edges: put them under T_recipe
+  const rec = of('recipe'); if (rec.length){ /* they were not stacked (not tree kids of T_recipe); insert them */ }
+  // column 1/2: questions + subtopics spread
+  const qs = of('question'), ss = of('subtopic');
+  const Hmax = Math.max(H1, y6, y7, y8, y10, 1380);
+  const spread = (arr, H) => { const step = (H - SZof(arr[0])[1]) / Math.max(1,arr.length-1); arr.forEach((n,i)=> n.y = SZof(n)[1]/2 + i*step); };
+  // stretch every column to the common height so the canvas is ~2:1 instead of 3:1
+  const stretch = (arr, h, H) => { const f = (H - 8) / Math.max(h, 1); arr.forEach(n => { n.y = 4 + n.y * f; }); };
+  stretch(leafOrder.concat(branches), H1, Hmax); stretch(papers, H1, Hmax); stretch(comps.concat(of('agent')), y6, Hmax); stretch(routes.concat(recs, of('char'), of('failure')), y7, Hmax);
+  stretch(secs.concat(claims.filter(c=>c.stage<4)), y8, Hmax); stretch(trees.concat(of('gap'),of('direction'),of('workflow'),of('case'),of('recipe'),claims.filter(c=>c.stage===4)), y10, Hmax);
+  spread(qs, Hmax*0.42); qs.forEach(n=>n.y += Hmax*0.02); spread(ss, Hmax*0.5); ss.forEach(n=>n.y += Hmax*0.48);
+  of('root')[0].y = Hmax/2;
+  nodes.forEach(n => { n.x = COL[T(n)] + (n._dx||0); });
+  return Hmax;
+}
+// recipe nodes: hang them under T_recipe in the layout by treating 'candidate' edges as tree for placement
+(function(){ const tr = byId.get('T_recipe'); nodes.filter(n=>n.type==='recipe').forEach(n=>{ edges.push({s:'T_recipe', t:n.id, k:'tree', stage:4, _virtual:true}); adj.get('T_recipe').push(edges[edges.length-1]); adj.get(n.id).push(edges[edges.length-1]); }); })();
+const HMAX = layout();
+// ---------- svg
+const svg = d3.select('#svg'), root = svg.append('g');
+const zoom = d3.zoom().scaleExtent([0.15, 4]).on('zoom', ev => root.attr('transform', ev.transform));
+svg.call(zoom);
+if (POSTER) svg.on('.zoom', null);
+const bandsG = root.append('g'), eG = root.append('g'), nG = root.append('g'), headG = root.append('g');
+// bands per column group
+const BANDS = [[COL.root-95, COL.subtopic+95],[COL.branch-100, COL.paper+120],[COL.compound-112, COL.record+130],[COL.section-110, COL.claim+70],[COL.tree-105, COL.gap+105]];
+BANDS.forEach(([x0,x1],i) => bandsG.append('rect').attr('class','band').attr('x',x0).attr('y',-58).attr('width',x1-x0).attr('height',HMAX+84).attr('data-stage',i));
+HEADS.forEach(([x,t,s],i) => { const g = headG.append('g').attr('data-stage',i).attr('transform',`translate(${BANDS[i][0]+14},-38)`); g.append('text').attr('class','colhead').text(t); g.append('text').attr('class','colsub').attr('y',15).text(s); });
+// group labels
+const grpLabels = [[COL.compound-96,'compound','化合物 / 相'],[COL.compound-96,'agent','前驱体 · 助熔剂 · 坩埚'],[COL.record-96,'route','合成路线 → 条件记录'],[COL.record-96,'char','表征终点'],[COL.record-96,'failure','失败模式'],[COL.leaf-102,'leaf','叶节点（支撑文献 ≥3，A1/H1 例外）'],[COL.paper-8,'paper','文献 · 环 = 全文在包内'],[COL.claim-52,'claim','主张 · 点越深证据越强']];
+grpLabels.forEach(([x,t,label]) => { const first = nodes.filter(n=>n.type===t).reduce((a,n)=>Math.min(a,n.y),1e9); headG.append('text').attr('class','grp').attr('x',x).attr('y',first-SZ[t][1]/2-8).attr('data-stage',byId.get(nodes.find(n=>n.type===t).id).stage).text(label); });
+const link = d3.linkHorizontal().x(d=>d[0]).y(d=>d[1]);
+function endpoints(e){ const a=byId.get(e.s), b=byId.get(e.t); const [aw]=SZof(a), [bw]=SZof(b); const ar = isDot(a); const br = isDot(b);
+  let sx=a.x, tx=b.x; if (a.x < b.x){ sx = ar? a.x+aw : a.x+aw/2; tx = br? b.x-bw : b.x-bw/2; } else { sx = ar? a.x-aw : a.x-aw/2; tx = br? b.x+bw : b.x+bw/2; } return {source:[sx,a.y], target:[tx,b.y]}; }
+const E = eG.selectAll('path').data(edges.filter(e=>!e._virtual)).join('path').attr('class', e=>`e k-${e.k}`).attr('d', e=>link(endpoints(e))).attr('data-stage', e=>e.stage);
+const N = nG.selectAll('g').data(nodes).join('g').attr('class', n=>`n t-${n.type}`).attr('transform', n=>`translate(${n.x},${n.y})`).attr('data-stage', n=>n.stage);
+N.each(function(n){ const g = d3.select(this); const [w,h] = SZof(n);
+  if (n.type==='paper'){ g.append('circle').attr('r',w).attr('fill',LVL[n.level]).attr('stroke', n.fulltext?C.text:'#fff').attr('stroke-width', n.fulltext?2:1);
+    g.append('text').attr('class','lab').attr('x',w+4).attr('y',3.5).style('font-size','9.5px').style('fill',C.muted).text(fit(n.label,165,9.5)); return; }
+  if (n.type==='claim' && n.stage<4){ const strong = n.evidence.some(e=>e.strength==='strong'); g.append('circle').attr('r', w).attr('fill', strong?C.muted:'#C5CED8').attr('stroke','#fff').attr('stroke-width',1); return; }
+  let fill='#fff', stroke=C.line2, tcol=C.text, dash=null, sw=1.2, bold=false, fs=11;
+  switch(n.type){
+    case 'root': fill=C.text; stroke=C.text; tcol='#fff'; bold=true; fs=13; break;
+    case 'tree': fill=C.text; stroke=C.text; tcol='#fff'; bold=true; fs=11.5; break;
+    case 'question': stroke=C.tele; sw=1.6; bold=true; break;
+    case 'subtopic': fill='#F7FAFB'; break;
+    case 'branch': fill='#E6EEF3'; stroke='#C9D6DF'; bold=true; break;
+    case 'leaf': { const lv = n.levels.find(l=>LVL[l]); stroke = lv?LVL[lv]:C.line2; break; }
+    case 'compound': fill=LVLTINT[n.level]; stroke=LVL[n.level]; dash = n.level==='H'?'4 3':null; break;
+    case 'route': fill=n.leaf?C.tele:'#fff'; stroke=C.tele; tcol=n.leaf?'#fff':C.tele; dash=n.leaf?null:'4 3'; bold=true; break;
+    case 'record': stroke = n.zone.startsWith('A')?C.heat:(n.zone.startsWith('B')?C.gold:C.tele); fs=10; break;
+    case 'agent': fill='#FBF6EC'; stroke=C.gold; break;
+    case 'char': fill='#EEF5F8'; stroke=C.tele; break;
+    case 'failure': fill='#FDECEA'; stroke=C.crit; break;
+    case 'section': if (n.stage===4){ fill=C.text; stroke=C.text; tcol='#fff'; bold=true; } else { fill='#F1F4F7'; stroke=C.line2; fs=10.5; } break;
+    case 'claim': fill='#FDEEE3'; stroke=C.heat; fs=10; break;
+    case 'gap': stroke=C.crit; dash='4 3'; break;
+    case 'recipe': fill=n.top?'#F1EBFB':'#fff'; stroke=C.purple; dash=n.top?null:'3 3'; fs=10; tcol=n.top?C.text:C.muted; break;
+    case 'direction': fill='#F1EBFB'; stroke=C.purple; bold=true; break;
+    case 'workflow': fill='#E8F5EE'; stroke=C.ok; break;
+    case 'case': stroke=C.text; dash='5 3'; break;
+  }
+  g.append('rect').attr('x',-w/2).attr('y',-h/2).attr('width',w).attr('height',h).attr('rx',n.type==='record'?3:5).attr('fill',fill).attr('stroke',stroke).attr('stroke-width',sw).attr('stroke-dasharray',dash);
+  const label = n.type==='claim' ? `${n.label} ${n.text}` : plain(n.label); const t = g.append('text').attr('class','lab').attr('y',fs*0.36).attr('text-anchor','middle').style('font-size',fs+'px').style('fill',tcol).style('font-weight',bold?600:400).text(fit(label, w-10, fs));
+  if (n.type==='question'){ g.append('circle').attr('cx',w/2-8).attr('cy',0).attr('r',3.5).attr('fill', n.status==='已回答'?C.ok:C.heat); }
+  if (n.type==='recipe' && n.top){ g.append('text').attr('x',w/2-4).attr('y',3.5).attr('text-anchor','end').style('font-size','9px').style('fill',C.purple).style('font-family','"IBM Plex Mono",monospace').text(n.p.toFixed(3)); t.attr('text-anchor','start').attr('x',-w/2+6).text(fit(label, w-48, fs)); }
+  if (n.type==='compound' && n.level){ g.append('text').attr('x',w/2-4).attr('y',3.5).attr('text-anchor','end').style('font-size','8.5px').style('fill',LVL[n.level]).style('font-family','"IBM Plex Mono",monospace').text(n.level); t.attr('text-anchor','start').attr('x',-w/2+6).text(fit(label, w-34, fs)); }
+});
+// ---------- stage visibility
+function applyStage(s, animate){
+  curStage = s;
+  const vis = d => +d3.select(d).attr('data-stage') <= s;
+  const sel = root.selectAll('[data-stage]');
+  if (animate){ sel.filter(function(){ return vis(this); }).transition().duration(600).style('opacity',1); sel.filter(function(){ return !vis(this); }).transition().duration(300).style('opacity',0); }
+  else sel.style('opacity', function(){ return vis(this)?1:0; });
+  sel.style('pointer-events', function(){ return vis(this)?null:'none'; });
+  applyEdgeMode();
+  d3.selectAll('#stages button').classed('on', function(){ return +this.dataset.i===s; }).classed('done', function(){ return +this.dataset.i<s; });
+  const st = G.meta.stages[s]; d3.select('#stagedesc').html(`<b>${st.name}</b> · ${st.desc}`);
+}
+function applyEdgeMode(){ const all = POSTER ? false : d3.select('#alledges').property('checked'); E.style('display', e => (all || STRUCT.has(e.k)) ? null : 'none'); }
+// ---------- highlight & details
+let pinned = null;
+function neighborhood(n){ const ids = new Set([n.id]); const es = new Set();
+  adj.get(n.id).forEach(e=>{ if (e._virtual) return; es.add(e); ids.add(e.s); ids.add(e.t); });
+  if (['question','section','tree','branch','route'].includes(n.type)){ [...ids].forEach(id => { if (id===n.id) return; const m = byId.get(id); if (m.type==='section' || (n.type==='branch'&&m.type==='leaf') || (n.type==='tree') || (n.type==='route'&&m.type==='record')) adj.get(id).forEach(e=>{ if (e._virtual) return; if (e.k==='tree'||e.k==='records'||e.k==='support') { es.add(e); ids.add(e.s); ids.add(e.t); } }); }); }
+  return {ids, es}; }
+function highlight(n){ if (!n){ N.classed('dim',false).classed('hit',false); E.classed('dim',false).classed('hi',false).style('display',null); applyEdgeMode(); return; }
+  const {ids, es} = neighborhood(n); N.classed('dim', d=>!ids.has(d.id)).classed('hit', d=>d.id===n.id); E.classed('dim', e=>!es.has(e)).classed('hi', e=>es.has(e)).style('display', e => es.has(e) ? null : (d3.select('#alledges').property('checked') ? null : (STRUCT.has(e.k)?null:'none'))); }
+N.on('mouseenter', (ev,n)=>{ if (!pinned) highlight(n); }).on('mouseleave', ()=>{ if (!pinned) highlight(null); }).on('click', (ev,n)=>{ ev.stopPropagation(); select(n); });
+svg.on('click', ()=>{ pinned=null; highlight(null); showOverview(); });
+function select(n){ pinned = n; highlight(n); showDetails(n); }
+const esc = s => String(s??'').replace(/&(?!(amp|lt|gt|quot|#\d+);)/g,'&amp;');
+const chip = id => { const m = byId.get(id); if (!m) return ''; const lv = m.level||''; return `<span class="chip ${lv?'lvl-'+lv:''}" data-id="${id}" title="${esc(plain(m.title||m.text||m.label))}">${m.type==='paper'?esc(m.label)+' · '+esc(plain(m.title)).slice(0,60):esc(plain(m.label))}</span>`; };
+function neighborsBy(n){ const out = {}; adj.get(n.id).forEach(e=>{ if (e._virtual) return; const o = e.s===n.id? e.t : e.s; const m = byId.get(o); const k = `${e.k}${e.s===n.id?'→':'←'}${m.type}`; const arr = (out[k] = out[k]||[]); if (!arr.includes(o)) arr.push(o); }); return out; }
+const KIND_CN = {tree:'子节点', support:'支撑', cites:'引用', mentions:'提及', reports:'报道', produces:'产物', records:'条件记录', route:'路线', uses:'使用', characterised:'表征', traces:'条件溯源', answers:'回答', grows:'长出', about:'关联', candidate:'候选前驱体组合', predicts_for:'预测目标', defines:'定义', maps:'对应分支', serves:'服务目标', evidence:'证据', duplicate:'重复记录'};
+const TYPE_CN = {root:'调研主题', question:'预期目标', subtopic:'子主题', branch:'分支', leaf:'叶节点', paper:'文献', compound:'化合物 / 相', route:'合成路线', record:'条件记录', agent:'前驱体 / 助熔剂 / 坩埚', char:'表征终点', failure:'失败模式', section:'章节', claim:'主张', tree:'新树', gap:'证据缺口', recipe:'前驱体组合', direction:'实验方向', workflow:'工作流（仿真）', case:'调研树'};
+function neighborHtml(n, skip=[]){ const nb = neighborsBy(n); let h=''; Object.entries(nb).forEach(([k,ids])=>{ const [kind,rest]=k.split(/[→←]/); const dir = k.includes('→')?'→':'←'; if (skip.includes(kind)) return; const t = rest; h += `<h3>${KIND_CN[kind]||kind} ${dir} ${TYPE_CN[t]||t}（${ids.length}）</h3><div>${ids.slice(0,60).map(chip).join('')}${ids.length>60?`<span class="chip">… 共 ${ids.length}</span>`:''}</div>`; }); return h; }
+const kv = (rows) => `<div class="kv">${rows.map(([k,v])=>`<div>${k}</div><div class="${/^<code>NA<\/code>$/.test(v)?'na':''}">${v||'<span class=na>—</span>'}</div>`).join('')}</div>`;
+function showDetails(n){ const p = d3.select('#panel'); let h = `<div class="kicker">${TYPE_CN[n.type]||n.type} · 第 ${n.stage} 层</div>`;
+  switch(n.type){
+    case 'root': h += `<h2>${esc(n.title)}</h2><p>${esc(n.text)}</p><p>点任一节点看它的出处与邻接；按 0–4 看这棵树怎样长出来。</p>`; break;
+    case 'question': h += `<h2>${esc(n.label)}</h2><p><span class="tag ${n.status==='已回答'?'ok':'heat'}">${n.status}</span></p><div class="claimtext">${esc(n.text)}</div><p>${esc(n.answer)}</p>`; break;
+    case 'subtopic': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text)}</p>`; break;
+    case 'branch': h += `<h2>${esc(n.label)}</h2>`; break;
+    case 'leaf': h += `<h2>${esc(n.label)}</h2><p>${n.levels.map(l=>`<span class="tag" style="background:${LVL[l]||C.muted}">${l}</span>`).join('')} ${n.levels.map(l=>G.meta.levels[l]||'').filter(Boolean).join(' / ')}</p>${kv(Object.entries(n.fields).map(([k,v])=>[k,esc(v)]))}`; break;
+    case 'paper': h += `<h2>${n.title}</h2><p><span class="tag" style="background:${LVL[n.level]}">${n.level}</span>${G.meta.levels[n.level]} · <span class="tag ${n.strength==='strong'?'tele':'grey'}">${n.strength==='strong'?'强支撑':'弱支撑'}</span>${n.fulltext?'<span class="tag ok">全文在包内</span>':''}</p>${kv([['作者',esc(n.authors)],['年份 · 刊物',`${esc(n.year)} · ${esc(n.venue)}`],['DOI',n.doi?`<a href="${n.url}" target="_blank" rel="noopener">${esc(n.doi)}</a>`:(n.url?`<a href="${n.url}" target="_blank" rel="noopener">链接</a>`:'—')],['BibTeX key',`<code>${n.key}</code>`]])}${n.abstract?`<p style="color:var(--muted)">${esc(n.abstract).slice(0,420)}${n.abstract.length>420?'…':''}</p>`:''}`; break;
+    case 'compound': h += `<h2>${n.label}</h2><p><span class="tag" style="background:${LVL[n.level]}">${n.level}</span>${G.meta.levels[n.level]}</p><p>${esc(n.note)}</p>`; break;
+    case 'route': h += `<h2>${esc(n.label)}</h2><p>${esc(n.note)}</p>`; break;
+    case 'record': h += `<h2>条件记录 ${n.label}</h2><p><span class="tag ${n.zone.startsWith('A')?'heat':(n.zone.startsWith('B')?'gold':'tele')}">${esc(n.zone)}</span></p>${kv([['来源与定位',n.source],['目标 / 产物',n.product],['原料 · 配比 · 前处理',n.inputs],['合成方法',n.method],['与目标相关系',n.relation],['温度 – 时间',n.temp_time],['气氛 / 体系',n.atmosphere],['坩埚与助熔',n.crucible_flux],['冷却 / 生长',n.cooling],['产物与表征',n.product_char],['未明确记载',n.missing]])}`; break;
+    case 'agent': h += `<h2>${n.label}</h2><p><span class="tag gold">${n.kind}</span></p>`; break;
+    case 'char': case 'failure': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text||'')}</p>`; break;
+    case 'section': h += `<h2>${esc(n.label)}</h2><p><span class="tag grey">${esc(n.chapter)}</span> <code>${esc(n.file)}</code></p>`; break;
+    case 'claim': h += `<h2>主张 ${n.label}</h2><p>章节：${chip(n.section)}</p><div class="claimtext">${esc(n.text)}</div><h3>引用证据（${n.evidence.length}）</h3>${n.evidence.map(e=>{ const m = byId.get('P_'+e.key); return `<div class="ev"><div class="t"><span class="tag ${e.strength==='strong'?'tele':'grey'}">${e.strength==='strong'?'强':'弱'}</span>${e.fulltext?'<span class="tag ok">全文</span>':''}${m?chip(m.id):esc(e.key)}</div><div class="n">${esc(e.note)}</div>${e.trace.map(t=>`<div class="n">↳ 条件单元 <b>${esc(t.condition_cell)}</b>：${esc(t.location)}</div>`).join('')}</div>`; }).join('')}`; break;
+    case 'tree': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text)}</p>`; break;
+    case 'gap': h += `<h2>${esc(n.label)}</h2><div class="claimtext">${esc(n.text)}</div>`; break;
+    case 'recipe': { const t = byId.get(n.target); h += `<h2>${n.label}</h2><p>目标 ${chip(n.target)}</p>${kv([['排名',`#${n.rank}${n.top?' · 首选':''}`],['候选池内概率',n.p.toFixed(4)],['验证状态','<code>model_output_verified=true</code> · <code>chemical_route_verified=false</code>']])}${n.note?`<p>${esc(n.note)}</p>`:''}`; break; }
+    case 'direction': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text)}</p>`; break;
+    case 'workflow': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text)}</p><p><span class="tag ok">仿真</span>Isaac Sim 数字孪生，非实体实验。</p>`; break;
+    case 'case': h += `<h2>${esc(n.label)}</h2><p style="color:var(--muted)">${esc(n.topic)}</p>${kv([['引用条目',n.entries??'—'],['闸门',Object.entries(n.gates).map(([k,v])=>`<span class="tag ${k==='PASS'?'ok':(k==='WARN'?'heat':'crit')}">${k} ${v}</span>`).join('')],['轮次',n.round??'—']])}`; break;
+  }
+  h += neighborHtml(n, n.type==='claim'?['cites']:[]);
+  h += `<div class="src">出处：${esc(n.src)}</div>`;
+  p.html(h); p.selectAll('.chip').on('click', function(){ const m = byId.get(this.dataset.id); if (m){ select(m); centerOn(m); } });
+}
+function showOverview(){ const s = G.meta.stats; d3.select('#panel').html(`<div class="kicker">SAGE-Mat · 知识森林</div><h2>${G.meta.subtitle}</h2>
+<p>把一次调研画成一片森林：最左是研究者开始时自己的问题树；流水线从中长出<b>文献树</b>（分支 → 叶 → 文献），再把文献抽象成可复用的<b>实体主干</b>（化合物、路线、前驱体、条件记录、表征、失败模式），据此写成<b>结论树</b>并回答最初的目标；最后在结论和缺口上长出<b>新树</b>：前驱体预测、实验方向、自动化工作流和同根的其他调研。</p>
+<div class="stats"><span><b>${s.papers}</b> 篇文献</span><span><b>${s.citation_calls}</b> 次引用</span><span><b>${s.claims}</b> 条主张</span><span><b>${s.leaves}</b> 个叶节点</span><span><b>${s.records}</b> 条条件记录</span><span><b>${s.compounds}</b> 个化合物 / 相</span><span><b>${s.nodes}</b> 节点 · <b>${s.edges}</b> 边</span></div>
+<h3>怎么读</h3><ul style="padding-left:18px;margin:4px 0"><li>颜色 = 证据距离：<span class="tag heat">D0</span>目标相直接证据 · <span class="tag gold">D1</span>同一身份谱系 · <span class="tag tele">N1</span>晶体化学近邻 · <span class="tag" style="background:${C.blue}">P1</span>工艺近邻 · <span class="tag grey">X</span>边界 · <span class="tag purple">H</span>假设目标。</li><li>文献外圈加深 = 全文在证据包内；主张点越深 = 引用证据越强。</li><li>目标旁的小圆点：绿 = 已回答，橙 = 部分回答。</li><li>悬停看邻接，点击固定；侧栏里的标签可继续跳转。</li></ul>
+<h3>数据来源</h3><div class="src">${G.meta.built_from.map(esc).join('<br>')}</div>`); }
+function centerOn(n){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const k = Math.max(0.9, d3.zoomTransform(svg.node()).k); svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(width/2 - n.x*k, height/2 - n.y*k).scale(k)); }
+function fitView(animate=true){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const x0 = BANDS[0][0]-10, x1 = BANDS[Math.min(4,curStage)][1]+10, y0=-68, y1=HMAX+36; const k = Math.min(width/(x1-x0), height/(y1-y0)); const t = d3.zoomIdentity.translate((width-(x1-x0)*k)/2 - x0*k, (height-(y1-y0)*k)/2 - y0*k).scale(k); (animate?svg.transition().duration(600):svg).call(zoom.transform, t); }
+// ---------- UI
+const stg = d3.select('#stages'); G.meta.stages.forEach(s => stg.append('button').attr('data-i',s.i).text(`${s.i} ${s.name}`).on('click',()=>{ applyStage(s.i,true); fitView(); }));
+let playing=null; stg.append('button').attr('class','play').text('▶ 生长').on('click', function(){ if (playing){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; return; } applyStage(0,true); fitView(); let i=0; this.textContent='‖ 暂停'; playing=setInterval(()=>{ i++; if (i>4){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; return; } applyStage(i,true); fitView(); }, 1700); });
+d3.select('#fit').on('click', ()=>fitView());
+d3.select('#alledges').on('change', ()=>{ applyEdgeMode(); if (pinned) highlight(pinned); });
+d3.select('#q').on('input', function(){ const q = this.value.trim().toLowerCase(); if (!q){ highlight(pinned); return; } const hits = nodes.filter(n => [n.label, n.title, n.text, n.key, n.product].filter(Boolean).some(s => plain(s).toLowerCase().includes(q) || String(s).toLowerCase().includes(q))); const ids = new Set(hits.map(n=>n.id)); N.classed('dim', d=>!ids.has(d.id)).classed('hit', d=>ids.has(d.id)); E.classed('dim', true); d3.select('#panel').html(`<div class="kicker">搜索</div><h2>${hits.length} 个匹配</h2><div>${hits.slice(0,80).map(n=>chip(n.id)).join('')}</div>`); d3.select('#panel').selectAll('.chip').on('click', function(){ const m = byId.get(this.dataset.id); select(m); centerOn(m); }); }).on('keydown', function(ev){ if (ev.key==='Enter'){ const c = d3.select('#panel').select('.chip').node(); if (c){ const m = byId.get(c.dataset.id); select(m); centerOn(m); } } });
+d3.select('#subtitle').text(G.meta.subtitle);
+// legend
+const lg = d3.select('#legend'); const item = (sw, txt) => lg.append('span').attr('class','lg').html(sw + txt);
+item(`<span class="dot" style="background:${C.heat}"></span>`,'D0 目标相直接证据'); item(`<span class="dot" style="background:${C.gold}"></span>`,'D1 同一身份谱系'); item(`<span class="dot" style="background:${C.tele}"></span>`,'N1 晶体化学近邻'); item(`<span class="dot" style="background:${C.blue}"></span>`,'P1 工艺近邻'); item(`<span class="dot" style="background:${C.grey}"></span>`,'X 边界 / 排除'); item(`<span class="dot" style="background:${C.purple}"></span>`,'H 假设目标');
+item(`<span class="sw" style="border-color:${C.tele};background:${C.tele}"></span>`,'合成路线'); item(`<span class="sw" style="border-color:${C.tele}"></span>`,'条件记录 A/B/C 区'); item(`<span class="sw" style="border-color:${C.gold};background:#FBF6EC"></span>`,'前驱体 · 助熔 · 坩埚'); item(`<span class="sw" style="border-color:${C.crit};background:#FDECEA"></span>`,'失败模式'); item(`<span class="sw" style="border-color:${C.crit};border-style:dashed"></span>`,'证据缺口'); item(`<span class="sw" style="border-color:${C.purple};background:#F1EBFB"></span>`,'预测 / 方向'); item(`<span class="sw" style="border-color:${C.ok};background:#E8F5EE"></span>`,'工作流（仿真）');
+item(`<span class="ln" style="border-color:${C.ok}"></span>`,'章节 → 回答目标'); item(`<span class="ln" style="border-color:${C.heat}"></span>`,'长出'); item(`<span class="ln" style="border-color:${C.tele}"></span>`,'支撑 / 记录'); item(`<span class="ln" style="border-color:${C.purple}"></span>`,'关联 / 候选');
+lg.append('span').style('margin-left','auto').attr('class','stats').html(`<span><b>${G.meta.stats.papers}</b> 文献</span><span><b>${G.meta.stats.claims}</b> 主张</span><span><b>${G.meta.stats.records}</b> 条件记录</span><span><b>${G.meta.stats.nodes}</b> 节点</span><span><b>${G.meta.stats.edges}</b> 边</span>`);
+// poster chrome
+if (POSTER){ const pg = root.append('g').attr('transform',`translate(${BANDS[0][0]-10},-128)`); pg.append('text').attr('class','poster-title').text('SAGE-Mat 知识森林'); pg.append('text').attr('class','poster-sub').attr('y',24).text(G.meta.subtitle + ' · ' + `${G.meta.stats.papers} 篇文献 · ${G.meta.stats.claims} 条主张 · ${G.meta.stats.records} 条条件记录 · ${G.meta.stats.nodes} 节点`);
+  const st = G.meta.stages[curStage]; pg.append('text').attr('class','poster-stage').attr('y',46).text(`STAGE ${curStage} · ${st.name}`); pg.append('text').attr('class','poster-sub').attr('x',tw(`STAGE ${curStage} · ${st.name}`,13)*1.15+14).attr('y',46).text(st.desc);
+  const lgp = root.append('g').attr('transform',`translate(${BANDS[0][0]-10},${HMAX+64})`); let lx=0; [[C.heat,'D0 目标相直接证据'],[C.gold,'D1 同一身份谱系'],[C.tele,'N1 晶体化学近邻'],[C.blue,'P1 工艺近邻'],[C.grey,'X 边界 / 排除'],[C.purple,'H 假设目标（未合成）']].forEach(([c,t])=>{ lgp.append('circle').attr('cx',lx+6).attr('cy',0).attr('r',5.5).attr('fill',c); lgp.append('text').attr('class','poster-legend').attr('x',lx+16).attr('y',4).text(t); lx += tw(t,11.5)+40; });
+  lgp.append('text').attr('class','poster-legend').attr('x',lx+10).attr('y',4).text('文献外圈加深 = 全文在证据包内 · 目标旁绿点 = 已回答，橙点 = 部分回答 · 绿线 = 章节回答目标 · 橙线 = 长出新树');
+}
+applyStage(curStage, false);
+if (!POSTER) showOverview();
+if (params.get('select') && byId.has(params.get('select'))) { const m = byId.get(params.get('select')); select(m); }
+function fitPoster(){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const x0 = BANDS[0][0]-30, x1 = BANDS[4][1]+30, y0=-160, y1=HMAX+90; const k = Math.min(width/(x1-x0), height/(y1-y0)); svg.call(zoom.transform, d3.zoomIdentity.translate((width-(x1-x0)*k)/2 - x0*k, (height-(y1-y0)*k)/2 - y0*k).scale(k)); }
+requestAnimationFrame(()=>{ POSTER ? fitPoster() : fitView(false); if (pinned && !POSTER) centerOn(pinned); document.title = `SAGE-Mat 知识森林 · ${nodes.length} 节点`; window.__kg = {nodes:nodes.length, edges:edges.length, H:HMAX}; });
+window.addEventListener('resize', ()=>{ POSTER ? fitPoster() : fitView(false); });
+</script>
+</body>
+</html>
