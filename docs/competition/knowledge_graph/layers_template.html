@@ -49,8 +49,40 @@ const TINT = {D0:'#FBDCC8', D1:'#FDEEE2', N1:'#DCEEF3', P1:'#EDF0F3', X:'#F4F6F8
 const SUBMAP = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','+':'₊','−':'₋','-':'₋','(':'₍',')':'₎','x':'ₓ','a':'ₐ','e':'ₑ','o':'ₒ','n':'ₙ','m':'ₘ','h':'ₕ','k':'ₖ','l':'ₗ','p':'ₚ','s':'ₛ','t':'ₜ','i':'ᵢ','r':'ᵣ','u':'ᵤ','v':'ᵥ','.':'.','/':'/'};
 const SUPMAP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','−':'⁻','-':'⁻'};
 const plain = h => String(h ?? '').replace(/<sub>(.*?)<\/sub>/g, (m, s) => [...s].map(c => SUBMAP[c] || c).join('')).replace(/<sup>(.*?)<\/sup>/g, (m, s) => [...s].map(c => SUPMAP[c] || c).join('')).replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
-function tw(s, px){ let w = 0; for (const ch of s){ const c = ch.codePointAt(0); w += (c > 0x2E80) ? px : (/[₀-₉ₓ₊₋ₐₑₒₙₘₕₖₗₚₛₜ]/.test(ch) ? px * .42 : (/[A-Z]/.test(ch) ? px * .66 : (/[a-z0-9]/.test(ch) ? px * .55 : px * .4))); } return w; }
-function fit(s, maxPx, px){ if (tw(s, px) <= maxPx) return s; let out = ''; for (const ch of s){ if (tw(out + ch + '…', px) > maxPx) break; out += ch; } return out + '…'; }
+// widths are measured on a canvas with the page's own font stack (layout runs after document.fonts.ready)
+const MCTX = document.createElement('canvas').getContext('2d'), MCACHE = new Map();
+function tw(s, px, bold){ const key = (bold ? 'b' : 'r') + px + '|' + s; let w = MCACHE.get(key); if (w === undefined){ MCTX.font = `${bold ? 700 : 400} ${px}px "IBM Plex Sans","Noto Sans SC",system-ui,sans-serif`; w = MCTX.measureText(s).width; MCACHE.set(key, w); } return w; }
+// ellipsis at a word boundary: "Navigation through high-di…" becomes "Navigation through …"
+function fit(s, maxPx, px, bold){ if (tw(s, px, bold) <= maxPx) return s; let out = ''; for (const ch of s){ if (tw(out + ch + '…', px, bold) > maxPx) break; out += ch; } if (/[A-Za-z0-9₀-₉]$/.test(out) && /[A-Za-z0-9₀-₉]/.test(s[out.length] || '')){ const cut = out.replace(/[^\s·]+$/, ''); if (cut.trim().length >= 4) out = cut; } return out.replace(/[\s·,，、；:：]+$/, '') + '…'; }
+// CJK characters break freely; Latin / formula runs and "number + unit" never split
+const UNIT_TOKEN = /^(°C|K|h|d|min|s|mol%|wt%|at%|MPa|GPa|nm|µm|μm|mm|cm|kJ|篇|条)$/;
+function tokens(s, px, bold, groupPx){ const out = []; let run = ''; const flush = () => { if (run){ out.push(run); run = ''; } };
+  for (const ch of s){ if (/\s/.test(ch)){ flush(); out.push(' '); continue; } if (/[\u3000-\u9fff\uff00-\uffef·—…]/.test(ch)){ flush(); out.push(ch); continue; } run += ch; } flush();
+  const merged = []; for (let i = 0; i < out.length; i++){ const t = out[i]; if (/[0-9]$/.test(t) && out[i + 1] === ' ' && UNIT_TOKEN.test(out[i + 2] || '')){ merged.push(t + ' ' + out[i + 2]); i += 2; } else merged.push(t); }
+  if (!groupPx) return merged;
+  // a bracketed qualifier that fits on a line of its own moves as one unit ("Ln₂SiO₅ / （稀土正硅酸盐）" rather than breaking inside the brackets)
+  const grouped = []; for (let i = 0; i < merged.length; i++){ const t = merged[i]; const open = t.startsWith('（') ? '）' : t.startsWith('(') ? ')' : null;
+    if (open){ let j = i; while (j < merged.length && !merged[j].endsWith(open)) j++; if (j < merged.length && j > i){ const grp = merged.slice(i, j + 1).join(''); if (tw(grp, px, bold) <= groupPx){ grouped.push(grp); i = j; continue; } } }
+    grouped.push(t); }
+  return grouped; }
+const NO_LINE_START = new Set(['→', '·', '/', '）', ')', '，', '、', '：', '；', '。', ']', '］']), NO_LINE_END = new Set(['（', '(', '[', '［', '「']);
+// wrap into at most maxLines lines; only the last line may be ellipsised (and only if it still does not fit).
+// The first line may be narrower than the rest (restPx) — it shares the card's top edge with the badge
+function wrap(s, maxPx, px, bold, maxLines, restPx = maxPx){ s = String(s ?? '').trim(); if (!s) return []; if (tw(s, px, bold) <= maxPx) return [s];
+  const lines = []; let line = []; const text = arr => arr.join('').trim(); const W = i => i === 0 ? maxPx : restPx;
+  for (const t of tokens(s, px, bold, restPx)){ if (t === ' '){ if (line.length) line.push(t); continue; }
+    if (line.length && tw(text([...line, t]), px, bold) > W(lines.length)){
+      // a closing bracket / slash / punctuation never starts a line: it drags the previous token down with it
+      const carry = [t]; if (NO_LINE_START.has(t)){ while (line.length && line[line.length - 1] === ' ') line.pop(); if (line.length) carry.unshift(line.pop()); }
+      while (line.length && line[line.length - 1] === ' ') line.pop();
+      if (line.length && NO_LINE_END.has(line[line.length - 1])) carry.unshift(line.pop()); // an opening bracket never ends a line
+      if (line.length) lines.push(text(line)); line = carry; } else line.push(t); }
+  if (line.length) lines.push(text(line));
+  // a single token wider than the card (long formula) is broken at the last '/', ']' or ')' that still fits, else by character
+  const out = []; lines.forEach(l => { if (tw(l, px, bold) <= W(out.length)){ out.push(l); return; } let cur = '', opp = -1; for (const ch of l){ if (cur && tw(cur + ch, px, bold) > W(out.length)){ if (opp > 0){ out.push(cur.slice(0, opp)); cur = cur.slice(opp) + ch; } else { out.push(cur); cur = ch; } opp = -1; } else cur += ch; if (ch === ']' || ch === ')' || ch === '）') opp = cur.length; else if (ch === '/') opp = cur.length - 1; } if (cur) out.push(cur); });
+  if (out.length > maxLines){ const rest = joinLines(out.slice(maxLines - 1)); return [...out.slice(0, maxLines - 1), fit(rest, W(maxLines - 1), px, bold)]; }
+  return out; }
+const joinLines = ls => ls.reduce((a, l) => a + (/[A-Za-z0-9]$/.test(a) && /^[A-Za-z0-9]/.test(l) ? ' ' : '') + l, '');
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
 // ---------- sectors & angles (same rules as the tree-ring page)
@@ -75,9 +107,10 @@ const LEVELS = [
   {id: 3, title: '叶节点', pick: n => n.type === 'leaf', sum: '每个叶节点是一类证据主张，标注证据等级（D0 直接 · D1 谱系 · N1 近邻 · P1 工艺）与支撑文献数。'},
   {id: 4, title: '文献', pick: n => n.type === 'paper', sum: '全部通过引用闸门；实心橙 = 唯一的目标相直接报道，其余按证据距离着色；卡片副标题为题名。'},
   {id: 5, title: '元素与化合物', pick: n => n.type === 'element' || (n.type === 'compound'), sum: '12 个元素与 29 个化合物 / 相，按证据等级着色；紫色虚线是 AI 假设目标，尚未合成。'},
-  {id: 6, title: '合成路线与条件记录', pick: n => n.type === 'route' || n.type === 'record', sum: '6 条路线与 29 条逐字段条件记录（A 区目标相 · B 区无 Zn 同谱系 · C 区参照）；副标题为温度–时间。'},
-  {id: 7, title: '结论 · 实验方向 · 证据缺口', pick: n => (n.type === 'claim' && n.stage === 4 && byId.get(n.section).file.includes('07_')) || n.type === 'direction' || n.type === 'gap', sum: '实心橙卡 = 综述结论；紫色虚线 = AI 拟定的实验方向；灰色虚线 = 尚未闭合的证据缺口。'},
-  {id: 8, title: '长出的新树', pick: n => (n.type === 'recipe' && n.top) || n.type === 'workflow' || n.type === 'case', sum: 'RECIPE 首选前驱体组合（紫）、OpenLab 自动化工作流（深青，仿真）、同根的其他调研（案例）。'},
+  {id: 6, title: '合成路线', pick: n => n.type === 'route', sum: '6 条合成 / 晶体生长路线；实心青卡有文献条件记录，虚线卡是证据空白（尚无可引用的条件记录）。'},
+  {id: 7, title: '条件记录', pick: n => n.type === 'record', sum: '29 条逐字段条件记录从各自的路线圆点长出（A 区目标相 · B 区无 Zn 同谱系 · C 区参照）；副标题为温度–时间。'},
+  {id: 8, title: '结论 · 实验方向 · 证据缺口', pick: n => (n.type === 'claim' && n.stage === 4 && byId.get(n.section).file.includes('07_')) || n.type === 'direction' || n.type === 'gap', sum: '实心橙卡 = 综述结论；紫色虚线 = AI 拟定的实验方向；灰色虚线 = 尚未闭合的证据缺口。'},
+  {id: 9, title: '长出的新树', pick: n => (n.type === 'recipe' && n.top) || n.type === 'workflow' || n.type === 'case', sum: 'RECIPE 首选前驱体组合（紫）、OpenLab 自动化工作流（深青，仿真）、同根的其他调研（案例）。'},
 ];
 const levelOf = new Map(); LEVELS.forEach(L => nodes.filter(L.pick).forEach(n => levelOf.set(n.id, L.id)));
 levelOf.set('root', 0);
@@ -112,20 +145,20 @@ const stripHtml = s => plain(s || '').replace(/NA/g, 'NA');
 function cardSpec(n){ // returns {title, sub, badge, fill, stroke, dash, tcol, scol, w, h, big}
   const base = {w: 250, h: 56, dash: null, tcol: C.text, scol: C.muted, badgeFill: null};
   switch (n.type){
-    case 'question': return {...base, title: n.label.slice(7), sub: short(n.text, 30), badge: 'Q' + n.id.slice(1), fill: '#fff', stroke: C.tele, sw: 2.2, tcol: C.tele, w: 330, h: 60, badgeFill: C.tele};
-    case 'subtopic': return {...base, title: n.label.slice(3), sub: short(n.text, 30), badge: n.id, fill: '#fff', stroke: C.line2, sw: 1.5, w: 300, h: 56, badgeFill: C.faint};
+    case 'question': return {...base, title: n.label.slice(7), sub: plain(n.text), badge: 'Q' + n.id.slice(1), fill: '#fff', stroke: C.tele, sw: 2.2, tcol: C.tele, w: 330, h: 60, badgeFill: C.tele};
+    case 'subtopic': return {...base, title: n.label.slice(3), sub: plain(n.text), badge: n.id, fill: '#fff', stroke: C.line2, sw: 1.5, w: 300, h: 56, badgeFill: C.faint};
     case 'branch': return {...base, title: n.label.slice(2), sub: `${nodes.filter(x => x.type === 'leaf' && x.sector === n.id.slice(2)).length} 个叶节点`, badge: n.id.slice(2), fill: C.tele, stroke: C.tele, sw: 0, tcol: '#fff', scol: '#E3F2F5', w: 250, h: 58, badgeFill: C.navy};
     case 'leaf': { const lv = n.levels.filter(l => LVL[l]); return {...base, title: n.label.replace(/^[A-H]\d /, ''), sub: `${lv.length ? lv.join(' / ') + ' · ' : ''}${n.keys.length} 篇支撑`, badge: n.id.slice(2), fill: '#E1F1F5', stroke: C.tele2, sw: 1.5, w: 240, h: 54, badgeFill: C.tele}; }
-    case 'paper': { const solid = n.level === 'D0'; return {...base, title: n.label, sub: short(n.title, 26), badge: n.level, fill: solid ? C.heat : TINT[n.level], stroke: solid ? C.heat : LVL[n.level], sw: solid ? 0 : 1.6, tcol: solid ? '#fff' : C.text, scol: solid ? '#FDE4D4' : C.muted, w: 222, h: 54, badgeFill: solid ? C.text : LVL[n.level]}; }
+    case 'paper': { const solid = n.level === 'D0'; return {...base, title: n.label, sub: plain(n.title), badge: n.level, fill: solid ? C.heat : TINT[n.level], stroke: solid ? C.heat : LVL[n.level], sw: solid ? 0 : 1.6, tcol: solid ? '#fff' : C.text, scol: solid ? '#FDE4D4' : C.muted, w: 222, h: 54, badgeFill: solid ? C.text : LVL[n.level]}; }
     case 'element': return {...base, title: n.sym, sub: n.label.slice(3), badge: null, fill: '#fff', stroke: n.core ? C.text : C.line2, sw: n.core ? 2 : 1.4, w: 92, h: 54, big: true};
-    case 'compound': return {...base, title: plain(n.label), sub: short(n.note, 22), badge: n.level, fill: TINT[n.level], stroke: LVL[n.level], sw: 1.6, dash: n.level === 'H' ? '5 3' : null, tcol: n.level === 'H' ? C.purple : C.text, w: 236, h: 54, badgeFill: LVL[n.level]};
+    case 'compound': return {...base, title: plain(n.label), sub: plain(n.note), badge: n.level, fill: TINT[n.level], stroke: LVL[n.level], sw: 1.6, dash: n.level === 'H' ? '5 3' : null, tcol: n.level === 'H' ? C.purple : C.text, w: 236, h: 54, badgeFill: LVL[n.level]};
     case 'route': return {...base, title: n.label.split(' · ')[0], sub: n.leaf ? `${nodes.filter(x => x.type === 'record' && parentOf(x) === n).length} 条记录` : '证据空白', badge: n.leaf || '—', fill: n.leaf ? C.tele : '#fff', stroke: C.tele, sw: n.leaf ? 0 : 1.5, dash: n.leaf ? null : '5 3', tcol: n.leaf ? '#fff' : C.tele, scol: n.leaf ? '#E3F2F5' : C.muted, w: 200, h: 54, badgeFill: C.navy};
-    case 'record': { const z = n.zone[0]; const col = z === 'A' ? C.heat : z === 'B' ? C.gold : C.tele; return {...base, title: `${n.label} · ${short(n.product, 16)}`, sub: short(stripHtml(n.temp_time), 24), badge: z + ' 区', fill: '#fff', stroke: col, sw: 1.8, tcol: C.text, w: 236, h: 54, badgeFill: col}; }
-    case 'claim': { const tx = plain(n.text); const m = tx.search(/[，；：。]/); const cut = (m > 4 && m <= 22) ? m : 18; return {...base, title: tx.slice(0, cut), sub: short(tx.slice(cut).replace(/^[，；：。]/, ''), 26), badge: '结论', fill: C.heat, stroke: C.heat, sw: 0, tcol: '#fff', scol: '#FDE4D4', w: 300, h: 60, badgeFill: C.text}; }
+    case 'record': { const z = n.zone[0]; const col = z === 'A' ? C.heat : z === 'B' ? C.gold : C.tele; return {...base, title: plain(n.product).replace(/\s+\[/g, '['), sub: stripHtml(n.temp_time), badge: n.label, fill: '#fff', stroke: col, sw: 1.8, tcol: C.text, w: 236, h: 54, badgeFill: col}; } // the record code (A1 / B3 / C17) is the badge; its letter is the zone, its colour too
+    case 'claim': return {...base, title: plain(n.text), sub: '', flow: true, badge: '结论', fill: C.heat, stroke: C.heat, sw: 0, tcol: '#fff', scol: '#FDE4D4', w: 300, h: 60, badgeFill: C.text}; // flows: two bold lines, the rest as secondary text
     case 'direction': return {...base, title: n.label.replace(/^方向 \d · /, ''), sub: 'AI 拟定 · 实验假设，待验证', badge: 'AI', fill: '#fff', stroke: C.purple, sw: 2, dash: '6 3', tcol: C.purple, w: 270, h: 58, badgeFill: C.purple};
     case 'gap': return {...base, title: n.label, sub: '证据未闭合', badge: '缺口', fill: '#F4F6F8', stroke: C.faint, sw: 1.8, dash: '5 3', tcol: C.muted, w: 236, h: 54, badgeFill: C.faint};
     case 'recipe': return {...base, title: plain(n.label), sub: `${plain(byId.get(n.target).label)} · p=${n.p.toFixed(3)}`, badge: 'RECIPE', fill: C.purple, stroke: C.purple, sw: 0, tcol: '#fff', scol: '#ECE6F9', w: 290, h: 58, badgeFill: C.text};
-    case 'workflow': return {...base, title: n.label, sub: short(n.text, 24), badge: '仿真', fill: C.navy, stroke: C.navy, sw: 0, tcol: '#fff', scol: '#DCEEF3', w: 260, h: 56, badgeFill: C.text};
+    case 'workflow': return {...base, title: n.label, sub: plain(n.text), badge: '仿真', fill: C.navy, stroke: C.navy, sw: 0, tcol: '#fff', scol: '#DCEEF3', w: 260, h: 56, badgeFill: C.text};
     case 'case': return {...base, title: n.label, sub: `${n.entries ?? '—'} 条引用`, badge: '案例', fill: '#fff', stroke: C.text, sw: 1.6, dash: '5 3', w: 240, h: 54, badgeFill: C.text};
   }
   return {...base, title: plain(n.label), sub: '', badge: null, fill: '#fff', stroke: C.line2, sw: 1.2};
@@ -135,8 +168,8 @@ const dotR = n => ({question: 9, subtopic: 6, branch: 13, leaf: 8, paper: 6.5, e
 // ---------- frame & rail geometry (1920 × 1080 canvas)
 const W = 1920, H = 1080, CX = 960, CY = 556;
 const FRAME = {x: 36, y: 96, w: 1848, h: 918, r: 26};
-const PAD = 14, LANE_GAP = 8;
-const RING_R = [0, 120, 150, 180, 210, 240, 270, 300, 330]; // collapsed-tree ring radius by level (before scaling)
+const PAD = 14, LANE_GAP = 12; // the gap between lanes leaves room for the badge that hangs 8 px over a card top
+const RING_R = [0, 120, 150, 180, 210, 240, 270, 300, 330, 360]; // collapsed-tree ring radius by level (before scaling)
 // ---------- layouts per level
 function rayToRail(a, inset){ // where the ray at angle a from the centre meets the rectangle inset from the frame; returns {seg, u} perimeter coordinate
   const L = FRAME.x + inset, R = FRAME.x + FRAME.w - inset, T = FRAME.y + inset, B = FRAME.y + FRAME.h - inset;
@@ -148,7 +181,9 @@ function rayToRail(a, inset){ // where the ray at angle a from the centre meets 
   return {seg, x, y};
 }
 const TL = FRAME.w - 2 * PAD - 2 * FRAME.r, SL = FRAME.h - 2 * PAD - 2 * FRAME.r, PER = 2 * (TL + SL);
-const TREE_R = 270;
+const TREE_R = 170; // the collapsed tree never grows past this radius
+const PILL_AX = 290, PILL_AY = 236; // sector-label ring: clear of the tree, inside a two-lane card band on every side
+const PILL_TEXT = {A: '目标相身份与报道', B: '结构与晶体化学近邻', C: '可迁移配方簇', D: '合成与生长路线', E: '工艺条件变量', F: '相纯度与产物表征', G: '失效模式与适用边界', H: '组成替代关系'};
 // perimeter coordinate (clockwise from the top-left corner) of a point on the rail
 function perim(x, y, seg){ const x0 = FRAME.x + PAD + FRAME.r, y0 = FRAME.y + PAD + FRAME.r; if (seg === 'T') return clamp(x - x0, 0, TL); if (seg === 'R') return TL + clamp(y - y0, 0, SL); if (seg === 'B') return TL + SL + clamp(x0 + TL - x, 0, TL); return 2 * TL + SL + clamp(y0 + SL - y, 0, SL); }
 // slot grid along the rail: rows on top / bottom, columns on the sides, up to three lanes (brick rows)
@@ -165,31 +200,98 @@ function slotsFor(cw, ch, lanes){ const out = []; const x0 = FRAME.x + PAD + FRA
   }
   return out.sort((a, b) => a.u - b.u || a.lane - b.lane);
 }
+// card text metrics: title wraps to at most two lines (words / formulas never split), one secondary line; height follows content
+const TFS = 17, TLH = 20, SFS = 12.5, SLH = 16, CPX = 12, CPY = 9;
+const badgeW = sp => sp.badge ? tw(sp.badge, 11, true) + 14 : 0;
+function measureCard(sp, subLines = 1){
+  if (sp.big){ sp.lines = [sp.title]; sp.subLines = [fit(sp.sub || '', sp.w - 2 * CPX - 36, SFS)]; sp.h = 54; return sp; }
+  const fullW = sp.w - 2 * CPX, innerW = fullW - badgeW(sp) - 2; // the first title line stops short of the badge, later lines run the full width
+  if (sp.flow){ // a statement: the first two wrapped lines are the bold title, the remainder the secondary text; the title backs off to a clause mark that falls late in line two
+    const all = wrap(sp.title, innerW, TFS, true, 99, fullW); const head = all.slice(0, 2); let tail = joinLines(all.slice(2));
+    if (tail && head.length === 2){ const l2 = head[1], m = Math.max(...['，', '；', '。', '：'].map(c => l2.lastIndexOf(c))); if (m >= l2.length * 0.4 && m < l2.length - 1){ tail = l2.slice(m + 1) + tail; head[1] = l2.slice(0, m + 1); } }
+    sp.lines = head; sp.subLines = tail ? wrap(tail, fullW, SFS, false, subLines) : [];
+  } else { sp.lines = wrap(sp.title, innerW, TFS, true, 2, fullW); sp.subLines = sp.sub ? wrap(sp.sub, fullW, SFS, false, subLines) : []; }
+  sp.h = 2 * CPY + sp.lines.length * TLH + (sp.subLines.length ? sp.subLines.length * SLH + 1 : 0);
+  return sp;
+}
+// order-preserving assignment of cards (sorted by rail coordinate) to slots (sorted by rail coordinate, then lane):
+// minimise |slot − ray hit| + lane penalty. A level that fits in one lane fans out around the whole frame in angular
+// order (edges stay radial); a denser level opens a second brick lane, and a card steps into it only when that saves
+// more than ~a fifth of the perimeter of drift — so it stays by its parent's sector instead of piling up in front of it
+const LANE_PEN = [0, 1000, 2400];
+function assignDP(cards, slots){
+  const M = cards.length, N = slots.length; if (N < M) return null;
+  const INF = 1e18, f = Array.from({length: M + 1}, () => new Float64Array(N + 1).fill(INF)), take = Array.from({length: M + 1}, () => new Uint8Array(N + 1));
+  for (let j = 0; j <= N; j++) f[0][j] = 0;
+  for (let i = 1; i <= M; i++) for (let j = i; j <= N; j++){ const c = Math.abs(slots[j-1].u - cards[i-1].u) + LANE_PEN[slots[j-1].lane]; const t = f[i-1][j-1] + c; if (t <= f[i][j-1]){ f[i][j] = t; take[i][j] = 1; } else f[i][j] = f[i][j-1]; }
+  const idx = new Array(M); let j = N; for (let i = M; i >= 1; i--){ while (!take[i][j]) j--; idx[i-1] = j - 1; j--; }
+  const disp = Math.max(...idx.map((s, i) => Math.abs(slots[s].u - cards[i].u)));
+  return {idx, disp};
+}
+// a level that fits in one lane keeps its angular order but is spread to an even pitch g (L2 isotonic regression of
+// u_i − i·g, pool-adjacent-violators), so cards that share one sector fan out around their parent instead of bunching
+function spreadTargets(us, g){
+  const y = us.map((u, i) => u - i * g), blocks = [];
+  y.forEach(v => { blocks.push({sum: v, cnt: 1}); while (blocks.length > 1){ const a = blocks[blocks.length - 2], b = blocks[blocks.length - 1]; if (a.sum / a.cnt <= b.sum / b.cnt) break; blocks.pop(); a.sum += b.sum; a.cnt += b.cnt; } });
+  const q = []; blocks.forEach(b => { for (let i = 0; i < b.cnt; i++) q.push(b.sum / b.cnt); });
+  return q.map((v, i) => v + i * g);
+}
+function fanAssign(cards, slots){ // cards sorted by ray-hit u; returns {idx, slots} in a perimeter frame rotated so the widest gap sits at the origin
+  const n = cards.length, us = cards.map(c => c.u);
+  let cutI = 0, cutGap = us[0] + PER - us[n - 1]; for (let i = 1; i < n; i++) if (us[i] - us[i - 1] > cutGap){ cutGap = us[i] - us[i - 1]; cutI = i; }
+  const cut = cutI === 0 ? (us[n - 1] + cutGap / 2) % PER : us[cutI - 1] + cutGap / 2;
+  const rot = u => ((u - cut) % PER + PER) % PER;
+  cards.forEach(c => { c.ur = rot(c.u); }); cards.sort((a, b) => a.ur - b.ur);
+  const cw = Math.max(...cards.map(c => c.spec.w));
+  const g = Math.min(PER / n, Math.max(1.35 * (cw + LANE_GAP), 0.6 * PER / n));
+  let tg = spreadTargets(cards.map(c => c.ur), g);
+  if (tg[n - 1] - tg[0] > PER - g){ const off = d3.mean(cards.map((c, i) => c.ur - i * PER / n)); tg = cards.map((c, i) => off + i * PER / n); }
+  if (tg[0] < 0) tg = tg.map(v => v - tg[0]); else if (tg[n - 1] > PER) tg = tg.map(v => v - (tg[n - 1] - PER));
+  const rslots = slots.map(s => ({...s, u: rot(s.u)})).sort((a, b) => a.u - b.u || a.lane - b.lane);
+  const res = assignDP(tg.map(u => ({u})), rslots);
+  return res ? {idx: res.idx, slots: rslots} : null;
+}
+const rectsOverlap = (a, b, gap = 0) => Math.abs(a.x - b.x) < (a.w + b.w) / 2 + gap && Math.abs(a.y - b.y) < (a.h + b.h) / 2 + gap;
 function layoutLevel(k){ // returns Map id -> {kind:'card'|'dot'|'root'|'pill', ...}
   const out = new Map();
   const present = nodes.filter(n => levelOf.has(n.id) && levelOf.get(n.id) <= k);
   const maxLvl = Math.max(0, ...present.filter(n => levelOf.get(n.id) < k).map(n => levelOf.get(n.id)));
-  const scale = maxLvl ? Math.min(1, TREE_R / RING_R[maxLvl]) : 1;
-  present.forEach(n => { const l = levelOf.get(n.id); if (l < k){ const r = RING_R[l] * scale; out.set(n.id, {kind: n.type === 'root' ? 'root' : 'dot', x: CX + r * Math.cos(n.a), y: CY + r * Math.sin(n.a), r: dotR(n), col: dotColor(n)}); } });
-  out.set('root', {kind: 'root', x: CX, y: CY, r: 46});
-  const cards = present.filter(n => levelOf.get(n.id) === k).map(n => ({n, spec: cardSpec(n)}));
-  if (cards.length){
-    const cw = Math.max(...cards.map(c => c.spec.w)), ch = Math.max(...cards.map(c => c.spec.h));
-    let lanes = 1, slots = slotsFor(cw, ch, 1); while (slots.length < cards.length && lanes < 3){ lanes++; slots = slotsFor(cw, ch, lanes); }
+  const scale = maxLvl ? Math.min(1, TREE_R / RING_R[maxLvl]) : 1, dotK = 0.7 + 0.3 * scale; // dots shrink a little as the tree compresses
+  present.forEach(n => { const l = levelOf.get(n.id); if (l < k){ const r = RING_R[l] * scale; out.set(n.id, {kind: n.type === 'root' ? 'root' : 'dot', x: CX + r * Math.cos(n.a), y: CY + r * Math.sin(n.a), r: dotR(n) * dotK, col: dotColor(n)}); } });
+  out.set('root', {kind: 'root', x: CX, y: CY, r: 46, labelOp: clamp((RING_R[1] * scale - 92) / 20, 0, 1)}); // the root label hides once the inner ring closes in on it
+  const lvlNodes = present.filter(n => levelOf.get(n.id) === k);
+  // cards get two secondary lines whenever that costs no extra lane (a one-lane fan beats a second lane with longer subtitles)
+  const build = subLines => { const cards = lvlNodes.map(n => ({n, spec: measureCard(cardSpec(n), subLines)})); if (!cards.length) return {cards, cw: 0, chSlot: 0, lanes: 0};
+    const cw = Math.max(...cards.map(c => c.spec.w)), chSlot = Math.max(...cards.map(c => c.spec.h));
     cards.forEach(c => { const hit = rayToRail(n_a(c.n), PAD); c.u = perim(hit.x, hit.y, hit.seg); });
     cards.sort((a, b) => a.u - b.u);
-    const N = slots.length, M = cards.length; const mix = clamp((M / N - 0.35) / 0.4, 0, 1);
-    const idx = cards.map((c, i) => Math.round((1 - mix) * (c.u / PER * (N - 1)) + mix * (M > 1 ? i * (N - 1) / (M - 1) : (N - 1) / 2)));
-    for (let i = 1; i < idx.length; i++) if (idx[i] <= idx[i-1]) idx[i] = idx[i-1] + 1;
-    for (let i = idx.length - 1; i >= 0; i--){ const hi = (i === idx.length - 1 ? N - 1 : idx[i+1] - 1); if (idx[i] > hi) idx[i] = hi; }
-    cards.forEach((c, i) => { const s = slots[Math.max(0, idx[i])] || slots[N - 1]; c.x = s.x; c.y = s.y; c.seg = s.seg; });
+    const slots1 = slotsFor(cw, chSlot, 1);
+    if (slots1.length >= cards.length){ const best = fanAssign(cards, slots1); if (best) return {cards, best, cw, chSlot, lanes: 1}; } // sparse: one lane, evenly fanned
+    for (let lanes = 2; lanes <= 3; lanes++){ const slots = slotsFor(cw, chSlot, lanes); const res = assignDP(cards, slots); if (res) return {cards, best: {...res, slots}, cw, chSlot, lanes}; } // dense: brick lanes, cards stay by their sector
+    return null; };
+  let L = build(2); if (L && L.lanes > 1){ const L1 = build(1); if (L1 && L1.lanes < L.lanes) L = L1; } else if (!L) L = build(1);
+  if (!L) throw new Error(`level ${k}: ${lvlNodes.length} cards do not fit in three lanes`);
+  const {cards, best, cw, chSlot} = L;
+  if (cards.length){
+    cards.forEach((c, i) => { const s = best.slots[best.idx[i]]; c.seg = s.seg; c.lane = s.lane; c.x = s.x; c.y = s.y;
+      // hug the outer side of the lane so rows / columns read tidily even when card sizes differ
+      if (s.seg === 'T') c.y = FRAME.y + PAD + s.lane * (chSlot + LANE_GAP) + c.spec.h / 2; else if (s.seg === 'B') c.y = FRAME.y + FRAME.h - PAD - s.lane * (chSlot + LANE_GAP) - c.spec.h / 2;
+      else if (s.seg === 'L') c.x = FRAME.x + PAD + s.lane * (cw + LANE_GAP) + c.spec.w / 2; else c.x = FRAME.x + FRAME.w - PAD - s.lane * (cw + LANE_GAP) - c.spec.w / 2; });
   }
-  cards.forEach(c => out.set(c.n.id, {kind: 'card', x: c.x, y: c.y, w: c.spec.w, h: c.spec.h, spec: c.spec, seg: c.seg, r: dotR(c.n), col: dotColor(c.n)}));
-  if (k >= 3){ SECTORS.forEach(s => { const b = branchOf(s); if (!out.get(b.id)) return; const a = mid(s); const rr = TREE_R * scale + 34; out.set('PILL_' + s, {kind: 'pill', x: CX + rr * Math.cos(a), y: CY + rr * Math.sin(a), text: b.label.slice(2).split('（')[0], anchorLeft: Math.cos(a) >= 0}); }); }
+  cards.forEach(c => out.set(c.n.id, {kind: 'card', x: c.x, y: c.y, w: c.spec.w, h: c.spec.h, spec: c.spec, seg: c.seg, lane: c.lane, r: dotR(c.n), col: dotColor(c.n)}));
+  if (k >= 3){ // sector pills form a label ring on an ellipse between the collapsed tree and the card band; neighbours are spread apart along the ring
+    const pills = SECTORS.filter(s => out.get(branchOf(s).id)).map(s => { const text = PILL_TEXT[s] || branchOf(s).label.slice(2).split('（')[0]; return {s, a: mid(s), w: tw(text, 14, true) + 52, h: 30, text}; });
+    const at = p => ({x: CX + PILL_AX * Math.cos(p.a), y: CY + PILL_AY * Math.sin(p.a)});
+    for (let it = 0; it < 80; it++){ let moved = false;
+      for (let i = 0; i < pills.length; i++){ const p = pills[i], q = pills[(i + 1) % pills.length]; if (p === q) break; const P = at(p), Q = at(q);
+        if (rectsOverlap({...P, w: p.w, h: p.h}, {...Q, w: q.w, h: q.h}, 10)){ p.a -= 0.012; q.a += 0.012; moved = true; } }
+      if (!moved) break; }
+    pills.forEach(p => { const P = at(p); out.set('PILL_' + p.s, {kind: 'pill', x: P.x, y: P.y, w: p.w, h: p.h, text: p.text}); });
+  }
   return out;
 }
 function n_a(n){ return n.a ?? 0; }
-const LAYOUTS = [null]; for (let k = 1; k <= LEVELS.length; k++) LAYOUTS.push(layoutLevel(k));
+const LAYOUTS = [null];
 const INTRO = 1.0, TR = 1.1, HOLD = 2.5, TAIL = 1.6;
 const T_LEVEL = k => INTRO + (k - 1) * (TR + HOLD);
 const TOTAL = INTRO + LEVELS.length * (TR + HOLD) + TAIL;
@@ -217,13 +319,14 @@ const rootG = gTree.append('g');
 { const ic = ICONS && ICONS.researcher; rootG.append('circle').attr('r', 50).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5); if (ic){ const w = 84, h = w * ic.h / ic.w; rootG.append('image').attr('href', ic.src).attr('x', -w / 2).attr('y', -h / 2 - 4).attr('width', w).attr('height', h); } rootG.append('text').attr('class', 'root-label').attr('y', 74).text('调研主题'); }
 // ---------- per-frame renderer
 const lerp = (a, b, t) => a + (b - a) * t;
-function stateAt(t){ // level index k (1..8) and transition progress p in [0,1]
+function stateAt(t){ // level index k (1..LEVELS.length) and transition progress p in [0,1]
   if (t < INTRO) return {k: 1, p: clamp(t / INTRO, 0, 1), intro: true};
   for (let k = 1; k <= LEVELS.length; k++){ const t0 = T_LEVEL(k); if (t < t0 + TR + HOLD || k === LEVELS.length) return {k, p: clamp((t - t0) / TR, 0, 1)}; }
   return {k: LEVELS.length, p: 1};
 }
 function render(t){
   const {k, p} = stateAt(t); const e = ease(p);
+  if (!LAYOUTS[k]) return; // layouts exist only after the fonts have loaded
   const cur = LAYOUTS[k], prev = LAYOUTS[k - 1] || new Map();
   // union of ids
   const ids = new Set([...cur.keys(), ...prev.keys()]);
@@ -254,23 +357,30 @@ function render(t){
   gLinks.selectAll('path.cl').data(curves, d => d.id).join('path').attr('class', 'cl').attr('d', d => d.d).attr('fill', 'none').attr('stroke', d => d.col).attr('stroke-width', 1.6).attr('opacity', d => 0.75 * d.op);
   // cards
   const csel = gCards.selectAll('g.card').data(cards, d => d.id);
-  const centre = csel.join(enter => { const g = enter.append('g').attr('class', 'card'); g.append('rect').attr('class', 'bg'); g.append('text').attr('class', 'card-title'); g.append('text').attr('class', 'card-sub'); g.append('rect').attr('class', 'bd'); g.append('text').attr('class', 'badge'); return g; }, update => update, exit => exit.remove());
+  const centre = csel.join(enter => { const g = enter.append('g').attr('class', 'card'); g.append('rect').attr('class', 'bg'); const tg = g.append('g').attr('class', 'txt'); tg.append('text').attr('class', 'card-title'); tg.append('text').attr('class', 'card-sub'); tg.append('rect').attr('class', 'bd'); tg.append('text').attr('class', 'badge'); return g; }, update => update, exit => exit.remove());
   centre.attr('transform', d => `translate(${d.x},${d.y})`);
   centre.select('rect.bg').attr('x', d => -d.w / 2).attr('y', d => -d.h / 2).attr('width', d => d.w).attr('height', d => d.h).attr('rx', d => d.rx).attr('fill', d => d.kind === 'morph' && d.textOp < 0.5 ? d.col : d.spec.fill).attr('stroke', d => d.kind === 'morph' && d.textOp < 0.5 ? '#fff' : d.spec.stroke).attr('stroke-width', d => d.kind === 'morph' && d.textOp < 0.5 ? 1.5 : d.spec.sw).attr('stroke-dasharray', d => d.spec.dash);
-  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 17) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? 42 : 0), d.spec.big ? 24 : 17));
-  centre.select('text.card-sub').attr('x', d => -d.w / 2 + 12 + (d.spec.big ? 36 : 0)).attr('y', d => d.spec.big ? 6 : 16).style('font-size', '12.5px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp).text(d => fit(d.spec.sub || '', d.w - 24 - (d.spec.big ? 36 : 0), 12.5));
-  centre.select('rect.bd').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 14 : 0)).attr('y', d => -d.h / 2 - 8).attr('width', d => d.spec.badge ? tw(d.spec.badge, 11) + 12 : 0).attr('height', 17).attr('rx', 5).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
-  centre.select('text.badge').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 8 : 0)).attr('y', d => -d.h / 2 + 4).style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
+  // text is laid out at the card's final size and scaled with the box while it grows out of / collapses into a dot, so it never spills past the rect
+  centre.select('g.txt').attr('transform', d => `scale(${d.w / d.spec.w},${d.h / d.spec.h})`);
+  const H0 = d => d.spec.h, W0 = d => d.spec.w;
+  const titleSel = centre.select('text.card-title').attr('x', d => -W0(d) / 2 + CPX).style('font-size', d => (d.spec.big ? 24 : TFS) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp);
+  titleSel.each(function(d){ const t = d3.select(this); if (d.spec.big){ t.attr('y', 6).text(d.spec.title); return; } t.attr('y', null).text(null); const x = -W0(d) / 2 + CPX; d.spec.lines.forEach((line, i) => t.append('tspan').attr('x', x).attr('y', -H0(d) / 2 + CPY + TLH * (i + 1) - 5).text(line)); });
+  const subSel = centre.select('text.card-sub').attr('x', d => -W0(d) / 2 + CPX + (d.spec.big ? 36 : 0)).style('font-size', SFS + 'px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp);
+  subSel.each(function(d){ const t = d3.select(this); if (d.spec.big){ t.attr('y', 6).text(d.spec.subLines[0] || ''); return; } t.attr('y', null).text(null); const x = -W0(d) / 2 + CPX, y0 = -H0(d) / 2 + CPY + TLH * d.spec.lines.length - 3; d.spec.subLines.forEach((line, i) => t.append('tspan').attr('x', x).attr('y', y0 + SLH * (i + 1)).text(line)); });
+  centre.select('rect.bd').attr('x', d => W0(d) / 2 - badgeW(d.spec)).attr('y', d => -H0(d) / 2 - 8).attr('width', d => d.spec.badge ? badgeW(d.spec) - 2 : 0).attr('height', 17).attr('rx', 5).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
+  centre.select('text.badge').attr('x', d => W0(d) / 2 - badgeW(d.spec) / 2 - 1).attr('y', d => -H0(d) / 2 + 4).attr('text-anchor', 'middle').style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
   // sector pills
   const pills = [...cur.entries()].filter(([id]) => id.startsWith('PILL_')).map(([id, s]) => ({id, ...s, op: prev.has(id) ? 1 : ease(clamp((p - 0.4) / 0.5, 0, 1)), icon: ICONS && ICONS[({A:'structure', B:'phasediagram', C:'precursors', D:'furnace', E:'condtable', F:'xrd', G:'guard', H:'route'})[id.slice(5)]]}));
   const psel = gPills.selectAll('g.pill').data(pills, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'pillg'); g.append('rect'); g.append('image'); g.append('text').attr('class', 'pill'); return g; });
   psel.attr('transform', d => `translate(${d.x},${d.y})`).attr('opacity', d => d.op);
-  psel.select('rect').attr('x', d => d.anchorLeft ? -6 : -(tw(d.text, 14) + 44)).attr('y', -15).attr('width', d => tw(d.text, 14) + 50).attr('height', 30).attr('rx', 15).attr('fill', C.navy);
-  psel.select('image').attr('href', d => d.icon ? d.icon.src : null).attr('x', d => d.anchorLeft ? 0 : -(tw(d.text, 14) + 38)).attr('y', -11).attr('width', 24).attr('height', 22);
-  psel.select('text').attr('x', d => d.anchorLeft ? 30 : -(tw(d.text, 14) + 8)).attr('y', 5).text(d => d.text);
+  // pills are centred on their anchor: [icon 24][6][text] inside a 30 px capsule
+  psel.select('rect').attr('x', d => -d.w / 2).attr('y', d => -d.h / 2).attr('width', d => d.w).attr('height', d => d.h).attr('rx', d => d.h / 2).attr('fill', C.navy);
+  psel.select('image').attr('href', d => d.icon ? d.icon.src : null).attr('x', d => -d.w / 2 + 12).attr('y', -11).attr('width', 24).attr('height', 22);
+  psel.select('text').attr('x', d => -d.w / 2 + 42).attr('y', 5).text(d => d.text);
   rootG.attr('transform', `translate(${CX},${CY})`);
+  rootG.select('text.root-label').attr('opacity', lerp((prev.get('root') || cur.get('root')).labelOp, cur.get('root').labelOp, e));
   // caption
-  const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八'][k - 1];
+  const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八', '九'][k - 1];
   capTitle.text(`第${cn}级：${L.title}（${count}）`); capSum.attr('x', 12 + tw(`第${cn}级：${L.title}（${count}）`, 22) + 22).text(L.sum); cap.attr('opacity', t < INTRO ? ease(t / INTRO) : 1);
   d3.select('#tlabel').text(`${t.toFixed(1)} s · 第 ${k} 级`); d3.select('#seek').property('value', Math.round(1000 * t / TOTAL));
 }
@@ -284,9 +394,18 @@ d3.select('#prev').on('click', () => { const {k} = stateAt(tNow); tNow = T_LEVEL
 d3.select('#seek').on('input', function(){ tNow = TOTAL * (+this.value) / 1000; playing = false; render(tNow); });
 window.__seek = (t) => { tNow = t; render(t); };
 window.__total = TOTAL;
-render(tNow);
-window.__ready = true;
-if (params.get('autoplay') === '1'){ playing = true; requestAnimationFrame(tick); }
+// text is measured with the real web fonts, so layouts are computed once the fonts have loaded. Google serves Noto Sans SC in
+// unicode-range slices that load lazily, so every CJK glyph of the graph is requested up front (fallback after 6 s offline)
+const ALLTEXT = JSON.stringify(G).replace(/[\x00-\x7f]/g, '') || '知';
+const FONT_JOBS = ['400 12.5px "IBM Plex Sans"', '700 17px "IBM Plex Sans"', '700 14px "IBM Plex Sans"', '700 30px "Chakra Petch"', '600 12px "IBM Plex Mono"', '700 11px "IBM Plex Mono"'].map(f => document.fonts.load(f, 'Ag0'))
+  .concat(['400 12.5px "Noto Sans SC"', '700 17px "Noto Sans SC"'].map(f => document.fonts.load(f, ALLTEXT))).map(p => p.catch(() => []));
+Promise.race([Promise.all(FONT_JOBS).then(() => document.fonts.ready), new Promise(r => setTimeout(r, 6000))]).then(() => {
+  MCACHE.clear();
+  for (let k = 1; k <= LEVELS.length; k++) LAYOUTS.push(layoutLevel(k));
+  render(tNow);
+  window.__ready = true;
+  if (params.get('autoplay') === '1'){ playing = true; requestAnimationFrame(tick); }
+});
 </script>
 </body>
 </html>
