@@ -19,9 +19,10 @@
 "branches": 8,
 "records": 29,
 "compounds": 29,
+"elements": 12,
 "gaps": 8,
-"nodes": 368,
-"edges": 1280
+"nodes": 380,
+"edges": 1420
 },
 "stages": [
 {
@@ -37,7 +38,7 @@
 {
 "i": 2,
 "name": "实体主干",
-"desc": "把文献抽象成可复用的点：化合物 / 相、合成路线、前驱体与坩埚助熔、表征终点、失败模式，以及 29 条逐字段的合成条件记录。"
+"desc": "把文献抽象成可复用的点：元素 → 化合物 / 相 → 合成路线 → 逐字段的 29 条条件记录，以及前驱体与坩埚助熔、表征终点、失败模式。"
 },
 {
 "i": 3,
@@ -2554,6 +2555,126 @@
 ],
 "note": "实验方向二的电荷平衡系列（0 ≤ x ≤ 1.25）；x=0 为无 Zn 参照相，x=1 对应目标组成",
 "src": "人工整理，链接由证据包文本匹配生成"
+},
+{
+"id": "el_Ba",
+"type": "element",
+"stage": 2,
+"label": "Ba 钡",
+"sym": "Ba",
+"core": true,
+"note": "大阳离子位；Ba/Y/O 非整比与 Ba↔Sr 替代决定四方谱系的组成窗口",
+"src": "证据包 notes/taxonomy.md §C1 / C2 / E1"
+},
+{
+"id": "el_Y",
+"type": "element",
+"stage": 2,
+"label": "Y 钇",
+"sym": "Y",
+"core": true,
+"note": "稀土位；无 Zn 四方 Ba–Y 谱系的主体，Y₂O₃/SiO₂ 比影响结构类型",
+"src": "证据包 notes/taxonomy.md §A2 / C1 / B4"
+},
+{
+"id": "el_Zn",
+"type": "element",
+"stage": 2,
+"label": "Zn 锌",
+"sym": "Zn",
+"core": true,
+"note": "目标相的特征元素：[ZnSi₄O₁₆] 四面体单元；Zn 挥发与 Zn↔Mg/Co 替代是核心变量",
+"src": "证据包 notes/taxonomy.md §A1 / B3 / C3 / E1"
+},
+{
+"id": "el_Si",
+"type": "element",
+"stage": 2,
+"label": "Si 硅",
+"sym": "Si",
+"core": true,
+"note": "孤立 [SiO₄] 与焦硅酸根的聚合度决定结构终点；玛瑙研磨带入 SiO₂ 污染",
+"src": "证据包 notes/taxonomy.md §B2 / B5 / G2"
+},
+{
+"id": "el_O",
+"type": "element",
+"stage": 2,
+"label": "O 氧",
+"sym": "O",
+"core": true,
+"note": "氧计量 / 氧空位；开放体系与还原气氛改变价态与相稳定性",
+"src": "证据包 notes/taxonomy.md §C1 / E3 / G3"
+},
+{
+"id": "el_Mg",
+"type": "element",
+"stage": 2,
+"label": "Mg 镁",
+"sym": "Mg",
+"core": false,
+"note": "Zn 位的同价尺寸对照（RECIPE Mg 类比目标，方向四）",
+"src": "证据包 notes/taxonomy.md §C3"
+},
+{
+"id": "el_Co",
+"type": "element",
+"stage": 2,
+"label": "Co 钴",
+"sym": "Co",
+"core": false,
+"note": "Zn 位的价态 / 氧分压探针（RECIPE Co 类比目标，方向四）",
+"src": "证据包 notes/taxonomy.md §C3"
+},
+{
+"id": "el_Sr",
+"type": "element",
+"stage": 2,
+"label": "Sr 锶",
+"sym": "Sr",
+"core": false,
+"note": "Ba 位替代（Ba₁₋ₓSrₓZn₂Si₂O₇ 负 / 高热膨胀系列）",
+"src": "证据包 notes/taxonomy.md §C2"
+},
+{
+"id": "el_K",
+"type": "element",
+"stage": 2,
+"label": "K 钾",
+"sym": "K",
+"core": false,
+"note": "K₂CO₃ / MoO₃ 助熔体系的组分；BaKYSi₂O₇ 为助熔批次主产物",
+"src": "证据包 notes/taxonomy.md §D1 / E4"
+},
+{
+"id": "el_Mo",
+"type": "element",
+"stage": 2,
+"label": "Mo 钼",
+"sym": "Mo",
+"core": false,
+"note": "MoO₃ / 钼酸盐助熔剂：用量影响 Ba–Y 成相与晶体质量",
+"src": "证据包 notes/taxonomy.md §D1 / E4"
+},
+{
+"id": "el_La",
+"type": "element",
+"stage": 2,
+"label": "La 镧",
+"sym": "La",
+"core": false,
+"note": "LaBSiO₅ 与 Ln₂SiO₅ 稀土正硅酸盐族的对照",
+"src": "证据包 notes/taxonomy.md §B4 / D5"
+},
+{
+"id": "el_Pb",
+"type": "element",
+"stage": 2,
+"label": "Pb 铅",
+"sym": "Pb",
+"core": false,
+"note": "Pb₂ZnSi₂O₇ / 氟化物助熔：历史工艺对照，EHS 风险，不迁移",
+"src": "证据包 notes/taxonomy.md §E4 / G2"
 },
 {
 "id": "rt_flux",
@@ -8425,6 +8546,706 @@
 "s": "P_kerstan2015kristallphasen",
 "t": "L_E2",
 "k": "support"
+},
+{
+"s": "L_C1",
+"t": "el_Ba",
+"k": "defines"
+},
+{
+"s": "L_C2",
+"t": "el_Ba",
+"k": "defines"
+},
+{
+"s": "L_E1",
+"t": "el_Ba",
+"k": "defines"
+},
+{
+"s": "L_A2",
+"t": "el_Y",
+"k": "defines"
+},
+{
+"s": "L_C1",
+"t": "el_Y",
+"k": "defines"
+},
+{
+"s": "L_B4",
+"t": "el_Y",
+"k": "defines"
+},
+{
+"s": "L_A1",
+"t": "el_Zn",
+"k": "defines"
+},
+{
+"s": "L_B3",
+"t": "el_Zn",
+"k": "defines"
+},
+{
+"s": "L_C3",
+"t": "el_Zn",
+"k": "defines"
+},
+{
+"s": "L_E1",
+"t": "el_Zn",
+"k": "defines"
+},
+{
+"s": "L_B2",
+"t": "el_Si",
+"k": "defines"
+},
+{
+"s": "L_B5",
+"t": "el_Si",
+"k": "defines"
+},
+{
+"s": "L_G2",
+"t": "el_Si",
+"k": "defines"
+},
+{
+"s": "L_C1",
+"t": "el_O",
+"k": "defines"
+},
+{
+"s": "L_E3",
+"t": "el_O",
+"k": "defines"
+},
+{
+"s": "L_G3",
+"t": "el_O",
+"k": "defines"
+},
+{
+"s": "L_C3",
+"t": "el_Mg",
+"k": "defines"
+},
+{
+"s": "L_C3",
+"t": "el_Co",
+"k": "defines"
+},
+{
+"s": "L_C2",
+"t": "el_Sr",
+"k": "defines"
+},
+{
+"s": "L_D1",
+"t": "el_K",
+"k": "defines"
+},
+{
+"s": "L_E4",
+"t": "el_K",
+"k": "defines"
+},
+{
+"s": "L_D1",
+"t": "el_Mo",
+"k": "defines"
+},
+{
+"s": "L_E4",
+"t": "el_Mo",
+"k": "defines"
+},
+{
+"s": "L_B4",
+"t": "el_La",
+"k": "defines"
+},
+{
+"s": "L_D5",
+"t": "el_La",
+"k": "defines"
+},
+{
+"s": "L_E4",
+"t": "el_Pb",
+"k": "defines"
+},
+{
+"s": "L_G2",
+"t": "el_Pb",
+"k": "defines"
+},
+{
+"s": "cmp_target",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_target",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_target",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_target",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_target",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_baxy26",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_baxy26",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_baxy26",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_baxy26",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13o85",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13o85",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13o85",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba5y13o85",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_bay16",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_bay16",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_bay16",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_bay16",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_bakysi2o7",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_bakysi2o7",
+"t": "el_K",
+"k": "contains"
+},
+{
+"s": "cmp_bakysi2o7",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_bakysi2o7",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_bakysi2o7",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2si2o7",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2si2o7",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2si2o7",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2si2o7",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba2znsi2o7",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba2znsi2o7",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_ba2znsi2o7",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba2znsi2o7",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_Mg",
+"k": "contains"
+},
+{
+"s": "cmp_baznsio4",
+"t": "el_Co",
+"k": "contains"
+},
+{
+"s": "cmp_baznsi3o8",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_baznsi3o8",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_baznsi3o8",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_baznsi3o8",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba3zn4si4o15",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba3zn4si4o15",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_ba3zn4si4o15",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba3zn4si4o15",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba2mgsi2o7",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba2mgsi2o7",
+"t": "el_Mg",
+"k": "contains"
+},
+{
+"s": "cmp_ba2mgsi2o7",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba2mgsi2o7",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_basrzn",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_basrzn",
+"t": "el_Sr",
+"k": "contains"
+},
+{
+"s": "cmp_basrzn",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_basrzn",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_basrzn",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_Mg",
+"k": "contains"
+},
+{
+"s": "cmp_bazn2mx",
+"t": "el_Co",
+"k": "contains"
+},
+{
+"s": "cmp_y2sio5",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_y2sio5",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_y2sio5",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_y2si2o7",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_y2si2o7",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_y2si2o7",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_labsio5",
+"t": "el_La",
+"k": "contains"
+},
+{
+"s": "cmp_labsio5",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_labsio5",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ln2sio5",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ln2sio5",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_yoxyapatite",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_yoxyapatite",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_yoxyapatite",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_zn2sio4",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_zn2sio4",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_zn2sio4",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_basi4o9",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_basi4o9",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_basi4o9",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba2si4o10",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba2si4o10",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba2si4o10",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba3sio5",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba3sio5",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba3sio5",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba5si8o21",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba5si8o21",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba5si8o21",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_ba2sio4",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_ba2sio4",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_ba2sio4",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_liba2gasi2o8",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_liba2gasi2o8",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_liba2gasi2o8",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_mg_target",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_mg_target",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_mg_target",
+"t": "el_Mg",
+"k": "contains"
+},
+{
+"s": "cmp_mg_target",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_mg_target",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_co_target",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_co_target",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_co_target",
+"t": "el_Co",
+"k": "contains"
+},
+{
+"s": "cmp_co_target",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_co_target",
+"t": "el_O",
+"k": "contains"
+},
+{
+"s": "cmp_series",
+"t": "el_Ba",
+"k": "contains"
+},
+{
+"s": "cmp_series",
+"t": "el_Y",
+"k": "contains"
+},
+{
+"s": "cmp_series",
+"t": "el_Zn",
+"k": "contains"
+},
+{
+"s": "cmp_series",
+"t": "el_Si",
+"k": "contains"
+},
+{
+"s": "cmp_series",
+"t": "el_O",
+"k": "contains"
 },
 {
 "s": "L_D1",
