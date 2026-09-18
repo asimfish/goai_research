@@ -12,12 +12,14 @@
 | `graph.json` | 图数据：`meta`（统计、阶段说明、证据等级）、`nodes`、`edges` |
 | `build_graph.py` | 生成脚本：`python3 build_graph.py` 重新生成上面两个文件 |
 | `template.html` | 页面模板（`build_graph.py` 把 JSON 注入 `/*__GRAPH_JSON__*/null`） |
-| `knowledge_layers.html` / `layers_template.html` | 逐层展开动画版：八级依次展开，当前级贴外框做文字卡片，已展开级收缩成中心的圆点树，卡片与圆点互相形变，底部字幕逐级说明。`?level=1..8` 停在某级，`?t=<秒>` 停在某时刻，`?movie=1` 隐藏控件，`?autoplay=1` 自动播放；页面暴露 `window.__seek(t)` 供逐帧抓取 |
+| `deck_explainer.py` | （已停用：作者改为页面内讲解，见上）讲解幻灯片生成：在比赛模板的内容版式上生成 4 页（搭建机制、第 1–4 级、第 5–8 级、八级一览表 + 卡片语法），一页一个意思，每级一张示意帧 + 一行说明；示意帧是动画页 `?schematic=1` 的截图。`--deck 模板.pptx --img <deck_S1..8.png 目录> --out 输出.pptx` |
+| `knowledge_layers.html` / `layers_template.html` | 逐层展开动画版：八级依次展开，当前级贴外框做文字卡片，已展开级收缩成中心的圆点树，卡片与圆点互相形变。讲解就在页面里：顶部台阶条 = 中心 + 八级，按五棵树分组（个人知识树 / 文献树 / 实体主干 / 结论树 / 长出的新树），当前级橙色、已展开级缩成圆点、橙色折线（地铁式：最近的父级走最低一道，每道高 14 px，出发竖线并排）指向本级卡片挂在哪一级，数量写在线上的小白框里；底部说明块 = 本级标题与一句话、新增 / 来源 / 挂法、构成（卡片种类与数量）、卡片颜色表。排版规则：卡片角标画在卡片内、槽位间距 14 px；扇区胶囊用短名（字母 + 3–6 字），沿半径外推到不压圆点为止，再夹回内侧空白区；`?debug=1` 把各级的矩形重叠 / 胶囊压点 / 出框计数写进 `<title>`，无头浏览器 `--dump-dom` 可读。节奏：开场 1.2 s，每级切换 1.6 s + 停留 4.5 s，尾 3 s，共 53 s。`?level=1..8` 停在某级，`?t=<秒>` 停在某时刻，`?movie=1` 隐藏控件，`?autoplay=1` 自动播放，`?schematic=1` 示意模式（卡片不带文字、不显示扇区标签，只留色块与连到父节点的曲线，供讲解页缩略图用）；页面暴露 `window.__seek(t)` 供逐帧抓取 |
 
 线上：<https://asimfish.github.io/goai-dashboard/knowledge_graph.html>；
 五张阶段海报（3072×1728）在看板 `pdf/gallery/sagemat_knowledge_forest_20260918_stage{0..4}_3072x1728.png`；
 逐层生长动画 `pdf/gallery/sagemat_knowledge_forest_20260918_growth_1280x720.gif`（年轮版，旧层淡化、新层突出）；
-逐层展开动画（卡片版）：<https://asimfish.github.io/goai-dashboard/knowledge_layers.html?autoplay=1>，GIF 与八张分级海报 `pdf/gallery/sagemat_knowledge_layers_20260919_*`。
+逐层展开动画（卡片版）：<https://asimfish.github.io/goai-dashboard/knowledge_layers.html?autoplay=1>，GIF 与八张分级海报 `pdf/gallery/sagemat_knowledge_layers_20260919_*`；
+八级怎么搭起来的讲解在页面顶部台阶条与底部说明块里（海报与 GIF 同样带着）；早先的 PPT 版 `pdf/gallery/sagemat_knowledge_layers_explainer_20260919.pptx` 已停用。
 
 ## 五层怎么长
 
