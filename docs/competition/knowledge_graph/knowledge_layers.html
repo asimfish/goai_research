@@ -171,10 +171,10 @@ const dotColor = n => { switch (n.type){ case 'question': return C.tele; case 's
 const dotR = n => ({question: 9, subtopic: 6, branch: 13, leaf: 8, paper: 6.5, element: 7, compound: 7, route: 9, record: 5.5, claim: 7, direction: 7, gap: 6, recipe: 6, workflow: 7, case: 7})[n.type] || 6;
 // ---------- frame & rail geometry (1920 × 1080 canvas)
 const W = 1920, H = 1080;
-const FRAME = {x: 36, y: 106, w: 1848, h: 814, r: 26};
-const BOT = {x: 36, y: 930, w: 1848, h: 138};   // explanation block for the current level
+const FRAME = {x: 36, y: 106, w: 1848, h: 828, r: 26};
+const BOT = {x: 36, y: 944, w: 1848, h: 124};   // explanation block for the current level
 const CX = 960, CY = FRAME.y + FRAME.h / 2;
-const PAD = 14, LANE_GAP = 8;
+const PAD = 14, LANE_GAP = 14;
 const RING_R = [0, 120, 150, 180, 210, 240, 270, 300, 330]; // collapsed-tree ring radius by level (before scaling)
 // ---------- layouts per level
 function rayToRail(a, inset){ // where the ray at angle a from the centre meets the rectangle inset from the frame; returns {seg, u} perimeter coordinate
@@ -188,6 +188,7 @@ function rayToRail(a, inset){ // where the ray at angle a from the centre meets 
 }
 const TL = FRAME.w - 2 * PAD - 2 * FRAME.r, SL = FRAME.h - 2 * PAD - 2 * FRAME.r, PER = 2 * (TL + SL);
 const TREE_MAX = 250;
+const PILL_NAMES = {A: 'A · 身份与原始报道', B: 'B · 结构与近邻', C: 'C · 组成替代', D: 'D · 合成路线', E: 'E · 条件变量', F: 'F · 相纯度与表征', G: 'G · 失败与边界', H: 'H · 配方篮子'};
 const treeRFor = (lanes, ch) => Math.min(TREE_MAX, (FRAME.h - 2 * (PAD + lanes * (ch + LANE_GAP))) / 2 - 44); // keep the collapsed tree + sector pills clear of the card lanes
 // perimeter coordinate (clockwise from the top-left corner) of a point on the rail
 function perim(x, y, seg){ const x0 = FRAME.x + PAD + FRAME.r, y0 = FRAME.y + PAD + FRAME.r; if (seg === 'T') return clamp(x - x0, 0, TL); if (seg === 'R') return TL + clamp(y - y0, 0, SL); if (seg === 'B') return TL + SL + clamp(x0 + TL - x, 0, TL); return 2 * TL + SL + clamp(y0 + SL - y, 0, SL); }
@@ -227,12 +228,30 @@ function layoutLevel(k){ // returns Map id -> {kind:'card'|'dot'|'root'|'pill', 
   present.forEach(n => { const l = levelOf.get(n.id); if (l < k){ const r = RING_R[l] * scale; out.set(n.id, {kind: n.type === 'root' ? 'root' : 'dot', x: CX + r * Math.cos(n.a), y: CY + r * Math.sin(n.a), r: dotR(n), col: dotColor(n)}); } });
   out.set('root', {kind: 'root', x: CX, y: CY, r: 46});
   cards.forEach(c => out.set(c.n.id, {kind: 'card', x: c.x, y: c.y, w: c.spec.w, h: c.spec.h, spec: c.spec, seg: c.seg, r: dotR(c.n), col: dotColor(c.n)}));
-  if (k >= 3){ SECTORS.forEach(s => { const b = branchOf(s); if (!out.get(b.id)) return; const a = mid(s); const rr = treeR * scale + 26; out.set('PILL_' + s, {kind: 'pill', x: CX + rr * Math.cos(a), y: CY + rr * Math.sin(a), text: b.label.slice(2).split('（')[0], anchorLeft: Math.cos(a) >= 0}); }); }
+  if (k >= 3){
+    const dotsArr = [...out.values()].filter(v => v.kind === 'dot');
+    const cwMax = cards.length ? Math.max(...cards.map(c => c.spec.w)) : 0;
+    const inner = {x0: FRAME.x + PAD + (cards.length ? lanes * (cwMax + LANE_GAP) : 0) + 4, x1: FRAME.x + FRAME.w - PAD - (cards.length ? lanes * (cwMax + LANE_GAP) : 0) - 4,
+                   y0: FRAME.y + PAD + (cards.length ? lanes * (chMax + LANE_GAP) : 0) + 4, y1: FRAME.y + FRAME.h - PAD - (cards.length ? lanes * (chMax + LANE_GAP) : 0) - 4};
+    SECTORS.forEach(s => { const b = branchOf(s); if (!out.get(b.id)) return; const a = mid(s); const text = PILL_NAMES[s]; const pw = tw(text, 14) + 50; const anchorLeft = Math.cos(a) >= 0;
+      let rr = treeR * scale + 22, x = 0, y = 0, rect = null;
+      for (let i = 0; i < 40; i++){ x = CX + rr * Math.cos(a); y = CY + rr * Math.sin(a); rect = {x0: anchorLeft ? x - 6 : x - pw + 6, x1: anchorLeft ? x - 6 + pw : x + 6, y0: y - 15, y1: y + 15};
+        const hit = dotsArr.some(d => d.x + d.r + 3 > rect.x0 && d.x - d.r - 3 < rect.x1 && d.y + d.r + 3 > rect.y0 && d.y - d.r - 3 < rect.y1); if (!hit) break; rr += 5; }
+      x += Math.max(0, inner.x0 - rect.x0) - Math.max(0, rect.x1 - inner.x1); y += Math.max(0, inner.y0 - rect.y0) - Math.max(0, rect.y1 - inner.y1);
+      out.set('PILL_' + s, {kind: 'pill', x, y, text, anchorLeft}); });
+  }
   return out;
 }
 function n_a(n){ return n.a ?? 0; }
 const LAYOUTS = [null]; for (let k = 1; k <= LEVELS.length; k++) LAYOUTS.push(layoutLevel(k));
-const INTRO = 1.0, TR = 1.1, HOLD = 2.5, TAIL = 1.6;
+if (params.get('debug') === '1'){ const repL = []; for (let k = 1; k <= LEVELS.length; k++){ const L = LAYOUTS[k]; const rects = [];
+  L.forEach((v, id) => { if (v.kind === 'card') rects.push({id, x0: v.x - v.w / 2, x1: v.x + v.w / 2, y0: v.y - v.h / 2, y1: v.y + v.h / 2}); if (v.kind === 'pill'){ const pw = tw(v.text, 14) + 50; rects.push({id, x0: v.anchorLeft ? v.x - 6 : v.x - pw + 6, x1: v.anchorLeft ? v.x - 6 + pw : v.x + 6, y0: v.y - 15, y1: v.y + 15}); } });
+  const bad = []; for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++){ const a = rects[i], b = rects[j]; if (a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1) bad.push(a.id + '~' + b.id); }
+  let pd = 0; L.forEach(v => { if (v.kind !== 'dot') return; rects.forEach(r => { if (r.id.startsWith('PILL_') && v.x + v.r > r.x0 && v.x - v.r < r.x1 && v.y + v.r > r.y0 && v.y - v.r < r.y1) pd++; }); });
+  let outside = 0; rects.forEach(r => { if (r.x0 < FRAME.x || r.x1 > FRAME.x + FRAME.w || r.y0 < FRAME.y || r.y1 > FRAME.y + FRAME.h) outside++; });
+  repL.push(`L${k}: rect-rect ${bad.length}${bad.length ? ' [' + bad.slice(0, 4).join(', ') + ']' : ''}, pill-dot ${pd}, outside ${outside}`); }
+  document.title = 'DBG ' + repL.join(' | '); }
+const INTRO = 1.2, TR = 1.6, HOLD = 4.5, TAIL = 3.0;
 const T_LEVEL = k => INTRO + (k - 1) * (TR + HOLD);
 const TOTAL = INTRO + LEVELS.length * (TR + HOLD) + TAIL;
 // ---------- svg scaffolding
@@ -271,17 +290,17 @@ railSteps.append('text').attr('class', 'sk').attr('x', d => RAIL.r + 7 + tw(d.ra
 // ---- explanation block for the current level
 const bot = gTop.append('g').attr('transform', `translate(${BOT.x},${BOT.y})`);
 bot.append('rect').attr('width', BOT.w).attr('height', BOT.h).attr('rx', 10).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5);
-const botTitle = bot.append('text').attr('class', 'cap-title').attr('x', 22).attr('y', 38);
-const botCount = bot.append('text').attr('class', 'cap-count').attr('y', 38);
-const botSum = bot.append('text').attr('class', 'cap-sum').attr('y', 38);
+const botTitle = bot.append('text').attr('class', 'cap-title').attr('x', 22).attr('y', 34);
+const botCount = bot.append('text').attr('class', 'cap-count').attr('y', 34);
+const botSum = bot.append('text').attr('class', 'cap-sum').attr('y', 34);
 function field(x, y, label){ const g = bot.append('g').attr('transform', `translate(${x},${y})`); g.append('text').attr('class', 'f-label').text(label); return g.append('text').attr('class', 'f-val').attr('x', 44); }
 const FX2 = 740, FW1 = FX2 - 22 - 44 - 20, FW2 = 1376 - FX2 - 44;
-const fAdd = field(22, 74, '新增'), fSrc = field(FX2, 74, '来源'), fHang = field(22, 108, '挂法');
-const partsG = bot.append('g').attr('transform', `translate(${FX2},108)`); partsG.append('text').attr('class', 'f-label').text('构成'); const chipsG = partsG.append('g').attr('transform', 'translate(44,0)');
+const fAdd = field(22, 68, '新增'), fSrc = field(FX2, 68, '来源'), fHang = field(22, 100, '挂法');
+const partsG = bot.append('g').attr('transform', `translate(${FX2},100)`); partsG.append('text').attr('class', 'f-label').text('构成'); const chipsG = partsG.append('g').attr('transform', 'translate(44,0)');
 bot.append('line').attr('x1', 1392).attr('x2', 1392).attr('y1', 16).attr('y2', BOT.h - 16).attr('stroke', C.line);
-{ const lg = bot.append('g').attr('transform', 'translate(1412, 30)'); lg.append('text').attr('class', 'f-label').text('卡片颜色');
+{ const lg = bot.append('g').attr('transform', 'translate(1412, 26)'); lg.append('text').attr('class', 'f-label').text('卡片颜色');
   const items = [[C.heat, 'D0 目标相直接报道', 'solid'], [C.heat2, 'D1 同一谱系', 'tint'], [C.tele, 'N1 晶体化学近邻', 'tint'], [C.faint, 'P1 工艺近邻 · X 边界', 'line'], [C.purple, 'AI 推断（紫虚线）', 'dash'], [C.faint, '证据缺口（灰虚线）', 'dash'], [C.navy, '分支 · 仿真工作流', 'solid'], [C.gold, 'B 区条件记录', 'line']];
-  items.forEach(([col, t, kind], i) => { const x = (i % 2) * 232, y = 22 + Math.floor(i / 2) * 23; lg.append('rect').attr('x', x).attr('y', y - 11).attr('width', 20).attr('height', 13).attr('rx', 3).attr('fill', kind === 'solid' ? col : kind === 'tint' ? d3.color(col).copy({opacity: .2}) : '#fff').attr('stroke', col).attr('stroke-width', 1.6).attr('stroke-dasharray', kind === 'dash' ? '3 2' : null); lg.append('text').attr('class', 'lg').attr('x', x + 26).attr('y', y).text(t); }); }
+  items.forEach(([col, t, kind], i) => { const x = (i % 2) * 232, y = 20 + Math.floor(i / 2) * 22; lg.append('rect').attr('x', x).attr('y', y - 11).attr('width', 20).attr('height', 13).attr('rx', 3).attr('fill', kind === 'solid' ? col : kind === 'tint' ? d3.color(col).copy({opacity: .2}) : '#fff').attr('stroke', col).attr('stroke-width', 1.6).attr('stroke-dasharray', kind === 'dash' ? '3 2' : null); lg.append('text').attr('class', 'lg').attr('x', x + 26).attr('y', y).text(t); }); }
 // root icon
 const rootG = gTree.append('g');
 { const ic = ICONS && ICONS.researcher; rootG.append('circle').attr('r', 50).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5); if (ic){ const w = 84, h = w * ic.h / ic.w; rootG.append('image').attr('href', ic.src).attr('x', -w / 2).attr('y', -h / 2 - 4).attr('width', w).attr('height', h); } rootG.append('text').attr('class', 'root-label').attr('y', 74).text('调研主题'); }
@@ -320,17 +339,17 @@ function render(t){
   const curves = cards.map(c => { const par = parentOf(c.n); const ps = par ? (par.id === 'root' ? {x: CX, y: CY} : (dotById.get(par.id) || cur.get(par.id) || prev.get(par.id))) : {x: CX, y: CY}; if (!ps) return null;
     const ax = c.x, ay = c.y; const toC = Math.atan2(CY - ay, CX - ax); const sx = ax + Math.cos(toC) * (c.kind === 'card' ? Math.min(c.w, c.h) * 0.5 : c.r), sy = ay + Math.sin(toC) * (c.kind === 'card' ? Math.min(c.w, c.h) * 0.5 : c.r);
     const pa = Math.atan2(ps.y - CY, ps.x - CX); const k1 = 150, k2 = 110; const c1x = sx + Math.cos(toC) * k1, c1y = sy + Math.sin(toC) * k1; const c2x = ps.x + Math.cos(pa) * k2, c2y = ps.y + Math.sin(pa) * k2;
-    return {id: c.id, d: `M${sx},${sy} C${c1x},${c1y} ${c2x},${c2y} ${ps.x},${ps.y}`, col: c.spec.stroke === '#fff' ? c.col : (c.spec.fill === '#fff' || c.spec.fill.startsWith('#F') || c.spec.fill.startsWith('#E') || c.spec.fill.startsWith('#D') ? c.spec.stroke : c.spec.fill), op: (c.linkOp ?? 1) * (c.kind === 'morph' ? c.textOp : 1)}; }).filter(Boolean);
-  gLinks.selectAll('path.cl').data(curves, d => d.id).join('path').attr('class', 'cl').attr('d', d => d.d).attr('fill', 'none').attr('stroke', d => d.col).attr('stroke-width', 1.6).attr('opacity', d => 0.75 * d.op);
+    return {id: c.id, d: `M${sx},${sy} C${c1x},${c1y} ${c2x},${c2y} ${ps.x},${ps.y}`, col: c.spec.stroke === '#fff' ? c.col : (c.spec.fill === '#fff' || c.spec.fill.startsWith('#F') || c.spec.fill.startsWith('#E') || c.spec.fill.startsWith('#D') ? c.spec.stroke : c.spec.fill), op: (c.linkOp ?? 1) * (c.kind === 'morph' ? c.textOp : 1) * (par && levelOf.get(par.id) === levelOf.get(c.n.id) ? 0.45 : 1), same: !!(par && levelOf.get(par.id) === levelOf.get(c.n.id))}; }).filter(Boolean);
+  gLinks.selectAll('path.cl').data(curves, d => d.id).join('path').attr('class', 'cl').attr('d', d => d.d).attr('fill', 'none').attr('stroke', d => d.col).attr('stroke-width', d => d.same ? 1.1 : 1.6).attr('opacity', d => 0.75 * d.op);
   // cards
   const csel = gCards.selectAll('g.card').data(cards, d => d.id);
   const centre = csel.join(enter => { const g = enter.append('g').attr('class', 'card'); g.append('rect').attr('class', 'bg'); g.append('text').attr('class', 'card-title'); g.append('text').attr('class', 'card-sub'); g.append('rect').attr('class', 'bd'); g.append('text').attr('class', 'badge'); return g; }, update => update, exit => exit.remove());
   centre.attr('transform', d => `translate(${d.x},${d.y})`);
   centre.select('rect.bg').attr('x', d => -d.w / 2).attr('y', d => -d.h / 2).attr('width', d => d.w).attr('height', d => d.h).attr('rx', d => d.rx).attr('fill', d => d.kind === 'morph' && d.textOp < 0.5 ? d.col : d.spec.fill).attr('stroke', d => d.kind === 'morph' && d.textOp < 0.5 ? '#fff' : d.spec.stroke).attr('stroke-width', d => d.kind === 'morph' && d.textOp < 0.5 ? 1.5 : d.spec.sw).attr('stroke-dasharray', d => d.spec.dash);
-  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 17) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? 42 : 0), d.spec.big ? 24 : 17));
+  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 17) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? tw(d.spec.badge, 11) + 22 : 0), d.spec.big ? 24 : 17));
   centre.select('text.card-sub').attr('x', d => -d.w / 2 + 12 + (d.spec.big ? 36 : 0)).attr('y', d => d.spec.big ? 6 : 16).style('font-size', '12.5px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp).text(d => fit(d.spec.sub || '', d.w - 24 - (d.spec.big ? 36 : 0), 12.5));
-  centre.select('rect.bd').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 14 : 0)).attr('y', d => -d.h / 2 - 8).attr('width', d => d.spec.badge ? tw(d.spec.badge, 11) + 12 : 0).attr('height', 17).attr('rx', 5).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
-  centre.select('text.badge').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 8 : 0)).attr('y', d => -d.h / 2 + 4).style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
+  centre.select('rect.bd').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 16 : 0)).attr('y', d => -d.h / 2 + 5).attr('width', d => d.spec.badge ? tw(d.spec.badge, 11) + 12 : 0).attr('height', 16).attr('rx', 4).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
+  centre.select('text.badge').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 10 : 0)).attr('y', d => -d.h / 2 + 17).style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
   // sector pills
   const pills = [...cur.entries()].filter(([id]) => id.startsWith('PILL_')).map(([id, s]) => ({id, ...s, op: prev.has(id) ? 1 : ease(clamp((p - 0.4) / 0.5, 0, 1)), icon: ICONS && ICONS[({A:'structure', B:'phasediagram', C:'precursors', D:'furnace', E:'condtable', F:'xrd', G:'guard', H:'route'})[id.slice(5)]]}));
   const psel = gPills.selectAll('g.pill').data(pills, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'pillg'); g.append('rect'); g.append('image'); g.append('text').attr('class', 'pill'); return g; });
@@ -355,7 +374,7 @@ function render(t){
   const ttl = `第${cn}级 · ${L.title}`; botTitle.text(ttl); const cx1 = 22 + tw(ttl, 22) + 12; botCount.attr('x', cx1).text(`${count} 张卡片`); const cx2 = cx1 + tw(`${count} 张卡片`, 14) + 18; botSum.attr('x', cx2).text(fit(L.sum, 1376 - cx2, 16));
   fAdd.text(fit(L.add, FW1, 15)); fSrc.text(fit(L.src, FW2, 15)); fHang.text(fit(L.hang, FW1, 15));
   const chips = chipsG.selectAll('g.chip').data(PARTS[k], d => d.label).join(enter => { const g = enter.append('g').attr('class', 'chip'); g.append('rect'); g.append('text').attr('class', 'chip'); g.append('text').attr('class', 'chip-n'); return g; });
-  { let x = 0; chips.each(function(d){ const g = d3.select(this); g.attr('transform', `translate(${x},0)`); g.select('rect').attr('x', 0).attr('y', -11).attr('width', 22).attr('height', 14).attr('rx', 3).attr('fill', d.spec.fill).attr('stroke', d.spec.stroke).attr('stroke-width', Math.max(1.2, Math.min(2, d.spec.sw || 1.2))).attr('stroke-dasharray', d.spec.dash ? '3 2' : null); g.select('text.chip').attr('x', 28).attr('y', 0).text(d.label); const lw = tw(d.label, 13); g.select('text.chip-n').attr('x', 28 + lw + 5).attr('y', 0).text(d.count); x += 28 + lw + 5 + tw(String(d.count), 13) + 18; }); }
+  { let x = 0; chips.each(function(d){ const g = d3.select(this); g.attr('transform', `translate(${x},0)`); g.select('rect').attr('x', 0).attr('y', -11).attr('width', 22).attr('height', 14).attr('rx', 3).attr('fill', d.spec.fill).attr('stroke', d.spec.stroke).attr('stroke-width', Math.max(1.2, Math.min(2, d.spec.sw || 1.2))).attr('stroke-dasharray', d.spec.dash ? '3 2' : null); g.select('text.chip').attr('x', 28).attr('y', 0).text(d.label); const lw = tw(d.label, 13); g.select('text.chip-n').attr('x', 28 + lw + 5).attr('y', 0).text(d.count); x += 28 + lw + 5 + tw(String(d.count), 13) + 14; }); }
   bot.attr('opacity', t < INTRO ? ease(t / INTRO) : 1);
   d3.select('#tlabel').text(`${t.toFixed(1)} s · 第 ${k} 级`); d3.select('#seek').property('value', Math.round(1000 * t / TOTAL));
   if (SCHEM){ gLinks.selectAll('path.cl').attr('stroke-width', 2.2).attr('opacity', d => 0.95 * d.op); gPills.style('display', 'none'); gTop.style('display', 'none'); gCards.selectAll('text').style('display', 'none'); gCards.selectAll('rect.bd').style('display', 'none'); gCards.selectAll('rect.bg').attr('stroke-width', d => Math.max(2.5, d.spec.sw)); }
