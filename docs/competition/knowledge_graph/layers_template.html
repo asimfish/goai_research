@@ -23,7 +23,7 @@ text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif}
 .sk{font:500 12px "IBM Plex Mono",monospace;fill:var(--muted)}
 .sn{font:700 12px "IBM Plex Mono",monospace;text-anchor:middle;pointer-events:none}
 .sg{font:600 11.5px "IBM Plex Mono",monospace;fill:var(--faint);letter-spacing:.1em;text-anchor:middle}
-.arc-n{font:700 11px "IBM Plex Mono",monospace;fill:var(--heat);text-anchor:middle}
+.arc-n{font:700 11px "IBM Plex Mono",monospace;fill:var(--heat);text-anchor:middle;dominant-baseline:central}
 .cap-count{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
 .f-label{font:700 12px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.08em}
 .f-val{font:400 15px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
@@ -265,7 +265,7 @@ gTop.append('text').attr('class', 'h-eyebrow').attr('x', 40).attr('y', 26).text(
 gTop.append('text').attr('class', 'h-title').attr('x', 40).attr('y', 60).text('SAGE-Mat 知识森林');
 gTop.append('text').attr('class', 'h-stat').attr('x', 40).attr('y', 84).text(`${G.meta.stats.papers} 篇文献 · ${G.meta.stats.claims} 条主张 · ${G.meta.stats.records} 条条件记录`);
 // ---- step rail: the centre + eight levels grouped into the five trees; arcs point from the current step to the earlier level(s) its cards hang on
-const RAIL = {x0: 470, x1: 1800, y: 52, r: 14};
+const RAIL = {x0: 470, x1: 1800, y: 58, r: 14};
 const STEPS = [{id: 0, rail: '调研主题', group: '中心'}, ...LEVELS.map(L => ({id: L.id, rail: L.rail, group: L.group, count: nodes.filter(n => levelOf.get(n.id) === L.id).length}))];
 const stepX = i => RAIL.x0 + (RAIL.x1 - RAIL.x0) * i / (STEPS.length - 1);
 const labelEnd = d => stepX(d.id) + RAIL.r + 7 + tw(d.rail, 14) + (d.count != null ? 5 + tw(String(d.count), 12) : 0);
@@ -277,8 +277,8 @@ const rail = gTop.append('g');
 rail.append('line').attr('x1', stepX(0)).attr('x2', stepX(STEPS.length - 1)).attr('y1', RAIL.y).attr('y2', RAIL.y).attr('stroke', C.line2).attr('stroke-width', 2);
 { const groups = []; STEPS.forEach((st, i) => { const g = groups[groups.length - 1]; if (g && g.name === st.group) g.to = i; else groups.push({name: st.group, from: i, to: i}); });
   const gg = rail.selectAll('g.grp').data(groups).join('g').attr('class', 'grp');
-  gg.append('line').attr('x1', d => stepX(d.from) - RAIL.r).attr('x2', d => labelEnd(STEPS[d.to])).attr('y1', RAIL.y + 26).attr('y2', RAIL.y + 26).attr('stroke', C.line2).attr('stroke-width', 1.2);
-  gg.append('text').attr('class', 'sg').attr('x', d => (stepX(d.from) - RAIL.r + labelEnd(STEPS[d.to])) / 2).attr('y', RAIL.y + 42).text(d => d.name); }
+  gg.append('line').attr('x1', d => stepX(d.from) - RAIL.r).attr('x2', d => labelEnd(STEPS[d.to])).attr('y1', RAIL.y + 22).attr('y2', RAIL.y + 22).attr('stroke', C.line2).attr('stroke-width', 1.2);
+  gg.append('text').attr('class', 'sg').attr('x', d => (stepX(d.from) - RAIL.r + labelEnd(STEPS[d.to])) / 2).attr('y', RAIL.y + 37).text(d => d.name); }
 const railArcs = rail.append('g');
 const railSteps = rail.selectAll('g.step').data(STEPS).join('g').attr('class', 'step').attr('transform', d => `translate(${stepX(d.id)},${RAIL.y})`);
 railSteps.append('circle').attr('class', 'pr').attr('fill', 'none').attr('stroke', C.heat).attr('stroke-width', 2.2);
@@ -365,9 +365,15 @@ function render(t){
   railSteps.select('text.sn').attr('opacity', d => (d.id > 0 && d.id < k) ? 0 : 1).style('fill', d => d.id === k ? '#fff' : C.faint);
   railSteps.select('text.sl').style('fill', d => d.id === k ? C.text : d.id < k ? C.muted : C.faint).style('font-weight', d => d.id === k ? 700 : 500);
   railSteps.select('text.sk').style('fill', d => d.id === k ? C.heat : C.faint);
-  const arcs = Object.entries(parents).map(([j, c]) => ({j: +j, c})).filter(a => a.j < k).map(a => { const x0 = stepX(k), x1 = stepX(a.j), y0 = RAIL.y - RAIL.r - 4, y1 = RAIL.y - (a.j > 0 ? 14 : RAIL.r) - 6; const peak = clamp(RAIL.y - 24 - 1.5 * (k - a.j), 14, 28); const yc = 2 * peak - (y0 + y1) / 2; return {id: `${k}-${a.j}`, d: `M${x0},${y0} Q${(x0 + x1) / 2},${yc} ${x1},${y1}`, x: (x0 + x1) / 2, y: peak - 3, c: a.c}; });
-  railArcs.selectAll('path').data(arcs, d => d.id).join('path').attr('d', d => d.d).attr('fill', 'none').attr('stroke', C.heat).attr('stroke-width', 1.8).attr('marker-end', 'url(#arr)');
-  railArcs.selectAll('text').data(arcs, d => d.id).join('text').attr('class', 'arc-n').attr('x', d => d.x).attr('y', d => d.y).text(d => `挂 ${d.c}`);
+  // metro-style elbows: nearest parent on the lowest lane, each lane 14 px higher; stubs leave the current step side by side
+  const plist = Object.entries(parents).map(([j, c]) => ({j: +j, c})).filter(a => a.j < k).sort((a, b) => b.j - a.j);
+  const y0 = RAIL.y - (RAIL.r + 3);
+  const arcs = plist.map((a, i) => { const sx = stepX(k) - 3 + 7 * i, ex = stepX(a.j), ly = y0 - 11 - 14 * i, ey = RAIL.y - (a.j > 0 ? 14 : RAIL.r + 5) - 3;
+    const d = `M${sx},${y0} L${sx},${ly + 6} Q${sx},${ly} ${sx - 6},${ly} L${ex + 6},${ly} Q${ex},${ly} ${ex},${ly + 6} L${ex},${ey}`;
+    const label = `挂 ${a.c}`; return {id: `${k}-${a.j}`, d, x: (sx - 6 + ex + 6) / 2, y: ly, c: a.c, label, bw: tw(label, 11) + 12}; });
+  railArcs.selectAll('path').data(arcs, d => d.id).join('path').attr('d', d => d.d).attr('fill', 'none').attr('stroke', C.heat).attr('stroke-width', 1.6).attr('stroke-linejoin', 'round').attr('marker-end', 'url(#arr)');
+  railArcs.selectAll('rect').data(arcs, d => d.id).join('rect').attr('x', d => d.x - d.bw / 2).attr('y', d => d.y - 7).attr('width', d => d.bw).attr('height', 14).attr('rx', 4).attr('fill', '#fff').attr('stroke', C.heat).attr('stroke-width', 1);
+  railArcs.selectAll('text').data(arcs, d => d.id).join('text').attr('class', 'arc-n').attr('x', d => d.x).attr('y', d => d.y).text(d => d.label);
   railArcs.attr('opacity', p > 0.15 ? 1 : 0);
   // explanation block
   const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八'][k - 1];
