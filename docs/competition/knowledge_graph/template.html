@@ -76,6 +76,10 @@ footer .ln{width:20px;height:0;border-top:2px solid var(--line-2);display:inline
 .e.k-grows{stroke:var(--heat);opacity:.8;stroke-width:2}
 .e.k-about,.e.k-candidate,.e.k-predicts_for,.e.k-evidence{stroke:var(--purple);opacity:.30}
 .e.k-duplicate{stroke:var(--grey);stroke-dasharray:2 2}
+.e.k-contains{stroke:#9AA8B6;opacity:.25}
+.n.old{opacity:.32}
+.e.old{opacity:.08}
+.old.band{opacity:.6}
 .colhead{font:600 12px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted);letter-spacing:.06em}
 .colsub{font:400 10.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--faint)}
 .band{fill:#fff;stroke:var(--line);rx:10}
@@ -121,6 +125,7 @@ const C = {tele:'#1E8FA8', heat:'#E06A1B', ok:'#1F9D62', gold:'#B0841A', blue:'#
 const LVL = {D0:C.heat, D1:C.gold, N1:C.tele, P1:C.blue, X:C.grey, H:C.purple};
 const LVLTINT = {D0:'#FDEEE3', D1:'#F7F0DE', N1:'#E6F3F6', P1:'#E8ECFA', X:'#EEF1F4', H:'#F1EBFB'};
 const STRUCT = new Set(['tree','support','records','route','produces','grows','candidate','answers','about','predicts_for','maps','serves','evidence']);
+const EMPH = params.get('emph') === '1';
 // ---------- unicode subscripts for SVG labels
 const SUBMAP = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','+':'₊','−':'₋','-':'₋','(':'₍',')':'₎','x':'ₓ','a':'ₐ','e':'ₑ','o':'ₒ','n':'ₙ','m':'ₘ','h':'ₕ','k':'ₖ','l':'ₗ','p':'ₚ','s':'ₛ','t':'ₜ','i':'ᵢ','r':'ᵣ','u':'ᵤ','v':'ᵥ','.':'.','/':'/'};
 const SUPMAP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','−':'⁻','-':'⁻'};
@@ -132,9 +137,9 @@ function plain(h){ // html label -> svg text
 function tw(s, px){ let w=0; for (const ch of s){ const c=ch.codePointAt(0); w += (c>0x2E80)?px:(/[₀-₉ₓ₊₋ₐₑₒₙₘₕₖₗₚₛₜ]/.test(ch)?px*.42:(/[A-Z]/.test(ch)?px*.66:(/[a-z0-9]/.test(ch)?px*.55:px*.4))); } return w; }
 function fit(s, maxPx, px){ if (tw(s,px)<=maxPx) return s; let out=''; for (const ch of s){ if (tw(out+ch+'…',px)>maxPx) break; out+=ch; } return out+'…'; }
 // ---------- geometry per type
-const SZ = {claim4:[206,16], root:[150,34], question:[196,24], subtopic:[176,19], branch:[190,23], leaf:[214,18], paper:[6,6], compound:[212,18], route:[176,21], record:[36,16], agent:[150,16], char:[150,16], failure:[196,16], section:[210,17], claim:[4,4], tree:[200,23], gap:[196,16], recipe:[200,15], direction:[204,18], workflow:[196,16], case:[196,16]};
-const COL = {root:70, question:330, subtopic:600, branch:870, leaf:1140, paper:1395, compound:1690, agent:1690, route:1960, record:1960, char:1960, failure:1960, section:2240, claim:2400, tree:2640, gap:2900, recipe:2900, direction:2900, workflow:2900, case:2900, claim4:2900, section4:2640};
-const HEADS = [[70,'0 · 个人知识树','调研主题 → 预期目标 → 子主题'],[870,'1 · 文献树','分支 → 叶节点 → 51 篇文献'],[1690,'2 · 实体主干','化合物 · 前驱体 | 路线 · 条件记录 · 表征 · 失败'],[2240,'3 · 结论树','章节 → 100 条主张 ↔ 目标'],[2640,'4 · 长出的新树','结论 · 缺口 · 预测 · 方向 · 工作流 · 其他树']];
+const SZ = {claim4:[206,16], element:[64,18], root:[150,34], question:[196,24], subtopic:[176,19], branch:[190,23], leaf:[214,18], paper:[6,6], compound:[212,18], route:[176,21], record:[36,16], agent:[150,16], char:[150,16], failure:[196,16], section:[210,17], claim:[4,4], tree:[200,23], gap:[196,16], recipe:[200,15], direction:[204,18], workflow:[196,16], case:[196,16]};
+const COL = {root:70, question:330, subtopic:600, branch:870, leaf:1140, paper:1395, element:1690, compound:1690, agent:1690, route:1960, record:1960, char:1960, failure:1960, section:2240, claim:2400, tree:2640, gap:2900, recipe:2900, direction:2900, workflow:2900, case:2900, claim4:2900, section4:2640};
+const HEADS = [[70,'0 · 个人知识树','调研主题 → 预期目标 → 子主题'],[870,'1 · 文献树','分支 → 叶节点 → 51 篇文献'],[1690,'2 · 实体主干','元素 · 化合物 · 前驱体 | 路线 · 条件记录 · 表征 · 失败'],[2240,'3 · 结论树','章节 → 100 条主张 ↔ 目标'],[2640,'4 · 长出的新树','结论 · 缺口 · 预测 · 方向 · 工作流 · 其他树']];
 const T = n => (n.type==='claim'&&n.stage===4)?'claim4':(n.type==='section'&&n.stage===4)?'section4':n.type;
 const SZof = n => SZ[T(n)] || SZ[n.type];
 const isDot = n => n.type==='paper' || (n.type==='claim' && n.stage<4);
@@ -154,7 +159,8 @@ function layout(){
   const gapP = Math.max(6, (H1 - papers.length*12)/(papers.length-1)); stack(papers, gapP, 0);
   // column 6: compounds (by level) then agents
   const comps = of('compound').sort((a,b)=>({D0:0,D1:1,N1:2,P1:3,X:4,H:5})[a.level]-({D0:0,D1:1,N1:2,P1:3,X:4,H:5})[b.level]);
-  let y6 = stack(comps, 3, 0) + 26; y6 = stack(of('agent'), 3, y6);
+  const elems = of('element'); elems.forEach((n,i)=>{ n.y = 9 + Math.floor(i/3)*(SZ.element[1]+4); n._dx = (i%3)*(SZ.element[0]+6) - (SZ.element[0]+6); });
+  let y6 = (elems.length? 9 + Math.ceil(elems.length/3)*(SZ.element[1]+4) + 18 : 0); y6 = stack(comps, 3, y6) + 26; y6 = stack(of('agent'), 3, y6);
   // column 7: routes with their records, then char, then failure
   const routes = of('route'); let y7 = 0; const recs = of('record'); const placed=new Set();
   routes.forEach(r => { const rs = recs.filter(x => adj.get(x.id).some(e=>e.k==='route'&&e.t===r.id) && !placed.has(x.id)); r.y = y7 + SZ.route[1]/2; y7 += SZ.route[1] + 4;
@@ -176,7 +182,7 @@ function layout(){
   const spread = (arr, H) => { const step = (H - SZof(arr[0])[1]) / Math.max(1,arr.length-1); arr.forEach((n,i)=> n.y = SZof(n)[1]/2 + i*step); };
   // stretch every column to the common height so the canvas is ~2:1 instead of 3:1
   const stretch = (arr, h, H) => { const f = (H - 8) / Math.max(h, 1); arr.forEach(n => { n.y = 4 + n.y * f; }); };
-  stretch(leafOrder.concat(branches), H1, Hmax); stretch(papers, H1, Hmax); stretch(comps.concat(of('agent')), y6, Hmax); stretch(routes.concat(recs, of('char'), of('failure')), y7, Hmax);
+  stretch(leafOrder.concat(branches), H1, Hmax); stretch(papers, H1, Hmax); stretch(elems.concat(comps, of('agent')), y6, Hmax); stretch(routes.concat(recs, of('char'), of('failure')), y7, Hmax);
   stretch(secs.concat(claims.filter(c=>c.stage<4)), y8, Hmax); stretch(trees.concat(of('gap'),of('direction'),of('workflow'),of('case'),of('recipe'),claims.filter(c=>c.stage===4)), y10, Hmax);
   spread(qs, Hmax*0.42); qs.forEach(n=>n.y += Hmax*0.02); spread(ss, Hmax*0.5); ss.forEach(n=>n.y += Hmax*0.48);
   of('root')[0].y = Hmax/2;
@@ -197,7 +203,7 @@ const BANDS = [[COL.root-95, COL.subtopic+95],[COL.branch-100, COL.paper+120],[C
 BANDS.forEach(([x0,x1],i) => bandsG.append('rect').attr('class','band').attr('x',x0).attr('y',-58).attr('width',x1-x0).attr('height',HMAX+84).attr('data-stage',i));
 HEADS.forEach(([x,t,s],i) => { const g = headG.append('g').attr('data-stage',i).attr('transform',`translate(${BANDS[i][0]+14},-38)`); g.append('text').attr('class','colhead').text(t); g.append('text').attr('class','colsub').attr('y',15).text(s); });
 // group labels
-const grpLabels = [[COL.compound-96,'compound','化合物 / 相'],[COL.compound-96,'agent','前驱体 · 助熔剂 · 坩埚'],[COL.record-96,'route','合成路线 → 条件记录'],[COL.record-96,'char','表征终点'],[COL.record-96,'failure','失败模式'],[COL.leaf-102,'leaf','叶节点（支撑文献 ≥3，A1/H1 例外）'],[COL.paper-8,'paper','文献 · 环 = 全文在包内'],[COL.claim-52,'claim','主张 · 点越深证据越强']];
+const grpLabels = [[COL.element-96,'element','元素'],[COL.compound-96,'compound','化合物 / 相'],[COL.compound-96,'agent','前驱体 · 助熔剂 · 坩埚'],[COL.record-96,'route','合成路线 → 条件记录'],[COL.record-96,'char','表征终点'],[COL.record-96,'failure','失败模式'],[COL.leaf-102,'leaf','叶节点（支撑文献 ≥3，A1/H1 例外）'],[COL.paper-8,'paper','文献 · 环 = 全文在包内'],[COL.claim-52,'claim','主张 · 点越深证据越强']];
 grpLabels.forEach(([x,t,label]) => { const first = nodes.filter(n=>n.type===t).reduce((a,n)=>Math.min(a,n.y),1e9); headG.append('text').attr('class','grp').attr('x',x).attr('y',first-SZ[t][1]/2-8).attr('data-stage',byId.get(nodes.find(n=>n.type===t).id).stage).text(label); });
 const link = d3.linkHorizontal().x(d=>d[0]).y(d=>d[1]);
 function endpoints(e){ const a=byId.get(e.s), b=byId.get(e.t); const [aw]=SZof(a), [bw]=SZof(b); const ar = isDot(a); const br = isDot(b);
@@ -211,6 +217,7 @@ N.each(function(n){ const g = d3.select(this); const [w,h] = SZof(n);
   let fill='#fff', stroke=C.line2, tcol=C.text, dash=null, sw=1.2, bold=false, fs=11;
   switch(n.type){
     case 'root': fill=C.text; stroke=C.text; tcol='#fff'; bold=true; fs=13; break;
+    case 'element': fill=n.core?'#13202C':'#fff'; stroke=n.core?'#13202C':C.line2; tcol=n.core?'#fff':C.text; bold=true; fs=11; break;
     case 'tree': fill=C.text; stroke=C.text; tcol='#fff'; bold=true; fs=11.5; break;
     case 'question': stroke=C.tele; sw=1.6; bold=true; break;
     case 'subtopic': fill='#F7FAFB'; break;
@@ -237,10 +244,11 @@ N.each(function(n){ const g = d3.select(this); const [w,h] = SZof(n);
   if (n.type==='compound' && n.level){ g.append('text').attr('x',w/2-4).attr('y',3.5).attr('text-anchor','end').style('font-size','8.5px').style('fill',LVL[n.level]).style('font-family','"IBM Plex Mono",monospace').text(n.level); t.attr('text-anchor','start').attr('x',-w/2+6).text(fit(label, w-34, fs)); }
 });
 // ---------- stage visibility
-function applyStage(s, animate){
+function applyStage(s, animate, emph){
   curStage = s;
   const vis = d => +d3.select(d).attr('data-stage') <= s;
   const sel = root.selectAll('[data-stage]');
+  sel.classed('old', function(){ return !!emph && +d3.select(this).attr('data-stage') < s; });
   if (animate){ sel.filter(function(){ return vis(this); }).transition().duration(600).style('opacity',1); sel.filter(function(){ return !vis(this); }).transition().duration(300).style('opacity',0); }
   else sel.style('opacity', function(){ return vis(this)?1:0; });
   sel.style('pointer-events', function(){ return vis(this)?null:'none'; });
@@ -263,8 +271,8 @@ function select(n){ pinned = n; highlight(n); showDetails(n); }
 const esc = s => String(s??'').replace(/&(?!(amp|lt|gt|quot|#\d+);)/g,'&amp;');
 const chip = id => { const m = byId.get(id); if (!m) return ''; const lv = m.level||''; return `<span class="chip ${lv?'lvl-'+lv:''}" data-id="${id}" title="${esc(plain(m.title||m.text||m.label))}">${m.type==='paper'?esc(m.label)+' · '+esc(plain(m.title)).slice(0,60):esc(plain(m.label))}</span>`; };
 function neighborsBy(n){ const out = {}; adj.get(n.id).forEach(e=>{ if (e._virtual) return; const o = e.s===n.id? e.t : e.s; const m = byId.get(o); const k = `${e.k}${e.s===n.id?'→':'←'}${m.type}`; const arr = (out[k] = out[k]||[]); if (!arr.includes(o)) arr.push(o); }); return out; }
-const KIND_CN = {tree:'子节点', support:'支撑', cites:'引用', mentions:'提及', reports:'报道', produces:'产物', records:'条件记录', route:'路线', uses:'使用', characterised:'表征', traces:'条件溯源', answers:'回答', grows:'长出', about:'关联', candidate:'候选前驱体组合', predicts_for:'预测目标', defines:'定义', maps:'对应分支', serves:'服务目标', evidence:'证据', duplicate:'重复记录'};
-const TYPE_CN = {root:'调研主题', question:'预期目标', subtopic:'子主题', branch:'分支', leaf:'叶节点', paper:'文献', compound:'化合物 / 相', route:'合成路线', record:'条件记录', agent:'前驱体 / 助熔剂 / 坩埚', char:'表征终点', failure:'失败模式', section:'章节', claim:'主张', tree:'新树', gap:'证据缺口', recipe:'前驱体组合', direction:'实验方向', workflow:'工作流（仿真）', case:'调研树'};
+const KIND_CN = {contains:'含有元素', tree:'子节点', support:'支撑', cites:'引用', mentions:'提及', reports:'报道', produces:'产物', records:'条件记录', route:'路线', uses:'使用', characterised:'表征', traces:'条件溯源', answers:'回答', grows:'长出', about:'关联', candidate:'候选前驱体组合', predicts_for:'预测目标', defines:'定义', maps:'对应分支', serves:'服务目标', evidence:'证据', duplicate:'重复记录'};
+const TYPE_CN = {element:'元素', root:'调研主题', question:'预期目标', subtopic:'子主题', branch:'分支', leaf:'叶节点', paper:'文献', compound:'化合物 / 相', route:'合成路线', record:'条件记录', agent:'前驱体 / 助熔剂 / 坩埚', char:'表征终点', failure:'失败模式', section:'章节', claim:'主张', tree:'新树', gap:'证据缺口', recipe:'前驱体组合', direction:'实验方向', workflow:'工作流（仿真）', case:'调研树'};
 function neighborHtml(n, skip=[]){ const nb = neighborsBy(n); let h=''; Object.entries(nb).forEach(([k,ids])=>{ const [kind,rest]=k.split(/[→←]/); const dir = k.includes('→')?'→':'←'; if (skip.includes(kind)) return; const t = rest; h += `<h3>${KIND_CN[kind]||kind} ${dir} ${TYPE_CN[t]||t}（${ids.length}）</h3><div>${ids.slice(0,60).map(chip).join('')}${ids.length>60?`<span class="chip">… 共 ${ids.length}</span>`:''}</div>`; }); return h; }
 const kv = (rows) => `<div class="kv">${rows.map(([k,v])=>`<div>${k}</div><div class="${/^<code>NA<\/code>$/.test(v)?'na':''}">${v||'<span class=na>—</span>'}</div>`).join('')}</div>`;
 function showDetails(n){ const p = d3.select('#panel'); let h = `<div class="kicker">${TYPE_CN[n.type]||n.type} · 第 ${n.stage} 层</div>`;
@@ -277,6 +285,7 @@ function showDetails(n){ const p = d3.select('#panel'); let h = `<div class="kic
     case 'paper': h += `<h2>${n.title}</h2><p><span class="tag" style="background:${LVL[n.level]}">${n.level}</span>${G.meta.levels[n.level]} · <span class="tag ${n.strength==='strong'?'tele':'grey'}">${n.strength==='strong'?'强支撑':'弱支撑'}</span>${n.fulltext?'<span class="tag ok">全文在包内</span>':''}</p>${kv([['作者',esc(n.authors)],['年份 · 刊物',`${esc(n.year)} · ${esc(n.venue)}`],['DOI',n.doi?`<a href="${n.url}" target="_blank" rel="noopener">${esc(n.doi)}</a>`:(n.url?`<a href="${n.url}" target="_blank" rel="noopener">链接</a>`:'—')],['BibTeX key',`<code>${n.key}</code>`]])}${n.abstract?`<p style="color:var(--muted)">${esc(n.abstract).slice(0,420)}${n.abstract.length>420?'…':''}</p>`:''}`; break;
     case 'compound': h += `<h2>${n.label}</h2><p><span class="tag" style="background:${LVL[n.level]}">${n.level}</span>${G.meta.levels[n.level]}</p><p>${esc(n.note)}</p>`; break;
     case 'route': h += `<h2>${esc(n.label)}</h2><p>${esc(n.note)}</p>`; break;
+    case 'element': h += `<h2>${esc(n.label)}</h2><p>${n.core?'<span class="tag">目标相组成元素</span>':'<span class="tag grey">替代 / 助熔 / 对照元素</span>'}</p><p>${esc(n.note)}</p>`; break;
     case 'record': h += `<h2>条件记录 ${n.label}</h2><p><span class="tag ${n.zone.startsWith('A')?'heat':(n.zone.startsWith('B')?'gold':'tele')}">${esc(n.zone)}</span></p>${kv([['来源与定位',n.source],['目标 / 产物',n.product],['原料 · 配比 · 前处理',n.inputs],['合成方法',n.method],['与目标相关系',n.relation],['温度 – 时间',n.temp_time],['气氛 / 体系',n.atmosphere],['坩埚与助熔',n.crucible_flux],['冷却 / 生长',n.cooling],['产物与表征',n.product_char],['未明确记载',n.missing]])}`; break;
     case 'agent': h += `<h2>${n.label}</h2><p><span class="tag gold">${n.kind}</span></p>`; break;
     case 'char': case 'failure': h += `<h2>${esc(n.label)}</h2><p>${esc(n.text||'')}</p>`; break;
@@ -296,30 +305,30 @@ function showDetails(n){ const p = d3.select('#panel'); let h = `<div class="kic
 function showOverview(){ const s = G.meta.stats; d3.select('#panel').html(`<div class="kicker">SAGE-Mat · 知识森林</div><h2>${G.meta.subtitle}</h2>
 <p>把一次调研画成一片森林：最左是研究者开始时自己的问题树；流水线从中长出<b>文献树</b>（分支 → 叶 → 文献），再把文献抽象成可复用的<b>实体主干</b>（化合物、路线、前驱体、条件记录、表征、失败模式），据此写成<b>结论树</b>并回答最初的目标；最后在结论和缺口上长出<b>新树</b>：前驱体预测、实验方向、自动化工作流和同根的其他调研。</p>
 <div class="stats"><span><b>${s.papers}</b> 篇文献</span><span><b>${s.citation_calls}</b> 次引用</span><span><b>${s.claims}</b> 条主张</span><span><b>${s.leaves}</b> 个叶节点</span><span><b>${s.records}</b> 条条件记录</span><span><b>${s.compounds}</b> 个化合物 / 相</span><span><b>${s.nodes}</b> 节点 · <b>${s.edges}</b> 边</span></div>
-<h3>怎么读</h3><ul style="padding-left:18px;margin:4px 0"><li>颜色 = 证据距离：<span class="tag heat">D0</span>目标相直接证据 · <span class="tag gold">D1</span>同一身份谱系 · <span class="tag tele">N1</span>晶体化学近邻 · <span class="tag" style="background:${C.blue}">P1</span>工艺近邻 · <span class="tag grey">X</span>边界 · <span class="tag purple">H</span>假设目标。</li><li>文献外圈加深 = 全文在证据包内；主张点越深 = 引用证据越强。</li><li>目标旁的小圆点：绿 = 已回答，橙 = 部分回答。</li><li>悬停看邻接，点击固定；侧栏里的标签可继续跳转。</li></ul>
+<h3>怎么读</h3><ul style="padding-left:18px;margin:4px 0"><li>颜色 = 证据距离：<span class="tag heat">D0</span>目标相直接证据 · <span class="tag gold">D1</span>同一身份谱系 · <span class="tag tele">N1</span>晶体化学近邻 · <span class="tag" style="background:${C.blue}">P1</span>工艺近邻 · <span class="tag grey">X</span>边界 · <span class="tag purple">H</span>假设目标。</li><li>文献外圈加深 = 全文在证据包内；主张点越深 = 引用证据越强。</li><li>目标旁的小圆点：绿 = 已回答，橙 = 部分回答。</li><li>蓝 / 青 / 金 / 橙 = 文献陈述与条件记录；紫色（RECIPE 预测、实验方向、假设目标）= AI 推断，未经实验验证。</li><li>按「▶ 生长」逐层长出：已长出的层淡化，新层突出；结束后恢复。</li><li>悬停看邻接，点击固定；侧栏里的标签可继续跳转。</li></ul>
 <h3>数据来源</h3><div class="src">${G.meta.built_from.map(esc).join('<br>')}</div>`); }
 function centerOn(n){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const k = Math.max(0.9, d3.zoomTransform(svg.node()).k); svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(width/2 - n.x*k, height/2 - n.y*k).scale(k)); }
 function fitView(animate=true){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const x0 = BANDS[0][0]-10, x1 = BANDS[Math.min(4,curStage)][1]+10, y0=-68, y1=HMAX+36; const k = Math.min(width/(x1-x0), height/(y1-y0)); const t = d3.zoomIdentity.translate((width-(x1-x0)*k)/2 - x0*k, (height-(y1-y0)*k)/2 - y0*k).scale(k); (animate?svg.transition().duration(600):svg).call(zoom.transform, t); }
 // ---------- UI
 const stg = d3.select('#stages'); G.meta.stages.forEach(s => stg.append('button').attr('data-i',s.i).text(`${s.i} ${s.name}`).on('click',()=>{ applyStage(s.i,true); fitView(); }));
-let playing=null; stg.append('button').attr('class','play').text('▶ 生长').on('click', function(){ if (playing){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; return; } applyStage(0,true); fitView(); let i=0; this.textContent='‖ 暂停'; playing=setInterval(()=>{ i++; if (i>4){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; return; } applyStage(i,true); fitView(); }, 1700); });
+let playing=null; stg.append('button').attr('class','play').text('▶ 生长').on('click', function(){ if (playing){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; applyStage(curStage,false); return; } applyStage(0,true,true); fitView(); let i=0; this.textContent='‖ 暂停'; playing=setInterval(()=>{ i++; if (i>4){ clearInterval(playing); playing=null; this.textContent='▶ 生长'; applyStage(4,true); return; } applyStage(i,true,true); fitView(); }, 2200); });
 d3.select('#fit').on('click', ()=>fitView());
 d3.select('#alledges').on('change', ()=>{ applyEdgeMode(); if (pinned) highlight(pinned); });
 d3.select('#q').on('input', function(){ const q = this.value.trim().toLowerCase(); if (!q){ highlight(pinned); return; } const hits = nodes.filter(n => [n.label, n.title, n.text, n.key, n.product].filter(Boolean).some(s => plain(s).toLowerCase().includes(q) || String(s).toLowerCase().includes(q))); const ids = new Set(hits.map(n=>n.id)); N.classed('dim', d=>!ids.has(d.id)).classed('hit', d=>ids.has(d.id)); E.classed('dim', true); d3.select('#panel').html(`<div class="kicker">搜索</div><h2>${hits.length} 个匹配</h2><div>${hits.slice(0,80).map(n=>chip(n.id)).join('')}</div>`); d3.select('#panel').selectAll('.chip').on('click', function(){ const m = byId.get(this.dataset.id); select(m); centerOn(m); }); }).on('keydown', function(ev){ if (ev.key==='Enter'){ const c = d3.select('#panel').select('.chip').node(); if (c){ const m = byId.get(c.dataset.id); select(m); centerOn(m); } } });
 d3.select('#subtitle').text(G.meta.subtitle);
 // legend
 const lg = d3.select('#legend'); const item = (sw, txt) => lg.append('span').attr('class','lg').html(sw + txt);
-item(`<span class="dot" style="background:${C.heat}"></span>`,'D0 目标相直接证据'); item(`<span class="dot" style="background:${C.gold}"></span>`,'D1 同一身份谱系'); item(`<span class="dot" style="background:${C.tele}"></span>`,'N1 晶体化学近邻'); item(`<span class="dot" style="background:${C.blue}"></span>`,'P1 工艺近邻'); item(`<span class="dot" style="background:${C.grey}"></span>`,'X 边界 / 排除'); item(`<span class="dot" style="background:${C.purple}"></span>`,'H 假设目标');
+item(`<span class="dot" style="background:${C.heat}"></span>`,'D0 目标相直接证据'); item(`<span class="dot" style="background:${C.gold}"></span>`,'D1 同一身份谱系'); item(`<span class="dot" style="background:${C.tele}"></span>`,'N1 晶体化学近邻'); item(`<span class="dot" style="background:${C.blue}"></span>`,'P1 工艺近邻'); item(`<span class="dot" style="background:${C.grey}"></span>`,'X 边界 / 排除'); item(`<span class="dot" style="background:${C.purple}"></span>`,'H 假设目标 · 紫色 = AI 推断 / 模型预测，未经实验验证');
 item(`<span class="sw" style="border-color:${C.tele};background:${C.tele}"></span>`,'合成路线'); item(`<span class="sw" style="border-color:${C.tele}"></span>`,'条件记录 A/B/C 区'); item(`<span class="sw" style="border-color:${C.gold};background:#FBF6EC"></span>`,'前驱体 · 助熔 · 坩埚'); item(`<span class="sw" style="border-color:${C.crit};background:#FDECEA"></span>`,'失败模式'); item(`<span class="sw" style="border-color:${C.crit};border-style:dashed"></span>`,'证据缺口'); item(`<span class="sw" style="border-color:${C.purple};background:#F1EBFB"></span>`,'预测 / 方向'); item(`<span class="sw" style="border-color:${C.ok};background:#E8F5EE"></span>`,'工作流（仿真）');
 item(`<span class="ln" style="border-color:${C.ok}"></span>`,'章节 → 回答目标'); item(`<span class="ln" style="border-color:${C.heat}"></span>`,'长出'); item(`<span class="ln" style="border-color:${C.tele}"></span>`,'支撑 / 记录'); item(`<span class="ln" style="border-color:${C.purple}"></span>`,'关联 / 候选');
 lg.append('span').style('margin-left','auto').attr('class','stats').html(`<span><b>${G.meta.stats.papers}</b> 文献</span><span><b>${G.meta.stats.claims}</b> 主张</span><span><b>${G.meta.stats.records}</b> 条件记录</span><span><b>${G.meta.stats.nodes}</b> 节点</span><span><b>${G.meta.stats.edges}</b> 边</span>`);
 // poster chrome
 if (POSTER){ const pg = root.append('g').attr('transform',`translate(${BANDS[0][0]-10},-128)`); pg.append('text').attr('class','poster-title').text('SAGE-Mat 知识森林'); pg.append('text').attr('class','poster-sub').attr('y',24).text(G.meta.subtitle + ' · ' + `${G.meta.stats.papers} 篇文献 · ${G.meta.stats.claims} 条主张 · ${G.meta.stats.records} 条条件记录 · ${G.meta.stats.nodes} 节点`);
   const st = G.meta.stages[curStage]; pg.append('text').attr('class','poster-stage').attr('y',46).text(`STAGE ${curStage} · ${st.name}`); pg.append('text').attr('class','poster-sub').attr('x',tw(`STAGE ${curStage} · ${st.name}`,13)*1.15+14).attr('y',46).text(st.desc);
-  const lgp = root.append('g').attr('transform',`translate(${BANDS[0][0]-10},${HMAX+64})`); let lx=0; [[C.heat,'D0 目标相直接证据'],[C.gold,'D1 同一身份谱系'],[C.tele,'N1 晶体化学近邻'],[C.blue,'P1 工艺近邻'],[C.grey,'X 边界 / 排除'],[C.purple,'H 假设目标（未合成）']].forEach(([c,t])=>{ lgp.append('circle').attr('cx',lx+6).attr('cy',0).attr('r',5.5).attr('fill',c); lgp.append('text').attr('class','poster-legend').attr('x',lx+16).attr('y',4).text(t); lx += tw(t,11.5)+40; });
+  const lgp = root.append('g').attr('transform',`translate(${BANDS[0][0]-10},${HMAX+64})`); let lx=0; [[C.heat,'D0 目标相直接证据'],[C.gold,'D1 同一身份谱系'],[C.tele,'N1 晶体化学近邻'],[C.blue,'P1 工艺近邻'],[C.grey,'X 边界 / 排除'],[C.purple,'H 假设目标 · 紫色 = AI 推断 / 预测，未验证']].forEach(([c,t])=>{ lgp.append('circle').attr('cx',lx+6).attr('cy',0).attr('r',5.5).attr('fill',c); lgp.append('text').attr('class','poster-legend').attr('x',lx+16).attr('y',4).text(t); lx += tw(t,11.5)+40; });
   lgp.append('text').attr('class','poster-legend').attr('x',lx+10).attr('y',4).text('文献外圈加深 = 全文在证据包内 · 目标旁绿点 = 已回答，橙点 = 部分回答 · 绿线 = 章节回答目标 · 橙线 = 长出新树');
 }
-applyStage(curStage, false);
+applyStage(curStage, false, EMPH);
 if (!POSTER) showOverview();
 if (params.get('select') && byId.has(params.get('select'))) { const m = byId.get(params.get('select')); select(m); }
 function fitPoster(){ const {width,height} = document.getElementById('stage').getBoundingClientRect(); const x0 = BANDS[0][0]-30, x1 = BANDS[4][1]+30, y0=-160, y1=HMAX+90; const k = Math.min(width/(x1-x0), height/(y1-y0)); svg.call(zoom.transform, d3.zoomIdentity.translate((width-(x1-x0)*k)/2 - x0*k, (height-(y1-y0)*k)/2 - y0*k).scale(k)); }

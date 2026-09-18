@@ -342,6 +342,23 @@ CURATED_COMPOUNDS = [
     ('cmp_series', 'Ba<sub>5</sub>Y<sub>13−x</sub>Zn<sub>x</sub>[SiO<sub>4</sub>]<sub>8</sub>O<sub>8.5−x/2</sub>', 'H', ['ba5y13-xznx'], '实验方向二的电荷平衡系列（0 ≤ x ≤ 1.25）；x=0 为无 Zn 参照相，x=1 对应目标组成'),
 ]
 
+# (symbol, name, role in this system, taxonomy leaves that discuss it)
+CURATED_ELEMENTS = [
+    ('Ba', '钡', '大阳离子位；Ba/Y/O 非整比与 Ba↔Sr 替代决定四方谱系的组成窗口', ['C1', 'C2', 'E1']),
+    ('Y', '钇', '稀土位；无 Zn 四方 Ba–Y 谱系的主体，Y₂O₃/SiO₂ 比影响结构类型', ['A2', 'C1', 'B4']),
+    ('Zn', '锌', '目标相的特征元素：[ZnSi₄O₁₆] 四面体单元；Zn 挥发与 Zn↔Mg/Co 替代是核心变量', ['A1', 'B3', 'C3', 'E1']),
+    ('Si', '硅', '孤立 [SiO₄] 与焦硅酸根的聚合度决定结构终点；玛瑙研磨带入 SiO₂ 污染', ['B2', 'B5', 'G2']),
+    ('O', '氧', '氧计量 / 氧空位；开放体系与还原气氛改变价态与相稳定性', ['C1', 'E3', 'G3']),
+    ('Mg', '镁', 'Zn 位的同价尺寸对照（RECIPE Mg 类比目标，方向四）', ['C3']),
+    ('Co', '钴', 'Zn 位的价态 / 氧分压探针（RECIPE Co 类比目标，方向四）', ['C3']),
+    ('Sr', '锶', 'Ba 位替代（Ba₁₋ₓSrₓZn₂Si₂O₇ 负 / 高热膨胀系列）', ['C2']),
+    ('K', '钾', 'K₂CO₃ / MoO₃ 助熔体系的组分；BaKYSi₂O₇ 为助熔批次主产物', ['D1', 'E4']),
+    ('Mo', '钼', 'MoO₃ / 钼酸盐助熔剂：用量影响 Ba–Y 成相与晶体质量', ['D1', 'E4']),
+    ('La', '镧', 'LaBSiO₅ 与 Ln₂SiO₅ 稀土正硅酸盐族的对照', ['B4', 'D5']),
+    ('Pb', '铅', 'Pb₂ZnSi₂O₇ / 氟化物助熔：历史工艺对照，EHS 风险，不迁移', ['E4', 'G2']),
+]
+ELEMENT_RE = re.compile(r'(Ba|Zn|Si|Sr|Mg|Co|Mo|La|Pb|Cs|Li|Ga|Sm|Eu|Mn|Ce|Cr|Ge|Na|Y|O|K|B|F)(?![a-z])')
+
 CURATED_ROUTES = [
     ('rt_flux', '外加助熔 · 高温溶液', 'D1', ['外加助熔', '高温溶液'], '相从外加助熔 / 矿化介质中结晶：MoO₃ 类助熔、含氟 / 含铅熔盐或论文明确称 high-temperature solution 的实验'),
     ('rt_melt', '自熔 · 熔体自发结晶', 'D2', ['自熔', '熔体', '无坩埚'], '不以外加助熔剂为主导介质，由反应物自熔、熔体自发成核或无坩埚熔制形成晶相'),
@@ -520,6 +537,22 @@ def main():
     # ---- stage 2: entity trunk (compounds, routes, agents, characterisation, condition records, failure modes)
     for cid, formula, cls, aliases, note in CURATED_COMPOUNDS:
         add(cid, type='compound', stage=2 if cls != 'H' else 4, label=formula, level=cls, aliases=aliases, note=note, src='人工整理，链接由证据包文本匹配生成')
+    elem_ids = {}
+    for sym, cn, role, lids in CURATED_ELEMENTS:
+        eid = 'el_' + sym
+        elem_ids[sym] = eid
+        add(eid, type='element', stage=2, label=f'{sym} {cn}', sym=sym, core=sym in ('Ba', 'Y', 'Zn', 'Si', 'O'), note=role, src='证据包 notes/taxonomy.md §' + ' / '.join(lids))
+        for lid in lids:
+            link(f'L_{lid}', eid, 'defines')
+    # compound -> element (contains), parsed from the formula
+    for cid, formula, cls, aliases, note in CURATED_COMPOUNDS:
+        plain = re.sub(r'<[^>]+>', '', formula)
+        extra = re.findall(r'M = ([A-Za-z, ]+)', plain)          # BaMSiO4（M = Zn, Mg, Co）
+        plain = plain.split('（')[0].replace('x', '')             # subscript variables never form a symbol
+        syms = list(dict.fromkeys(ELEMENT_RE.findall(plain) + [s.strip() for e in extra for s in e.split(',')]))
+        for sym in syms:
+            if sym in elem_ids:
+                link(cid, elem_ids[sym], 'contains')
     for rid, label, leaf, aliases, note in CURATED_ROUTES:
         add(rid, type='route', stage=2, label=label, leaf=leaf, aliases=aliases, note=note, src='证据包 notes/taxonomy.md §D（路线支）')
         if leaf:
@@ -710,11 +743,11 @@ def main():
         'built_from': ['submission/02_研究数据与证据包', 'submission/03_运行与评测包/正式案例_BYZSO冷启动', 'submission/03_运行与评测包/补充案例_20260903', 'final_round 站点 showcase.html'],
         'stats': {'papers': n_papers, 'citation_calls': summary['citation_calls'], 'claims': summary['claims'], 'claims_fulltext': summary['claims_with_any_full_text_evidence'],
                   'claims_trace': summary['claims_with_condition_source_trace'], 'refcheck_pass_rate': summary['refcheck_pass_rate'], 'leaves': len(leaves), 'branches': len(branches),
-                  'records': len(records), 'compounds': len(CURATED_COMPOUNDS), 'gaps': len(gaps), 'nodes': len(nodes), 'edges': len(edges)},
+                  'records': len(records), 'compounds': len(CURATED_COMPOUNDS), 'elements': len(CURATED_ELEMENTS), 'gaps': len(gaps), 'nodes': len(nodes), 'edges': len(edges)},
         'stages': [
             {'i': 0, 'name': '个人知识树', 'desc': '调研主题、5 个预期目标与 8 个 MECE 子主题：调研开始前研究者自己的问题树。'},
             {'i': 1, 'name': '文献树', 'desc': '流水线检索、核验并分类：8 个分支、35 个叶节点、51 篇通过引用闸门的文献，按 D0/D1/N1/P1/X 证据距离着色。'},
-            {'i': 2, 'name': '实体主干', 'desc': '把文献抽象成可复用的点：化合物 / 相、合成路线、前驱体与坩埚助熔、表征终点、失败模式，以及 29 条逐字段的合成条件记录。'},
+            {'i': 2, 'name': '实体主干', 'desc': '把文献抽象成可复用的点：元素 → 化合物 / 相 → 合成路线 → 逐字段的 29 条条件记录，以及前驱体与坩埚助熔、表征终点、失败模式。'},
             {'i': 3, 'name': '结论树', 'desc': '综述正文的 100 条主张，每条回连它引用的文献与实体；再回答最初的 5 个目标，标出已回答 / 部分回答。'},
             {'i': 4, 'name': '长出的新树', 'desc': '结论与缺口之上长出的四棵新树：RECIPE 前驱体预测、四个优先实验方向、OpenLab 自动化工作流（仿真）、同根的其他调研树。'},
         ],
