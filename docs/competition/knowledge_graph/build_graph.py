@@ -419,6 +419,28 @@ WORKFLOWS = [
 ]
 
 
+ART = REPO / 'docs/competition/deck_figures/art'
+ICON_NAMES = ['researcher', 'structure', 'phasediagram', 'precursors', 'furnace', 'condtable', 'xrd', 'guard', 'route', 'recipe', 'plan', 'robotlab', 'search', 'litdb', 'writer', 'idea', 'scope']
+
+
+def pack_icons(max_side: int = 176) -> dict:
+    """The deck / cover illustration set (docs/competition/deck_figures/art), shrunk and embedded as data URIs."""
+    import base64
+    import io
+    from PIL import Image
+    out = {}
+    for name in ICON_NAMES:
+        p = ART / f'{name}.png'
+        if not p.exists():
+            continue
+        im = Image.open(p).convert('RGBA')
+        im.thumbnail((max_side, max_side), Image.LANCZOS)
+        buf = io.BytesIO()
+        im.save(buf, format='PNG', optimize=True)
+        out[name] = {'src': 'data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode('ascii'), 'w': im.width, 'h': im.height}
+    return out
+
+
 # ----------------------------------------------------------------------------- build
 def main():
     nodes, edges = [], []
@@ -757,8 +779,10 @@ def main():
     graph = {'meta': meta, 'nodes': nodes, 'edges': edges}
     (HERE / 'graph.json').write_text(json.dumps(graph, ensure_ascii=False, indent=0), encoding='utf-8')
 
+    icons = pack_icons()
     tpl = read(HERE / 'template.html')
     out = tpl.replace('/*__GRAPH_JSON__*/null', json.dumps(graph, ensure_ascii=False, separators=(',', ':')))
+    out = out.replace('/*__ICONS_JSON__*/null', json.dumps(icons, separators=(',', ':')))
     (HERE / 'knowledge_graph.html').write_text(out, encoding='utf-8')
     kinds = {}
     for e in edges:
