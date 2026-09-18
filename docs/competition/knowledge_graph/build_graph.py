@@ -784,6 +784,10 @@ def main():
     out = tpl.replace('/*__GRAPH_JSON__*/null', json.dumps(graph, ensure_ascii=False, separators=(',', ':')))
     out = out.replace('/*__ICONS_JSON__*/null', json.dumps(icons, separators=(',', ':')))
     (HERE / 'knowledge_graph.html').write_text(out, encoding='utf-8')
+    if (HERE / 'layers_template.html').exists():
+        lt = read(HERE / 'layers_template.html')
+        lo = lt.replace('/*__GRAPH_JSON__*/null', json.dumps(graph, ensure_ascii=False, separators=(',', ':'))).replace('/*__ICONS_JSON__*/null', json.dumps(icons, separators=(',', ':')))
+        (HERE / 'knowledge_layers.html').write_text(lo, encoding='utf-8')
     kinds = {}
     for e in edges:
         kinds[e['k']] = kinds.get(e['k'], 0) + 1

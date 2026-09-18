@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAGE-Mat 知识森林 · 逐层展开</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{color-scheme:light;--ground:#F1F4F7;--panel:#FFFFFF;--line:#D7DEE6;--line-2:#BFC9D4;--text:#13202C;--muted:#5A6A7A;--faint:#8A97A5;--heat:#E06A1B;--heat-2:#F3A56E;--tele:#1E8FA8;--tele-2:#5FB3C9;--purple:#7A4FD6;--ok:#1F9D62;--crit:#C93D2C;--gold:#B0841A;--navy:#156082}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ground);color:var(--text);font-family:"IBM Plex Sans","Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow:hidden}
+#stage{position:absolute;inset:0}
+svg{width:100%;height:100%;display:block}
+text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif}
+.h-title{font:700 30px "Chakra Petch","IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.h-sub{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.h-eyebrow{font:600 12px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.16em}
+.h-right{font:500 13px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.lg{font:500 13px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.cap-title{font:800 22px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.cap-sum{font:400 16px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.card-title{font-weight:700;pointer-events:none}
+.card-sub{font-weight:400;pointer-events:none}
+.badge{font:700 11px "IBM Plex Mono",monospace;pointer-events:none}
+.pill{font:700 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:#fff;pointer-events:none}
+.root-label{font:700 18px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text);text-anchor:middle}
+.ctrl{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:500 12px "IBM Plex Sans","Noto Sans SC",sans-serif;color:var(--muted);z-index:2}
+.ctrl button{font:inherit;border:1px solid var(--line-2);background:#fff;border-radius:5px;padding:4px 9px;cursor:pointer;color:var(--text)}
+.ctrl input[type=range]{width:260px}
+body.movie .ctrl{display:none}
+</style>
+</head>
+<body>
+<div id="stage"><svg id="svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet"></svg></div>
+<div class="ctrl" id="ctrl"><button id="play">▶ 播放</button><button id="prev">◀ 上一级</button><button id="next">下一级 ▶</button><input type="range" id="seek" min="0" max="1000" value="0"><span id="tlabel">0.0 s</span></div>
+<script>
+const G = /*__GRAPH_JSON__*/null;
+const ICONS = /*__ICONS_JSON__*/null;
+const params = new URLSearchParams(location.search);
+if (params.get('movie') === '1') document.body.classList.add('movie');
+const nodes = G.nodes, edges = G.edges, byId = new Map(nodes.map(n => [n.id, n]));
+const adj = new Map(nodes.map(n => [n.id, []])); edges.forEach(e => { adj.get(e.s).push(e); adj.get(e.t).push(e); });
+const C = {heat:'#E06A1B', heat2:'#F3A56E', tele:'#1E8FA8', tele2:'#5FB3C9', purple:'#7A4FD6', ok:'#1F9D62', crit:'#C93D2C', gold:'#B0841A', navy:'#156082', text:'#13202C', muted:'#5A6A7A', faint:'#8A97A5', line:'#D7DEE6', line2:'#BFC9D4', x:'#C5CED8', white:'#FFFFFF'};
+const LVL = {D0:C.heat, D1:C.heat2, N1:C.tele, P1:C.faint, X:C.x, H:C.purple};
+const TINT = {D0:'#FBDCC8', D1:'#FDEEE2', N1:'#DCEEF3', P1:'#EDF0F3', X:'#F4F6F8', H:'#ECE6F9'};
+// ---------- text helpers
+const SUBMAP = {'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','+':'₊','−':'₋','-':'₋','(':'₍',')':'₎','x':'ₓ','a':'ₐ','e':'ₑ','o':'ₒ','n':'ₙ','m':'ₘ','h':'ₕ','k':'ₖ','l':'ₗ','p':'ₚ','s':'ₛ','t':'ₜ','i':'ᵢ','r':'ᵣ','u':'ᵤ','v':'ᵥ','.':'.','/':'/'};
+const SUPMAP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','−':'⁻','-':'⁻'};
+const plain = h => String(h ?? '').replace(/<sub>(.*?)<\/sub>/g, (m, s) => [...s].map(c => SUBMAP[c] || c).join('')).replace(/<sup>(.*?)<\/sup>/g, (m, s) => [...s].map(c => SUPMAP[c] || c).join('')).replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+function tw(s, px){ let w = 0; for (const ch of s){ const c = ch.codePointAt(0); w += (c > 0x2E80) ? px : (/[₀-₉ₓ₊₋ₐₑₒₙₘₕₖₗₚₛₜ]/.test(ch) ? px * .42 : (/[A-Z]/.test(ch) ? px * .66 : (/[a-z0-9]/.test(ch) ? px * .55 : px * .4))); } return w; }
+function fit(s, maxPx, px){ if (tw(s, px) <= maxPx) return s; let out = ''; for (const ch of s){ if (tw(out + ch + '…', px) > maxPx) break; out += ch; } return out + '…'; }
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
+// ---------- sectors & angles (same rules as the tree-ring page)
+const SECTORS = ['A','B','C','D','E','F','G','H'];
+const chapterSector = f => f.includes('00_intro') || f.includes('01_') ? 'A' : f.includes('02_') ? 'B' : f.includes('04_prior') ? 'C' : (f.includes('03_') || f.includes('04_neighbor')) ? 'D' : f.includes('05_') ? 'F' : f.includes('06_') ? 'G' : 'H';
+const firstDefLeaf = n => { const e = adj.get(n.id).find(e => e.k === 'defines' && e.t === n.id); return e ? byId.get(e.s) : null; };
+const leafOrder = new Map(); { let i = 0; nodes.filter(n => n.type === 'leaf').forEach(l => leafOrder.set(l.id, i++)); }
+function sectorOf(n){ switch (n.type){
+  case 'branch': return n.id.slice(2); case 'leaf': return n.id.slice(2, 3);
+  case 'subtopic': { const e = adj.get(n.id).find(e => e.k === 'maps' && e.s === n.id); return e ? e.t.slice(2) : 'A'; }
+  case 'paper': { const ls = n.leaves.slice().sort((a, b) => leafOrder.get('L_' + a) - leafOrder.get('L_' + b)); return ls.length ? ls[0][0] : 'B'; }
+  case 'element': case 'compound': case 'agent': { const l = firstDefLeaf(n); if (n.type === 'agent') return 'E'; if (l) return l.id.slice(2, 3); return n.level === 'H' ? 'C' : (n.level === 'D0' || n.level === 'D1') ? 'A' : 'B'; }
+  case 'route': case 'record': return 'D'; case 'char': return 'F'; case 'failure': return 'G';
+  case 'section': return chapterSector(n.file); case 'claim': return chapterSector(byId.get(n.section).file);
+  case 'tree': return {T_gaps:'G', T_recipe:'E', T_dir:'H', T_wf:'D', T_cases:'A'}[n.id] || 'H';
+  case 'gap': return 'G'; case 'recipe': return 'E'; case 'direction': return 'H'; case 'workflow': return 'D'; case 'case': return 'A'; } return null; }
+nodes.forEach(n => { n.sector = sectorOf(n); });
+// ---------- levels: which nodes become cards at each step, and who their parent dot is
+const LEVELS = [
+  {id: 1, title: '调研主题与预期目标', pick: n => n.type === 'question' || n.type === 'subtopic', sum: '中心是研究者自己的调研主题；5 个预期目标（Q1–Q5）与 8 个 MECE 子主题是调研开始前的问题树。'},
+  {id: 2, title: '文献树八分支', pick: n => n.type === 'branch', sum: '流水线按 MECE 规则把文献证据分成 A–H 八个分支；从这一级起，已展开的层收缩为圆点，分支名留在圆点旁。'},
+  {id: 3, title: '叶节点', pick: n => n.type === 'leaf', sum: '每个叶节点是一类证据主张，标注证据等级（D0 直接 · D1 谱系 · N1 近邻 · P1 工艺）与支撑文献数。'},
+  {id: 4, title: '文献', pick: n => n.type === 'paper', sum: '全部通过引用闸门；实心橙 = 唯一的目标相直接报道，其余按证据距离着色；卡片副标题为题名。'},
+  {id: 5, title: '元素与化合物', pick: n => n.type === 'element' || (n.type === 'compound'), sum: '12 个元素与 29 个化合物 / 相，按证据等级着色；紫色虚线是 AI 假设目标，尚未合成。'},
+  {id: 6, title: '合成路线与条件记录', pick: n => n.type === 'route' || n.type === 'record', sum: '6 条路线与 29 条逐字段条件记录（A 区目标相 · B 区无 Zn 同谱系 · C 区参照）；副标题为温度–时间。'},
+  {id: 7, title: '结论 · 实验方向 · 证据缺口', pick: n => (n.type === 'claim' && n.stage === 4 && byId.get(n.section).file.includes('07_')) || n.type === 'direction' || n.type === 'gap', sum: '实心橙卡 = 综述结论；紫色虚线 = AI 拟定的实验方向；灰色虚线 = 尚未闭合的证据缺口。'},
+  {id: 8, title: '长出的新树', pick: n => (n.type === 'recipe' && n.top) || n.type === 'workflow' || n.type === 'case', sum: 'RECIPE 首选前驱体组合（紫）、OpenLab 自动化工作流（深青，仿真）、同根的其他调研（案例）。'},
+];
+const levelOf = new Map(); LEVELS.forEach(L => nodes.filter(L.pick).forEach(n => levelOf.set(n.id, L.id)));
+levelOf.set('root', 0);
+const branchOf = s => byId.get('B_' + s);
+function parentOf(n){ switch (n.type){
+  case 'root': return null; case 'question': case 'subtopic': case 'branch': return byId.get('root');
+  case 'leaf': return branchOf(n.sector);
+  case 'paper': return n.leaves.length ? byId.get('L_' + n.leaves.slice().sort((a, b) => leafOrder.get('L_' + a) - leafOrder.get('L_' + b))[0]) : branchOf('B');
+  case 'record': { const e = adj.get(n.id).find(e => e.k === 'route' && e.s === n.id); return e ? byId.get(e.t) : branchOf('D'); }
+  case 'route': return branchOf('D');
+  case 'element': case 'compound': { const l = firstDefLeaf(n); return l || branchOf(n.sector); }
+  case 'claim': return branchOf('H'); case 'direction': return branchOf('H'); case 'gap': return branchOf('G');
+  case 'recipe': return byId.get(n.target) || branchOf('E'); case 'workflow': return branchOf('D'); case 'case': return branchOf('A'); }
+  return branchOf(n.sector || 'A'); }
+// angles: spread each level's cards evenly inside their sector, sector spans weighted by the busiest level
+const GAP = 3 * Math.PI / 180;
+const need = {}; SECTORS.forEach(s => need[s] = 0.15);
+LEVELS.forEach(L => SECTORS.forEach(s => { const c = nodes.filter(n => levelOf.get(n.id) === L.id && n.sector === s).length; need[s] = Math.max(need[s], c * 0.08 + 0.05); }));
+const total = SECTORS.reduce((a, s) => a + need[s], 0), avail = 2 * Math.PI - GAP * 8;
+const span = {}; { let a0 = -Math.PI / 2; SECTORS.forEach(s => { const w = need[s] / total * avail; span[s] = [a0, a0 + w]; a0 += w + GAP; }); }
+const mid = s => (span[s][0] + span[s][1]) / 2;
+const lvlRank = {D0:0, D1:1, N1:2, P1:3, X:4, H:5};
+LEVELS.forEach(L => SECTORS.forEach(s => { const arr = nodes.filter(n => levelOf.get(n.id) === L.id && n.sector === s); if (!arr.length) return;
+  arr.sort((a, b) => { const pa = parentOf(a), pb = parentOf(b); const x = ((pa && pa.a) || 0) - ((pb && pb.a) || 0); return x || (lvlRank[a.level] ?? 9) - (lvlRank[b.level] ?? 9) || String(a.label).localeCompare(String(b.label)); });
+  const [lo, hi] = span[s], pad = (hi - lo) * 0.08, w = hi - lo - 2 * pad; arr.forEach((n, i) => { n.a = arr.length === 1 ? (lo + hi) / 2 : lo + pad + w * i / (arr.length - 1); }); }));
+nodes.filter(n => n.type === 'question' || n.type === 'subtopic').forEach(n => { if (n.type === 'question'){ const ss = adj.get(n.id).filter(e => e.k === 'serves' && e.s === n.id).map(e => byId.get(e.t)); if (ss.length && ss.every(x => x.a !== undefined)) n.a = Math.atan2(d3.mean(ss, x => Math.sin(x.a)), d3.mean(ss, x => Math.cos(x.a))); } });
+{ const qs = nodes.filter(n => n.type === 'question').sort((a, b) => a.a - b.a); for (let k = 0; k < 6; k++) for (let i = 1; i < qs.length; i++) if (qs[i].a - qs[i-1].a < 0.9) qs[i].a = qs[i-1].a + 0.9; }
+const root = byId.get('root'); root.a = 0;
+// ---------- card text & style per node
+const short = (s, n) => { s = plain(s); return s.length > n ? s.slice(0, n) + '…' : s; };
+const stripHtml = s => plain(s || '').replace(/NA/g, 'NA');
+function cardSpec(n){ // returns {title, sub, badge, fill, stroke, dash, tcol, scol, w, h, big}
+  const base = {w: 250, h: 56, dash: null, tcol: C.text, scol: C.muted, badgeFill: null};
+  switch (n.type){
+    case 'question': return {...base, title: n.label.slice(7), sub: short(n.text, 30), badge: 'Q' + n.id.slice(1), fill: '#fff', stroke: C.tele, sw: 2.2, tcol: C.tele, w: 330, h: 60, badgeFill: C.tele};
+    case 'subtopic': return {...base, title: n.label.slice(3), sub: short(n.text, 30), badge: n.id, fill: '#fff', stroke: C.line2, sw: 1.5, w: 300, h: 56, badgeFill: C.faint};
+    case 'branch': return {...base, title: n.label.slice(2), sub: `${nodes.filter(x => x.type === 'leaf' && x.sector === n.id.slice(2)).length} 个叶节点`, badge: n.id.slice(2), fill: C.tele, stroke: C.tele, sw: 0, tcol: '#fff', scol: '#E3F2F5', w: 250, h: 58, badgeFill: C.navy};
+    case 'leaf': { const lv = n.levels.filter(l => LVL[l]); return {...base, title: n.label.replace(/^[A-H]\d /, ''), sub: `${lv.length ? lv.join(' / ') + ' · ' : ''}${n.keys.length} 篇支撑`, badge: n.id.slice(2), fill: '#E1F1F5', stroke: C.tele2, sw: 1.5, w: 240, h: 54, badgeFill: C.tele}; }
+    case 'paper': { const solid = n.level === 'D0'; return {...base, title: n.label, sub: short(n.title, 26), badge: n.level, fill: solid ? C.heat : TINT[n.level], stroke: solid ? C.heat : LVL[n.level], sw: solid ? 0 : 1.6, tcol: solid ? '#fff' : C.text, scol: solid ? '#FDE4D4' : C.muted, w: 222, h: 54, badgeFill: solid ? C.text : LVL[n.level]}; }
+    case 'element': return {...base, title: n.sym, sub: n.label.slice(3), badge: null, fill: '#fff', stroke: n.core ? C.text : C.line2, sw: n.core ? 2 : 1.4, w: 92, h: 54, big: true};
+    case 'compound': return {...base, title: plain(n.label), sub: short(n.note, 22), badge: n.level, fill: TINT[n.level], stroke: LVL[n.level], sw: 1.6, dash: n.level === 'H' ? '5 3' : null, tcol: n.level === 'H' ? C.purple : C.text, w: 236, h: 54, badgeFill: LVL[n.level]};
+    case 'route': return {...base, title: n.label.split(' · ')[0], sub: n.leaf ? `${nodes.filter(x => x.type === 'record' && parentOf(x) === n).length} 条记录` : '证据空白', badge: n.leaf || '—', fill: n.leaf ? C.tele : '#fff', stroke: C.tele, sw: n.leaf ? 0 : 1.5, dash: n.leaf ? null : '5 3', tcol: n.leaf ? '#fff' : C.tele, scol: n.leaf ? '#E3F2F5' : C.muted, w: 200, h: 54, badgeFill: C.navy};
+    case 'record': { const z = n.zone[0]; const col = z === 'A' ? C.heat : z === 'B' ? C.gold : C.tele; return {...base, title: `${n.label} · ${short(n.product, 16)}`, sub: short(stripHtml(n.temp_time), 24), badge: z + ' 区', fill: '#fff', stroke: col, sw: 1.8, tcol: C.text, w: 236, h: 54, badgeFill: col}; }
+    case 'claim': { const tx = plain(n.text); const m = tx.search(/[，；：。]/); const cut = (m > 4 && m <= 22) ? m : 18; return {...base, title: tx.slice(0, cut), sub: short(tx.slice(cut).replace(/^[，；：。]/, ''), 26), badge: '结论', fill: C.heat, stroke: C.heat, sw: 0, tcol: '#fff', scol: '#FDE4D4', w: 300, h: 60, badgeFill: C.text}; }
+    case 'direction': return {...base, title: n.label.replace(/^方向 \d · /, ''), sub: 'AI 拟定 · 实验假设，待验证', badge: 'AI', fill: '#fff', stroke: C.purple, sw: 2, dash: '6 3', tcol: C.purple, w: 270, h: 58, badgeFill: C.purple};
+    case 'gap': return {...base, title: n.label, sub: '证据未闭合', badge: '缺口', fill: '#F4F6F8', stroke: C.faint, sw: 1.8, dash: '5 3', tcol: C.muted, w: 236, h: 54, badgeFill: C.faint};
+    case 'recipe': return {...base, title: plain(n.label), sub: `${plain(byId.get(n.target).label)} · p=${n.p.toFixed(3)}`, badge: 'RECIPE', fill: C.purple, stroke: C.purple, sw: 0, tcol: '#fff', scol: '#ECE6F9', w: 290, h: 58, badgeFill: C.text};
+    case 'workflow': return {...base, title: n.label, sub: short(n.text, 24), badge: '仿真', fill: C.navy, stroke: C.navy, sw: 0, tcol: '#fff', scol: '#DCEEF3', w: 260, h: 56, badgeFill: C.text};
+    case 'case': return {...base, title: n.label, sub: `${n.entries ?? '—'} 条引用`, badge: '案例', fill: '#fff', stroke: C.text, sw: 1.6, dash: '5 3', w: 240, h: 54, badgeFill: C.text};
+  }
+  return {...base, title: plain(n.label), sub: '', badge: null, fill: '#fff', stroke: C.line2, sw: 1.2};
+}
+const dotColor = n => { switch (n.type){ case 'question': return C.tele; case 'subtopic': return C.x; case 'branch': return C.navy; case 'leaf': { const l = n.levels.find(l => LVL[l]); return l ? LVL[l] : C.tele2; } case 'paper': return LVL[n.level]; case 'element': return n.core ? C.text : C.faint; case 'compound': return LVL[n.level]; case 'route': return C.tele; case 'record': { const z = n.zone[0]; return z === 'A' ? C.heat : z === 'B' ? C.gold : C.tele; } case 'claim': return C.heat; case 'direction': return C.purple; case 'gap': return C.faint; case 'recipe': return C.purple; case 'workflow': return C.navy; case 'case': return C.text; } return C.faint; };
+const dotR = n => ({question: 9, subtopic: 6, branch: 13, leaf: 8, paper: 6.5, element: 7, compound: 7, route: 9, record: 5.5, claim: 7, direction: 7, gap: 6, recipe: 6, workflow: 7, case: 7})[n.type] || 6;
+// ---------- frame & rail geometry (1920 × 1080 canvas)
+const W = 1920, H = 1080, CX = 960, CY = 556;
+const FRAME = {x: 36, y: 96, w: 1848, h: 918, r: 26};
+const PAD = 14, LANE_GAP = 8;
+const RING_R = [0, 120, 150, 180, 210, 240, 270, 300, 330]; // collapsed-tree ring radius by level (before scaling)
+// ---------- layouts per level
+function rayToRail(a, inset){ // where the ray at angle a from the centre meets the rectangle inset from the frame; returns {seg, u} perimeter coordinate
+  const L = FRAME.x + inset, R = FRAME.x + FRAME.w - inset, T = FRAME.y + inset, B = FRAME.y + FRAME.h - inset;
+  const dx = Math.cos(a), dy = Math.sin(a);
+  const cands = [];
+  if (dx > 0) cands.push([(R - CX) / dx, 'R']); if (dx < 0) cands.push([(L - CX) / dx, 'L']);
+  if (dy > 0) cands.push([(B - CY) / dy, 'B']); if (dy < 0) cands.push([(T - CY) / dy, 'T']);
+  cands.sort((p, q) => p[0] - q[0]); const [t, seg] = cands[0]; const x = CX + dx * t, y = CY + dy * t;
+  return {seg, x, y};
+}
+const TL = FRAME.w - 2 * PAD - 2 * FRAME.r, SL = FRAME.h - 2 * PAD - 2 * FRAME.r, PER = 2 * (TL + SL);
+const TREE_R = 270;
+// perimeter coordinate (clockwise from the top-left corner) of a point on the rail
+function perim(x, y, seg){ const x0 = FRAME.x + PAD + FRAME.r, y0 = FRAME.y + PAD + FRAME.r; if (seg === 'T') return clamp(x - x0, 0, TL); if (seg === 'R') return TL + clamp(y - y0, 0, SL); if (seg === 'B') return TL + SL + clamp(x0 + TL - x, 0, TL); return 2 * TL + SL + clamp(y0 + SL - y, 0, SL); }
+// slot grid along the rail: rows on top / bottom, columns on the sides, up to three lanes (brick rows)
+function slotsFor(cw, ch, lanes){ const out = []; const x0 = FRAME.x + PAD + FRAME.r, y0 = FRAME.y + PAD + FRAME.r;
+  for (let lane = 0; lane < lanes; lane++){
+    const rowY = FRAME.y + PAD + lane * (ch + LANE_GAP) + ch / 2, colX = FRAME.x + PAD + lane * (cw + LANE_GAP) + cw / 2;
+    const band = lanes * (ch + LANE_GAP);
+    const nT = Math.floor((TL + LANE_GAP) / (cw + LANE_GAP)), offT = (TL - nT * (cw + LANE_GAP) + LANE_GAP) / 2;
+    const yTop = FRAME.y + PAD + band + ch / 2, yBot = FRAME.y + FRAME.h - PAD - band - ch / 2; const nS = Math.max(0, Math.floor((yBot - yTop) / (ch + LANE_GAP)) + 1), offS = (yBot - yTop - (nS - 1) * (ch + LANE_GAP)) / 2;
+    for (let i = 0; i < nT; i++){ const x = x0 + offT + i * (cw + LANE_GAP) + cw / 2; out.push({x, y: rowY, u: perim(x, rowY, 'T'), seg: 'T', lane}); }
+    for (let i = 0; i < nS; i++){ const y = yTop + offS + i * (ch + LANE_GAP); const x = FRAME.x + FRAME.w - (colX - FRAME.x); out.push({x, y, u: perim(x, y, 'R'), seg: 'R', lane}); }
+    for (let i = 0; i < nT; i++){ const x = x0 + TL - offT - i * (cw + LANE_GAP) - cw / 2; const y = FRAME.y + FRAME.h - (rowY - FRAME.y); out.push({x, y, u: perim(x, y, 'B'), seg: 'B', lane}); }
+    for (let i = 0; i < nS; i++){ const y = yBot - offS - i * (ch + LANE_GAP); out.push({x: colX, y, u: perim(colX, y, 'L'), seg: 'L', lane}); }
+  }
+  return out.sort((a, b) => a.u - b.u || a.lane - b.lane);
+}
+function layoutLevel(k){ // returns Map id -> {kind:'card'|'dot'|'root'|'pill', ...}
+  const out = new Map();
+  const present = nodes.filter(n => levelOf.has(n.id) && levelOf.get(n.id) <= k);
+  const maxLvl = Math.max(0, ...present.filter(n => levelOf.get(n.id) < k).map(n => levelOf.get(n.id)));
+  const scale = maxLvl ? Math.min(1, TREE_R / RING_R[maxLvl]) : 1;
+  present.forEach(n => { const l = levelOf.get(n.id); if (l < k){ const r = RING_R[l] * scale; out.set(n.id, {kind: n.type === 'root' ? 'root' : 'dot', x: CX + r * Math.cos(n.a), y: CY + r * Math.sin(n.a), r: dotR(n), col: dotColor(n)}); } });
+  out.set('root', {kind: 'root', x: CX, y: CY, r: 46});
+  const cards = present.filter(n => levelOf.get(n.id) === k).map(n => ({n, spec: cardSpec(n)}));
+  if (cards.length){
+    const cw = Math.max(...cards.map(c => c.spec.w)), ch = Math.max(...cards.map(c => c.spec.h));
+    let lanes = 1, slots = slotsFor(cw, ch, 1); while (slots.length < cards.length && lanes < 3){ lanes++; slots = slotsFor(cw, ch, lanes); }
+    cards.forEach(c => { const hit = rayToRail(n_a(c.n), PAD); c.u = perim(hit.x, hit.y, hit.seg); });
+    cards.sort((a, b) => a.u - b.u);
+    const N = slots.length, M = cards.length; const mix = clamp((M / N - 0.35) / 0.4, 0, 1);
+    const idx = cards.map((c, i) => Math.round((1 - mix) * (c.u / PER * (N - 1)) + mix * (M > 1 ? i * (N - 1) / (M - 1) : (N - 1) / 2)));
+    for (let i = 1; i < idx.length; i++) if (idx[i] <= idx[i-1]) idx[i] = idx[i-1] + 1;
+    for (let i = idx.length - 1; i >= 0; i--){ const hi = (i === idx.length - 1 ? N - 1 : idx[i+1] - 1); if (idx[i] > hi) idx[i] = hi; }
+    cards.forEach((c, i) => { const s = slots[Math.max(0, idx[i])] || slots[N - 1]; c.x = s.x; c.y = s.y; c.seg = s.seg; });
+  }
+  cards.forEach(c => out.set(c.n.id, {kind: 'card', x: c.x, y: c.y, w: c.spec.w, h: c.spec.h, spec: c.spec, seg: c.seg, r: dotR(c.n), col: dotColor(c.n)}));
+  if (k >= 3){ SECTORS.forEach(s => { const b = branchOf(s); if (!out.get(b.id)) return; const a = mid(s); const rr = TREE_R * scale + 34; out.set('PILL_' + s, {kind: 'pill', x: CX + rr * Math.cos(a), y: CY + rr * Math.sin(a), text: b.label.slice(2).split('（')[0], anchorLeft: Math.cos(a) >= 0}); }); }
+  return out;
+}
+function n_a(n){ return n.a ?? 0; }
+const LAYOUTS = [null]; for (let k = 1; k <= LEVELS.length; k++) LAYOUTS.push(layoutLevel(k));
+const INTRO = 1.0, TR = 1.1, HOLD = 2.5, TAIL = 1.6;
+const T_LEVEL = k => INTRO + (k - 1) * (TR + HOLD);
+const TOTAL = INTRO + LEVELS.length * (TR + HOLD) + TAIL;
+// ---------- svg scaffolding
+const svg = d3.select('#svg');
+const defs = svg.append('defs');
+const gBg = svg.append('g'), gTree = svg.append('g'), gLinks = svg.append('g'), gCards = svg.append('g'), gPills = svg.append('g'), gTop = svg.append('g');
+// header
+gBg.append('rect').attr('width', W).attr('height', H).attr('fill', '#F1F4F7');
+gBg.append('rect').attr('x', FRAME.x).attr('y', FRAME.y).attr('width', FRAME.w).attr('height', FRAME.h).attr('rx', FRAME.r).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5);
+gTop.append('text').attr('class', 'h-eyebrow').attr('x', 40).attr('y', 30).text('SAGE-MAT · 文献系统 · 知识图谱 · 逐层展开');
+gTop.append('text').attr('class', 'h-title').attr('x', 40).attr('y', 64).text('SAGE-Mat 知识森林');
+gTop.append('text').attr('class', 'h-sub').attr('x', 372).attr('y', 63).text('中心是调研主题 · 逐级展开 · 当前层为文字卡片 · 已展开层收缩为圆点');
+gTop.append('text').attr('class', 'h-right').attr('x', W - 40).attr('y', 30).attr('text-anchor', 'end').text(`${G.meta.stats.papers} 篇文献 · ${G.meta.stats.claims} 条主张 · ${G.meta.stats.records} 条条件记录 · 全部由证据包生成`);
+// legend row (right side of header)
+{ const lg = gTop.append('g').attr('transform', `translate(${W - 40}, 58)`); const items = [[C.heat, 'D0 目标相直接', 'solid'], [C.heat2, 'D1 同谱系', 'tint'], [C.tele, 'N1 近邻', 'tint'], [C.faint, 'P1 工艺', 'line'], [C.purple, 'AI 推断（虚线）', 'dash'], [C.faint, '缺口（灰虚线）', 'dash'], [C.navy, '仿真工作流', 'solid']];
+  let x = 0; items.slice().reverse().forEach(([col, t, kind]) => { const w = tw(t, 13) + 34; x -= w; lg.append('rect').attr('x', x).attr('y', -11).attr('width', 20).attr('height', 13).attr('rx', 3).attr('fill', kind === 'solid' ? col : kind === 'tint' ? d3.color(col).copy({opacity: .2}) : '#fff').attr('stroke', col).attr('stroke-width', 1.6).attr('stroke-dasharray', kind === 'dash' ? '3 2' : null); lg.append('text').attr('class', 'lg').attr('x', x + 26).attr('y', 0).text(t); x -= 8; }); }
+// caption bar
+const cap = gTop.append('g').attr('transform', `translate(40, ${H - 26})`);
+cap.append('rect').attr('x', -4).attr('y', -34).attr('width', W - 72).attr('height', 46).attr('rx', 8).attr('fill', '#fff').attr('stroke', C.line);
+const capTitle = cap.append('text').attr('class', 'cap-title').attr('x', 12).attr('y', -3);
+const capSum = cap.append('text').attr('class', 'cap-sum').attr('x', 12).attr('y', -3);
+// root icon
+const rootG = gTree.append('g');
+{ const ic = ICONS && ICONS.researcher; rootG.append('circle').attr('r', 50).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5); if (ic){ const w = 84, h = w * ic.h / ic.w; rootG.append('image').attr('href', ic.src).attr('x', -w / 2).attr('y', -h / 2 - 4).attr('width', w).attr('height', h); } rootG.append('text').attr('class', 'root-label').attr('y', 74).text('调研主题'); }
+// ---------- per-frame renderer
+const lerp = (a, b, t) => a + (b - a) * t;
+function stateAt(t){ // level index k (1..8) and transition progress p in [0,1]
+  if (t < INTRO) return {k: 1, p: clamp(t / INTRO, 0, 1), intro: true};
+  for (let k = 1; k <= LEVELS.length; k++){ const t0 = T_LEVEL(k); if (t < t0 + TR + HOLD || k === LEVELS.length) return {k, p: clamp((t - t0) / TR, 0, 1)}; }
+  return {k: LEVELS.length, p: 1};
+}
+function render(t){
+  const {k, p} = stateAt(t); const e = ease(p);
+  const cur = LAYOUTS[k], prev = LAYOUTS[k - 1] || new Map();
+  // union of ids
+  const ids = new Set([...cur.keys(), ...prev.keys()]);
+  const items = [];
+  ids.forEach(id => { if (id === 'root' || id.startsWith('PILL_')) return; const a = prev.get(id), b = cur.get(id); const n = byId.get(id); if (!n) return;
+    if (a && b){ // dot → dot (tree rescale) or card → dot (collapse)
+      if (a.kind === 'card' && b.kind === 'dot'){ items.push({id, n, kind: 'morph', x: lerp(a.x, b.x, e), y: lerp(a.y, b.y, e), w: lerp(a.w, 2 * b.r, e), h: lerp(a.h, 2 * b.r, e), spec: a.spec, col: b.col, textOp: 1 - clamp(p / 0.35, 0, 1), rx: lerp(10, b.r, e), r: b.r}); }
+      else items.push({id, n, kind: 'dot', x: lerp(a.x, b.x, e), y: lerp(a.y, b.y, e), r: b.r, col: b.col}); }
+    else if (b && b.kind === 'card'){ // new card grows out of its parent dot
+      const par = parentOf(n); const ps = (par && (cur.get(par.id) || prev.get(par.id))) || cur.get('root'); const g = ease(clamp((p - 0.1) / 0.8, 0, 1));
+      items.push({id, n, kind: 'card', x: lerp(ps.x, b.x, g), y: lerp(ps.y, b.y, g), w: lerp(2 * b.r, b.w, g), h: lerp(2 * b.r, b.h, g), spec: b.spec, col: b.col, textOp: ease(clamp((p - 0.45) / 0.5, 0, 1)), rx: lerp(b.r, 10, g), r: b.r, linkOp: g}); }
+    else if (b) items.push({id, n, kind: 'dot', x: b.x, y: b.y, r: b.r, col: b.col});
+  });
+  // dots & morphing cards
+  const dots = items.filter(i => i.kind === 'dot');
+  const dsel = gTree.selectAll('circle.dot').data(dots, d => d.id);
+  dsel.join(enter => enter.append('circle').attr('class', 'dot'), update => update, exit => exit.remove()).attr('cx', d => d.x).attr('cy', d => d.y).attr('r', d => d.r).attr('fill', d => d.col).attr('stroke', '#fff').attr('stroke-width', 1.5);
+  // tree links: dot → its parent (straight, faint) once collapsed
+  const dotById = new Map(dots.map(d => [d.id, d]));
+  const tlinks = dots.map(d => { const par = parentOf(d.n); const ps = par ? (par.id === 'root' ? {x: CX, y: CY} : dotById.get(par.id)) : null; return ps ? {id: d.id, x1: d.x, y1: d.y, x2: ps.x, y2: ps.y} : null; }).filter(Boolean);
+  gLinks.selectAll('line.tl').data(tlinks, d => d.id).join('line').attr('class', 'tl').attr('x1', d => d.x1).attr('y1', d => d.y1).attr('x2', d => d.x2).attr('y2', d => d.y2).attr('stroke', C.line2).attr('stroke-width', 1.2).attr('opacity', .8);
+  // card ↔ parent curves
+  const cards = items.filter(i => i.kind === 'card' || i.kind === 'morph');
+  const curves = cards.map(c => { const par = parentOf(c.n); const ps = par ? (par.id === 'root' ? {x: CX, y: CY} : (dotById.get(par.id) || cur.get(par.id) || prev.get(par.id))) : {x: CX, y: CY}; if (!ps) return null;
+    const ax = c.x, ay = c.y; const toC = Math.atan2(CY - ay, CX - ax); const sx = ax + Math.cos(toC) * (c.kind === 'card' ? Math.min(c.w, c.h) * 0.5 : c.r), sy = ay + Math.sin(toC) * (c.kind === 'card' ? Math.min(c.w, c.h) * 0.5 : c.r);
+    const pa = Math.atan2(ps.y - CY, ps.x - CX); const k1 = 150, k2 = 110; const c1x = sx + Math.cos(toC) * k1, c1y = sy + Math.sin(toC) * k1; const c2x = ps.x + Math.cos(pa) * k2, c2y = ps.y + Math.sin(pa) * k2;
+    return {id: c.id, d: `M${sx},${sy} C${c1x},${c1y} ${c2x},${c2y} ${ps.x},${ps.y}`, col: c.spec.stroke === '#fff' ? c.col : (c.spec.fill === '#fff' || c.spec.fill.startsWith('#F') || c.spec.fill.startsWith('#E') || c.spec.fill.startsWith('#D') ? c.spec.stroke : c.spec.fill), op: (c.linkOp ?? 1) * (c.kind === 'morph' ? c.textOp : 1)}; }).filter(Boolean);
+  gLinks.selectAll('path.cl').data(curves, d => d.id).join('path').attr('class', 'cl').attr('d', d => d.d).attr('fill', 'none').attr('stroke', d => d.col).attr('stroke-width', 1.6).attr('opacity', d => 0.75 * d.op);
+  // cards
+  const csel = gCards.selectAll('g.card').data(cards, d => d.id);
+  const centre = csel.join(enter => { const g = enter.append('g').attr('class', 'card'); g.append('rect').attr('class', 'bg'); g.append('text').attr('class', 'card-title'); g.append('text').attr('class', 'card-sub'); g.append('rect').attr('class', 'bd'); g.append('text').attr('class', 'badge'); return g; }, update => update, exit => exit.remove());
+  centre.attr('transform', d => `translate(${d.x},${d.y})`);
+  centre.select('rect.bg').attr('x', d => -d.w / 2).attr('y', d => -d.h / 2).attr('width', d => d.w).attr('height', d => d.h).attr('rx', d => d.rx).attr('fill', d => d.kind === 'morph' && d.textOp < 0.5 ? d.col : d.spec.fill).attr('stroke', d => d.kind === 'morph' && d.textOp < 0.5 ? '#fff' : d.spec.stroke).attr('stroke-width', d => d.kind === 'morph' && d.textOp < 0.5 ? 1.5 : d.spec.sw).attr('stroke-dasharray', d => d.spec.dash);
+  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 17) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? 42 : 0), d.spec.big ? 24 : 17));
+  centre.select('text.card-sub').attr('x', d => -d.w / 2 + 12 + (d.spec.big ? 36 : 0)).attr('y', d => d.spec.big ? 6 : 16).style('font-size', '12.5px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp).text(d => fit(d.spec.sub || '', d.w - 24 - (d.spec.big ? 36 : 0), 12.5));
+  centre.select('rect.bd').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 14 : 0)).attr('y', d => -d.h / 2 - 8).attr('width', d => d.spec.badge ? tw(d.spec.badge, 11) + 12 : 0).attr('height', 17).attr('rx', 5).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
+  centre.select('text.badge').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 8 : 0)).attr('y', d => -d.h / 2 + 4).style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
+  // sector pills
+  const pills = [...cur.entries()].filter(([id]) => id.startsWith('PILL_')).map(([id, s]) => ({id, ...s, op: prev.has(id) ? 1 : ease(clamp((p - 0.4) / 0.5, 0, 1)), icon: ICONS && ICONS[({A:'structure', B:'phasediagram', C:'precursors', D:'furnace', E:'condtable', F:'xrd', G:'guard', H:'route'})[id.slice(5)]]}));
+  const psel = gPills.selectAll('g.pill').data(pills, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'pillg'); g.append('rect'); g.append('image'); g.append('text').attr('class', 'pill'); return g; });
+  psel.attr('transform', d => `translate(${d.x},${d.y})`).attr('opacity', d => d.op);
+  psel.select('rect').attr('x', d => d.anchorLeft ? -6 : -(tw(d.text, 14) + 44)).attr('y', -15).attr('width', d => tw(d.text, 14) + 50).attr('height', 30).attr('rx', 15).attr('fill', C.navy);
+  psel.select('image').attr('href', d => d.icon ? d.icon.src : null).attr('x', d => d.anchorLeft ? 0 : -(tw(d.text, 14) + 38)).attr('y', -11).attr('width', 24).attr('height', 22);
+  psel.select('text').attr('x', d => d.anchorLeft ? 30 : -(tw(d.text, 14) + 8)).attr('y', 5).text(d => d.text);
+  rootG.attr('transform', `translate(${CX},${CY})`);
+  // caption
+  const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八'][k - 1];
+  capTitle.text(`第${cn}级：${L.title}（${count}）`); capSum.attr('x', 12 + tw(`第${cn}级：${L.title}（${count}）`, 22) + 22).text(L.sum); cap.attr('opacity', t < INTRO ? ease(t / INTRO) : 1);
+  d3.select('#tlabel').text(`${t.toFixed(1)} s · 第 ${k} 级`); d3.select('#seek').property('value', Math.round(1000 * t / TOTAL));
+}
+// ---------- playback & seek API
+let tNow = params.has('t') ? +params.get('t') : (params.has('level') ? T_LEVEL(+params.get('level')) + TR : 0);
+let playing = false, last = null;
+function tick(ts){ if (!playing) return; if (last !== null) tNow = Math.min(TOTAL, tNow + (ts - last) / 1000); last = ts; render(tNow); if (tNow >= TOTAL){ playing = false; d3.select('#play').text('▶ 播放'); } else requestAnimationFrame(tick); }
+d3.select('#play').on('click', function(){ playing = !playing; last = null; this.textContent = playing ? '‖ 暂停' : '▶ 播放'; if (playing){ if (tNow >= TOTAL) tNow = 0; requestAnimationFrame(tick); } });
+d3.select('#next').on('click', () => { const {k} = stateAt(tNow); tNow = T_LEVEL(Math.min(LEVELS.length, k + 1)) + TR; playing = false; render(tNow); });
+d3.select('#prev').on('click', () => { const {k} = stateAt(tNow); tNow = T_LEVEL(Math.max(1, k - 1)) + TR; playing = false; render(tNow); });
+d3.select('#seek').on('input', function(){ tNow = TOTAL * (+this.value) / 1000; playing = false; render(tNow); });
+window.__seek = (t) => { tNow = t; render(t); };
+window.__total = TOTAL;
+render(tNow);
+window.__ready = true;
+if (params.get('autoplay') === '1'){ playing = true; requestAnimationFrame(tick); }
+</script>
+</body>
+</html>
