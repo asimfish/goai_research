@@ -410,6 +410,7 @@ function render(t){
       items.push({id, n, kind: 'card', x: lerp(ps.x, b.x, g), y: lerp(ps.y, b.y, g), w: lerp(2 * b.r, b.w, gs), h: lerp(2 * b.r, b.h, gs), spec: b.spec, col: b.col, textOp: ease(clamp((g0 - 0.5) / 0.45, 0, 1)), rx: lerp(b.r, 10, g), r: b.r, linkOp: g, grow: g0, fresh: g0 < 1}); }
     else if (b) items.push({id, n, kind: 'dot', x: b.x, y: b.y, r: b.r, col: b.col});
   });
+  if (hoverId && !items.some(i => i.id === hoverId)) hoverId = null;   // the hovered element is gone: never keep the dimmed state
   // dots & morphing cards
   const dots = items.filter(i => i.kind === 'dot');
   const dsel = gTree.selectAll('circle.dot').data(dots, d => d.id);
@@ -582,12 +583,12 @@ document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closePanel
 // ---------- playback & seek API
 let tNow = params.has('t') ? +params.get('t') : (params.has('level') ? T_LEVEL(+params.get('level')) + TR : 0);
 let playing = false, last = null;
-function tick(ts){ if (!playing) return; if (last !== null) tNow = Math.min(TOTAL, tNow + (ts - last) / 1000); last = ts; render(tNow); if (tNow >= TOTAL){ playing = false; d3.select('#play').text('▶ 播放'); } else requestAnimationFrame(tick); }
+function tick(ts){ if (!playing) return; hoverId = null; if (last !== null) tNow = Math.min(TOTAL, tNow + (ts - last) / 1000); last = ts; render(tNow); if (tNow >= TOTAL){ playing = false; d3.select('#play').text('▶ 播放'); } else requestAnimationFrame(tick); }
 d3.select('#play').on('click', function(){ playing = !playing; last = null; this.textContent = playing ? '‖ 暂停' : '▶ 播放'; if (playing){ if (tNow >= TOTAL) tNow = 0; requestAnimationFrame(tick); } });
 d3.select('#next').on('click', () => { const {k} = stateAt(tNow); tNow = T_LEVEL(Math.min(LEVELS.length, k + 1)) + TR; playing = false; render(tNow); });
 d3.select('#prev').on('click', () => { const {k} = stateAt(tNow); tNow = T_LEVEL(Math.max(1, k - 1)) + TR; playing = false; render(tNow); });
-d3.select('#seek').on('input', function(){ tNow = TOTAL * (+this.value) / 1000; playing = false; render(tNow); });
-window.__seek = (t) => { tNow = t; render(t); };
+d3.select('#seek').on('input', function(){ tNow = TOTAL * (+this.value) / 1000; playing = false; hoverId = null; render(tNow); });
+window.__seek = (t) => { tNow = t; hoverId = null; render(t); };
 window.__total = TOTAL;
 render(tNow);
 if (params.get('select') && byId.get(params.get('select'))) select(byId.get(params.get('select')), true);
