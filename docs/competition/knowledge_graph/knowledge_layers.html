@@ -19,17 +19,17 @@ text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif}
 .h-eyebrow{font:600 12px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.16em}
 .h-right{font:500 13px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
 .h-stat{font:500 12.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
-.sl{font:600 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
-.sk{font:500 12px "IBM Plex Mono",monospace;fill:var(--muted)}
+.sl{font:600 15px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.sk{font:500 13px "IBM Plex Mono",monospace;fill:var(--muted);font-variant-numeric:tabular-nums}
 .sn{font:700 12px "IBM Plex Mono",monospace;text-anchor:middle;pointer-events:none}
 .sg{font:600 11.5px "IBM Plex Mono",monospace;fill:var(--faint);letter-spacing:.1em;text-anchor:middle}
 .arc-n{font:700 11px "IBM Plex Mono",monospace;fill:var(--heat);text-anchor:middle;dominant-baseline:central}
-.cap-count{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
-.f-label{font:700 12px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.08em}
-.f-val{font:400 15px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
-.chip{font:500 13px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.cap-count{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted);font-variant-numeric:tabular-nums}
+.f-label{font:700 12.5px "IBM Plex Mono",monospace;fill:var(--tele);letter-spacing:.04em}
+.f-val{font:400 16px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.chip{font:500 14px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .chip-n{font:700 13px "IBM Plex Mono",monospace;fill:var(--text)}
-.lg{font:500 13px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.lg{font:500 12.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
 .cap-title{font:800 22px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .cap-sum{font:400 16px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
 .card-title{font-weight:700;pointer-events:none}
@@ -110,40 +110,40 @@ function sectorOf(n){ switch (n.type){
 nodes.forEach(n => { n.sector = sectorOf(n); });
 // ---------- levels: which nodes become cards at each step, and who their parent dot is
 const LEVELS = [
-  {id: 1, title: '预期目标与子主题', rail: '目标·子主题', group: '个人知识树', pick: n => n.type === 'question' || n.type === 'subtopic',
-   sum: '研究者开始调研前自己的问题树：5 个预期目标（Q1–Q5）与 8 个 MECE 子主题。',
-   add: '5 个预期目标 Q1–Q5、8 个 MECE 子主题', src: '正式案例 inputs/scope.md', hang: '全部挂在中心「调研主题」；目标按它服务的子主题方向排布'},
-  {id: 2, title: '文献树八分支', rail: '八分支', group: '文献树', pick: n => n.type === 'branch',
-   sum: '流水线按 MECE 规则把文献证据分成 A–H 八个分支；从这一级起，已展开的级收缩为中心的圆点。',
-   add: 'A–H：身份 / 结构 / 替代 / 路线 / 变量 / 表征 / 失败 / 配方篮子', src: '证据包 taxonomy.md §2', hang: '挂在中心；每个分支占圆盘的一个扇区，后面各级都落在自己分支的扇区里'},
-  {id: 3, title: '叶节点', rail: '叶节点', group: '文献树', pick: n => n.type === 'leaf',
-   sum: '每个叶节点是一类证据主张，带证据等级（D0 直接 · D1 谱系 · N1 近邻 · P1 工艺）与支撑文献数。',
-   add: '35 个叶节点，每个是一类证据主张', src: 'taxonomy.md 各叶的判定 / 支撑 key', hang: '挂在所属分支（第 2 级）的圆点上，同一扇区内按顺序排开'},
-  {id: 4, title: '文献', rail: '文献', group: '文献树', pick: n => n.type === 'paper',
-   sum: '51 篇全部通过引用闸门；实心橙 = 唯一的目标相直接报道，其余按证据距离着色；副标题为题名。',
-   add: '51 篇文献（DOI、题名、年份、期刊）', src: 'references.bib + papers.jsonl', hang: '挂在它支撑的第一个叶节点（第 3 级）；颜色 = 与目标相的证据距离'},
-  {id: 5, title: '元素与化合物', rail: '元素·化合物', group: '实体主干', pick: n => n.type === 'element' || (n.type === 'compound'),
-   sum: '12 个元素与 29 个化合物 / 相，按证据等级着色；紫色虚线是 AI 假设目标，尚未合成。',
-   add: '12 个元素（由化学式解析）+ 29 个化合物 / 相', src: '条件总表产物字段 + 人工别名表（build_graph.py 内 CURATED_*）', hang: '挂在定义它的叶节点（第 3 级）或分支（第 2 级）'},
-  {id: 6, title: '合成路线与条件记录', rail: '路线·条件', group: '实体主干', pick: n => n.type === 'route' || n.type === 'record',
-   sum: '6 条路线与 29 条逐字段条件记录（A 区目标相 · B 区无 Zn 同谱系 · C 区参照）；副标题为温度–时间。',
-   add: '6 条路线（含水热空白）+ 29 条条件记录 A1、B1–B6、C1–C22', src: '论文 §3 合成条件总表，逐单元格转成卡片', hang: '路线挂在 D 分支（第 2 级），每条记录挂在自己的路线上'},
-  {id: 7, title: '结论 · 实验方向 · 证据缺口', rail: '结论·方向·缺口', group: '结论树', pick: n => (n.type === 'claim' && n.stage === 4 && byId.get(n.section).file.includes('07_')) || n.type === 'direction' || n.type === 'gap',
-   sum: '实心橙卡 = 综述结论；紫色虚线 = AI 拟定的实验方向；灰色虚线 = 尚未闭合的证据缺口。',
-   add: '4 条综述结论 + 4 个 AI 实验方向 + 8 条证据缺口', src: 'claim_evidence.jsonl §7、ideas/experiment_directions.md、taxonomy §5', hang: '结论与方向挂在 H 配方篮子、缺口挂在 G 失败边界（均第 2 级）'},
-  {id: 8, title: '长出的新树', rail: '新树', group: '长出的新树', pick: n => (n.type === 'recipe' && n.top) || n.type === 'workflow' || n.type === 'case',
-   sum: 'RECIPE 首选前驱体组合（紫，未验证）、OpenLab 自动化工作流（深青，仿真）、同根的其他调研（案例）。',
-   add: 'RECIPE 首选前驱体组合 3 + OpenLab 工作流 5 + 同根调研 4', src: 'precursor_predictions.md、站点 showcase、补充案例 ledger', hang: '预测挂在它的目标化合物（第 5 级），工作流挂 D 分支、案例挂 A 分支'},
+  {id: 1, title: '调研目标与子主题', rail: '目标·子题', group: '个人知识树', pick: n => n.type === 'question' || n.type === 'subtopic',
+   sum: '研究起点的问题结构：目标卡片为青色，子主题卡片为白色。',
+   add: '调研目标与子主题', src: '正式案例 inputs/scope.md', hang: '上级是中心「调研主题」；目标按服务的子主题方向排布'},
+  {id: 2, title: '文献八大分支', rail: '八大分支', group: '文献树', pick: n => n.type === 'branch',
+   sum: '文献树的分支；青色表示结构分支，后续节点沿同一扇区展开。',
+   add: '文献分支：身份、结构、替代、路线、条件、表征、边界、配方', src: '证据包 taxonomy.md §2', hang: '上级是中心；每个分支占一个扇区，后续节点沿同一扇区展开'},
+  {id: 3, title: '证据叶节点', rail: '证据叶', group: '文献树', pick: n => n.type === 'leaf',
+   sum: '每张叶节点卡是一类可核验主张，标签显示证据等级与支撑文献数。',
+   add: '证据叶节点：每个节点对应一类可核验主张', src: 'taxonomy.md 各叶的判定 / 支撑 key', hang: '上级是所属文献分支的圆点；同一扇区内按顺序排布'},
+  {id: 4, title: '支撑文献', rail: '支撑文献', group: '文献树', pick: n => n.type === 'paper',
+   sum: '支撑文献按证据等级着色，橙色代表目标相直接报道。',
+   add: '支撑文献：作者、年份、刊物和 DOI', src: 'references.bib + papers.jsonl', hang: '上级是它支撑的第一个证据叶节点；颜色表示证据等级'},
+  {id: 5, title: '元素与化合物', rail: '实体', group: '实体层', pick: n => n.type === 'element' || (n.type === 'compound'),
+   sum: '元素与化合物按证据等级着色，紫色虚线表示尚未合成的推断。',
+   add: '元素、化合物与相：由化学式和条件表整理', src: '条件总表产物字段 + 人工别名表（build_graph.py 内 CURATED_*）', hang: '上级是定义它的证据叶节点或文献分支'},
+  {id: 6, title: '合成路线与条件', rail: '路线·条件', group: '实体层', pick: n => n.type === 'route' || n.type === 'record',
+   sum: '路线为青色实线，条件记录按 A、B、C 区边框区分。',
+   add: '合成路线与条件记录：路线、温度和时间', src: '论文 §3 合成条件总表，逐单元格转成卡片', hang: '路线归属文献树的路线分支；条件记录归属对应路线'},
+  {id: 7, title: '结论 · 方向 · 证据缺口', rail: '结论·方向', group: '结论树', pick: n => (n.type === 'claim' && n.stage === 4 && byId.get(n.section).file.includes('07_')) || n.type === 'direction' || n.type === 'gap',
+   sum: '橙色为综述结论，紫色虚线为待验证方向，灰色虚线为证据缺口。',
+   add: '综述结论、实验方向与证据缺口', src: 'claim_evidence.jsonl §7、ideas/experiment_directions.md、taxonomy §5', hang: '结论与方向归属配方分支；缺口归属失败边界分支'},
+  {id: 8, title: '长出的新树', rail: '新树', group: '新树', pick: n => (n.type === 'recipe' && n.top) || n.type === 'workflow' || n.type === 'case',
+   sum: '紫色为未验证的前驱体预测，深青为仿真工作流，白卡为同根案例。',
+   add: '前驱体预测、自动化工作流与同根案例', src: 'precursor_predictions.md、站点 showcase、补充案例 ledger', hang: '预测归属目标化合物；工作流归属路线分支；案例归属身份分支'},
 ];
 // which kind of card each node is inside its level (for the 构成 chips), in display order
-const PART_ORDER = ['预期目标', '子主题', '分支', 'D0', 'D1', 'N1', 'P1', 'X', '未标等级', 'AI 假设', '元素', '路线', '空白路线', 'A 区', 'B 区', 'C 区', '综述结论', 'AI 方向', '证据缺口', 'RECIPE 预测', '工作流', '案例'];
+const PART_ORDER = ['调研目标', '子主题', '文献分支', 'D0', 'D1', 'N1', 'P1', 'X', '未标等级', 'AI 推断', '元素', '路线', '空白路线', 'A 区', 'B 区', 'C 区', '综述结论', '实验方向', '证据缺口', '前驱体预测', '仿真工作流', '同根案例'];
 function partOf(n){ switch (n.type){
-  case 'question': return '预期目标'; case 'subtopic': return '子主题'; case 'branch': return '分支';
+  case 'question': return '调研目标'; case 'subtopic': return '子主题'; case 'branch': return '文献分支';
   case 'leaf': { const l = n.levels.find(l => LVL[l]); return l || '未标等级'; }
-  case 'paper': case 'compound': return n.level === 'H' ? 'AI 假设' : n.level;
+  case 'paper': case 'compound': return n.level === 'H' ? 'AI 推断' : n.level;
   case 'element': return '元素'; case 'route': return n.leaf ? '路线' : '空白路线'; case 'record': return n.zone[0] + ' 区';
-  case 'claim': return '综述结论'; case 'direction': return 'AI 方向'; case 'gap': return '证据缺口';
-  case 'recipe': return 'RECIPE 预测'; case 'workflow': return '工作流'; case 'case': return '案例'; } return n.type; }
+  case 'claim': return '综述结论'; case 'direction': return '实验方向'; case 'gap': return '证据缺口';
+  case 'recipe': return '前驱体预测'; case 'workflow': return '仿真工作流'; case 'case': return '同根案例'; } return n.type; }
 const levelOf = new Map(); LEVELS.forEach(L => nodes.filter(L.pick).forEach(n => levelOf.set(n.id, L.id)));
 levelOf.set('root', 0);
 const branchOf = s => byId.get('B_' + s);
@@ -179,17 +179,17 @@ function cardSpec(n){ // returns {title, sub, badge, fill, stroke, dash, tcol, s
   switch (n.type){
     case 'question': return {...base, title: n.label.slice(7), sub: short(n.text, 30), badge: 'Q' + n.id.slice(1), fill: '#fff', stroke: C.tele, sw: 2.2, tcol: C.tele, w: 330, h: 60, badgeFill: C.tele};
     case 'subtopic': return {...base, title: n.label.slice(3), sub: short(n.text, 30), badge: n.id, fill: '#fff', stroke: C.line2, sw: 1.5, w: 300, h: 56, badgeFill: C.faint};
-    case 'branch': return {...base, title: n.label.slice(2), sub: `${nodes.filter(x => x.type === 'leaf' && x.sector === n.id.slice(2)).length} 个叶节点`, badge: n.id.slice(2), fill: C.tele, stroke: C.tele, sw: 0, tcol: '#fff', scol: '#E3F2F5', w: 250, h: 58, badgeFill: C.navy};
-    case 'leaf': { const lv = n.levels.filter(l => LVL[l]); return {...base, title: n.label.replace(/^[A-H]\d /, ''), sub: `${lv.length ? lv.join(' / ') + ' · ' : ''}${n.keys.length} 篇支撑`, badge: n.id.slice(2), fill: '#E1F1F5', stroke: C.tele2, sw: 1.5, w: 240, h: 54, badgeFill: C.tele}; }
-    case 'paper': { const solid = n.level === 'D0'; return {...base, title: n.label, sub: short(n.title, 26), badge: n.level, fill: solid ? C.heat : TINT[n.level], stroke: solid ? C.heat : LVL[n.level], sw: solid ? 0 : 1.6, tcol: solid ? '#fff' : C.text, scol: solid ? '#FDE4D4' : C.muted, w: 222, h: 54, badgeFill: solid ? C.text : LVL[n.level]}; }
+    case 'branch': return {...base, title: n.label.slice(2), sub: `${nodes.filter(x => x.type === 'leaf' && x.sector === n.id.slice(2)).length} 个证据叶节点`, badge: n.id.slice(2), fill: C.tele, stroke: C.tele, sw: 0, tcol: '#fff', scol: '#E3F2F5', w: 250, h: 58, badgeFill: C.navy};
+    case 'leaf': { const lv = n.levels.filter(l => LVL[l]); return {...base, title: n.label.replace(/^[A-H]\d /, ''), sub: `${lv.length ? '证据等级 ' + lv.join(' / ') + ' · ' : ''}${n.keys.length} 篇支撑`, badge: n.id.slice(2), fill: '#E1F1F5', stroke: C.tele2, sw: 1.5, w: 240, h: 54, badgeFill: C.tele}; }
+    case 'paper': { const solid = n.level === 'D0'; return {...base, title: n.label, sub: short(`${n.year} · ${n.venue}`, 26), badge: n.level, fill: solid ? C.heat : TINT[n.level], stroke: solid ? C.heat : LVL[n.level], sw: solid ? 0 : 1.6, tcol: solid ? '#fff' : C.text, scol: solid ? '#FDE4D4' : C.muted, w: 222, h: 54, badgeFill: solid ? C.text : LVL[n.level]}; }
     case 'element': return {...base, title: n.sym, sub: n.label.slice(3), badge: null, fill: '#fff', stroke: n.core ? C.text : C.line2, sw: n.core ? 2 : 1.4, w: 92, h: 54, big: true};
     case 'compound': return {...base, title: plain(n.label), sub: short(n.note, 22), badge: n.level, fill: TINT[n.level], stroke: LVL[n.level], sw: 1.6, dash: n.level === 'H' ? '5 3' : null, tcol: n.level === 'H' ? C.purple : C.text, w: 236, h: 54, badgeFill: LVL[n.level]};
     case 'route': return {...base, title: n.label.split(' · ')[0], sub: n.leaf ? `${nodes.filter(x => x.type === 'record' && parentOf(x) === n).length} 条记录` : '证据空白', badge: n.leaf || '—', fill: n.leaf ? C.tele : '#fff', stroke: C.tele, sw: n.leaf ? 0 : 1.5, dash: n.leaf ? null : '5 3', tcol: n.leaf ? '#fff' : C.tele, scol: n.leaf ? '#E3F2F5' : C.muted, w: 200, h: 54, badgeFill: C.navy};
     case 'record': { const z = n.zone[0]; const col = z === 'A' ? C.heat : z === 'B' ? C.gold : C.tele; return {...base, title: `${n.label} · ${short(n.product, 16)}`, sub: short(stripHtml(n.temp_time), 24), badge: z + ' 区', fill: '#fff', stroke: col, sw: 1.8, tcol: C.text, w: 236, h: 54, badgeFill: col}; }
     case 'claim': { const tx = plain(n.text); const m = tx.search(/[，；：。]/); const cut = (m > 4 && m <= 22) ? m : 18; return {...base, title: tx.slice(0, cut), sub: short(tx.slice(cut).replace(/^[，；：。]/, ''), 26), badge: '结论', fill: C.heat, stroke: C.heat, sw: 0, tcol: '#fff', scol: '#FDE4D4', w: 300, h: 60, badgeFill: C.text}; }
-    case 'direction': return {...base, title: n.label.replace(/^方向 \d · /, ''), sub: 'AI 拟定 · 实验假设，待验证', badge: 'AI', fill: '#fff', stroke: C.purple, sw: 2, dash: '6 3', tcol: C.purple, w: 270, h: 58, badgeFill: C.purple};
-    case 'gap': return {...base, title: n.label, sub: '证据未闭合', badge: '缺口', fill: '#F4F6F8', stroke: C.faint, sw: 1.8, dash: '5 3', tcol: C.muted, w: 236, h: 54, badgeFill: C.faint};
-    case 'recipe': return {...base, title: plain(n.label), sub: `${plain(byId.get(n.target).label)} · p=${n.p.toFixed(3)}`, badge: 'RECIPE', fill: C.purple, stroke: C.purple, sw: 0, tcol: '#fff', scol: '#ECE6F9', w: 290, h: 58, badgeFill: C.text};
+    case 'direction': return {...base, title: n.label.replace(/^方向 \d · /, ''), sub: '实验方向 · 待验证', badge: '方向', fill: '#fff', stroke: C.purple, sw: 2, dash: '6 3', tcol: C.purple, w: 270, h: 58, badgeFill: C.purple};
+    case 'gap': return {...base, title: n.label, sub: '证据缺口 · 未闭合', badge: '缺口', fill: '#F4F6F8', stroke: C.faint, sw: 1.8, dash: '5 3', tcol: C.muted, w: 236, h: 54, badgeFill: C.faint};
+    case 'recipe': return {...base, title: plain(n.label), sub: `${plain(byId.get(n.target).label)} · 未验证`, badge: '预测', fill: C.purple, stroke: C.purple, sw: 0, tcol: '#fff', scol: '#ECE6F9', w: 290, h: 58, badgeFill: C.text};
     case 'workflow': return {...base, title: n.label, sub: short(n.text, 24), badge: '仿真', fill: C.navy, stroke: C.navy, sw: 0, tcol: '#fff', scol: '#DCEEF3', w: 260, h: 56, badgeFill: C.text};
     case 'case': return {...base, title: n.label, sub: `${n.entries ?? '—'} 条引用`, badge: '案例', fill: '#fff', stroke: C.text, sw: 1.6, dash: '5 3', w: 240, h: 54, badgeFill: C.text};
   }
@@ -216,7 +216,7 @@ function rayToRail(a, inset, F = FRAME){ // where the ray at angle a from the ce
 }
 const TL = FRAME.w - 2 * PAD - 2 * FRAME.r, SL = FRAME.h - 2 * PAD - 2 * FRAME.r, PER = 2 * (TL + SL);
 const TREE_MAX = 250;
-const PILL_NAMES = {A: 'A · 身份与原始报道', B: 'B · 结构与近邻', C: 'C · 组成替代', D: 'D · 合成路线', E: 'E · 条件变量', F: 'F · 相纯度与表征', G: 'G · 失败与边界', H: 'H · 配方篮子'};
+const PILL_NAMES = {A: 'A · 身份', B: 'B · 结构', C: 'C · 替代', D: 'D · 路线', E: 'E · 条件', F: 'F · 表征', G: 'G · 失败边界', H: 'H · 配方'};
 const treeRFor = (lanes, ch) => Math.min(TREE_MAX, (FRAME.h - 2 * (PAD + lanes * (ch + LANE_GAP))) / 2 - 44); // keep the collapsed tree + sector pills clear of the card lanes
 // perimeter coordinate (clockwise from the top-left corner) of a point on the rail
 function perim(x, y, seg, F = FRAME){ const TL = F.w - 2 * PAD - 2 * F.r, SL = F.h - 2 * PAD - 2 * F.r; const x0 = F.x + PAD + F.r, y0 = F.y + PAD + F.r; if (seg === 'T') return clamp(x - x0, 0, TL); if (seg === 'R') return TL + clamp(y - y0, 0, SL); if (seg === 'B') return TL + SL + clamp(x0 + TL - x, 0, TL); return 2 * TL + SL + clamp(y0 + SL - y, 0, SL); }
@@ -304,7 +304,7 @@ gTop.append('text').attr('class', 'h-stat').attr('x', 40).attr('y', 84).text(`${
 const RAIL = {x0: 470, x1: 1800, y: 58, r: 14};
 const STEPS = [{id: 0, rail: '调研主题', group: '中心'}, ...LEVELS.map(L => ({id: L.id, rail: L.rail, group: L.group, count: nodes.filter(n => levelOf.get(n.id) === L.id).length}))];
 const stepX = i => RAIL.x0 + (RAIL.x1 - RAIL.x0) * i / (STEPS.length - 1);
-const labelEnd = d => stepX(d.id) + RAIL.r + 7 + tw(d.rail, 14) + (d.count != null ? 5 + tw(String(d.count), 12) : 0);
+const labelEnd = d => stepX(d.id) + RAIL.r + 7 + tw(d.rail, 15) + (d.count != null ? 5 + tw(String(d.count), 13) : 0);
 const PARENTS = [null]; for (let k = 1; k <= LEVELS.length; k++){ const h = {}; nodes.filter(n => levelOf.get(n.id) === k).forEach(n => { const p = parentOf(n); const pl = p ? (levelOf.get(p.id) ?? 0) : 0; h[pl] = (h[pl] || 0) + 1; }); PARENTS.push(h); }
 const PARTS = [null]; for (let k = 1; k <= LEVELS.length; k++){ const m = new Map(); nodes.filter(n => levelOf.get(n.id) === k).forEach(n => { const key = partOf(n); if (!m.has(key)) m.set(key, {label: key, count: 0, spec: cardSpec(n)}); m.get(key).count++; }); PARTS.push([...m.values()].sort((a, b) => PART_ORDER.indexOf(a.label) - PART_ORDER.indexOf(b.label))); }
 defs.append('marker').attr('id', 'arr').attr('viewBox', '0 0 10 10').attr('refX', 9).attr('refY', 5).attr('markerWidth', 7).attr('markerHeight', 7).attr('orient', 'auto').append('path').attr('d', 'M0,0 L10,5 L0,10 z').attr('fill', C.heat);
@@ -322,21 +322,26 @@ railSteps.append('circle').attr('class', 'sc');
 railSteps.filter(d => d.id === 0).append('image').attr('href', ICONS && ICONS.researcher ? ICONS.researcher.src : null).attr('x', -12).attr('y', -13).attr('width', 24).attr('height', 24).attr('clip-path', 'url(#cp0)');
 railSteps.filter(d => d.id > 0).append('text').attr('class', 'sn').attr('y', 4.5).text(d => d.id);
 railSteps.append('text').attr('class', 'sl').attr('x', RAIL.r + 7).attr('y', 5).text(d => d.rail);
-railSteps.append('text').attr('class', 'sk').attr('x', d => RAIL.r + 7 + tw(d.rail, 14) + 5).attr('y', 5).text(d => d.count != null ? d.count : '');
+railSteps.append('text').attr('class', 'sk').attr('x', d => RAIL.r + 7 + tw(d.rail, 15) + 5).attr('y', 5).text(d => d.count != null ? d.count : '');
 // ---- explanation block for the current level
 const bot = gTop.append('g').attr('transform', `translate(${BOT.x},${BOT.y})`);
 bot.append('rect').attr('width', BOT.w).attr('height', BOT.h).attr('rx', 10).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5);
-const botTitle = bot.append('text').attr('class', 'cap-title').attr('x', 22).attr('y', 34);
-const botCount = bot.append('text').attr('class', 'cap-count').attr('y', 34);
-const botSum = bot.append('text').attr('class', 'cap-sum').attr('y', 34);
-function field(x, y, label){ const g = bot.append('g').attr('transform', `translate(${x},${y})`); g.append('text').attr('class', 'f-label').text(label); return g.append('text').attr('class', 'f-val').attr('x', 44); }
-const FX2 = 740, FW1 = FX2 - 22 - 44 - 20, FW2 = 1376 - FX2 - 44;
-const fAdd = field(22, 68, '新增'), fSrc = field(FX2, 68, '来源'), fHang = field(22, 100, '挂法');
-const partsG = bot.append('g').attr('transform', `translate(${FX2},100)`); partsG.append('text').attr('class', 'f-label').text('构成'); const chipsG = partsG.append('g').attr('transform', 'translate(44,0)');
+const botTitle = bot.append('text').attr('class', 'cap-title').attr('x', 22).attr('y', 27);
+const botCount = bot.append('text').attr('class', 'cap-count').attr('y', 27);
+const botSum = bot.append('text').attr('class', 'cap-sum').attr('x', 22).attr('y', 52);
+function field(x, y, label){ const g = bot.append('g').attr('transform', `translate(${x},${y})`); g.append('text').attr('class', 'f-label').text(label); return g.append('text').attr('class', 'f-val').attr('x', 64); }
+const FX2 = 740, FW1 = FX2 - 22 - 64 - 20, FW2 = 1376 - FX2 - 64;
+const fLevel = field(22, 84, '本级'), fSrc = field(FX2, 84, '数据来源'), fParent = field(22, 116, '上级');
+const partsG = bot.append('g').attr('transform', `translate(${FX2},116)`); partsG.append('text').attr('class', 'f-label').text('构成'); const chipsG = partsG.append('g').attr('transform', 'translate(64,0)');
 bot.append('line').attr('x1', 1392).attr('x2', 1392).attr('y1', 16).attr('y2', BOT.h - 16).attr('stroke', C.line);
-{ const lg = bot.append('g').attr('transform', 'translate(1412, 26)'); lg.append('text').attr('class', 'f-label').text('卡片颜色');
-  const items = [[C.heat, 'D0 目标相直接报道', 'solid'], [C.heat2, 'D1 同一谱系', 'tint'], [C.tele, 'N1 晶体化学近邻', 'tint'], [C.faint, 'P1 工艺近邻 · X 边界', 'line'], [C.purple, 'AI 推断（紫虚线）', 'dash'], [C.faint, '证据缺口（灰虚线）', 'dash'], [C.navy, '分支 · 仿真工作流', 'solid'], [C.gold, 'B 区条件记录', 'line']];
-  items.forEach(([col, t, kind], i) => { const x = (i % 2) * 232, y = 20 + Math.floor(i / 2) * 22; lg.append('rect').attr('x', x).attr('y', y - 11).attr('width', 20).attr('height', 13).attr('rx', 3).attr('fill', kind === 'solid' ? col : kind === 'tint' ? d3.color(col).copy({opacity: .2}) : '#fff').attr('stroke', col).attr('stroke-width', 1.6).attr('stroke-dasharray', kind === 'dash' ? '3 2' : null); lg.append('text').attr('class', 'lg').attr('x', x + 26).attr('y', y).text(t); }); }
+{ const lg = bot.append('g').attr('transform', 'translate(1412, 16)');
+  lg.append('text').attr('class', 'f-label').text('证据等级');
+  lg.append('text').attr('class', 'f-label').attr('x', 232).text('类型');
+  const evidence = [[C.heat, 'D0 直接报道', 'solid'], [C.heat2, 'D1 同一谱系', 'tint'], [C.tele, 'N1 晶体化学近邻', 'tint'], [C.faint, 'P1 工艺近邻', 'line'], [C.x, 'X 边界', 'line']];
+  const kinds = [[C.purple, 'AI 推断 · 紫虚线', 'dash'], [C.faint, '证据缺口 · 灰虚线', 'dash'], [C.navy, '仿真工作流 · 深青', 'solid'], [C.gold, 'B 区记录 · 金边', 'line']];
+  const drawLegend = (items, ox) => items.forEach(([col, t, kind], i) => { const y = 20 + i * 18; lg.append('rect').attr('x', ox).attr('y', y - 10).attr('width', 16).attr('height', 11).attr('rx', 3).attr('fill', kind === 'solid' ? col : kind === 'tint' ? d3.color(col).copy({opacity: .2}) : '#fff').attr('stroke', col).attr('stroke-width', 1.5).attr('stroke-dasharray', kind === 'dash' ? '3 2' : null); lg.append('text').attr('class', 'lg').attr('x', ox + 22).attr('y', y).text(t); });
+  drawLegend(evidence, 0); drawLegend(kinds, 232);
+}
 // root icon
 const rootG = gTree.append('g').attr('id', 'rootg');
 { const ic = ICONS && ICONS.researcher; rootG.append('circle').attr('r', 50).attr('fill', '#fff').attr('stroke', C.line).attr('stroke-width', 1.5); if (ic){ const w = 84, h = w * ic.h / ic.w; rootG.append('image').attr('href', ic.src).attr('x', -w / 2).attr('y', -h / 2 - 4).attr('width', w).attr('height', h); } rootG.append('text').attr('class', 'root-label').attr('y', 74).text('调研主题'); }
@@ -386,8 +391,8 @@ function render(t){
   centre.on('click', (ev, d) => select(d.n, false));
   centre.attr('transform', d => `translate(${d.x},${d.y})`);
   centre.select('rect.bg').attr('x', d => -d.w / 2).attr('y', d => -d.h / 2).attr('width', d => d.w).attr('height', d => d.h).attr('rx', d => d.rx).attr('fill', d => d.kind === 'morph' && d.textOp < 0.5 ? d.col : d.spec.fill).attr('stroke', d => d.kind === 'morph' && d.textOp < 0.5 ? '#fff' : d.spec.stroke).attr('stroke-width', d => d.kind === 'morph' && d.textOp < 0.5 ? 1.5 : d.spec.sw).attr('stroke-dasharray', d => d.spec.dash);
-  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 17) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? tw(d.spec.badge, 11) + 22 : 0), d.spec.big ? 24 : 17));
-  centre.select('text.card-sub').attr('x', d => -d.w / 2 + 12 + (d.spec.big ? 36 : 0)).attr('y', d => d.spec.big ? 6 : 16).style('font-size', '12.5px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp).text(d => fit(d.spec.sub || '', d.w - 24 - (d.spec.big ? 36 : 0), 12.5));
+  centre.select('text.card-title').attr('x', d => -d.w / 2 + 12).attr('y', d => d.spec.big ? 6 : -4).style('font-size', d => (d.spec.big ? 24 : 16) + 'px').style('fill', d => d.spec.tcol).attr('opacity', d => d.textOp).text(d => fit(d.spec.title, d.w - 24 - (d.spec.badge ? tw(d.spec.badge, 11) + 22 : 0), d.spec.big ? 24 : 16));
+  centre.select('text.card-sub').attr('x', d => -d.w / 2 + 12 + (d.spec.big ? 36 : 0)).attr('y', d => d.spec.big ? 6 : 15).style('font-size', '12px').style('fill', d => d.spec.scol).attr('opacity', d => d.textOp).text(d => fit(d.spec.sub || '', d.w - 24 - (d.spec.big ? 36 : 0), 12));
   centre.select('rect.bd').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 16 : 0)).attr('y', d => -d.h / 2 + 5).attr('width', d => d.spec.badge ? tw(d.spec.badge, 11) + 12 : 0).attr('height', 16).attr('rx', 4).attr('fill', d => d.spec.badgeFill || C.faint).attr('opacity', d => d.spec.badge ? d.textOp : 0);
   centre.select('text.badge').attr('x', d => d.w / 2 - (d.spec.badge ? tw(d.spec.badge, 11) + 10 : 0)).attr('y', d => -d.h / 2 + 17).style('fill', '#fff').attr('opacity', d => d.spec.badge ? d.textOp : 0).text(d => d.spec.badge || '');
   // sector pills
@@ -411,15 +416,15 @@ function render(t){
   const y0 = RAIL.y - (RAIL.r + 3);
   const arcs = plist.map((a, i) => { const sx = stepX(k) - 3 + 7 * i, ex = stepX(a.j), ly = y0 - 11 - 14 * i, ey = RAIL.y - (a.j > 0 ? 14 : RAIL.r + 5) - 3;
     const d = `M${sx},${y0} L${sx},${ly + 6} Q${sx},${ly} ${sx - 6},${ly} L${ex + 6},${ly} Q${ex},${ly} ${ex},${ly + 6} L${ex},${ey}`;
-    const label = `挂 ${a.c}`; return {id: `${k}-${a.j}`, d, x: (sx - 6 + ex + 6) / 2, y: ly, c: a.c, label, bw: tw(label, 11) + 12}; });
+    const parentLabel = a.j === 0 ? '调研主题' : LEVELS[a.j - 1].rail; const label = `${a.c} 条 → ${parentLabel}`; return {id: `${k}-${a.j}`, d, x: (sx - 6 + ex + 6) / 2, y: ly, c: a.c, label, bw: tw(label, 11) + 12}; });
   railArcs.selectAll('path').data(arcs, d => d.id).join('path').attr('d', d => d.d).attr('fill', 'none').attr('stroke', C.heat).attr('stroke-width', 1.6).attr('stroke-linejoin', 'round').attr('marker-end', 'url(#arr)');
   railArcs.selectAll('rect').data(arcs, d => d.id).join('rect').attr('x', d => d.x - d.bw / 2).attr('y', d => d.y - 7).attr('width', d => d.bw).attr('height', 14).attr('rx', 4).attr('fill', '#fff').attr('stroke', C.heat).attr('stroke-width', 1);
   railArcs.selectAll('text').data(arcs, d => d.id).join('text').attr('class', 'arc-n').attr('x', d => d.x).attr('y', d => d.y).text(d => d.label);
   railArcs.attr('opacity', p > 0.15 ? 1 : 0);
   // explanation block
   const L = LEVELS[k - 1]; const count = nodes.filter(n => levelOf.get(n.id) === k).length; const cn = ['一', '二', '三', '四', '五', '六', '七', '八'][k - 1];
-  const ttl = `第${cn}级 · ${L.title}`; botTitle.text(ttl); const cx1 = 22 + tw(ttl, 22) + 12; botCount.attr('x', cx1).text(`${count} 张卡片`); const cx2 = cx1 + tw(`${count} 张卡片`, 14) + 18; botSum.attr('x', cx2).text(fit(L.sum, 1376 - cx2, 16));
-  fAdd.text(fit(L.add, FW1, 15)); fSrc.text(fit(L.src, FW2, 15)); fHang.text(fit(L.hang, FW1, 15));
+  const ttl = `第${cn}级 · ${L.title}`; botTitle.text(ttl); const cx1 = 22 + tw(ttl, 22) + 12; botCount.attr('x', cx1).text(`${count} 张卡片`); botSum.text(fit(L.sum, 1368, 16));
+  fLevel.text(fit(L.add, FW1, 16)); fSrc.text(fit(L.src, FW2, 16)); fParent.text(fit(L.hang, FW1, 16));
   const chips = chipsG.selectAll('g.chip').data(PARTS[k], d => d.label).join(enter => { const g = enter.append('g').attr('class', 'chip'); g.append('rect'); g.append('text').attr('class', 'chip'); g.append('text').attr('class', 'chip-n'); return g; });
   { let x = 0; chips.each(function(d){ const g = d3.select(this); g.attr('transform', `translate(${x},0)`); g.select('rect').attr('x', 0).attr('y', -11).attr('width', 22).attr('height', 14).attr('rx', 3).attr('fill', d.spec.fill).attr('stroke', d.spec.stroke).attr('stroke-width', Math.max(1.2, Math.min(2, d.spec.sw || 1.2))).attr('stroke-dasharray', d.spec.dash ? '3 2' : null); g.select('text.chip').attr('x', 28).attr('y', 0).text(d.label); const lw = tw(d.label, 13); g.select('text.chip-n').attr('x', 28 + lw + 5).attr('y', 0).text(d.count); x += 28 + lw + 5 + tw(String(d.count), 13) + 14; }); }
   bot.attr('opacity', t < INTRO ? ease(t / INTRO) : 1);
@@ -433,15 +438,15 @@ function render(t){
 // ---------- detail panel (same content as the tree-ring page), selection, navigation
 const esc = s => String(s ?? '').replace(/&(?!(amp|lt|gt|quot|#\d+);)/g, '&amp;');
 const KIND_CN = {contains:'含有元素', tree:'子节点', support:'支撑', cites:'引用', mentions:'提及', reports:'报道', produces:'产物', records:'条件记录', route:'路线', uses:'使用', characterised:'表征', traces:'条件溯源', answers:'回答', grows:'长出', about:'关联', candidate:'候选前驱体组合', predicts_for:'预测目标', defines:'定义', maps:'对应分支', serves:'服务目标', evidence:'证据', duplicate:'重复记录'};
-const TYPE_CN = {element:'元素', root:'调研主题', question:'预期目标', subtopic:'子主题', branch:'分支', leaf:'叶节点', paper:'文献', compound:'化合物 / 相', route:'合成路线', record:'条件记录', agent:'前驱体 / 助熔剂 / 坩埚', char:'表征终点', failure:'失败模式', section:'章节', claim:'主张', tree:'新树', gap:'证据缺口', recipe:'前驱体组合', direction:'实验方向', workflow:'工作流（仿真）', case:'调研树'};
-const LVL_CN = {D0:'目标相直接证据', D1:'同一身份谱系', N1:'晶体化学近邻', P1:'工艺近邻', X:'边界 / 排除', H:'AI 推断 · 假设目标'};
+const TYPE_CN = {element:'元素', root:'调研主题', question:'调研目标', subtopic:'子主题', branch:'文献分支', leaf:'证据叶节点', paper:'支撑文献', compound:'化合物 / 相', route:'合成路线', record:'条件记录', agent:'前驱体 / 助熔剂 / 坩埚', char:'表征终点', failure:'失败模式', section:'章节', claim:'综述主张', tree:'新树', gap:'证据缺口', recipe:'前驱体预测', direction:'实验方向', workflow:'仿真工作流', case:'同根案例'};
+const LVL_CN = {D0:'直接报道', D1:'同一谱系', N1:'晶体化学近邻', P1:'工艺近邻', X:'边界', H:'AI 推断'};
 const chip = id => { const m = byId.get(id); if (!m) return ''; const lv = m.level || ''; return `<span class="chip ${lv ? 'lvl-' + lv : ''}" data-id="${id}" title="${esc(plain(m.title || m.text || m.label))}">${m.type === 'paper' ? esc(m.label) + ' · ' + esc(plain(m.title)).slice(0, 60) : esc(plain(m.label))}</span>`; };
 function neighborsBy(n){ const out = {}; adj.get(n.id).forEach(e => { const o = e.s === n.id ? e.t : e.s; const m = byId.get(o); if (!m) return; const k = `${e.k}${e.s === n.id ? '→' : '←'}${m.type}`; const arr = (out[k] = out[k] || []); if (!arr.includes(o)) arr.push(o); }); return out; }
 function neighborHtml(n, skip = []){ const nb = neighborsBy(n); let h = ''; Object.entries(nb).forEach(([k, ids]) => { const [kind, rest] = k.split(/[→←]/); const dir = k.includes('→') ? '→' : '←'; if (skip.includes(kind)) return; h += `<h3>${KIND_CN[kind] || kind} ${dir} ${TYPE_CN[rest] || rest}（${ids.length}）</h3><div>${ids.slice(0, 60).map(chip).join('')}${ids.length > 60 ? `<span class="chip">… 共 ${ids.length}</span>` : ''}</div>`; }); return h; }
 const kv = rows => `<div class="kv">${rows.map(([k, v]) => `<div>${k}</div><div class="${/^<code>NA<\/code>$/.test(v) ? 'na' : ''}">${v || '<span class=na>—</span>'}</div>`).join('')}</div>`;
 const lvlTag = l => `<span class="tag" style="background:${LVL[l] || '#7C8A99'};color:${l === 'X' || l === 'N1' ? '#fff' : '#0B1017'}">${l}</span>`;
 function showDetails(n){ const p = d3.select('#panel'); const lv = levelOf.get(n.id);
-  let h = `<button class="close" title="关闭 (Esc)">×</button><div class="kicker">${TYPE_CN[n.type] || n.type} · ${lv ? `第 ${lv} 级` : (n.type === 'root' ? '中心' : '不在逐层展开里')}${n.sector ? ` · 扇区 ${n.sector}` : ''}</div>`;
+  let h = `<button class="close" title="关闭 (Esc)">×</button><div class="kicker">${TYPE_CN[n.type] || n.type} · ${lv ? `第 ${lv} 级` : (n.type === 'root' ? '中心' : '未列入逐层展开')}${n.sector ? ` · 扇区 ${n.sector}` : ''}</div>`;
   switch (n.type){
     case 'root': h += `<h2>${esc(n.title)}</h2><p>${esc(n.text)}</p><p>点任一张卡片或圆点看它的内容、出处与邻接；点顶部台阶跳到某一级。</p>`; break;
     case 'question': h += `<h2>${esc(n.label)}</h2><p><span class="tag ${n.status === '已回答' ? 'ok' : 'heat'}">${n.status}</span></p><div class="claimtext">${esc(n.text)}</div><p>${esc(n.answer)}</p>`; break;
@@ -466,8 +471,8 @@ function showDetails(n){ const p = d3.select('#panel'); const lv = levelOf.get(n
     default: h += `<h2>${esc(plain(n.label))}</h2>`;
   }
   if (n.type !== 'root'){ const par = parentOf(n); const kids = nodes.filter(x => levelOf.has(x.id) && x.type !== 'root' && parentOf(x) === n);
-    if (par) h += `<h3>挂在</h3><div>${chip(par.id)}</div>`;
-    if (kids.length) h += `<h3>挂在它上面的（${kids.length}）</h3><div>${kids.slice(0, 40).map(k => chip(k.id)).join('')}${kids.length > 40 ? `<span class="chip">… 共 ${kids.length}</span>` : ''}</div>`; }
+    if (par) h += `<h3>上级</h3><div>${chip(par.id)}</div>`;
+    if (kids.length) h += `<h3>下级（${kids.length}）</h3><div>${kids.slice(0, 40).map(k => chip(k.id)).join('')}${kids.length > 40 ? `<span class="chip">… 共 ${kids.length}</span>` : ''}</div>`; }
   h += neighborHtml(n, n.type === 'claim' ? ['cites'] : ['tree']);
   h += `<div class="src">出处：${esc(n.src)}</div><div class="more"><a href="knowledge_graph.html?select=${encodeURIComponent(n.id)}" target="_blank" rel="noopener">在年轮图里查看这个节点 →</a></div>`;
   p.html(h).classed('open', true);
