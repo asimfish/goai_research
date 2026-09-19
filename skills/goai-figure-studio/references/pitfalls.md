@@ -124,3 +124,16 @@ Every entry cost at least one round trip. Read before debugging something that l
 - A label pill placed ON a curve hides most of it (layout B's return arc): put the pill beside the line.
 - **Re-derive every number from the ledger before it goes on a slide.** Round 2 said "round-1 review 7 issues → round 2: 0";
   `ledger.json` (`round_opened`) says 5 + 2, and three of the nine gates are WARN, not PASS. Draw what the ledger says.
+
+## Overview page (runs, ring meter, image-route outage, 2026-09-19)
+
+- **`runs` are the right tool for "highlighted spans" in a quotation.** img2ppt text elements accept `runs` (per-span `color` /
+  `bold` / `italic` / `font_size`) instead of `text`; the paragraph stays one editable box. Do not emulate highlights with
+  rectangles behind the text — they drift as soon as anyone edits a word. `precheck.py` now measures the concatenation.
+- A wrapped `runs` paragraph can fail the build by 0.5 px when a line ends exactly at the box edge (the trailing space is
+  measured): change the box width by a few px or the size by 0.5 px so the lines re-flow.
+- **A single value is a hero number, not a pie.** The deck's "~20 %" became a big number plus a ring meter rendered locally
+  (`scripts/ring_meter.py`, provenance declared); pptx has no native arc shape in this schema.
+- **All three image routes were down at once** (delegated Codex agent: `Selected model is at capacity`; workstation Codex Pro:
+  weekly window 100 % until 09-26; 5090 login revoked). Keep a `FALLBACK` slot map to the existing asset library so a page can
+  ship the same day; swap the dedicated assets in later by file name.

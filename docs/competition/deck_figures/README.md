@@ -5,6 +5,18 @@
 第二轮（`*_r2/`，ARIS 粉彩配色）因"与整套 PPT 的风格、化学流程、用词不统一"被取代；第一轮（`deck_loop_parallel/`、
 `deck_loop_converge/`、`studio/`）因"没有顶会的质感"被否，留作带完整路由表/闸门判据的备份页。
 
+## 整体方案页（第 6 页重做，2026-09-19）
+
+作者给了这一页的草稿（书 + 大脑、~20% 饼图、论文 → 笔记本 → 管式炉、"Could AI Dream of Science"、等距实验室、Experimental Guidance 引文四色高亮），
+要求用生图 skill 出素材并转成可编辑 PPT。目录 `deck_overview_r4/`；生成器 `figure_scenes/scenes_deck_overview.py`；素材提示词包 `deck_r4_assets.py`。
+
+- 页面全部是原生可编辑对象：左侧「文献数据库」面板（88,343,822 篇文献 · 80.5 TB 取自原第 6 页；~20% 用本地渲染的环形计量 `scripts/ring_meter.py` + 原生大数字，
+  不再用饼图——单个数值按数据可视化的规矩是 hero number）；中间三段链（文献中的合成描述 → 结构化的合成知识 → 合成方案与实验装置）+ 双色斜体口号（run 分色）；
+  右侧「实验流程 Step 1–3」三条步骤直接从引文抽出（称量研磨 → 转移至刚玉坩埚 → 350 / 1000 / 1300 °C 分段热处理）；
+  下方引文是 PPT 第 9 页原文、**一个文本框**，四类信息（组成与掺杂 / 起始原料 / 操作 / 热处理程序）用 img2ppt 的 `runs` 着色加粗，不用高亮矩形，改字不会错位；右侧四类信息图例。
+- 素材表 D 的两张图（12 格小插画 + 等距实验室）提示词包已写好并交给 Codex agent，但当天它的模型「at capacity」、本机 Codex 周配额用尽（09-26 重置）、5090 登录已吊销——三条生图通道都不通，页面先用素材库里最接近的格子顶上（`scenes_deck_overview.py` 的 `FALLBACK` 表：bookbrain→litdb、papers→products、notebook→condtable、furnacebench→furnace、isolab→robotlab、mortar/balance→precursors、crucible→fluxgrowth、thermal→furnace）。素材表 D 一到，同名文件优先，重跑一遍构建即可换上。
+- 新页插在原第 6 页之后（`deck_merge.py --after 6`，标题与原第 6 页相同）。
+
 ## 第三轮（现行）
 
 | 页 | 讲什么 | 目录 |

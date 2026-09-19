@@ -1,0 +1,1234 @@
+{
+ "version": 1,
+ "fonts": {
+  "latin": [
+   "DejaVu Sans",
+   "Liberation Sans"
+  ],
+  "cjk": [
+   "Noto Sans CJK SC",
+   "Noto Sans CJK JP",
+   "Droid Sans Fallback"
+  ]
+ },
+ "slides": [
+  {
+   "id": "page_001",
+   "width": 1536,
+   "height": 864,
+   "background": "#FFFFFF",
+   "reviewed": true,
+   "elements": [
+    {
+     "id": "p1",
+     "kind": "shape",
+     "z": 1,
+     "box": [
+      40,
+      118,
+      352,
+      446
+     ],
+     "shape": "round_rect",
+     "fill": "#E6ECF5",
+     "stroke": "#A9BEDD",
+     "stroke_width": 2,
+     "radius": 20,
+     "allow_overlap_with": [
+      "f_c0_0",
+      "f_c1_0"
+     ],
+     "overlap_reason": "phase panel is a backdrop for connectors and their labels"
+    },
+    {
+     "id": "p1_b",
+     "kind": "shape",
+     "z": 2,
+     "box": [
+      48,
+      126,
+      336,
+      40
+     ],
+     "shape": "round_rect",
+     "fill": "#154A97",
+     "radius": 14,
+     "container": "p1"
+    },
+    {
+     "id": "p1_l",
+     "kind": "text",
+     "z": 3,
+     "box": [
+      64,
+      126,
+      304,
+      40
+     ],
+     "text": "文献数据库",
+     "font_size": 25,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#FFFFFF",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1_b"
+    },
+    {
+     "id": "lit_art",
+     "kind": "image",
+     "z": 4,
+     "box": [
+      76,
+      176,
+      280,
+      148
+     ],
+     "path": "art/litdb.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"litdb\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "p1"
+    },
+    {
+     "id": "lit_n",
+     "kind": "text",
+     "z": 5,
+     "box": [
+      52,
+      330,
+      328,
+      52
+     ],
+     "text": "88,343,822",
+     "font_size": 40,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#156082",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1"
+    },
+    {
+     "id": "lit_u",
+     "kind": "text",
+     "z": 6,
+     "box": [
+      52,
+      382,
+      328,
+      28
+     ],
+     "text": "篇文献 · 全文 80.5 TB",
+     "font_size": 18,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1"
+    },
+    {
+     "id": "donut",
+     "kind": "image",
+     "z": 7,
+     "box": [
+      60,
+      424,
+      120,
+      120
+     ],
+     "path": "art/donut20.png",
+     "image_fit": "contain",
+     "provenance": "ring meter rendered locally (PIL) from the value 20%, teal on a light track",
+     "contains_text": false,
+     "container": "p1",
+     "allow_overlap_with": [
+      "donut_t"
+     ],
+     "overlap_reason": "the value sits in the hole of its own ring meter"
+    },
+    {
+     "id": "donut_t",
+     "kind": "text",
+     "z": 8,
+     "box": [
+      72,
+      460,
+      96,
+      48
+     ],
+     "text": "~20%",
+     "font_size": 26,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#156082",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1",
+     "allow_overlap_with": [
+      "donut"
+     ],
+     "overlap_reason": "the value sits in the hole of its own ring meter"
+    },
+    {
+     "id": "donut_c",
+     "kind": "text",
+     "z": 9,
+     "box": [
+      192,
+      446,
+      188,
+      30
+     ],
+     "text": "化学学科论文占比",
+     "font_size": 19,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1"
+    },
+    {
+     "id": "donut_s",
+     "kind": "text",
+     "z": 10,
+     "box": [
+      192,
+      478,
+      188,
+      24
+     ],
+     "text": "合成条件散落在正文段落中",
+     "font_size": 14,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#5F6B7A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1"
+    },
+    {
+     "id": "donut_s2",
+     "kind": "text",
+     "z": 11,
+     "box": [
+      192,
+      502,
+      188,
+      24
+     ],
+     "text": "尚未结构化",
+     "font_size": 14,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#5F6B7A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p1"
+    },
+    {
+     "id": "c_pap",
+     "kind": "image",
+     "z": 12,
+     "box": [
+      416,
+      132,
+      196,
+      150
+     ],
+     "path": "art/products.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"products\" (Codex image_gen)",
+     "contains_text": false
+    },
+    {
+     "id": "c_pap_c",
+     "kind": "text",
+     "z": 13,
+     "box": [
+      396,
+      288,
+      236,
+      30
+     ],
+     "text": "文献中的合成描述",
+     "font_size": 18,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict"
+    },
+    {
+     "id": "f_c0_0",
+     "kind": "line",
+     "z": 14,
+     "points": [
+      [
+       620,
+       207
+      ],
+      [
+       662,
+       207
+      ]
+     ],
+     "stroke": "#0E2841",
+     "stroke_width": 5,
+     "arrow": true,
+     "arrow_head": {
+      "length": 20,
+      "width": 17
+     },
+     "allow_overlap_with": [
+      "f_c1_0",
+      "p1",
+      "p3"
+     ],
+     "overlap_reason": "connectors cross phase panels and join each other"
+    },
+    {
+     "id": "c_nb",
+     "kind": "image",
+     "z": 15,
+     "box": [
+      670,
+      132,
+      196,
+      150
+     ],
+     "path": "art/condtable.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"condtable\" (Codex image_gen)",
+     "contains_text": false
+    },
+    {
+     "id": "c_nb_c",
+     "kind": "text",
+     "z": 16,
+     "box": [
+      650,
+      288,
+      236,
+      30
+     ],
+     "text": "结构化的合成知识",
+     "font_size": 18,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict"
+    },
+    {
+     "id": "f_c1_0",
+     "kind": "line",
+     "z": 17,
+     "points": [
+      [
+       874,
+       207
+      ],
+      [
+       916,
+       207
+      ]
+     ],
+     "stroke": "#0E2841",
+     "stroke_width": 5,
+     "arrow": true,
+     "arrow_head": {
+      "length": 20,
+      "width": 17
+     },
+     "allow_overlap_with": [
+      "f_c0_0",
+      "p1",
+      "p3"
+     ],
+     "overlap_reason": "connectors cross phase panels and join each other"
+    },
+    {
+     "id": "c_fur",
+     "kind": "image",
+     "z": 18,
+     "box": [
+      924,
+      132,
+      196,
+      150
+     ],
+     "path": "art/furnace.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"furnace\" (Codex image_gen)",
+     "contains_text": false
+    },
+    {
+     "id": "c_fur_c",
+     "kind": "text",
+     "z": 19,
+     "box": [
+      904,
+      288,
+      236,
+      30
+     ],
+     "text": "合成方案与实验装置",
+     "font_size": 18,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict"
+    },
+    {
+     "id": "slogan1",
+     "kind": "text",
+     "z": 20,
+     "box": [
+      416,
+      344,
+      704,
+      90
+     ],
+     "runs": [
+      {
+       "text": "Could ",
+       "color": "#154A97"
+      },
+      {
+       "text": "AI",
+       "color": "#E97132"
+      }
+     ],
+     "font_size": 66,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "line_height": 1.2,
+     "italic": true
+    },
+    {
+     "id": "slogan2",
+     "kind": "text",
+     "z": 21,
+     "box": [
+      416,
+      436,
+      704,
+      86
+     ],
+     "runs": [
+      {
+       "text": "Dream of ",
+       "color": "#154A97"
+      },
+      {
+       "text": "Science",
+       "color": "#0E2841"
+      }
+     ],
+     "font_size": 66,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "line_height": 1.2,
+     "italic": true
+    },
+    {
+     "id": "slogan_s",
+     "kind": "text",
+     "z": 22,
+     "box": [
+      416,
+      522,
+      704,
+      34
+     ],
+     "text": "大模型读懂文献里的合成经验，生成可执行的研究方案，交给自动化实验室执行与仿真",
+     "font_size": 17,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#5F6B7A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "min_font_size": 14
+    },
+    {
+     "id": "p3",
+     "kind": "shape",
+     "z": 23,
+     "box": [
+      1144,
+      118,
+      352,
+      446
+     ],
+     "shape": "round_rect",
+     "fill": "#E4F5EE",
+     "stroke": "#9AD5BC",
+     "stroke_width": 2,
+     "radius": 20,
+     "allow_overlap_with": [
+      "f_c0_0",
+      "f_c1_0"
+     ],
+     "overlap_reason": "phase panel is a backdrop for connectors and their labels"
+    },
+    {
+     "id": "p3_b",
+     "kind": "shape",
+     "z": 24,
+     "box": [
+      1152,
+      126,
+      336,
+      40
+     ],
+     "shape": "round_rect",
+     "fill": "#12946B",
+     "radius": 14,
+     "container": "p3"
+    },
+    {
+     "id": "p3_l",
+     "kind": "text",
+     "z": 25,
+     "box": [
+      1168,
+      126,
+      304,
+      40
+     ],
+     "text": "实验流程 Step 1–3",
+     "font_size": 25,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#FFFFFF",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p3_b"
+    },
+    {
+     "id": "lab_art",
+     "kind": "image",
+     "z": 26,
+     "box": [
+      1156,
+      172,
+      328,
+      186
+     ],
+     "path": "art/robotlab.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"robotlab\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "p3"
+    },
+    {
+     "id": "lab_c",
+     "kind": "text",
+     "z": 27,
+     "box": [
+      1156,
+      362,
+      328,
+      30
+     ],
+     "text": "繁琐细致的实验步骤",
+     "font_size": 20,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "p3"
+    },
+    {
+     "id": "s1",
+     "kind": "shape",
+     "z": 28,
+     "box": [
+      1156,
+      402,
+      328,
+      44
+     ],
+     "shape": "round_rect",
+     "fill": "#FFFFFF",
+     "stroke": "#C9D3E0",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "p3"
+    },
+    {
+     "id": "s1_art",
+     "kind": "image",
+     "z": 29,
+     "box": [
+      1162,
+      406,
+      36,
+      36
+     ],
+     "path": "art/precursors.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"precursors\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "s1"
+    },
+    {
+     "id": "s1_t",
+     "kind": "text",
+     "z": 30,
+     "box": [
+      1204,
+      402,
+      272,
+      44
+     ],
+     "text": "① 称量后在玛瑙研钵中充分研磨混合",
+     "font_size": 14,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "s1",
+     "min_font_size": 11
+    },
+    {
+     "id": "s2",
+     "kind": "shape",
+     "z": 31,
+     "box": [
+      1156,
+      454,
+      328,
+      44
+     ],
+     "shape": "round_rect",
+     "fill": "#FFFFFF",
+     "stroke": "#C9D3E0",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "p3"
+    },
+    {
+     "id": "s2_art",
+     "kind": "image",
+     "z": 32,
+     "box": [
+      1162,
+      458,
+      36,
+      36
+     ],
+     "path": "art/fluxgrowth.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"fluxgrowth\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "s2"
+    },
+    {
+     "id": "s2_t",
+     "kind": "text",
+     "z": 33,
+     "box": [
+      1204,
+      454,
+      272,
+      44
+     ],
+     "text": "② 转移至刚玉坩埚",
+     "font_size": 14,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "s2",
+     "min_font_size": 11
+    },
+    {
+     "id": "s3",
+     "kind": "shape",
+     "z": 34,
+     "box": [
+      1156,
+      506,
+      328,
+      44
+     ],
+     "shape": "round_rect",
+     "fill": "#FFFFFF",
+     "stroke": "#C9D3E0",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "p3"
+    },
+    {
+     "id": "s3_art",
+     "kind": "image",
+     "z": 35,
+     "box": [
+      1162,
+      510,
+      36,
+      36
+     ],
+     "path": "art/furnace.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"furnace\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "s3"
+    },
+    {
+     "id": "s3_t",
+     "kind": "text",
+     "z": 36,
+     "box": [
+      1204,
+      506,
+      272,
+      44
+     ],
+     "text": "③ 分段热处理：350 / 1000 / 1300 °C",
+     "font_size": 14,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "s3",
+     "min_font_size": 11
+    },
+    {
+     "id": "q",
+     "kind": "shape",
+     "z": 37,
+     "box": [
+      40,
+      584,
+      1456,
+      270
+     ],
+     "shape": "round_rect",
+     "fill": "#FFFFFF",
+     "stroke": "#0E2841",
+     "stroke_width": 2,
+     "radius": 16
+    },
+    {
+     "id": "q_bar",
+     "kind": "shape",
+     "z": 38,
+     "box": [
+      40,
+      584,
+      10,
+      270
+     ],
+     "shape": "rect",
+     "fill": "#154A97",
+     "container": "q"
+    },
+    {
+     "id": "q_art",
+     "kind": "image",
+     "z": 39,
+     "box": [
+      64,
+      608,
+      150,
+      190
+     ],
+     "path": "art/products.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"products\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "q"
+    },
+    {
+     "id": "q_pill",
+     "kind": "shape",
+     "z": 40,
+     "box": [
+      236,
+      600,
+      344,
+      34
+     ],
+     "shape": "round_rect",
+     "fill": "#154A97",
+     "radius": 17,
+     "container": "q"
+    },
+    {
+     "id": "q_pill_t",
+     "kind": "text",
+     "z": 41,
+     "box": [
+      236,
+      600,
+      344,
+      34
+     ],
+     "text": "Experimental Guidance · 文献原文",
+     "font_size": 17,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#FFFFFF",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "q_pill"
+    },
+    {
+     "id": "q_open",
+     "kind": "text",
+     "z": 42,
+     "box": [
+      228,
+      636,
+      36,
+      60
+     ],
+     "text": "“",
+     "font_size": 44,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#154A97",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "q"
+    },
+    {
+     "id": "quote",
+     "kind": "text",
+     "z": 43,
+     "box": [
+      262,
+      642,
+      880,
+      166
+     ],
+     "runs": [
+      {
+       "text": "The phosphors of "
+      },
+      {
+       "text": "Sr4.75-5x-5yCa5xBa5y(PO4)2(SiO4):Eu0.252+ (0.01 ≤ x ≤ 1; 0.01 ≤ y ≤ 0.5)",
+       "color": "#F59E0B",
+       "bold": true
+      },
+      {
+       "text": " were prepared: I) Sr4.75-5xCa5x((PO4)(SiO4)0.5)2:Eu0.252+ (0.01 ≤ x ≤ 0.95); and II) Sr4.75-5yBa5y(PO4) 2(SiO4):Eu0.252+ (y = 0.01, 0.05, 0.1, 0.2, 0.5). The starting materials were "
+      },
+      {
+       "text": "CaCO3 (99.99%), SrCO3 (99.99%), BaCO3 (99.99%), NH4H2PO4 (99.99%), SiO2 (99.99%), Eu2O3 (99.99%)",
+       "color": "#E97132",
+       "bold": true
+      },
+      {
+       "text": ". The stoichiometric chemicals "
+      },
+      {
+       "text": "were weighed and thoroughly mixed in an agate mortar, then transferred to a corundum crucible",
+       "color": "#12946B",
+       "bold": true
+      },
+      {
+       "text": " and "
+      },
+      {
+       "text": "heated at 350 (in air), 1000 (in air) and 1300 °C (in reducing (h2) atmosphere)",
+       "color": "#154A97",
+       "bold": true
+      },
+      {
+       "text": " for 15 h, respectively. In the experiments no signals from Eu3+ were detected on the emission spectra, indicating the Eu3+ ions were successfully reduced to Eu2+ ions in the present experimental conditions."
+      }
+     ],
+     "font_size": 14.5,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": false,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "top",
+     "wrap": true,
+     "fit": "shrink",
+     "min_font_size": 11.5,
+     "line_height": 1.45,
+     "container": "q",
+     "allow_overlap_with": [
+      "q_close"
+     ],
+     "overlap_reason": "closing quotation mark in the paragraph's last-line white space"
+    },
+    {
+     "id": "q_close",
+     "kind": "text",
+     "z": 44,
+     "box": [
+      1102,
+      750,
+      36,
+      60
+     ],
+     "text": "”",
+     "font_size": 44,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#154A97",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "q",
+     "allow_overlap_with": [
+      "quote"
+     ],
+     "overlap_reason": "closing quotation mark in the paragraph's last-line white space"
+    },
+    {
+     "id": "q_cap",
+     "kind": "text",
+     "z": 45,
+     "box": [
+      236,
+      816,
+      900,
+      32
+     ],
+     "text": "简短且复杂的高密度知识信息 → 由大模型抽取为结构化合成方案（组成 · 原料 · 操作 · 条件）",
+     "font_size": 18,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#0E2841",
+     "align": "center",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "q",
+     "min_font_size": 15
+    },
+    {
+     "id": "lg_t",
+     "kind": "text",
+     "z": 46,
+     "box": [
+      1160,
+      602,
+      320,
+      30
+     ],
+     "text": "一段话里的四类信息",
+     "font_size": 17,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#1B2B3A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "strict",
+     "container": "q"
+    },
+    {
+     "id": "lg0",
+     "kind": "shape",
+     "z": 47,
+     "box": [
+      1160,
+      640,
+      320,
+      42
+     ],
+     "shape": "round_rect",
+     "fill": "#FEF3D6",
+     "stroke": "#F8CE6A",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "q"
+    },
+    {
+     "id": "lg0_art",
+     "kind": "image",
+     "z": 48,
+     "box": [
+      1166,
+      643,
+      36,
+      36
+     ],
+     "path": "art/structure.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"structure\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "lg0"
+    },
+    {
+     "id": "lg0_t",
+     "kind": "text",
+     "z": 49,
+     "box": [
+      1208,
+      640,
+      266,
+      42
+     ],
+     "text": "组成与掺杂",
+     "font_size": 15,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#A8690A",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "lg0",
+     "min_font_size": 13
+    },
+    {
+     "id": "lg1",
+     "kind": "shape",
+     "z": 50,
+     "box": [
+      1160,
+      690,
+      320,
+      42
+     ],
+     "shape": "round_rect",
+     "fill": "#FDEEE3",
+     "stroke": "#F3BE9B",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "q"
+    },
+    {
+     "id": "lg1_art",
+     "kind": "image",
+     "z": 51,
+     "box": [
+      1166,
+      693,
+      36,
+      36
+     ],
+     "path": "art/precursors.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"precursors\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "lg1"
+    },
+    {
+     "id": "lg1_t",
+     "kind": "text",
+     "z": 52,
+     "box": [
+      1208,
+      690,
+      266,
+      42
+     ],
+     "text": "起始原料",
+     "font_size": 15,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#B9531B",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "lg1",
+     "min_font_size": 13
+    },
+    {
+     "id": "lg2",
+     "kind": "shape",
+     "z": 53,
+     "box": [
+      1160,
+      740,
+      320,
+      42
+     ],
+     "shape": "round_rect",
+     "fill": "#E4F5EE",
+     "stroke": "#9AD5BC",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "q"
+    },
+    {
+     "id": "lg2_art",
+     "kind": "image",
+     "z": 54,
+     "box": [
+      1166,
+      743,
+      36,
+      36
+     ],
+     "path": "art/precursors.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"precursors\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "lg2"
+    },
+    {
+     "id": "lg2_t",
+     "kind": "text",
+     "z": 55,
+     "box": [
+      1208,
+      740,
+      266,
+      42
+     ],
+     "text": "操作：称量 · 研磨 · 装料",
+     "font_size": 15,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#0B6B4F",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "lg2",
+     "min_font_size": 13
+    },
+    {
+     "id": "lg3",
+     "kind": "shape",
+     "z": 56,
+     "box": [
+      1160,
+      790,
+      320,
+      42
+     ],
+     "shape": "round_rect",
+     "fill": "#E6ECF5",
+     "stroke": "#A9BEDD",
+     "stroke_width": 1.5,
+     "radius": 10,
+     "container": "q"
+    },
+    {
+     "id": "lg3_art",
+     "kind": "image",
+     "z": 57,
+     "box": [
+      1166,
+      793,
+      36,
+      36
+     ],
+     "path": "art/furnace.png",
+     "image_fit": "contain",
+     "provenance": "cropped from the image-model asset sheet, cell \"furnace\" (Codex image_gen)",
+     "contains_text": false,
+     "container": "lg3"
+    },
+    {
+     "id": "lg3_t",
+     "kind": "text",
+     "z": 58,
+     "box": [
+      1208,
+      790,
+      266,
+      42
+     ],
+     "text": "热处理程序与气氛",
+     "font_size": 15,
+     "font_family": "DejaVu Sans",
+     "cjk_font_family": "Noto Sans CJK SC",
+     "bold": true,
+     "color": "#154A97",
+     "align": "left",
+     "valign": "middle",
+     "wrap": false,
+     "fit": "shrink",
+     "container": "lg3",
+     "min_font_size": 13
+    }
+   ],
+   "notes": "整体方案页：文献数据库 → 结构化知识 → 合成方案 → OpenLab 实验步骤；Experimental Guidance 引文四类信息着色（round 4, deck theme） [deck style; slide 16:9; pt_per_px=0.625]"
+  }
+ ]
+}

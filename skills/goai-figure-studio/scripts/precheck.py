@@ -50,6 +50,9 @@ def main(paths):
         doc = json.load(open(path))
         sl = doc['slides'][0] if 'slides' in doc else doc
         els = sl['elements']
+        for e in els:
+            if e.get('kind') == 'text' and 'runs' in e and 'text' not in e:
+                e['text'] = ''.join(r.get('text', '') for r in e['runs'])   # runs: measure the concatenation
         by = {e['id']: e for e in els}
         out = []
         # printed size: a scene that declares its print width must not set any text below MIN_PRINT_PT on paper

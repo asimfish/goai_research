@@ -1,0 +1,68 @@
+{
+ "stage": "ASSETS",
+ "project_id": "deck_assets_d",
+ "grid": [
+  4,
+  3
+ ],
+ "cells": [
+  "bookbrain",
+  "papers",
+  "notebook",
+  "furnacebench",
+  "balance",
+  "mortar",
+  "crucible",
+  "thermal",
+  "gasline",
+  "phosphor",
+  "stepboard",
+  "simlab"
+ ],
+ "candidates": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png",
+    "../deck_assets_c/outputs/ASSETS/generated/SHEET.png"
+   ],
+   "skip": false,
+   "size": "1536x1024"
+  },
+  {
+   "candidate_id": "ISOLAB",
+   "prompt_path": "outputs/ASSETS/prompts/ISOLAB.md",
+   "target_image_path": "outputs/ASSETS/generated/ISOLAB.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png"
+   ],
+   "skip": false,
+   "size": "1536x1024"
+  }
+ ],
+ "rows": [
+  {
+   "candidate_id": "SHEET",
+   "prompt_path": "outputs/ASSETS/prompts/SHEET.md",
+   "target_image_path": "outputs/ASSETS/generated/SHEET.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png",
+    "../deck_assets_c/outputs/ASSETS/generated/SHEET.png"
+   ],
+   "skip": false,
+   "size": "1536x1024"
+  },
+  {
+   "candidate_id": "ISOLAB",
+   "prompt_path": "outputs/ASSETS/prompts/ISOLAB.md",
+   "target_image_path": "outputs/ASSETS/generated/ISOLAB.png",
+   "reference_image_paths": [
+    "../deck_assets_a/outputs/ASSETS/generated/SHEET.png"
+   ],
+   "skip": false,
+   "size": "1536x1024"
+  }
+ ]
+}
