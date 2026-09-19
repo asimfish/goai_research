@@ -1,0 +1,1110 @@
+{
+  "status": "fail",
+  "visual_review": "required",
+  "automated_checks": {
+    "preflight": {
+      "status": "pass",
+      "findings": [
+        {
+          "slide": "page_001",
+          "code": "text_shrunk",
+          "severity": "info",
+          "elements": [
+            "quote"
+          ],
+          "message": "Text was reduced within its configured limit",
+          "layout": {
+            "scale": 0.945851,
+            "effective_font_size_px": 13.7148,
+            "width_px": 879.379,
+            "height_px": 139.206,
+            "available_width_px": 880,
+            "available_height_px": 166,
+            "safety_reserve_px": 0.5,
+            "required_width_px": 879.879,
+            "required_height_px": 139.706,
+            "fits": true,
+            "lines": [
+              "The phosphors of Sr4.75-5x-5yCa5xBa5y(PO4)2(SiO4):Eu0.252+ (0.01 ≤ x ≤ 1; 0.01 ≤ y ≤ 0.5) were prepared: I) ",
+              "Sr4.75-5xCa5x((PO4)(SiO4)0.5)2:Eu0.252+ (0.01 ≤ x ≤ 0.95); and II) Sr4.75-5yBa5y(PO4) 2(SiO4):Eu0.252+ (y = 0.01, 0.05, ",
+              "0.1, 0.2, 0.5). The starting materials were CaCO3 (99.99%), SrCO3 (99.99%), BaCO3 (99.99%), NH4H2PO4 (99.99%), ",
+              "SiO2 (99.99%), Eu2O3 (99.99%). The stoichiometric chemicals were weighed and thoroughly mixed in an agate ",
+              "mortar, then transferred to a corundum crucible and heated at 350 (in air), 1000 (in air) and 1300 °C (in reducing ",
+              "(h2) atmosphere) for 15 h, respectively. In the experiments no signals from Eu3+ were detected on the emission spectra, ",
+              "indicating the Eu3+ ions were successfully reduced to Eu2+ ions in the present experimental conditions."
+            ]
+          }
+        },
+        {
+          "slide": "page_001",
+          "code": "text_frame_overlap_only",
+          "severity": "info",
+          "elements": [
+            "q_open",
+            "quote"
+          ],
+          "message": "Text-frame overlap is confined to blank space; measured visible ink remains separate"
+        },
+        {
+          "slide": "page_001",
+          "code": "text_frame_overlap_only",
+          "severity": "info",
+          "elements": [
+            "quote",
+            "q_close"
+          ],
+          "message": "Text-frame overlap is confined to blank space; measured visible ink remains separate"
+        }
+      ],
+      "slides": [
+        {
+          "id": "page_001",
+          "counts": {
+            "shape": 14,
+            "text": 28,
+            "image": 14,
+            "line": 2
+          },
+          "intentional_overlaps": [
+            {
+              "elements": [
+                "donut",
+                "donut_t"
+              ],
+              "reason": "the value sits in the hole of its own ring meter",
+              "area_px2": 4608.0
+            }
+          ],
+          "text_layouts": {
+            "p1_l": {
+              "scale": 1,
+              "effective_font_size_px": 25,
+              "width_px": 125.0,
+              "height_px": 36.25,
+              "available_width_px": 304,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 125.5,
+              "required_height_px": 36.75,
+              "fits": true,
+              "lines": [
+                "文献数据库"
+              ]
+            },
+            "lit_n": {
+              "scale": 1,
+              "effective_font_size_px": 40,
+              "width_px": 253.047,
+              "height_px": 46.75,
+              "available_width_px": 328,
+              "available_height_px": 52,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 253.547,
+              "required_height_px": 47.25,
+              "fits": true,
+              "lines": [
+                "88,343,822"
+              ]
+            },
+            "lit_u": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 192.371,
+              "height_px": 26.25,
+              "available_width_px": 328,
+              "available_height_px": 28,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 192.871,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "篇文献 · 全文 80.5 TB"
+              ]
+            },
+            "donut_t": {
+              "scale": 1,
+              "effective_font_size_px": 26,
+              "width_px": 84.016,
+              "height_px": 30.5,
+              "available_width_px": 96,
+              "available_height_px": 48,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 84.516,
+              "required_height_px": 31.0,
+              "fits": true,
+              "lines": [
+                "~20%"
+              ]
+            },
+            "donut_c": {
+              "scale": 1,
+              "effective_font_size_px": 19,
+              "width_px": 152.0,
+              "height_px": 27.75,
+              "available_width_px": 188,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 152.5,
+              "required_height_px": 28.25,
+              "fits": true,
+              "lines": [
+                "化学学科论文占比"
+              ]
+            },
+            "donut_s": {
+              "scale": 1,
+              "effective_font_size_px": 14,
+              "width_px": 168.0,
+              "height_px": 20.5,
+              "available_width_px": 188,
+              "available_height_px": 24,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 168.5,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "合成条件散落在正文段落中"
+              ]
+            },
+            "donut_s2": {
+              "scale": 1,
+              "effective_font_size_px": 14,
+              "width_px": 70.0,
+              "height_px": 20.5,
+              "available_width_px": 188,
+              "available_height_px": 24,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 70.5,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "尚未结构化"
+              ]
+            },
+            "c_pap_c": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 144.0,
+              "height_px": 26.25,
+              "available_width_px": 236,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 144.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "文献中的合成描述"
+              ]
+            },
+            "c_nb_c": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 144.0,
+              "height_px": 26.25,
+              "available_width_px": 236,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 144.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "结构化的合成知识"
+              ]
+            },
+            "c_fur_c": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 162.0,
+              "height_px": 26.25,
+              "available_width_px": 236,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 162.5,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "合成方案与实验装置"
+              ]
+            },
+            "slogan1": {
+              "scale": 1,
+              "effective_font_size_px": 66,
+              "width_px": 313.867,
+              "height_px": 79.2,
+              "available_width_px": 704,
+              "available_height_px": 90,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 314.367,
+              "required_height_px": 79.7,
+              "fits": true,
+              "lines": [
+                "Could AI"
+              ]
+            },
+            "slogan2": {
+              "scale": 1,
+              "effective_font_size_px": 66,
+              "width_px": 650.5,
+              "height_px": 79.2,
+              "available_width_px": 704,
+              "available_height_px": 86,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 651.0,
+              "required_height_px": 79.7,
+              "fits": true,
+              "lines": [
+                "Dream of Science"
+              ]
+            },
+            "slogan_s": {
+              "scale": 1,
+              "effective_font_size_px": 17,
+              "width_px": 646.0,
+              "height_px": 24.75,
+              "available_width_px": 704,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 646.5,
+              "required_height_px": 25.25,
+              "fits": true,
+              "lines": [
+                "大模型读懂文献里的合成经验，生成可执行的研究方案，交给自动化实验室执行与仿真"
+              ]
+            },
+            "p3_l": {
+              "scale": 1,
+              "effective_font_size_px": 25,
+              "width_px": 229.5,
+              "height_px": 36.25,
+              "available_width_px": 304,
+              "available_height_px": 40,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 230.0,
+              "required_height_px": 36.75,
+              "fits": true,
+              "lines": [
+                "实验流程 Step 1–3"
+              ]
+            },
+            "lab_c": {
+              "scale": 1,
+              "effective_font_size_px": 20,
+              "width_px": 180.0,
+              "height_px": 29.25,
+              "available_width_px": 328,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 180.5,
+              "required_height_px": 29.75,
+              "fits": true,
+              "lines": [
+                "繁琐细致的实验步骤"
+              ]
+            },
+            "s1_t": {
+              "scale": 1,
+              "effective_font_size_px": 14,
+              "width_px": 227.0,
+              "height_px": 20.5,
+              "available_width_px": 272,
+              "available_height_px": 44,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 227.5,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "① 称量后在玛瑙研钵中充分研磨混合"
+              ]
+            },
+            "s2_t": {
+              "scale": 1,
+              "effective_font_size_px": 14,
+              "width_px": 115.0,
+              "height_px": 20.5,
+              "available_width_px": 272,
+              "available_height_px": 44,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 115.5,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "② 转移至刚玉坩埚"
+              ]
+            },
+            "s3_t": {
+              "scale": 1,
+              "effective_font_size_px": 14,
+              "width_px": 247.5,
+              "height_px": 20.5,
+              "available_width_px": 272,
+              "available_height_px": 44,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 248.0,
+              "required_height_px": 21.0,
+              "fits": true,
+              "lines": [
+                "③ 分段热处理：350 / 1000 / 1300 °C"
+              ]
+            },
+            "q_pill_t": {
+              "scale": 1,
+              "effective_font_size_px": 17,
+              "width_px": 308.75,
+              "height_px": 24.75,
+              "available_width_px": 344,
+              "available_height_px": 34,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 309.25,
+              "required_height_px": 25.25,
+              "fits": true,
+              "lines": [
+                "Experimental Guidance · 文献原文"
+              ]
+            },
+            "q_open": {
+              "scale": 1,
+              "effective_font_size_px": 44,
+              "width_px": 29.0,
+              "height_px": 51.5,
+              "available_width_px": 36,
+              "available_height_px": 60,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 29.5,
+              "required_height_px": 52.0,
+              "fits": true,
+              "lines": [
+                "“"
+              ]
+            },
+            "quote": {
+              "scale": 0.945851,
+              "effective_font_size_px": 13.7148,
+              "width_px": 879.379,
+              "height_px": 139.206,
+              "available_width_px": 880,
+              "available_height_px": 166,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 879.879,
+              "required_height_px": 139.706,
+              "fits": true,
+              "lines": [
+                "The phosphors of Sr4.75-5x-5yCa5xBa5y(PO4)2(SiO4):Eu0.252+ (0.01 ≤ x ≤ 1; 0.01 ≤ y ≤ 0.5) were prepared: I) ",
+                "Sr4.75-5xCa5x((PO4)(SiO4)0.5)2:Eu0.252+ (0.01 ≤ x ≤ 0.95); and II) Sr4.75-5yBa5y(PO4) 2(SiO4):Eu0.252+ (y = 0.01, 0.05, ",
+                "0.1, 0.2, 0.5). The starting materials were CaCO3 (99.99%), SrCO3 (99.99%), BaCO3 (99.99%), NH4H2PO4 (99.99%), ",
+                "SiO2 (99.99%), Eu2O3 (99.99%). The stoichiometric chemicals were weighed and thoroughly mixed in an agate ",
+                "mortar, then transferred to a corundum crucible and heated at 350 (in air), 1000 (in air) and 1300 °C (in reducing ",
+                "(h2) atmosphere) for 15 h, respectively. In the experiments no signals from Eu3+ were detected on the emission spectra, ",
+                "indicating the Eu3+ ions were successfully reduced to Eu2+ ions in the present experimental conditions."
+              ]
+            },
+            "q_close": {
+              "scale": 1,
+              "effective_font_size_px": 44,
+              "width_px": 29.0,
+              "height_px": 51.5,
+              "available_width_px": 36,
+              "available_height_px": 60,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 29.5,
+              "required_height_px": 52.0,
+              "fits": true,
+              "lines": [
+                "”"
+              ]
+            },
+            "q_cap": {
+              "scale": 1,
+              "effective_font_size_px": 18,
+              "width_px": 751.727,
+              "height_px": 26.25,
+              "available_width_px": 900,
+              "available_height_px": 32,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 752.227,
+              "required_height_px": 26.75,
+              "fits": true,
+              "lines": [
+                "简短且复杂的高密度知识信息 → 由大模型抽取为结构化合成方案（组成 · 原料 · 操作 · 条件）"
+              ]
+            },
+            "lg_t": {
+              "scale": 1,
+              "effective_font_size_px": 17,
+              "width_px": 153.0,
+              "height_px": 24.75,
+              "available_width_px": 320,
+              "available_height_px": 30,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 153.5,
+              "required_height_px": 25.25,
+              "fits": true,
+              "lines": [
+                "一段话里的四类信息"
+              ]
+            },
+            "lg0_t": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 75.0,
+              "height_px": 22.0,
+              "available_width_px": 266,
+              "available_height_px": 42,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 75.5,
+              "required_height_px": 22.5,
+              "fits": true,
+              "lines": [
+                "组成与掺杂"
+              ]
+            },
+            "lg1_t": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 60.0,
+              "height_px": 22.0,
+              "available_width_px": 266,
+              "available_height_px": 42,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 60.5,
+              "required_height_px": 22.5,
+              "fits": true,
+              "lines": [
+                "起始原料"
+              ]
+            },
+            "lg2_t": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 167.5,
+              "height_px": 22.0,
+              "available_width_px": 266,
+              "available_height_px": 42,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 168.0,
+              "required_height_px": 22.5,
+              "fits": true,
+              "lines": [
+                "操作：称量 · 研磨 · 装料"
+              ]
+            },
+            "lg3_t": {
+              "scale": 1,
+              "effective_font_size_px": 15,
+              "width_px": 120.0,
+              "height_px": 22.0,
+              "available_width_px": 266,
+              "available_height_px": 42,
+              "safety_reserve_px": 0.5,
+              "required_width_px": 120.5,
+              "required_height_px": 22.5,
+              "fits": true,
+              "lines": [
+                "热处理程序与气氛"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "native_objects": {
+      "status": "pass",
+      "findings": [],
+      "slide_count": 1
+    },
+    "rendered_text": {
+      "status": "fail",
+      "renderer": "LibreOffice/PDFium",
+      "findings": [
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "p1_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "lit_u",
+          "measured_ink_width_px": 190.871,
+          "rendered_ink_width_px": 204.24,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lit_u",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "donut_c",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "donut_s",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "donut_s2",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c_pap_c",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c_nb_c",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "c_fur_c",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "slogan_s",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "p3_l",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lab_c",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "s3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "q_pill_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "q_close",
+          "measured_ink_width_px": 20.5,
+          "rendered_ink_width_px": 24.666,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "q_cap",
+          "measured_ink_width_px": 739.477,
+          "rendered_ink_width_px": 767.662,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "q_cap",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lg_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lg0_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lg1_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "rendered_ink_width_drift",
+          "severity": "warning",
+          "slide": "page_001",
+          "element": "lg2_t",
+          "measured_ink_width_px": 166.789,
+          "rendered_ink_width_px": 180.604,
+          "message": "Visible text width differs from the measured font by over 3% and 2 px; inspect mixed-script spacing and compare the source"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lg2_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        },
+        {
+          "code": "renderer_font_substitution",
+          "slide": "page_001",
+          "element": "lg3_t",
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "message": "The renderer used a different font from the measured face; choose a supported family and rebuild"
+        }
+      ],
+      "text_boxes": [
+        {
+          "slide": "page_001",
+          "element": "p1_l",
+          "expected": "文献数据库",
+          "rendered": "文献数据库",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 123.5,
+          "rendered_ink_width_px": 123.107
+        },
+        {
+          "slide": "page_001",
+          "element": "lit_n",
+          "expected": "88,343,822",
+          "rendered": "88,343,822",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold"
+          ],
+          "measured_ink_width_px": 247.5,
+          "rendered_ink_width_px": 246.74
+        },
+        {
+          "slide": "page_001",
+          "element": "lit_u",
+          "expected": "篇文献 · 全文 80.5 TB",
+          "rendered": "篇文献 · 全文 80.5 TB",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 190.871,
+          "rendered_ink_width_px": 204.24
+        },
+        {
+          "slide": "page_001",
+          "element": "donut_t",
+          "expected": "~20%",
+          "rendered": "~20%",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold"
+          ],
+          "measured_ink_width_px": 80.5,
+          "rendered_ink_width_px": 80.188
+        },
+        {
+          "slide": "page_001",
+          "element": "donut_c",
+          "expected": "化学学科论文占比",
+          "rendered": "化学学科论文占比",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 150.75,
+          "rendered_ink_width_px": 150.258
+        },
+        {
+          "slide": "page_001",
+          "element": "donut_s",
+          "expected": "合成条件散落在正文段落中",
+          "rendered": "合成条件散落在正文段落中",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 166.25,
+          "rendered_ink_width_px": 165.997
+        },
+        {
+          "slide": "page_001",
+          "element": "donut_s2",
+          "expected": "尚未结构化",
+          "rendered": "尚未结构化",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 68.0,
+          "rendered_ink_width_px": 67.751
+        },
+        {
+          "slide": "page_001",
+          "element": "c_pap_c",
+          "expected": "文献中的合成描述",
+          "rendered": "文献中的合成描述 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 143.25,
+          "rendered_ink_width_px": 143.664
+        },
+        {
+          "slide": "page_001",
+          "element": "c_nb_c",
+          "expected": "结构化的合成知识",
+          "rendered": "结构化的合成知识 ",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 143.25,
+          "rendered_ink_width_px": 143.519
+        },
+        {
+          "slide": "page_001",
+          "element": "c_fur_c",
+          "expected": "合成方案与实验装置",
+          "rendered": "合成方案与实验装置",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 160.75,
+          "rendered_ink_width_px": 161.181
+        },
+        {
+          "slide": "page_001",
+          "element": "slogan1",
+          "expected": "Could AI",
+          "rendered": "Could AI",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-BoldOblique"
+          ],
+          "measured_ink_width_px": 305.617,
+          "rendered_ink_width_px": 305.318
+        },
+        {
+          "slide": "page_001",
+          "element": "slogan2",
+          "expected": "Dream of Science",
+          "rendered": "Dream of Science",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-BoldOblique"
+          ],
+          "measured_ink_width_px": 646.672,
+          "rendered_ink_width_px": 646.717
+        },
+        {
+          "slide": "page_001",
+          "element": "slogan_s",
+          "expected": "大模型读懂文献里的合成经验，生成可执行的研究方案，交给自动化实验室执行与仿真",
+          "rendered": "大模型读懂文献里的合成经验，生成可执行的研究方案，交给自动化实验室执行与仿真",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 644.75,
+          "rendered_ink_width_px": 640.7
+        },
+        {
+          "slide": "page_001",
+          "element": "p3_l",
+          "expected": "实验流程 Step 1–3",
+          "rendered": "实验流程 Step 1–3",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 226.0,
+          "rendered_ink_width_px": 231.136
+        },
+        {
+          "slide": "page_001",
+          "element": "lab_c",
+          "expected": "繁琐细致的实验步骤",
+          "rendered": "繁琐细致的实验步骤",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 179.0,
+          "rendered_ink_width_px": 178.414
+        },
+        {
+          "slide": "page_001",
+          "element": "s1_t",
+          "expected": "① 称量后在玛瑙研钵中充分研磨混合",
+          "rendered": "① 称量后在玛瑙研钵中充分研磨混合",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 225.75,
+          "rendered_ink_width_px": 228.804
+        },
+        {
+          "slide": "page_001",
+          "element": "s2_t",
+          "expected": "② 转移至刚玉坩埚",
+          "rendered": "② 转移至刚玉坩埚",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 113.0,
+          "rendered_ink_width_px": 116.218
+        },
+        {
+          "slide": "page_001",
+          "element": "s3_t",
+          "expected": "③ 分段热处理：350 / 1000 / 1300 °C",
+          "rendered": "③ 分段热处理： 350 / 1000 / 1300 °C",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "NotoSansCJKsc-Regular-VKana"
+          ],
+          "measured_ink_width_px": 246.0,
+          "rendered_ink_width_px": 251.245
+        },
+        {
+          "slide": "page_001",
+          "element": "q_pill_t",
+          "expected": "Experimental Guidance · 文献原文",
+          "rendered": "Experimental Guidance · 文献原文",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 306.957,
+          "rendered_ink_width_px": 309.291
+        },
+        {
+          "slide": "page_001",
+          "element": "q_open",
+          "expected": "“",
+          "rendered": "“\r\nT\r\nS\r\n0",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold"
+          ],
+          "measured_ink_width_px": 20.5,
+          "rendered_ink_width_px": 20.325
+        },
+        {
+          "slide": "page_001",
+          "element": "quote",
+          "expected": "The phosphors of Sr4.75-5x-5yCa5xBa5y(PO4)2(SiO4):Eu0.252+ (0.01 ≤ x ≤ 1; 0.01 ≤ y ≤ 0.5) were prepared: I) Sr4.75-5xCa5x((PO4)(SiO4)0.5)2:Eu0.252+ (0.01 ≤ x ≤ 0.95); and II) Sr4.75-5yBa5y(PO4) 2(SiO4):Eu0.252+ (y = 0.01, 0.05, 0.1, 0.2, 0.5). The starting materials were CaCO3 (99.99%), SrCO3 (99.99%), BaCO3 (99.99%), NH4H2PO4 (99.99%), SiO2 (99.99%), Eu2O3 (99.99%). The stoichiometric chemicals were weighed and thoroughly mixed in an agate mortar, then transferred to a corundum crucible and heated at 350 (in air), 1000 (in air) and 1300 °C (in reducing (h2) atmosphere) for 15 h, respectively. In the experiments no signals from Eu3+ were detected on the emission spectra, indicating the Eu3+ ions were successfully reduced to Eu2+ ions in the present experimental conditions.",
+          "rendered": "The phosphors of Sr4.75-5x-5yCa5xBa5y(PO4)2(SiO4):Eu0.252+ (0.01 ≤ x ≤ 1; 0.01 ≤ y ≤ 0.5) were prepared: I) \r\nSr4.75-5xCa5x((PO4)(SiO4)0.5)2:Eu0.252+ (0.01 ≤ x ≤ 0.95); and II) Sr4.75-5yBa5y(PO4) 2(SiO4):Eu0.252+ (y = 0.01, 0.05, \r\n0.1, 0.2, 0.5). The starting materials were CaCO3 (99.99%), SrCO3 (99.99%), BaCO3 (99.99%), NH4H2PO4 (99.99%), \r\nSiO2 (99.99%), Eu2O3 (99.99%). The stoichiometric chemicals were weighed and thoroughly mixed in an agate \r\nmortar, then transferred to a corundum crucible and heated at 350 (in air), 1000 (in air) and 1300 °C (in reducing \r\n(h2) atmosphere) for 15 h, respectively. In the experiments no signals from Eu3+ were detected on the emission spectra, \r\nindicating the Eu3+ ions were successfully reduced to Eu2+ ions in the present experimental conditions. ”",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "DejaVuSans-Bold"
+          ],
+          "measured_ink_width_px": 873.941,
+          "rendered_ink_width_px": 868.505
+        },
+        {
+          "slide": "page_001",
+          "element": "q_close",
+          "expected": "”",
+          "rendered": "a, \r\n”",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans",
+            "DejaVuSans-Bold"
+          ],
+          "measured_ink_width_px": 20.5,
+          "rendered_ink_width_px": 24.666
+        },
+        {
+          "slide": "page_001",
+          "element": "q_cap",
+          "expected": "简短且复杂的高密度知识信息 → 由大模型抽取为结构化合成方案（组成 · 原料 · 操作 · 条件）",
+          "rendered": "简短且复杂的高密度知识信息 → 由大模型抽取为结构化合成方案（组成 · 原料 · 操作 · 条件）",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 739.477,
+          "rendered_ink_width_px": 767.662
+        },
+        {
+          "slide": "page_001",
+          "element": "lg_t",
+          "expected": "一段话里的四类信息",
+          "rendered": "一段话里的四类信息",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 152.0,
+          "rendered_ink_width_px": 150.888
+        },
+        {
+          "slide": "page_001",
+          "element": "lg0_t",
+          "expected": "组成与掺杂",
+          "rendered": "组成与掺杂",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 74.0,
+          "rendered_ink_width_px": 73.827
+        },
+        {
+          "slide": "page_001",
+          "element": "lg1_t",
+          "expected": "起始原料",
+          "rendered": "起始原料",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 59.75,
+          "rendered_ink_width_px": 59.508
+        },
+        {
+          "slide": "page_001",
+          "element": "lg2_t",
+          "expected": "操作：称量 · 研磨 · 装料",
+          "rendered": "操作：称量 · 研磨 · 装料",
+          "matches": true,
+          "actual_fonts": [
+            "DejaVuSans-Bold",
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 166.789,
+          "rendered_ink_width_px": 180.604
+        },
+        {
+          "slide": "page_001",
+          "element": "lg3_t",
+          "expected": "热处理程序与气氛",
+          "rendered": "热处理程序与气氛",
+          "matches": true,
+          "actual_fonts": [
+            "NotoSansCJKsc-Bold-VKana"
+          ],
+          "measured_ink_width_px": 119.25,
+          "rendered_ink_width_px": 119.06
+        }
+      ],
+      "limitations": "This checks renderer output and glyph bounds; source recognition and target PowerPoint/WPS appearance still need visual review."
+    }
+  },
+  "limitations": [
+    "No claim of exact font identification from pixels.",
+    "Photographs and complex artwork remain independent raster assets.",
+    "PowerPoint/WPS must be checked separately from LibreOffice."
+  ],
+  "source_scene_sha256": "9b68aa8a5a1706cf191700303d16bb23cd032e95a173036b53e9570b87c60d88",
+  "font_substitutions": [],
+  "artifacts": {
+    "pptx": "editable.pptx",
+    "svg": "svg/",
+    "scene": "scene.resolved.json",
+    "fonts": "fonts.json",
+    "render": "render/"
+  },
+  "comparisons": []
+}
