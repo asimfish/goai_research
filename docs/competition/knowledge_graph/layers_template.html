@@ -38,6 +38,8 @@ text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif}
 .cap-title{font:800 22px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .ann{font:500 13.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .ann-k{font:600 11px "IBM Plex Mono",monospace;fill:var(--muted)}
+.rul{font:600 12px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.rul-g{font:500 11px "IBM Plex Mono",monospace;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:3px}
 .cap-sum{font:400 16px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
 .card-title{font-weight:700;pointer-events:none}
 .card-sub{font-weight:400;pointer-events:none}
@@ -93,6 +95,7 @@ const C = {heat:'#E06A1B', heat2:'#F3A56E', tele:'#1E8FA8', tele2:'#5FB3C9', pur
 const THEME = params.get('theme') || 'site';
 if (THEME === 'console'){ Object.assign(C, {heat:'#B98032', heat2:'#D4AE72', tele:'#2D7468', tele2:'#7FAFA6', purple:'#3F4E75', ok:'#2D7468', crit:'#A94D45', gold:'#7A6A3A', navy:'#235B52', text:'#172B3A', muted:'#66737B', faint:'#9AA6AE', line:'#D8DAD6', line2:'#C4C8C2', x:'#CFD3CE'}); document.documentElement.classList.add('theme-console'); }
 const SOFT = THEME === 'console' ? {ground:'#F5F3ED', panel:'#FBFAF7', leaf:'#DDEBE7', gap:'#EFEEE8', band1:'#F1EFE8', band2:'#FBFAF7', glow:'#EAE6DA', glow2:'#F5F3ED'} : {ground:'#F1F4F7', panel:'#FFFFFF', leaf:'#E1F1F5', gap:'#F4F6F8', band1:'#F4F7FA', band2:'#FBFCFD', glow:'#E4F1F5', glow2:'#F3F8FA'};
+const GROUP_TINT = THEME === 'console' ? {'个人知识树':'#EFEDE6', '文献树':'#DDEBE7', '实体层':'#F3E8D5', '结论树':'#F1DDDA', '新树':'#E3E6EE'} : {'个人知识树':'#EDF0F3', '文献树':'#E0F0F4', '实体层':'#F6EFDF', '结论树':'#FBE7DA', '新树':'#ECE7F8'};
 const LVL = {D0:C.heat, D1:C.heat2, N1:C.tele, P1:C.faint, X:C.x, H:C.purple};
 const TINT = THEME === 'console' ? {D0:'#F3E8D5', D1:'#F8F1E4', N1:'#DDEBE7', P1:'#ECEBE6', X:'#F1F0EB', H:'#E3E6EE'} : {D0:'#FBDCC8', D1:'#FDEEE2', N1:'#DCEEF3', P1:'#EDF0F3', X:'#F4F6F8', H:'#ECE6F9'};
 // ---------- text helpers
@@ -416,16 +419,29 @@ function render(t){
   // overview annotations: label columns at both sides, a leader from the dot, fade in with the level
   { const anns = [...cur.entries()].filter(([id]) => id.startsWith('ANN_')).map(([id, a]) => ({id, ...a, op: prev.has(id) ? 1 : ease(clamp((p - 0.35) / 0.55, 0, 1))}));
     const bundleA = d3.line().x(q => q.x).y(q => q.y).curve(d3.curveBundle.beta(0.9));
-    const asel = gAnn.selectAll('g.ann').data(anns, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'anng'); g.append('path'); g.append('circle'); g.append('text').attr('class', 'ann-k'); g.append('text').attr('class', 'ann'); return g; });
+    const asel = gAnn.selectAll('g.anng').data(anns, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'anng'); g.append('path'); g.append('circle'); g.append('text').attr('class', 'ann-k'); g.append('text').attr('class', 'ann'); return g; });
     asel.attr('opacity', d => d.op).style('cursor', 'pointer').on('click', (ev, d) => select(byId.get(d.id.slice(4)), false));
-    asel.select('path').attr('d', d => { const ex = d.side === 'R' ? d.x - 16 : d.x + 16; const mx = d.side === 'R' ? Math.max(d.dot.x + 40, ex - 60) : Math.min(d.dot.x - 40, ex + 60); return bundleA([{x: d.dot.x, y: d.dot.y}, {x: mx, y: d.dot.y}, {x: mx, y: d.y}, {x: ex, y: d.y}]); }).attr('fill', 'none').attr('stroke', C.line2).attr('stroke-width', 1.1).attr('opacity', .9);
+    const scA = lerp(prev.scale ?? cur.scale, cur.scale, e); const Rout = (cur.maxLvl ? RING_R[cur.maxLvl] * scA : 60) + 28;
+    asel.select('path').attr('d', d => { const ex = d.side === 'R' ? d.x - 16 : d.x + 16; const a0 = Math.atan2(d.dot.y - CY, d.dot.x - CX); const a1 = Math.atan2(d.y - CY, ex - CX); let da = a1 - a0; while (da > Math.PI) da -= 2 * Math.PI; while (da <= -Math.PI) da += 2 * Math.PI;
+      const n = Math.max(1, Math.ceil(Math.abs(da) / (15 * Math.PI / 180))); const pts = [{x: d.dot.x, y: d.dot.y}]; for (let i = 0; i <= n; i++){ const a = a0 + da * i / n; pts.push({x: CX + Math.cos(a) * Rout, y: CY + Math.sin(a) * Rout}); } pts.push({x: ex, y: d.y}); return bundleA(pts); }).attr('fill', 'none').attr('stroke', C.line2).attr('stroke-width', 1.1).attr('opacity', .85);
     asel.select('circle').attr('cx', d => d.side === 'R' ? d.x - 8 : d.x + 8).attr('cy', d => d.y).attr('r', 5).attr('fill', d => d.col).attr('stroke', '#fff').attr('stroke-width', 1.5);
     asel.select('text.ann-k').attr('x', d => d.side === 'R' ? d.x - 20 : d.x + 20).attr('y', d => d.y - 10).attr('text-anchor', d => d.side === 'R' ? 'end' : 'start').text(d => d.key);
     asel.select('text.ann').attr('x', d => d.side === 'R' ? d.x - 20 : d.x + 20).attr('y', d => d.y + 6).attr('text-anchor', d => d.side === 'R' ? 'end' : 'start').text(d => fit(d.text, 300, 13.5)); }
   // 年轮 annuli behind the collapsed tree + halo; the newest band fades in with the level
+  const OVn = !!LEVELS[k - 1].overview;
   { const sc = lerp(prev.scale ?? cur.scale, cur.scale, e); const mx = cur.maxLvl; const bands = [];
     for (let l = mx; l >= 1; l--){ const ro = ((RING_R[l] + (RING_R[l + 1] ?? RING_R[l] + 30)) / 2) * sc; bands.push({l, r: ro, op: (l === mx && !((prev.maxLvl ?? 0) >= l)) ? e : 1}); }
-    gRings.selectAll('circle').data(bands, d => d.l).join('circle').attr('cx', CX).attr('cy', CY).attr('r', d => d.r).attr('fill', d => d.l % 2 ? SOFT.band1 : SOFT.band2).attr('stroke', C.line).attr('stroke-width', 1).attr('opacity', d => d.op);
+    gRings.selectAll('circle').data(bands, d => d.l).join('circle').attr('cx', CX).attr('cy', CY).attr('r', d => d.r).attr('fill', d => OVn ? GROUP_TINT[LEVELS[d.l - 1].group] : (d.l % 2 ? SOFT.band1 : SOFT.band2)).attr('stroke', OVn ? C.line2 : C.line).attr('stroke-width', 1).attr('opacity', d => d.op);
+    // overview: radial ruler naming the levels, dashed separators between the eight sectors
+    const rul = []; const seps = []; if (OVn && mx){ let lastG = null; for (let l = 1; l <= mx; l++){ const L = LEVELS[l - 1]; const cnt = nodes.filter(n => levelOf.get(n.id) === l).length; rul.push({l, y: CY - RING_R[l] * sc, text: `${l} ${L.rail} ${cnt}`, grp: L.group !== lastG ? L.group : ''}); lastG = L.group; }
+      SECTORS.forEach(sct => { const a = span[sct][1] + GAP / 2; seps.push({id: sct, x1: CX + Math.cos(a) * (RING_R[1] * sc - 12), y1: CY + Math.sin(a) * (RING_R[1] * sc - 12), x2: CX + Math.cos(a) * (RING_R[mx] * sc + 18), y2: CY + Math.sin(a) * (RING_R[mx] * sc + 18)}); }); }
+    gRings.selectAll('line.sep').data(seps, d => d.id).join('line').attr('class', 'sep').attr('x1', d => d.x1).attr('y1', d => d.y1).attr('x2', d => d.x2).attr('y2', d => d.y2).attr('stroke', C.line2).attr('stroke-width', 1).attr('stroke-dasharray', '3 4').attr('opacity', e);
+    const rg = gAnn.selectAll('g.rulg').data(rul.length ? [1] : []).join(enter => { const g = enter.append('g').attr('class', 'rulg'); g.append('line').attr('class', 'axis'); return g; }).attr('opacity', ease(clamp((p - 0.3) / 0.6, 0, 1)));
+    rg.select('line.axis').attr('x1', CX).attr('x2', CX).attr('y1', rul.length ? rul[0].y + 12 : CY).attr('y2', rul.length ? rul[rul.length - 1].y - 26 : CY).attr('stroke', C.muted).attr('stroke-width', 1.2);
+    const tk = rg.selectAll('g.tk').data(rul, d => d.l).join(enter => { const g = enter.append('g').attr('class', 'tk'); g.append('line'); g.append('text').attr('class', 'rul'); g.append('text').attr('class', 'rul-g'); return g; });
+    tk.select('line').attr('x1', CX - 6).attr('x2', CX + 6).attr('y1', d => d.y).attr('y2', d => d.y).attr('stroke', C.muted).attr('stroke-width', 1.2);
+    tk.select('text.rul').attr('x', CX + 12).attr('y', d => d.y + 4).text(d => d.text);
+    tk.select('text.rul-g').attr('x', CX - 12).attr('y', d => d.y + 4).attr('text-anchor', 'end').text(d => d.grp);
     gGlow.attr('r', (bands.length ? bands[0].r : 70) + 90).attr('opacity', 0.9); }
   { const pulses = []; const seen = new Set(); items.forEach(i => { if (i.kind !== 'card' || !i.fresh) return; const par = parentOf(i.n); const pid = par ? par.id : 'root'; if (seen.has(pid)) return; seen.add(pid); const ps = pid === 'root' ? {x: CX, y: CY, r: 50} : (cur.get(pid) || prev.get(pid)); if (ps) pulses.push({id: pid, x: ps.x, y: ps.y, r0: ps.r || 8}); });
     const pp = clamp(p / 0.75, 0, 1);
@@ -433,7 +449,7 @@ function render(t){
   // tree links: dot → its parent (straight, faint) once collapsed
   const dotById = new Map(dots.map(d => [d.id, d]));
   const tlinks = dots.map(d => { const par = parentOf(d.n); const ps = par ? (par.id === 'root' ? {x: CX, y: CY} : dotById.get(par.id)) : null; return ps ? {id: d.id, x1: d.x, y1: d.y, x2: ps.x, y2: ps.y} : null; }).filter(Boolean);
-  gLinks.selectAll('line.tl').data(tlinks, d => d.id).join('line').attr('class', 'tl').attr('x1', d => d.x1).attr('y1', d => d.y1).attr('x2', d => d.x2).attr('y2', d => d.y2).attr('stroke', C.line2).attr('stroke-width', 1).attr('opacity', .55);
+  gLinks.selectAll('line.tl').data(tlinks, d => d.id).join('line').attr('class', 'tl').attr('x1', d => d.x1).attr('y1', d => d.y1).attr('x2', d => d.x2).attr('y2', d => d.y2).attr('stroke', C.line2).attr('stroke-width', 1).attr('opacity', OVn ? .28 : .55);
   // card ↔ parent links, bundled: parent → radial stub → arc along the ring → radial stub → card
   const cards = items.filter(i => i.kind === 'card' || i.kind === 'morph');
   const ring = lerp(prev.ring ?? cur.ring, cur.ring, e);
