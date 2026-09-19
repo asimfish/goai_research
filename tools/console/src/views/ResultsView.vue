@@ -18,6 +18,9 @@ const q = ref('')
 const selectedId = ref<string>('')
 const artifacts = ref<Artifacts | null>(null)
 const loading = ref(true)
+/** 预览区的两个视图：报告浏览（综述 PDF）/ 知识图谱浏览（public/knowledge/ 的逐层展开页，控制台主题）。 */
+const previewMode = ref<'report' | 'graph'>((route.query.view as string) === 'graph' ? 'graph' : 'report')
+const KG_URL = 'knowledge/knowledge_layers.html?theme=console&autoplay=1'
 
 const filtered = computed(() => rows.value.filter((w) => {
   if (tab.value === 'done' && w.status !== 'done') return false
@@ -79,9 +82,16 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
               <NButton @click="router.push(`/run/${selected.id}`)"><template #icon><NIcon><PlayCircleOutline /></NIcon></template>回放研究过程</NButton>
             </div>
           </div>
+          <div class="seg preview-switch">
+            <button :class="{ on: previewMode === 'report' }" @click="previewMode = 'report'">报告浏览</button>
+            <button :class="{ on: previewMode === 'graph' }" @click="previewMode = 'graph'">知识图谱浏览</button>
+          </div>
           <div class="d-body">
             <div class="sheet panel preview">
-              <iframe v-if="selected.final_pdf" :src="api.pdfUrl(selected.id) + '#toolbar=0&view=FitH'" title="综述 PDF 预览" />
+              <template v-if="previewMode === 'graph'">
+                <iframe class="kg-frame" :src="KG_URL" title="知识图谱 · 逐层展开" />
+              </template>
+              <iframe v-else-if="selected.final_pdf" :src="api.pdfUrl(selected.id) + '#toolbar=0&view=FitH'" title="综述 PDF 预览" />
               <div v-else class="no-pdf">
                 <NIcon :size="40" color="#9AA6AE"><DocumentTextOutline /></NIcon>
                 <div class="card-h" style="margin-top: 10px">尚未产出综述 PDF</div>
@@ -135,6 +145,9 @@ function statusText(w: WorkspaceInfo) { return w.status === 'done' ? '已交付'
 .d-body { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; flex: 1; min-height: 0; }
 .preview { min-height: 0; min-width: 0; overflow: auto; background: #E9E7DF; }
 .preview iframe { display: block; width: 100%; height: 100%; border: 0; }
+.preview .kg-frame { background: #F5F3ED; }
+.preview-switch { margin: 0 0 10px; flex: none; }
+.preview-switch button { padding: 4px 12px; font-size: 13px; }
 .no-pdf { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
 .side { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: auto; overscroll-behavior: contain; padding-right: 3px; }
 .side > .panel { flex: none; }
