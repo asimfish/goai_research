@@ -381,17 +381,20 @@ function render(t){
   // card ↔ parent links, bundled: parent → radial stub → arc along the ring → radial stub → card
   const cards = items.filter(i => i.kind === 'card' || i.kind === 'morph');
   const ring = lerp(prev.ring ?? cur.ring, cur.ring, e);
-  const laneOf = new Map(); cards.forEach(c => { const par = parentOf(c.n); const pid = par ? par.id : 'root'; if (!laneOf.has(pid)) laneOf.set(pid, laneOf.size % 4); });
+  const laneOf = new Map(); cards.forEach(c => { const par = parentOf(c.n); const pid = par ? par.id : 'root'; if (!laneOf.has(pid)) laneOf.set(pid, laneOf.size % 3); });
+  const bundle = d3.line().x(q => q.x).y(q => q.y).curve(d3.curveBundle.beta(0.82));
+  const ringPt = (a, r) => ({x: CX + Math.cos(a) * r, y: CY + Math.sin(a) * r});
   const norm = a => { while (a > Math.PI) a -= 2 * Math.PI; while (a <= -Math.PI) a += 2 * Math.PI; return a; };
   const edgePt = (x, y, w, h) => { const toC = Math.atan2(CY - y, CX - x); const d = Math.min(w, h) * 0.5; return {x: x + Math.cos(toC) * d, y: y + Math.sin(toC) * d}; };
   const curves = cards.map(c => { const par = parentOf(c.n); const pid = par ? par.id : 'root'; const pdot = pid === 'root' ? null : (dotById.get(pid) || cur.get(pid) || prev.get(pid)); if (pid !== 'root' && !pdot) return null;
-    const r = ring + 4 * laneOf.get(pid);
+    const r = ring + 3 * laneOf.get(pid);
     const cAng = Math.atan2(c.y - CY, c.x - CX); const cEdge = c.kind === 'card' ? edgePt(c.x, c.y, c.w, c.h) : {x: c.x + Math.cos(Math.atan2(CY - c.y, CX - c.x)) * c.r, y: c.y + Math.sin(Math.atan2(CY - c.y, CX - c.x)) * c.r};
-    let d, pAng;
-    if (pid === 'root'){ pAng = cAng; d = `M${CX + Math.cos(cAng) * 52},${CY + Math.sin(cAng) * 52} L${CX + Math.cos(cAng) * r},${CY + Math.sin(cAng) * r} L${cEdge.x},${cEdge.y}`; }
-    else { pAng = Math.atan2(pdot.y - CY, pdot.x - CX); const pStart = pdot.kind === 'card' ? edgePt(pdot.x, pdot.y, pdot.w, pdot.h) : {x: pdot.x, y: pdot.y};
-      const a1 = {x: CX + Math.cos(pAng) * r, y: CY + Math.sin(pAng) * r}, a2 = {x: CX + Math.cos(cAng) * r, y: CY + Math.sin(cAng) * r}; const da = norm(cAng - pAng);
-      d = `M${pStart.x},${pStart.y} L${a1.x},${a1.y}` + (Math.abs(da) > 0.01 ? ` A${r},${r} 0 0 ${da > 0 ? 1 : 0} ${a2.x},${a2.y}` : '') + ` L${cEdge.x},${cEdge.y}`; }
+    let d;
+    if (pid === 'root'){ d = bundle([ringPt(cAng, 52), ringPt(cAng, r), cEdge]); }
+    else { const pAng = Math.atan2(pdot.y - CY, pdot.x - CX); const pStart = pdot.kind === 'card' ? edgePt(pdot.x, pdot.y, pdot.w, pdot.h) : {x: pdot.x, y: pdot.y};
+      const da = norm(cAng - pAng); const n = Math.max(1, Math.ceil(Math.abs(da) / (18 * Math.PI / 180))); const pts = [pStart];
+      for (let i = 0; i <= n; i++) pts.push(ringPt(pAng + da * i / n, r));
+      pts.push(cEdge); d = bundle(pts); }
     const col = c.spec.stroke === '#fff' ? c.col : (c.spec.fill === '#fff' || c.spec.fill.startsWith('#F') || c.spec.fill.startsWith('#E') || c.spec.fill.startsWith('#D') ? c.spec.stroke : c.spec.fill);
     return {id: c.id, d, col, op: (c.linkOp ?? 1) * (c.kind === 'morph' ? c.textOp : 1), hot: c.id === selId || c.id === hoverId}; }).filter(Boolean);
   const cl = gLinks.selectAll('path.cl').data(curves, d => d.id).join('path').attr('class', 'cl').attr('d', d => d.d).attr('fill', 'none').attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round');
