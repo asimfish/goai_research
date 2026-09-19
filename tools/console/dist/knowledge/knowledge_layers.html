@@ -38,6 +38,14 @@ text{font-family:"IBM Plex Sans","Noto Sans SC",system-ui,sans-serif}
 .cap-title{font:800 22px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .ann{font:500 13.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
 .ann-k{font:600 11px "IBM Plex Mono",monospace;fill:var(--muted)}
+.ph{font:700 18px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.ph-s{font:400 12px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.pcard .pt{font:700 14.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.pcard .pc{font:500 12px "IBM Plex Mono",monospace;fill:var(--muted)}
+.pcard .pl{font:400 12.5px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text)}
+.pcard .pl2{font:400 12px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
+.pcard .stt{font:700 11px "IBM Plex Mono",monospace;fill:#fff}
+.theme-console .ph,.theme-console .ph-s,.theme-console .pcard text{font-family:var(--font-sans)}
 .rul{font:600 12px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--text);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
 .rul-g{font:500 11px "IBM Plex Mono",monospace;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:3px}
 .cap-sum{font:400 16px "IBM Plex Sans","Noto Sans SC",sans-serif;fill:var(--muted)}
@@ -149,7 +157,7 @@ const LEVELS = [
    sum: '前驱体预测（模型输出，未经验证）、仿真工作流与同源案例。',
    add: '前驱体预测、自动化工作流与同源案例', src: 'precursor_predictions.md、站点 showcase、补充案例 ledger', hang: '预测归属目标化合物；工作流归属路线分支；案例归属身份分支'},
   {id: 9, title: '全貌', rail: '全貌', group: '全貌', overview: true, pick: () => false,
-   sum: '八级收拢后的整体：中心是调研主题，八个扇区各自成树，外圈标注目标相直接文献、目标化合物、调研目标及其回答状态、综述结论、实验方向、前驱体预测与同源案例。',
+   sum: '从最初的问题到最终的产物：左侧是研究者检索前给出的五个调研目标及其回答状态，中间是八级展开后收拢的证据树，右侧是这次调研交付的成果。',
    add: `${G.meta.stats.nodes} 个节点 · ${G.meta.stats.edges} 条边 · ${G.meta.stats.papers} 篇文献 · ${G.meta.stats.claims} 条主张 · ${G.meta.stats.records} 条条件记录`, src: '证据包与正式案例的全部来源文件（见 README「五层怎么长」）', hang: '五棵树：个人知识树 → 文献树 → 实体层 → 结论树 → 新树'},
 ];
 // nodes called out on the overview level (id → short label); order is display order within a side
@@ -285,23 +293,39 @@ function layoutLevel(k){ // returns Map id -> {kind:'card'|'dot'|'root'|'pill', 
     cards.forEach((c, i) => { const s = slots[Math.max(0, idx[i])] || slots[N - 1]; c.x = s.x; c.y = s.y; c.seg = s.seg; c.rank = i; });
   }
   const OV = !!LEVELS[k - 1].overview;
-  const treeR = OV ? FRAME.h / 2 - PAD - 40 : treeRFor(lanes, chMax);
+  const treeR = OV ? 280 : treeRFor(lanes, chMax);
   const scale = maxLvl ? (OV ? treeR / RING_R[maxLvl] : Math.min(1, treeR / RING_R[maxLvl])) : 1;
   present.forEach(n => { const l = levelOf.get(n.id); if (l < k){ const r = RING_R[l] * scale; out.set(n.id, {kind: n.type === 'root' ? 'root' : 'dot', x: CX + r * Math.cos(n.a), y: CY + r * Math.sin(n.a), r: dotR(n), col: dotColor(n)}); } });
   out.set('root', {kind: 'root', x: CX, y: CY, r: 46});
   out.scale = scale; out.maxLvl = maxLvl; out.count = cards.length;
-  if (OV){ const cols = {L: [], R: []};
-    ANNOTATE.forEach(id => { const n = byId.get(id); const d = out.get(id); if (!n || !d) return; (Math.cos(n.a) >= 0 ? cols.R : cols.L).push({id, n, d}); });
-    const GAPY = 34, colX = {L: FRAME.x + 34, R: FRAME.x + FRAME.w - 34};
-    Object.entries(cols).forEach(([side, arr]) => { arr.sort((a, b) => a.d.y - b.d.y); const top = FRAME.y + 40, bot = FRAME.y + FRAME.h - 40;
-      let ys = arr.map(a => a.d.y); for (let i = 1; i < ys.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + GAPY); const over = ys.length ? ys[ys.length - 1] - bot : 0; if (over > 0) ys = ys.map(y => y - over); for (let i = 1; i < ys.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + GAPY); if (ys.length && ys[0] < top){ const up = top - ys[0]; ys = ys.map(y => y + up); }
-      arr.forEach((a, i) => { const {k: kk, t} = annText(a.n); out.set('ANN_' + a.id, {kind: 'ann', side, x: colX[side], y: ys[i], dot: {x: a.d.x, y: a.d.y, r: a.d.r}, col: a.d.col, key: kk, text: t}); }); }); }
+  if (OV){ // overview panels: questions on the left, deliverables on the right
+    const PW_L = 430, PW_R = 440, xL = FRAME.x + 30, xR = FRAME.x + FRAME.w - 30 - PW_R, yTop = FRAME.y + 78;
+    out.panelHeads = [{id: 'HL', x: xL, y: FRAME.y + 40, anchor: 'start', text: '最初的问题', sub: '研究者检索前给出的五个调研目标 · inputs/scope.md'},
+                      {id: 'HR', x: xR + PW_R, y: FRAME.y + 40, anchor: 'end', text: '最终的科研产物', sub: '这次调研交付的成果：综述报告、条件总表与证据包'}];
+    const qs = nodes.filter(n => n.type === 'question').sort((a, b) => a.id.localeCompare(b.id));
+    qs.forEach((n, i) => out.set('PQ_' + n.id, {kind: 'pq', x: xL, y: yTop + i * 90, w: PW_L, h: 80, nid: n.id, title: `${n.id} ${n.label.replace(/^目标 \d · /, '')}`, status: n.status, l2: plain(n.text), l3: '答 ' + plain(n.answer || ''), col: C.tele}));
+    const st = G.meta.stats; const secs = nodes.filter(n => n.type === 'section').length; const recs = nodes.filter(n => n.type === 'record'); const z = zz => recs.filter(r => r.zone.startsWith(zz)).length;
+    const claims7 = nodes.filter(n => levelOf.get(n.id) === 7 && n.type === 'claim'); const dirs = nodes.filter(n => n.type === 'direction'); const rcp = nodes.filter(n => n.type === 'recipe' && n.top); const wfs = nodes.filter(n => n.type === 'workflow'); const cases = nodes.filter(n => n.type === 'case');
+    const answered = qs.filter(q => q.status === '已回答').length;
+    const sh = (t, n) => { t = plain(t); return t.length > n ? t.slice(0, n) + '…' : t; };
+    const products = [
+      {id: 'report', title: '综述报告', count: `${st.claims} 条主张`, l2: `${secs} 个章节 · ${st.citation_calls} 次引用 · 引用核验通过 ${st.refcheck_pass_rate}%`, l3: `回答五个调研目标：${answered} 个已回答 · ${qs.length - answered} 个部分回答`, col: C.navy, sel: 'root'},
+      {id: 'records', title: '合成条件总表', count: `${recs.length} 条记录`, l2: `A 区 ${z('A')} · B 区 ${z('B')} · C 区 ${z('C')}，逐字段：原料 / 温程 / 气氛 / 坩埚 / 冷却 / 表征`, l3: '目标相自身除路线与表征外各字段记 NA', col: C.gold, sel: 'R_A1'},
+      {id: 'claims', title: '综述结论', count: `${claims7.length} 条`, l2: sh(claims7[0] ? claims7[0].text : '', 30), l3: sh(claims7[1] ? claims7[1].text.replace(/^第[一二三四]，/, '') : '', 30), col: C.heat, sel: claims7[0] && claims7[0].id},
+      {id: 'dirs', title: '实验方向', count: `${dirs.length} 个 · 待验证`, l2: dirs.slice(0, 2).map(d => d.label.replace(/^方向 \d · /, '')).join(' · '), l3: dirs.slice(2, 4).map(d => d.label.replace(/^方向 \d · /, '')).join(' · '), col: C.purple, dash: true, sel: dirs[0] && dirs[0].id},
+      {id: 'recipes', title: '前驱体预测', count: `${rcp.length} 组 · 模型输出，未验证`, l2: rcp.slice(0, 2).map(r => plain(r.label)).join(' · '), l3: rcp.slice(2).map(r => plain(r.label)).join(' · '), col: C.purple, sel: rcp[0] && rcp[0].id},
+      {id: 'wfs', title: '自动化工作流', count: `${wfs.length} 条 · 仿真`, l2: wfs.slice(0, 3).map(w => w.label).join(' · '), l3: wfs.slice(3).map(w => w.label).join(' · '), col: C.navy, sel: wfs[0] && wfs[0].id},
+      {id: 'cases', title: '同源案例', count: `${cases.length} 个`, l2: cases.slice(0, 2).map(c => c.label).join(' · '), l3: cases.slice(2).map(c => c.label).join(' · '), col: C.text, dash: true, sel: cases[0] && cases[0].id},
+    ];
+    products.forEach((pr, i) => out.set('PP_' + pr.id, {kind: 'pp', x: xR, y: yTop + i * 72, w: PW_R, h: 64, ...pr}));
+    out.panelX = {x0: xL + PW_L + 12, x1: xR - 12};
+  }
   out.ring = maxLvl ? RING_R[maxLvl] * scale + 14 : 64;   // bundling ring for the card links: just outside the collapsed tree (or the centre icon)
   cards.forEach(c => out.set(c.n.id, {kind: 'card', x: c.x, y: c.y, w: c.spec.w, h: c.spec.h, spec: c.spec, seg: c.seg, r: dotR(c.n), col: dotColor(c.n), rank: c.rank ?? 0}));
   if (k >= 3){
     const dotsArr = [...out.values()].filter(v => v.kind === 'dot');
     const cwMax = cards.length ? Math.max(...cards.map(c => c.spec.w)) : 0;
-    const inner = {x0: FRAME.x + PAD + (cards.length ? lanes * (cwMax + LANE_GAP) : 0) + 4, x1: FRAME.x + FRAME.w - PAD - (cards.length ? lanes * (cwMax + LANE_GAP) : 0) - 4,
+    const inner = OV ? {x0: out.panelX.x0, x1: out.panelX.x1, y0: FRAME.y + PAD + 4, y1: FRAME.y + FRAME.h - PAD - 4} : {x0: FRAME.x + PAD + (cards.length ? lanes * (cwMax + LANE_GAP) : 0) + 4, x1: FRAME.x + FRAME.w - PAD - (cards.length ? lanes * (cwMax + LANE_GAP) : 0) - 4,
                    y0: FRAME.y + PAD + (cards.length ? lanes * (chMax + LANE_GAP) : 0) + 4, y1: FRAME.y + FRAME.h - PAD - (cards.length ? lanes * (chMax + LANE_GAP) : 0) - 4};
     SECTORS.forEach(s => { const b = branchOf(s); if (!out.get(b.id)) return; const a = mid(s); const text = PILL_NAMES[s]; const pw = tw(text, 14) + 50; const anchorLeft = Math.cos(a) >= 0;
       let rr = treeR * scale + 22, x = 0, y = 0, rect = null;
@@ -417,17 +441,23 @@ function render(t){
   const dm = dsel.join(enter => enter.append('circle').attr('class', 'dot').call(g => g.append('title')), update => update, exit => exit.remove());
   dm.attr('cx', d => d.x).attr('cy', d => d.y).attr('r', d => d.r).attr('fill', d => d.col).attr('stroke', '#fff').attr('stroke-width', 1.5).on('click', (ev, d) => select(d.n, false)).on('mouseenter', (ev, d) => { hoverId = d.id; render(tNow); }).on('mouseleave', () => { hoverId = null; render(tNow); });
   dm.select('title').text(d => `${TYPE_CN[d.n.type] || d.n.type} · ${plain(d.n.title || d.n.label)}`);
-  // overview annotations: label columns at both sides, a leader from the dot, fade in with the level
-  { const anns = [...cur.entries()].filter(([id]) => id.startsWith('ANN_')).map(([id, a]) => ({id, ...a, op: prev.has(id) ? 1 : ease(clamp((p - 0.35) / 0.55, 0, 1))}));
-    const bundleA = d3.line().x(q => q.x).y(q => q.y).curve(d3.curveBundle.beta(0.9));
-    const asel = gAnn.selectAll('g.anng').data(anns, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'anng'); g.append('path'); g.append('circle'); g.append('text').attr('class', 'ann-k'); g.append('text').attr('class', 'ann'); return g; });
-    asel.attr('opacity', d => d.op).style('cursor', 'pointer').on('click', (ev, d) => select(byId.get(d.id.slice(4)), false));
-    const scA = lerp(prev.scale ?? cur.scale, cur.scale, e); const Rout = (cur.maxLvl ? RING_R[cur.maxLvl] * scA : 60) + 28;
-    asel.select('path').attr('d', d => { const ex = d.side === 'R' ? d.x - 16 : d.x + 16; const a0 = Math.atan2(d.dot.y - CY, d.dot.x - CX); const a1 = Math.atan2(d.y - CY, ex - CX); let da = a1 - a0; while (da > Math.PI) da -= 2 * Math.PI; while (da <= -Math.PI) da += 2 * Math.PI;
-      const n = Math.max(1, Math.ceil(Math.abs(da) / (15 * Math.PI / 180))); const pts = [{x: d.dot.x, y: d.dot.y}]; for (let i = 0; i <= n; i++){ const a = a0 + da * i / n; pts.push({x: CX + Math.cos(a) * Rout, y: CY + Math.sin(a) * Rout}); } pts.push({x: ex, y: d.y}); return bundleA(pts); }).attr('fill', 'none').attr('stroke', C.line2).attr('stroke-width', 1.1).attr('opacity', .85);
-    asel.select('circle').attr('cx', d => d.side === 'R' ? d.x - 8 : d.x + 8).attr('cy', d => d.y).attr('r', 5).attr('fill', d => d.col).attr('stroke', '#fff').attr('stroke-width', 1.5);
-    asel.select('text.ann-k').attr('x', d => d.side === 'R' ? d.x - 20 : d.x + 20).attr('y', d => d.y - 10).attr('text-anchor', d => d.side === 'R' ? 'end' : 'start').text(d => d.key);
-    asel.select('text.ann').attr('x', d => d.side === 'R' ? d.x - 20 : d.x + 20).attr('y', d => d.y + 6).attr('text-anchor', d => d.side === 'R' ? 'end' : 'start').text(d => fit(d.text, 300, 13.5)); }
+  // overview panels: question cards (left) and deliverable cards (right), fading in with the level
+  { const op = LEVELS[k - 1].overview ? ease(clamp((p - 0.3) / 0.6, 0, 1)) : 0;
+    const heads = LEVELS[k - 1].overview ? (cur.panelHeads || []) : [];
+    const hs = gAnn.selectAll('g.phead').data(heads, d => d.id).join(enter => { const g = enter.append('g').attr('class', 'phead'); g.append('text').attr('class', 'ph'); g.append('text').attr('class', 'ph-s'); return g; }).attr('opacity', op);
+    hs.select('text.ph').attr('x', d => d.x).attr('y', d => d.y).attr('text-anchor', d => d.anchor).text(d => d.text);
+    hs.select('text.ph-s').attr('x', d => d.x).attr('y', d => d.y + 20).attr('text-anchor', d => d.anchor).text(d => d.sub);
+    const pan = [...cur.entries()].filter(([id]) => id.startsWith('PQ_') || id.startsWith('PP_')).map(([id, a]) => ({id, ...a}));
+    const pc = gAnn.selectAll('g.pcard').data(LEVELS[k - 1].overview ? pan : [], d => d.id).join(enter => { const g = enter.append('g').attr('class', 'pcard'); g.append('rect').attr('class', 'bg'); g.append('rect').attr('class', 'bar'); g.append('text').attr('class', 'pt'); g.append('text').attr('class', 'pc'); g.append('text').attr('class', 'pl'); g.append('text').attr('class', 'pl2'); g.append('rect').attr('class', 'st'); g.append('text').attr('class', 'stt'); return g; });
+    pc.attr('transform', d => `translate(${d.x},${d.y})`).attr('opacity', op).style('cursor', d => d.sel || d.nid ? 'pointer' : null).on('click', (ev, d) => { const n = byId.get(d.nid || d.sel); if (n) select(n, false); });
+    pc.select('rect.bg').attr('width', d => d.w).attr('height', d => d.h).attr('rx', 10).attr('fill', SOFT.panel === '#FFFFFF' ? '#fff' : '#FFFFFF').attr('stroke', d => d.col).attr('stroke-width', 1.4).attr('stroke-dasharray', d => d.dash ? '5 3' : null).attr('filter', 'url(#cardShadow)');
+    pc.select('rect.bar').attr('x', 0).attr('y', 8).attr('width', 4).attr('height', d => d.h - 16).attr('rx', 2).attr('fill', d => d.col);
+    pc.select('text.pt').attr('x', 16).attr('y', 22).text(d => fit(d.title, d.w - 32 - (d.status ? 70 : 0) - (d.count ? tw(d.count, 12) + 8 : 0), 14.5));
+    pc.select('text.pc').attr('x', d => d.w - 14).attr('y', 22).attr('text-anchor', 'end').text(d => d.count || '');
+    pc.select('text.pl').attr('x', 16).attr('y', d => d.kind === 'pq' ? 43 : 42).text(d => fit(d.l2 || '', d.w - 30, 12.5));
+    pc.select('text.pl2').attr('x', 16).attr('y', d => d.kind === 'pq' ? 62 : 58).text(d => fit(d.l3 || '', d.w - 30, 12));
+    pc.select('rect.st').attr('x', d => d.w - 14 - (d.status ? tw(d.status, 11) + 12 : 0)).attr('y', 9).attr('width', d => d.status ? tw(d.status, 11) + 12 : 0).attr('height', 18).attr('rx', 9).attr('fill', d => d.status === '已回答' ? C.ok : C.heat).attr('opacity', d => d.status ? 1 : 0);
+    pc.select('text.stt').attr('x', d => d.w - 14 - (d.status ? tw(d.status, 11) / 2 + 6 : 0)).attr('y', 22).attr('text-anchor', 'middle').text(d => d.status || ''); }
   // 年轮 annuli behind the collapsed tree + halo; the newest band fades in with the level
   const OVn = !!LEVELS[k - 1].overview;
   { const sc = lerp(prev.scale ?? cur.scale, cur.scale, e); const mx = cur.maxLvl; const bands = [];
